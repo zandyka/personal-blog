@@ -52,7 +52,7 @@ const Hero = () => {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        paddingTop: 'clamp(80px, 12vh, 130px)',
+        paddingTop: 'clamp(108px, 15vh, 156px)',
         paddingBottom: 'clamp(32px, 5vh, 60px)',
         zIndex: 10,
         maxWidth: '1400px',
@@ -60,81 +60,101 @@ const Hero = () => {
         margin: '0 auto',
       }}>
 
-        {/* Hero text block */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', padding: '0 clamp(16px, 3vw, 36px)' }}>
+        {/* Hero text block - with generous left clearance from the Available sidebar */}
+        <div
+          className="hero-text-container"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '6px',
+            padding: '0 clamp(20px, 3.5vw, 44px)',
+            paddingLeft: 'clamp(56px, 7vw, 110px)',
+          }}
+        >
 
-          {/* Intro Eyebrow - Enhanced Typography for Zacky Andyka */}
+          {/* New Typographic Identity Capsule for Zacky Andyka */}
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15, duration: 0.6 }}
             className="hero-intro-eyebrow"
             style={{
-              display: 'flex',
+              display: 'inline-flex',
               alignItems: 'center',
-              gap: '12px',
+              gap: '10px',
+              padding: '6px 16px 6px 10px',
+              borderRadius: '999px',
+              background: 'rgba(255, 255, 255, 0.03)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.35)',
+              width: 'fit-content',
               marginBottom: 'clamp(10px, 1.8vh, 16px)',
-              padding: '0 4px',
             }}
           >
-            {/* Pulsing Live Dot */}
+            {/* Live Indicator Pill */}
             <span
               style={{
-                position: 'relative',
                 display: 'inline-flex',
-                width: '8px',
-                height: '8px',
                 alignItems: 'center',
-                justifyContent: 'center',
+                gap: '5px',
+                background: 'rgba(34, 197, 94, 0.1)',
+                border: '1px solid rgba(34, 197, 94, 0.25)',
+                padding: '2px 7px',
+                borderRadius: '999px',
                 flexShrink: 0,
               }}
             >
               <span
                 style={{
-                  position: 'absolute',
-                  width: '100%',
-                  height: '100%',
+                  width: '6px',
+                  height: '6px',
                   borderRadius: '50%',
-                  background: 'var(--accent)',
-                  opacity: 0.7,
-                  boxShadow: '0 0 10px var(--accent)',
+                  background: '#22c55e',
+                  boxShadow: '0 0 8px #22c55e',
                 }}
               />
               <span
                 style={{
-                  width: '6px',
-                  height: '6px',
-                  borderRadius: '50%',
-                  background: 'var(--accent)',
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: '9px',
+                  fontWeight: 800,
+                  color: '#22c55e',
+                  letterSpacing: '1px',
                 }}
-              />
+              >
+                LIVE
+              </span>
             </span>
 
-            {/* Elevated Name Typography */}
+            {/* Editorial Contrast Name */}
             <div
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '8px',
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: 'clamp(11px, 1.05vw, 13.5px)',
-                textTransform: 'uppercase',
-                letterSpacing: '0.24em',
-                lineHeight: 1,
+                gap: '7px',
               }}
             >
-              <span style={{ color: 'var(--text-muted)', fontWeight: 500 }}>
-                HI, I'M
+              <span
+                style={{
+                  fontFamily: "'Georgia', serif",
+                  fontStyle: 'italic',
+                  fontSize: 'clamp(12px, 1.1vw, 14.5px)',
+                  color: 'var(--text-muted)',
+                }}
+              >
+                Hi, I'm
               </span>
               <span
                 style={{
-                  fontWeight: 800,
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontSize: 'clamp(11px, 1.05vw, 13.5px)',
+                  fontWeight: 900,
+                  letterSpacing: '0.22em',
+                  textTransform: 'uppercase',
                   color: '#ffffff',
-                  background: 'linear-gradient(135deg, #ffffff 50%, var(--accent) 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  letterSpacing: '0.28em',
-                  textShadow: '0 0 20px rgba(255, 59, 29, 0.35)',
+                  textShadow: '0 0 16px rgba(255, 255, 255, 0.2)',
                 }}
               >
                 ZACKY ANDYKA
@@ -490,7 +510,7 @@ const Hero = () => {
       {/* Responsive adjustments */}
       <style>{`
         @media (min-width: 860px) {
-          .hero-intro-eyebrow { display: flex !important; }
+          .hero-intro-eyebrow { display: inline-flex !important; }
           .hero-socials-float { display: flex !important; }
           .hero-mobile-socials { display: none !important; }
         }
@@ -500,8 +520,12 @@ const Hero = () => {
             overflow: visible !important;
             padding-bottom: 60px !important;
           }
+          .hero-text-container {
+            padding-left: clamp(32px, 8vw, 50px) !important;
+            padding-right: 16px !important;
+          }
           .hero-intro-eyebrow {
-            display: flex !important;
+            display: inline-flex !important;
             margin-bottom: 8px !important;
           }
           .hero-socials-float {

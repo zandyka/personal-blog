@@ -43,14 +43,64 @@ export default function AvailableSidebar({
   return (
     <>
       <style>{`
-        @media (max-width: 768px) {
+        @media (min-width: 860px) {
           .available-sidebar-root {
+            display: flex !important;
+            padding: 38px 13px !important;
+            border-radius: 0 16px 16px 0 !important;
+            top: 50% !important;
+          }
+          .available-text-desktop {
+            display: block !important;
+          }
+          .available-text-mobile {
             display: none !important;
+          }
+          .available-dot-box {
+            margin-bottom: 14px !important;
+            width: 8px !important;
+            height: 8px !important;
+          }
+          .available-dot-core {
+            width: 8px !important;
+            height: 8px !important;
+          }
+        }
+        @media (max-width: 859px) {
+          .available-sidebar-root {
+            display: flex !important;
+            padding: 12px 6px !important;
+            border-radius: 0 10px 10px 0 !important;
+            top: 38% !important;
+            z-index: 950 !important;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25) !important;
+          }
+          .available-text-desktop {
+            display: none !important;
+          }
+          .available-text-mobile {
+            display: block !important;
+            writing-mode: vertical-rl !important;
+            font-size: 7.5px !important;
+            font-weight: 800 !important;
+            letter-spacing: 2px !important;
+            text-transform: uppercase !important;
+            color: #0a0a0f !important;
+            line-height: 1 !important;
+          }
+          .available-dot-box {
+            margin-bottom: 8px !important;
+            width: 6px !important;
+            height: 6px !important;
+          }
+          .available-dot-core {
+            width: 5px !important;
+            height: 5px !important;
           }
         }
       `}</style>
       <aside
-        className={`available-sidebar-root hide-mobile ${className}`.trim()}
+        className={`available-sidebar-root ${className}`.trim()}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onClick={onClick}
@@ -58,11 +108,11 @@ export default function AvailableSidebar({
           position: 'fixed',
           left: 0,
           top: '50%',
-          transform: isHovered ? 'translate(4px, -50%)' : 'translate(0, -50%)',
+          transform: isHovered ? 'translate(3px, -50%)' : 'translate(0, -50%)',
           zIndex: 50,
           backgroundColor: '#ffffff',
           color: '#0a0a0f',
-          padding: '40px 14px',
+          padding: '38px 13px',
           borderRadius: '0 16px 16px 0',
           boxShadow: isHovered
             ? '0 12px 36px rgba(0, 0, 0, 0.28)'
@@ -76,15 +126,16 @@ export default function AvailableSidebar({
           userSelect: 'none',
           ...style,
         }}
-        aria-label={text}
+        aria-label="Available Status"
       >
         {/* Pulsing green status indicator dot at the top */}
         <div
+          className="available-dot-box"
           style={{
             position: 'relative',
             width: 8,
             height: 8,
-            marginBottom: 16,
+            marginBottom: 14,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -103,16 +154,17 @@ export default function AvailableSidebar({
             }}
             style={{
               position: 'absolute',
-              width: 8,
-              height: 8,
+              width: '100%',
+              height: '100%',
               borderRadius: '50%',
               backgroundColor: '#22c55e',
               pointerEvents: 'none',
             }}
           />
 
-          {/* Inner solid green dot with gentle pulse */}
+          {/* Inner solid green dot */}
           <motion.span
+            className="available-dot-core"
             animate={{
               scale: [1, 1.15, 1],
             }}
@@ -133,19 +185,25 @@ export default function AvailableSidebar({
           />
         </div>
 
-        {/* Vertical text */}
+        {/* Desktop Vertical text */}
         <span
+          className="available-text-desktop"
           style={{
             writingMode: 'vertical-rl',
-            fontSize: '10px',
+            fontSize: '9.5px',
             fontWeight: 800,
             textTransform: 'uppercase',
-            letterSpacing: '4px',
+            letterSpacing: '3.5px',
             color: '#0a0a0f',
             lineHeight: 1,
           }}
         >
           {text}
+        </span>
+
+        {/* Mobile Vertical text */}
+        <span className="available-text-mobile">
+          I'M ACTIVE
         </span>
       </aside>
     </>
