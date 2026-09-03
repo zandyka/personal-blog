@@ -260,6 +260,7 @@ export default function Contact() {
 
           {/* Right: Direct Send Message Form */}
           <motion.div
+            id="contact-form"
             {...fadeUp(0.18)}
             style={{
               background: 'var(--surface)',

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   Home,
   User,
@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
 import ThemeToggle from './ui/ThemeToggle';
+import { scrollToDirectMessage } from '../utils/scrollHelper';
 
 const ABOUT_DROPDOWN = [
   { label: 'About Me', path: '/about', icon: User },
@@ -77,6 +78,13 @@ const DockButton = ({ to, icon: Icon, label, isActive, onClick, onHover }) => {
 export default function Navbar() {
   const { playClick, playHover, soundEnabled, toggleSound } = useSoundContext();
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleContactClick = (e) => {
+    if (e) e.preventDefault();
+    playClick();
+    scrollToDirectMessage(navigate, location.pathname);
+  };
 
   // Real-time Digital Clock (HH:mm:ss)
   const [timeString, setTimeString] = useState('');
@@ -290,16 +298,16 @@ export default function Navbar() {
           </div>
 
           {/* Contact */}
-          <a
-            href="#contact"
-            onClick={playClick}
+          <button
+            onClick={handleContactClick}
             onMouseEnter={playHover}
             style={{
               padding: '7px 20px',
               borderRadius: '999px',
               fontSize: '13px',
               fontWeight: 600,
-              textDecoration: 'none',
+              border: 'none',
+              cursor: 'pointer',
               color: 'var(--text-muted)',
               background: 'transparent',
               transition: 'all 0.2s ease',
@@ -307,7 +315,7 @@ export default function Navbar() {
             }}
           >
             Contact
-          </a>
+          </button>
         </nav>
 
         {/* Right: Circular Icon Actions (Fullscreen, Sound/Globe, Theme) */}
@@ -441,15 +449,14 @@ export default function Navbar() {
           onHover={playHover}
         />
         <div className="dock-divider" />
-        <motion.a
-          href="mailto:zackyandyka1@gmail.com"
-          onClick={playClick}
+        <motion.button
+          onClick={handleContactClick}
           onMouseEnter={playHover}
           whileHover={{ scale: 1.12 }}
           whileTap={{ scale: 0.9 }}
           className="dock-circle-btn"
-          title="Contact Email"
-          aria-label="Contact Email"
+          title="Kirim Pesan Langsung"
+          aria-label="Kirim Pesan Langsung"
           style={{
             width: '36px',
             height: '36px',
@@ -460,14 +467,13 @@ export default function Navbar() {
             alignItems: 'center',
             justifyContent: 'center',
             color: 'var(--text-muted)',
-            textDecoration: 'none',
             position: 'relative',
             cursor: 'pointer',
             flexShrink: 0,
           }}
         >
           <Mail size={15} />
-        </motion.a>
+        </motion.button>
         <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center' }}>
           <ThemeToggle />
         </div>

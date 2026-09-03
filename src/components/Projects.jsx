@@ -30,7 +30,6 @@ const SOFTWARE_PROJECTS = [
       'Aplikasi penerjemah bahasa isyarat Indonesia (BISINDO) secara real-time berbasis kecerdasan buatan (Computer Vision & Machine Learning) untuk menjembatani komunikasi inklusif bagi teman tuli.',
     techStack: ['Flutter', 'Python', 'TensorFlow', 'Computer Vision', 'Mobile AI'],
     image: '/projects/handspeak.webp',
-    status: 'In Development',
   },
   {
     id: 'mahaasyik',
@@ -42,7 +41,6 @@ const SOFTWARE_PROJECTS = [
       'Platform digital terpadu untuk ekosistem mahasiswa yang memadukan manajemen aktivitas perkuliahan, pusat informasi terintegrasi, dan jejaring komunitas kampus interaktif.',
     techStack: ['React', 'Node.js', 'TailwindCSS', 'REST API', 'PostgreSQL'],
     image: '/projects/Mahaasyik.webp',
-    status: 'In Development',
   },
 ];
 
@@ -472,34 +470,16 @@ const Projects = () => {
                     </div>
                   </div>
 
-                  {/* Actions Footer: Status Coming Soon */}
+                  {/* Actions Footer */}
                   <div
                     style={{
                       display: 'flex',
                       alignItems: 'center',
-                      justifyContent: 'space-between',
+                      justifyContent: 'flex-end',
                       paddingTop: '12px',
                       borderTop: '1px solid var(--border)',
                     }}
                   >
-                    <span
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                        fontSize: '0.75rem',
-                        fontWeight: 600,
-                        color: project.accent,
-                        background: `${project.accent}15`,
-                        padding: '4px 10px',
-                        borderRadius: '999px',
-                        border: `1px solid ${project.accent}30`,
-                      }}
-                    >
-                      <Clock size={12} />
-                      <span>{project.status} (Link Segera Hadir)</span>
-                    </span>
-
                     <button
                       onClick={() => {
                         playClick();
@@ -509,21 +489,20 @@ const Projects = () => {
                           image: project.image,
                           description: project.description,
                           tags: project.techStack,
-                          status: project.status,
                         });
                       }}
                       onMouseEnter={playHover}
                       style={{
                         background: 'transparent',
                         border: 'none',
-                        color: 'var(--text-muted)',
-                        fontSize: '0.8rem',
+                        color: 'var(--accent)',
+                        fontSize: '0.82rem',
                         fontWeight: 600,
                         cursor: 'pointer',
                         display: 'inline-flex',
                         alignItems: 'center',
                         gap: '4px',
-                        padding: '4px',
+                        padding: '4px 0',
                       }}
                     >
                       Detail Preview &rarr;
@@ -1101,14 +1080,6 @@ const Projects = () => {
                         <span style={{ color: 'var(--text-dim)' }}>&bull;</span>
                         <span style={{ fontSize: '0.76rem', color: 'var(--accent-2)' }}>
                           {activeModal.platform}
-                        </span>
-                      </>
-                    )}
-                    {activeModal.status && (
-                      <>
-                        <span style={{ color: 'var(--text-dim)' }}>&bull;</span>
-                        <span style={{ fontSize: '0.74rem', color: '#10B981', fontWeight: 600 }}>
-                          {activeModal.status}
                         </span>
                       </>
                     )}

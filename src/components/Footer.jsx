@@ -1,8 +1,9 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, Github, Linkedin, Instagram, Mail, Heart } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
 import InfiniteMarquee from './ui/InfiniteMarquee';
+import { scrollToDirectMessage } from '../utils/scrollHelper';
 
 const MARQUEE_ITEMS = [
   'Open to Opportunities',
@@ -32,9 +33,16 @@ const SOCIAL_LINKS = [
 const Footer = () => {
   const { playClick, playHover } = useSoundContext();
   const location = useLocation();
+  const navigate = useNavigate();
   const year = new Date().getFullYear();
 
   const isHomePage = location.pathname === '/';
+
+  const handleHireMeClick = (e) => {
+    e.preventDefault();
+    playClick();
+    scrollToDirectMessage(navigate, location.pathname);
+  };
 
   return (
     <footer style={{ position: 'relative', overflow: 'hidden' }}>
@@ -86,20 +94,20 @@ const Footer = () => {
             transition={{ delay: 0.2 }}
             style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}
           >
-            <Link
-              to="/about"
-              onClick={playClick}
+            <button
+              onClick={handleHireMeClick}
               onMouseEnter={playHover}
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: '8px',
                 padding: '12px 28px', borderRadius: '999px',
                 background: 'var(--accent)', color: 'var(--bg)',
-                fontSize: '13px', fontWeight: 700, textDecoration: 'none',
+                fontSize: '13px', fontWeight: 700, border: 'none',
                 letterSpacing: '0.05em', textTransform: 'uppercase',
+                cursor: 'pointer',
               }}
             >
               Hire Me <ArrowUpRight size={14} />
-            </Link>
+            </button>
             <a
               href="/cv.pdf"
               target="_blank"
