@@ -298,15 +298,16 @@ const Skills = ({ preview = false }) => {
           })}
         </motion.div>
 
-        {/* Tech Stack Grid */}
+        {/* Tech Stack Grid — 3 Columns */}
         <motion.div
           layout
           variants={stagger}
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
+          className="skills-grid"
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+            gridTemplateColumns: 'repeat(3, 1fr)',
             gap: '18px',
             marginBottom: '60px',
           }}
@@ -328,6 +329,7 @@ const Skills = ({ preview = false }) => {
                     boxShadow: `0 12px 30px rgba(0, 0, 0, 0.4), 0 0 20px ${tech.color}25`,
                     borderColor: tech.color,
                   }}
+                  className="skill-card"
                   style={{
                     background: 'var(--surface)',
                     border: '1px solid var(--border)',
@@ -357,21 +359,25 @@ const Skills = ({ preview = false }) => {
                   <div>
                     {/* Header: Icon + Name + Badge */}
                     <div
+                      className="skill-header"
                       style={{
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
                         marginBottom: '12px',
+                        gap: '6px',
                       }}
                     >
                       <div
                         style={{
                           display: 'flex',
                           alignItems: 'center',
-                          gap: '12px',
+                          gap: '10px',
+                          overflow: 'hidden',
                         }}
                       >
                         <div
+                          className="skill-icon-box"
                           style={{
                             width: '42px',
                             height: '42px',
@@ -382,26 +388,33 @@ const Skills = ({ preview = false }) => {
                             alignItems: 'center',
                             justifyContent: 'center',
                             color: tech.color,
+                            flexShrink: 0,
                           }}
                         >
                           <Icon size={22} />
                         </div>
-                        <div>
+                        <div style={{ overflow: 'hidden' }}>
                           <h3
+                            className="skill-name"
                             style={{
                               margin: 0,
                               fontSize: '1.05rem',
                               fontWeight: 600,
                               color: 'var(--text)',
+                              whiteSpace: 'nowrap',
+                              textOverflow: 'ellipsis',
+                              overflow: 'hidden',
                             }}
                           >
                             {tech.name}
                           </h3>
                           <span
+                            className="skill-category"
                             style={{
                               fontSize: '0.75rem',
                               color: 'var(--text-muted)',
                               textTransform: 'capitalize',
+                              display: 'block',
                             }}
                           >
                             {tech.category}
@@ -410,6 +423,7 @@ const Skills = ({ preview = false }) => {
                       </div>
 
                       <span
+                        className="skill-level"
                         style={{
                           fontSize: '0.7rem',
                           fontWeight: 600,
@@ -418,6 +432,8 @@ const Skills = ({ preview = false }) => {
                           background: 'rgba(255, 255, 255, 0.04)',
                           border: '1px solid var(--border)',
                           color: 'var(--text-muted)',
+                          whiteSpace: 'nowrap',
+                          flexShrink: 0,
                         }}
                       >
                         {tech.level}
@@ -425,6 +441,7 @@ const Skills = ({ preview = false }) => {
                     </div>
 
                     <p
+                      className="skill-desc"
                       style={{
                         fontSize: '0.85rem',
                         color: 'var(--text-muted)',
@@ -650,6 +667,79 @@ const Skills = ({ preview = false }) => {
             </motion.div>
           </motion.div>
         )}
+
+        <style>{`
+          .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+          }
+          @media (max-width: 860px) {
+            .skills-grid {
+              gap: 8px !important;
+            }
+            .skill-card {
+              padding: 12px 10px !important;
+              border-radius: 12px !important;
+            }
+            .skill-icon-box {
+              width: 32px !important;
+              height: 32px !important;
+              border-radius: 8px !important;
+            }
+            .skill-icon-box svg {
+              width: 16px !important;
+              height: 16px !important;
+            }
+            .skill-name {
+              font-size: 0.85rem !important;
+            }
+            .skill-category {
+              font-size: 0.65rem !important;
+            }
+            .skill-level {
+              font-size: 0.62rem !important;
+              padding: 2px 5px !important;
+            }
+            .skill-desc {
+              font-size: 0.72rem !important;
+              line-height: 1.35 !important;
+              display: -webkit-box;
+              -webkit-line-clamp: 2;
+              -webkit-box-orient: vertical;
+              overflow: hidden;
+            }
+          }
+          @media (max-width: 520px) {
+            .skills-grid {
+              gap: 6px !important;
+            }
+            .skill-card {
+              padding: 8px 6px !important;
+              border-radius: 10px !important;
+            }
+            .skill-icon-box {
+              width: 28px !important;
+              height: 28px !important;
+            }
+            .skill-icon-box svg {
+              width: 14px !important;
+              height: 14px !important;
+            }
+            .skill-name {
+              font-size: 0.74rem !important;
+            }
+            .skill-category {
+              display: none !important;
+            }
+            .skill-level {
+              display: none !important;
+            }
+            .skill-desc {
+              display: none !important;
+            }
+          }
+        `}</style>
       </div>
     </section>
   );

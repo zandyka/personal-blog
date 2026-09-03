@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Github, ExternalLink, Smartphone, Globe, Eye, Sparkles, Layers, Cpu, Database, BarChart3 } from 'lucide-react';
@@ -156,15 +156,16 @@ const Projects = () => {
           </p>
         </motion.div>
 
-        {/* 2x2 Projects Grid */}
+        {/* 3 Columns Projects Grid */}
         <motion.div
           variants={stagger}
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
+          className="projects-grid"
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '28px',
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            gap: '24px',
           }}
         >
           {PROJECTS.map((project) => {
@@ -177,6 +178,7 @@ const Projects = () => {
                 variants={fadeUp}
                 onMouseEnter={playHover}
                 whileHover={{ y: -8 }}
+                className="project-card"
                 style={{
                   background: 'var(--surface)',
                   border: '1px solid var(--border)',
@@ -190,6 +192,7 @@ const Projects = () => {
               >
                 {/* 16:9 Aspect Ratio Image / Placeholder Div */}
                 <div
+                  className="project-img-box"
                   style={{
                     position: 'relative',
                     width: '100%',
@@ -220,6 +223,7 @@ const Projects = () => {
 
                   {/* Category Badge (Top-Right) */}
                   <div
+                    className="project-cat-badge"
                     style={{
                       position: 'absolute',
                       top: '14px',
@@ -244,6 +248,7 @@ const Projects = () => {
 
                   {/* Preview Watermark Icon */}
                   <div
+                    className="project-watermark"
                     style={{
                       width: '64px',
                       height: '64px',
@@ -263,6 +268,7 @@ const Projects = () => {
                   </div>
 
                   <span
+                    className="project-mockup-label"
                     style={{
                       fontSize: '0.75rem',
                       color: 'var(--text-muted)',
@@ -277,6 +283,7 @@ const Projects = () => {
 
                 {/* Content Section */}
                 <div
+                  className="project-content-box"
                   style={{
                     padding: '24px',
                     display: 'flex',
@@ -287,6 +294,7 @@ const Projects = () => {
                 >
                   <div>
                     <h3
+                      className="project-title"
                       style={{
                         margin: '0 0 10px',
                         fontSize: '1.2rem',
@@ -299,6 +307,7 @@ const Projects = () => {
                     </h3>
 
                     <p
+                      className="project-desc"
                       style={{
                         fontSize: '0.88rem',
                         color: 'var(--text-muted)',
@@ -312,14 +321,15 @@ const Projects = () => {
 
                     {/* Highlights Pill */}
                     <div
+                      className="project-highlight"
                       style={{
                         display: 'inline-flex',
                         alignItems: 'center',
                         gap: '6px',
                         padding: '4px 10px',
                         borderRadius: '6px',
-                        background: 'rgba(101, 98, 245, 0.08)',
-                        border: '1px solid rgba(101, 98, 245, 0.2)',
+                        background: 'rgba(255, 59, 29, 0.08)',
+                        border: '1px solid rgba(255, 59, 29, 0.2)',
                         color: 'var(--accent)',
                         fontSize: '0.75rem',
                         fontWeight: 500,
@@ -332,6 +342,7 @@ const Projects = () => {
 
                     {/* Tech Tags */}
                     <div
+                      className="project-tech-tags"
                       style={{
                         display: 'flex',
                         flexWrap: 'wrap',
@@ -342,6 +353,7 @@ const Projects = () => {
                       {project.techStack.map((tech) => (
                         <span
                           key={tech}
+                          className="project-tag"
                           style={{
                             fontSize: '0.75rem',
                             padding: '4px 10px',
@@ -359,6 +371,7 @@ const Projects = () => {
 
                   {/* Actions Footer */}
                   <div
+                    className="project-actions"
                     style={{
                       display: 'flex',
                       alignItems: 'center',
@@ -367,7 +380,7 @@ const Projects = () => {
                       borderTop: '1px solid var(--border)',
                     }}
                   >
-                    <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                    <span className="project-actions-label" style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                       Source & Demo
                     </span>
 
@@ -382,6 +395,7 @@ const Projects = () => {
                         whileTap={{ scale: 0.92 }}
                         title="View Source Code"
                         aria-label="View Source Code"
+                        className="project-action-btn"
                         style={{
                           width: '38px',
                           height: '38px',
@@ -413,12 +427,13 @@ const Projects = () => {
                         whileTap={{ scale: 0.92 }}
                         title="Live Demonstration"
                         aria-label="Live Demonstration"
+                        className="project-action-btn"
                         style={{
                           width: '38px',
                           height: '38px',
                           borderRadius: '10px',
-                          background: 'rgba(101, 98, 245, 0.1)',
-                          border: '1px solid rgba(101, 98, 245, 0.3)',
+                          background: 'rgba(255, 59, 29, 0.1)',
+                          border: '1px solid rgba(255, 59, 29, 0.3)',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
@@ -436,6 +451,115 @@ const Projects = () => {
             );
           })}
         </motion.div>
+
+        <style>{`
+          .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+          }
+          @media (max-width: 860px) {
+            .projects-grid {
+              gap: 10px !important;
+            }
+            .project-card {
+              border-radius: 14px !important;
+            }
+            .project-img-box {
+              padding: 10px !important;
+            }
+            .project-cat-badge {
+              padding: 2px 6px !important;
+              font-size: 0.6rem !important;
+              top: 8px !important;
+              right: 8px !important;
+            }
+            .project-watermark {
+              width: 36px !important;
+              height: 36px !important;
+              border-radius: 10px !important;
+              margin-bottom: 4px !important;
+            }
+            .project-watermark svg {
+              width: 18px !important;
+              height: 18px !important;
+            }
+            .project-mockup-label {
+              display: none !important;
+            }
+            .project-content-box {
+              padding: 14px 10px !important;
+            }
+            .project-title {
+              font-size: 0.88rem !important;
+              margin-bottom: 4px !important;
+            }
+            .project-desc {
+              font-size: 0.72rem !important;
+              line-height: 1.4 !important;
+              margin-bottom: 8px !important;
+              display: -webkit-box;
+              -webkit-line-clamp: 2;
+              -webkit-box-orient: vertical;
+              overflow: hidden;
+            }
+            .project-highlight {
+              font-size: 0.62rem !important;
+              padding: 2px 6px !important;
+              margin-bottom: 8px !important;
+            }
+            .project-tag {
+              font-size: 0.62rem !important;
+              padding: 2px 6px !important;
+            }
+            .project-actions {
+              padding-top: 10px !important;
+            }
+            .project-actions-label {
+              display: none !important;
+            }
+            .project-action-btn {
+              width: 30px !important;
+              height: 30px !important;
+              border-radius: 8px !important;
+            }
+            .project-action-btn svg {
+              width: 14px !important;
+              height: 14px !important;
+            }
+          }
+          @media (max-width: 520px) {
+            .projects-grid {
+              gap: 6px !important;
+            }
+            .project-card {
+              border-radius: 10px !important;
+            }
+            .project-cat-badge span {
+              display: none !important;
+            }
+            .project-content-box {
+              padding: 8px 6px !important;
+            }
+            .project-title {
+              font-size: 0.76rem !important;
+              line-height: 1.2 !important;
+            }
+            .project-desc {
+              display: none !important;
+            }
+            .project-highlight {
+              display: none !important;
+            }
+            .project-tech-tags {
+              margin-bottom: 8px !important;
+              gap: 4px !important;
+            }
+            .project-tag:nth-child(n+3) {
+              display: none !important;
+            }
+          }
+        `}</style>
       </div>
     </section>
   );
