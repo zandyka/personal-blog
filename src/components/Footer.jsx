@@ -128,14 +128,26 @@ const Footer = () => {
         gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
         gap: '40px',
       }}>
-        {/* Brand */}
+        {/* Brand Icon */}
         <div>
           <div style={{
-            width: '40px', height: '40px', borderRadius: '12px',
-            background: 'var(--accent)', display: 'flex', alignItems: 'center',
+            width: '42px', height: '42px', borderRadius: '12px',
+            overflow: 'hidden', border: '1px solid var(--border)',
+            display: 'flex', alignItems: 'center',
             justifyContent: 'center', marginBottom: '12px',
+            background: 'var(--surface-2)',
+            boxShadow: '0 4px 14px rgba(0,0,0,0.2)',
           }}>
-            <span style={{ fontSize: '14px', fontWeight: 800, color: 'var(--bg)' }}>ZA</span>
+            <img
+              src="/icon.png"
+              alt="Zacky Andyka Icon"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                display: 'block',
+              }}
+            />
           </div>
           <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
             Building digital solutions with passion and precision.
