@@ -311,12 +311,13 @@ const About = () => {
               </p>
             </motion.div>
 
-            {/* Stat Cards 2x2 Grid */}
+            {/* Stat Cards 2x2 Grid - 2 per row on mobile and desktop */}
             <motion.div
               variants={stagger}
+              className="about-stats-grid"
               style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))',
+                gridTemplateColumns: 'repeat(2, 1fr)',
                 gap: '12px',
               }}
             >
@@ -328,6 +329,7 @@ const About = () => {
                     variants={fadeUp}
                     onMouseEnter={playHover}
                     whileHover={{ y: -3 }}
+                    className="about-stat-card"
                     style={{
                       background: 'var(--surface)',
                       border: '1px solid var(--border)',
@@ -346,6 +348,7 @@ const About = () => {
                       }}
                     >
                       <span
+                        className="about-stat-label"
                         style={{
                           fontSize: '0.78rem',
                           color: 'var(--text-muted)',
@@ -355,6 +358,7 @@ const About = () => {
                         {stat.label}
                       </span>
                       <div
+                        className="about-stat-icon"
                         style={{
                           width: '30px',
                           height: '30px',
@@ -364,12 +368,14 @@ const About = () => {
                           alignItems: 'center',
                           justifyContent: 'center',
                           color: stat.accent,
+                          flexShrink: 0,
                         }}
                       >
                         <Icon size={15} />
                       </div>
                     </div>
                     <div
+                      className="about-stat-value"
                       style={{
                         fontSize: '1.5rem',
                         fontWeight: 700,
@@ -386,6 +392,7 @@ const About = () => {
                       />
                     </div>
                     <div
+                      className="about-stat-sub"
                       style={{
                         fontSize: '0.74rem',
                         color: 'var(--text-muted)',
@@ -451,11 +458,37 @@ const About = () => {
           .about-grid {
             grid-template-columns: 0.85fr 1.15fr !important;
           }
+          .about-stats-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 12px !important;
+          }
         }
         @media (max-width: 859px) {
           .about-grid {
             grid-template-columns: 1fr !important;
             text-align: left;
+          }
+          .about-stats-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 8px !important;
+          }
+          .about-stat-card {
+            padding: 12px 10px !important;
+            border-radius: 12px !important;
+          }
+          .about-stat-icon {
+            width: 26px !important;
+            height: 26px !important;
+          }
+          .about-stat-label {
+            font-size: 0.72rem !important;
+          }
+          .about-stat-value {
+            font-size: 1.25rem !important;
+          }
+          .about-stat-sub {
+            font-size: 0.68rem !important;
+            line-height: 1.25 !important;
           }
         }
       `}</style>

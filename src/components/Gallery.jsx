@@ -8,58 +8,65 @@ const GALLERY_ITEMS = [
   {
     id: 1, category: 'Photography', title: 'Urban Landscape',
     caption: 'Street photography capturing everyday moments',
-    ratio: '4:5', width: 1, height: 2,
+    ratio: '1:1', width: 1, height: 1,
     bg: 'linear-gradient(145deg, #180503 0%, #FF3B1D 60%, #FFAA00 100%)',
-    alt: 'Placeholder — 4:5 photo ratio',
+    alt: 'Urban Landscape Street Photography',
   },
   {
     id: 2, category: 'Events', title: 'HIMTI Event Documentation',
     caption: 'Creative media coverage for organizational events at USU',
-    ratio: '16:9', width: 2, height: 1,
+    ratio: '1:1', width: 1, height: 1,
     bg: 'linear-gradient(135deg, #09090b 0%, #1f1412 50%, #FF3B1D 100%)',
-    alt: 'Placeholder — 16:9 photo ratio',
+    alt: 'HIMTI Event Documentation at USU',
   },
   {
     id: 3, category: 'Creative', title: 'Design Work — Figma',
     caption: 'Visual identity and social media content creation',
     ratio: '1:1', width: 1, height: 1,
     bg: 'linear-gradient(135deg, #FFAA00 0%, #FF3B1D 100%)',
-    alt: 'Placeholder — 1:1 photo ratio',
+    alt: 'Design Work with Figma',
   },
   {
     id: 4, category: 'Photography', title: 'Portrait Session',
     caption: 'Natural light portrait photography',
-    ratio: '3:4', width: 1, height: 1,
+    ratio: '1:1', width: 1, height: 1,
     bg: 'linear-gradient(145deg, #140908 0%, #2a110e 50%, #FF4500 100%)',
-    alt: 'Placeholder — 3:4 photo ratio',
+    alt: 'Natural Light Portrait Photography',
   },
   {
     id: 5, category: 'Creative', title: 'Social Media Content',
-    caption: 'Instagram content for HIMTI USU',
+    caption: 'Instagram promotional content for HIMTI USU',
     ratio: '1:1', width: 1, height: 1,
     bg: 'linear-gradient(135deg, #FF3B1D 0%, #FF7744 100%)',
-    alt: 'Placeholder — 1:1 photo ratio',
+    alt: 'Social Media Content for HIMTI',
   },
   {
     id: 6, category: 'Events', title: 'Team Collaboration',
     caption: 'Event coordination and team documentation',
-    ratio: '16:9', width: 2, height: 1,
+    ratio: '1:1', width: 1, height: 1,
     bg: 'linear-gradient(135deg, #18181c 0%, #2b1f1a 50%, #FFAA00 100%)',
-    alt: 'Placeholder — 16:9 photo ratio',
+    alt: 'Team Collaboration Documentation',
   },
   {
     id: 7, category: 'Photography', title: 'Nature & Architecture',
     caption: 'Exploring visual composition in everyday settings',
-    ratio: '4:5', width: 1, height: 2,
+    ratio: '1:1', width: 1, height: 1,
     bg: 'linear-gradient(145deg, #0d0605 0%, #24110d 60%, #FF3B1D 100%)',
-    alt: 'Placeholder — 4:5 photo ratio',
+    alt: 'Nature and Architecture Photography',
   },
   {
     id: 8, category: 'Creative', title: 'Brand Identity',
     caption: 'Poster, banner, and print design using Figma',
     ratio: '1:1', width: 1, height: 1,
     bg: 'linear-gradient(135deg, #FF5500 0%, #FFAA00 100%)',
-    alt: 'Placeholder — 1:1 photo ratio',
+    alt: 'Brand Identity and Print Design',
+  },
+  {
+    id: 9, category: 'Events', title: 'Tech Exhibition',
+    caption: 'Student technology project showcase at USU',
+    ratio: '1:1', width: 1, height: 1,
+    bg: 'linear-gradient(135deg, #1a0805 0%, #FF3B1D 50%, #FFAA00 100%)',
+    alt: 'Tech Exhibition Showcase at USU',
   },
 ];
 
@@ -70,91 +77,134 @@ const CATEGORIES = [
   { id: 'Events', icon: Users },
 ];
 
-const RATIO_MAP = {
-  '4:5': { paddingBottom: '125%' },
-  '16:9': { paddingBottom: '56.25%' },
-  '3:4': { paddingBottom: '133%' },
-  '1:1': { paddingBottom: '100%' },
+const CATEGORY_ICON_MAP = {
+  Photography: Camera,
+  Creative: Palette,
+  Events: Users,
 };
 
 function GalleryCard({ item, index, onClick }) {
   const { playHover, playClick } = useSoundContext();
   const [hovered, setHovered] = useState(false);
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
+  const CategoryIcon = CATEGORY_ICON_MAP[item.category] || Camera;
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 30, scale: 0.96 }}
+      initial={{ opacity: 0, y: 24, scale: 0.97 }}
       animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
-      transition={{ duration: 0.5, delay: index * 0.07, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.45, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
       onClick={() => { playClick(); onClick(item); }}
       onMouseEnter={() => { playHover(); setHovered(true); }}
       onMouseLeave={() => setHovered(false)}
+      className="gallery-card-root"
       style={{
         position: 'relative',
         borderRadius: '14px',
         overflow: 'hidden',
         cursor: 'pointer',
         border: '1px solid var(--border)',
+        boxShadow: '0 4px 16px rgba(0, 0, 0, 0.12)',
+        aspectRatio: '1 / 1',
       }}
     >
-      {/* Photo placeholder */}
-      <div style={{ position: 'relative', ...RATIO_MAP[item.ratio] }}>
-        <div
+      {/* Background artwork with smooth zoom */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: item.bg,
+          transition: 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+          transform: hovered ? 'scale(1.08)' : 'scale(1)',
+        }}
+      />
+
+      {/* Elegant idle category icon in center (faint, disappears on hover) */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          opacity: hovered ? 0 : 0.3,
+          transition: 'opacity 0.25s ease',
+          pointerEvents: 'none',
+        }}
+      >
+        <CategoryIcon size={26} color="#ffffff" />
+      </div>
+
+      {/* Hover / tap overlay */}
+      <motion.div
+        animate={{ opacity: hovered ? 1 : 0 }}
+        transition={{ duration: 0.22 }}
+        className="gallery-card-overlay"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.35) 60%, transparent 100%)',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-end',
+          padding: 'clamp(10px, 2.5vw, 16px)',
+        }}
+      >
+        <span
+          className="gallery-card-cat"
           style={{
-            position: 'absolute', inset: 0,
-            background: item.bg,
-            transition: 'transform 0.5s ease',
-            transform: hovered ? 'scale(1.06)' : 'scale(1)',
-          }}
-        />
-        {/* Ratio label (always visible faintly, shows clearly on hover) */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          opacity: hovered ? 0 : 0.25,
-          transition: 'opacity 0.3s',
-          fontSize: '0.75rem', color: 'rgba(255,255,255,0.8)',
-          fontWeight: 500, letterSpacing: '1px',
-        }}>
-          {item.ratio}
-        </div>
-        {/* Hover overlay */}
-        <motion.div
-          animate={{ opacity: hovered ? 1 : 0 }}
-          transition={{ duration: 0.25 }}
-          style={{
-            position: 'absolute', inset: 0,
-            background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 50%, transparent 100%)',
-            display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
-            padding: '16px',
+            fontSize: 'clamp(0.58rem, 0.75vw, 0.68rem)',
+            fontWeight: 700,
+            color: 'var(--accent)',
+            textTransform: 'uppercase',
+            letterSpacing: '1.2px',
+            marginBottom: '2px',
           }}
         >
-          <span style={{
-            fontSize: '0.65rem', fontWeight: 600,
-            color: 'var(--accent-2)', textTransform: 'uppercase', letterSpacing: '1px',
+          {item.category}
+        </span>
+        <span
+          className="gallery-card-title"
+          style={{
+            fontSize: 'clamp(0.76rem, 1.05vw, 0.95rem)',
+            fontWeight: 700,
+            color: '#ffffff',
+            lineHeight: 1.25,
             marginBottom: '4px',
-          }}>
-            {item.category}
-          </span>
-          <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#fff', marginBottom: '4px' }}>
-            {item.title}
-          </span>
-          <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.7)', lineHeight: 1.4 }}>
-            {item.caption}
-          </span>
-          <div style={{
-            position: 'absolute', top: '12px', right: '12px',
-            background: 'rgba(255,255,255,0.15)', borderRadius: '8px',
-            width: '32px', height: '32px',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}
+        >
+          {item.title}
+        </span>
+        <span
+          className="gallery-card-caption"
+          style={{
+            fontSize: '0.72rem',
+            color: 'rgba(255,255,255,0.7)',
+            lineHeight: 1.35,
+          }}
+        >
+          {item.caption}
+        </span>
+        <div
+          className="gallery-zoom-btn"
+          style={{
+            position: 'absolute',
+            top: '10px',
+            right: '10px',
+            background: 'rgba(255,255,255,0.15)',
+            borderRadius: '8px',
+            width: '28px',
+            height: '28px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
             backdropFilter: 'blur(8px)',
-          }}>
-            <ZoomIn size={14} color="#fff" />
-          </div>
-        </motion.div>
-      </div>
+          }}
+        >
+          <ZoomIn size={13} color="#fff" />
+        </div>
+      </motion.div>
     </motion.div>
   );
 }
@@ -185,7 +235,7 @@ function Lightbox({ item, onClose }) {
           boxShadow: '0 24px 80px rgba(0,0,0,0.5)',
         }}
       >
-        <div style={{ position: 'relative', ...RATIO_MAP[item.ratio] }}>
+        <div style={{ position: 'relative', aspectRatio: '16 / 10', width: '100%', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', inset: 0, background: item.bg }} />
           <div style={{
             position: 'absolute', inset: 0,
@@ -318,17 +368,26 @@ export default function Gallery() {
         </motion.div>
 
         <style>{`
+          @media (max-width: 768px) {
+            .gallery-grid {
+              gap: 8px !important;
+            }
+            .gallery-card-root {
+              border-radius: 10px !important;
+            }
+            .gallery-card-caption {
+              display: none !important;
+            }
+            .gallery-zoom-btn {
+              display: none !important;
+            }
+          }
           @media (max-width: 480px) {
             .gallery-grid {
               gap: 6px !important;
             }
-            .gallery-grid > div > div {
+            .gallery-card-root {
               border-radius: 8px !important;
-            }
-          }
-          @media (max-width: 768px) {
-            .gallery-grid {
-              gap: 8px !important;
             }
           }
         `}</style>
