@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Github, ExternalLink, Smartphone, Globe, Eye, Sparkles, Layers, Cpu, Database, BarChart3 } from 'lucide-react';
+import { Github, ExternalLink, Smartphone, Globe, Eye, Sparkles, Layers, Cpu, Database, BarChart3, Palette } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
 
 const PROJECTS = [
@@ -52,6 +52,49 @@ const PROJECTS = [
     previewIcon: Layers,
     githubUrl: 'https://github.com/zackyandyka',
     demoUrl: '#',
+  },
+];
+
+const DESIGN_PROJECTS = [
+  {
+    id: 'banking-ui',
+    title: 'Mobile Banking App UI/UX',
+    category: 'UI/UX Case Study',
+    accent: '#FF3B1D',
+    description: 'Modern mobile banking interface featuring biometric authentication and streamlined transfer flows.',
+    tools: ['Figma', 'UI/UX', 'Mobile Flow'],
+    icon: Palette,
+    figmaUrl: 'https://www.figma.com/@zandyka',
+  },
+  {
+    id: 'himti-brand',
+    title: 'HIMTI USU Brand Identity',
+    category: 'Brand Identity',
+    accent: '#FFAA00',
+    description: 'Comprehensive visual branding guidelines, event promotion kits, and social media design systems.',
+    tools: ['Figma', 'Branding', 'Vector Art'],
+    icon: Sparkles,
+    figmaUrl: 'https://www.figma.com/@zandyka',
+  },
+  {
+    id: 'analytics-kit',
+    title: 'Enterprise Analytics UI Kit',
+    category: 'Design System',
+    accent: '#61DAFB',
+    description: 'High-contrast dark mode dashboard UI kit with data visualization cards and responsive components.',
+    tools: ['Figma', 'Design System', 'Dark Mode'],
+    icon: Layers,
+    figmaUrl: 'https://www.figma.com/@zandyka',
+  },
+  {
+    id: 'bisindo-design',
+    title: 'Sign Language AI Companion',
+    category: 'Product Design',
+    accent: '#10B981',
+    description: 'Human-centered mobile interface designed for real-time camera gesture recognition accessibility.',
+    tools: ['Figma', 'Accessibility', 'Prototyping'],
+    icon: Smartphone,
+    figmaUrl: 'https://www.figma.com/@zandyka',
   },
 ];
 
@@ -375,6 +418,268 @@ const Projects = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                         color: 'var(--accent)',
+                        textDecoration: 'none',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <ExternalLink size={15} />
+                    </motion.a>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </motion.div>
+
+        {/* Section Divider */}
+        <div style={{ height: '60px' }} />
+
+        {/* Design Section Header */}
+        <motion.div
+          initial="hidden"
+          animate={inView ? 'visible' : 'hidden'}
+          variants={fadeUp}
+          style={{ textAlign: 'center', marginBottom: '40px' }}
+        >
+          <span
+            style={{
+              color: 'var(--accent-2)',
+              fontSize: '0.82rem',
+              fontWeight: 600,
+              letterSpacing: '2px',
+              textTransform: 'uppercase',
+              display: 'block',
+              marginBottom: '6px',
+            }}
+          >
+            Creative & UI/UX
+          </span>
+          <h2
+            style={{
+              fontSize: 'clamp(1.8rem, 3vw, 2.4rem)',
+              fontWeight: 600,
+              color: 'var(--text)',
+              margin: '0 auto 10px',
+              letterSpacing: '-0.02em',
+            }}
+          >
+            Design Works
+          </h2>
+          <div
+            style={{
+              width: '50px',
+              height: '3px',
+              background: 'var(--accent-2)',
+              margin: '0 auto 14px',
+              borderRadius: '2px',
+            }}
+          />
+          <p
+            style={{
+              color: 'var(--text-muted)',
+              fontSize: '0.92rem',
+              maxWidth: '540px',
+              margin: '0 auto',
+              fontWeight: 300,
+            }}
+          >
+            UI/UX prototyping, design systems, and visual identity projects created with Figma.
+          </p>
+        </motion.div>
+
+        {/* Design Projects 2x2 Grid */}
+        <motion.div
+          variants={stagger}
+          initial="hidden"
+          animate={inView ? 'visible' : 'hidden'}
+          className="projects-grid"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: '20px',
+          }}
+        >
+          {DESIGN_PROJECTS.map((design) => {
+            const Icon = design.icon;
+            return (
+              <motion.div
+                key={design.id}
+                variants={fadeUp}
+                onMouseEnter={playHover}
+                whileHover={{ y: -6 }}
+                className="project-card"
+                style={{
+                  background: 'var(--surface)',
+                  border: '1px solid var(--border)',
+                  borderRadius: '16px',
+                  overflow: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  transition: 'border-color 0.25s, box-shadow 0.25s, transform 0.25s',
+                  boxShadow: '0 8px 24px rgba(0, 0, 0, 0.25)',
+                }}
+              >
+                {/* Visual Banner Preview */}
+                <div
+                  className="project-img-box"
+                  style={{
+                    position: 'relative',
+                    width: '100%',
+                    aspectRatio: '16 / 7',
+                    background: `radial-gradient(circle at center, ${design.accent}15 0%, rgba(255, 255, 255, 0.02) 80%)`,
+                    borderBottom: '1px solid var(--border)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    overflow: 'hidden',
+                  }}
+                >
+                  {/* Category Badge */}
+                  <div
+                    className="project-cat-badge"
+                    style={{
+                      position: 'absolute',
+                      top: '10px',
+                      right: '10px',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '5px',
+                      padding: '4px 9px',
+                      borderRadius: '999px',
+                      background: 'rgba(7, 7, 9, 0.8)',
+                      border: '1px solid rgba(255, 255, 255, 0.08)',
+                      backdropFilter: 'blur(8px)',
+                      color: 'var(--text)',
+                      fontSize: '0.7rem',
+                      fontWeight: 600,
+                      zIndex: 2,
+                    }}
+                  >
+                    <Palette size={12} style={{ color: design.accent }} />
+                    <span>{design.category}</span>
+                  </div>
+
+                  {/* Icon */}
+                  <div
+                    className="project-watermark"
+                    style={{
+                      width: '46px',
+                      height: '46px',
+                      borderRadius: '12px',
+                      background: `${design.accent}18`,
+                      border: `1px solid ${design.accent}30`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: design.accent,
+                      boxShadow: `0 6px 18px ${design.accent}20`,
+                      zIndex: 1,
+                    }}
+                  >
+                    <Icon size={22} />
+                  </div>
+                </div>
+
+                {/* Content Section */}
+                <div
+                  className="project-content-box"
+                  style={{
+                    padding: '16px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    flex: 1,
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <div>
+                    <h3
+                      className="project-title"
+                      style={{
+                        margin: '0 0 6px',
+                        fontSize: '1.05rem',
+                        fontWeight: 600,
+                        color: 'var(--text)',
+                        lineHeight: 1.3,
+                      }}
+                    >
+                      {design.title}
+                    </h3>
+
+                    <p
+                      className="project-desc"
+                      style={{
+                        fontSize: '0.82rem',
+                        color: 'var(--text-muted)',
+                        lineHeight: 1.45,
+                        margin: '0 0 12px',
+                        fontWeight: 300,
+                      }}
+                    >
+                      {design.description}
+                    </p>
+
+                    {/* Tools Tags */}
+                    <div
+                      className="project-tech-tags"
+                      style={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        gap: '5px',
+                        marginBottom: '14px',
+                      }}
+                    >
+                      {design.tools.map((tool) => (
+                        <span
+                          key={tool}
+                          className="project-tag"
+                          style={{
+                            fontSize: '0.7rem',
+                            padding: '3px 8px',
+                            borderRadius: '6px',
+                            background: 'rgba(255, 255, 255, 0.04)',
+                            border: '1px solid var(--border)',
+                            color: 'var(--text-muted)',
+                          }}
+                        >
+                          {tool}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Action Link */}
+                  <div
+                    className="project-actions"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'flex-end',
+                      gap: '8px',
+                      paddingTop: '10px',
+                      borderTop: '1px solid var(--border)',
+                    }}
+                  >
+                    <motion.a
+                      href={design.figmaUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={playClick}
+                      onMouseEnter={playHover}
+                      whileHover={{ scale: 1.08 }}
+                      whileTap={{ scale: 0.92 }}
+                      title="View in Figma"
+                      aria-label="View Design"
+                      className="project-action-btn"
+                      style={{
+                        width: '32px',
+                        height: '32px',
+                        borderRadius: '8px',
+                        background: `${design.accent}15`,
+                        border: `1px solid ${design.accent}30`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: design.accent,
                         textDecoration: 'none',
                         cursor: 'pointer',
                       }}

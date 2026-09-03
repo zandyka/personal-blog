@@ -219,7 +219,8 @@ img { display: block; max-width: 100%; }
   * { cursor: auto !important; }
   .container { padding: 0 16px; }
   .hide-mobile { display: none !important; }
-  .page-container { padding-top: 64px; }
+  .page-container { padding-top: 64px; padding-bottom: 80px; }
+  body { padding-bottom: 72px; }
 }
 
 /* ============================================
