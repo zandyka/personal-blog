@@ -1,123 +1,222 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Github, ExternalLink, Smartphone, Globe, Eye, Sparkles, Layers, Cpu, Database, BarChart3, Palette } from 'lucide-react';
+import {
+  Smartphone,
+  Globe,
+  Palette,
+  Sparkles,
+  Layers,
+  ZoomIn,
+  X,
+  ExternalLink,
+  Instagram,
+  Printer,
+  Compass,
+  ArrowUpRight,
+  Clock,
+} from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
 
-const PROJECTS = [
+// 1. Featured Software Projects (from user's 'projek' folder)
+const SOFTWARE_PROJECTS = [
   {
-    id: 'bisindo',
-    title: 'BISINDO Sign Language Translator',
-    category: 'Mobile App',
+    id: 'handspeak',
+    title: 'Handspeak — BISINDO Sign Language Translator',
+    category: 'Mobile AI Application',
     typeIcon: Smartphone,
-    accent: '#54C5F8',
-    description: 'Real-time Indonesian sign language translator powered by offline TensorFlow Lite computer vision.',
-    techStack: ['Flutter', 'Dart', 'TFLite'],
-    previewIcon: Cpu,
-    githubUrl: 'https://github.com/zackyandyka',
-    demoUrl: '#',
+    accent: '#FF3B1D',
+    description:
+      'Aplikasi penerjemah bahasa isyarat Indonesia (BISINDO) secara real-time berbasis kecerdasan buatan (Computer Vision & Machine Learning) untuk menjembatani komunikasi inklusif bagi teman tuli.',
+    techStack: ['Flutter', 'Python', 'TensorFlow', 'Computer Vision', 'Mobile AI'],
+    image: '/projects/handspeak.webp',
+    status: 'In Development',
   },
   {
-    id: 'bpjs-dashboard',
-    title: 'BPJS Performance Dashboard',
-    category: 'Web App',
+    id: 'mahaasyik',
+    title: 'Mahaasyik — Platform Kolaborasi & Ekosistem Mahasiswa',
+    category: 'Full-Stack Digital Platform',
     typeIcon: Globe,
-    accent: '#10B981',
-    description: 'Operational analytics dashboard for tracking intern performance and JMO account activations.',
-    techStack: ['PHP', 'MySQL', 'Chart.js'],
-    previewIcon: BarChart3,
-    githubUrl: 'https://github.com/zackyandyka',
-    demoUrl: '#',
-  },
-  {
-    id: 'web-management',
-    title: 'Enterprise Web Application',
-    category: 'Web App',
-    typeIcon: Globe,
-    accent: '#61DAFB',
-    description: 'Enterprise data management platform featuring secure role-based access control and REST APIs.',
-    techStack: ['React', 'Laravel', 'MySQL'],
-    previewIcon: Database,
-    githubUrl: 'https://github.com/zackyandyka',
-    demoUrl: '#',
-  },
-  {
-    id: 'mobile-suites',
-    title: 'Android & Flutter Ecosystem',
-    category: 'Mobile App',
-    typeIcon: Smartphone,
-    accent: '#E76F00',
-    description: 'Modular Android utilities with local SQLite persistence, reactive state, and hardware integration.',
-    techStack: ['Flutter', 'Java', 'Android'],
-    previewIcon: Layers,
-    githubUrl: 'https://github.com/zackyandyka',
-    demoUrl: '#',
+    accent: '#FFAA00',
+    description:
+      'Platform digital terpadu untuk ekosistem mahasiswa yang memadukan manajemen aktivitas perkuliahan, pusat informasi terintegrasi, dan jejaring komunitas kampus interaktif.',
+    techStack: ['React', 'Node.js', 'TailwindCSS', 'REST API', 'PostgreSQL'],
+    image: '/projects/Mahaasyik.webp',
+    status: 'In Development',
   },
 ];
 
-const DESIGN_PROJECTS = [
+// 2. Physical & Print Designs (from user's 'hasil desain fisik' folder)
+const PHYSICAL_DESIGNS = [
   {
-    id: 'banking-ui',
-    title: 'Mobile Banking App UI/UX',
-    category: 'UI/UX Case Study',
+    id: 'lanyard-id-himpunan',
+    title: 'Desain Lanyard & ID Card Pengurus HIMTI',
+    category: 'Merchandise & Identitas',
     accent: '#FF3B1D',
-    description: 'Modern mobile banking interface featuring biometric authentication and streamlined transfer flows.',
-    tools: ['Figma', 'UI/UX', 'Mobile Flow'],
-    icon: Palette,
-    figmaUrl: 'https://www.figma.com/@zandyka',
+    description:
+      'Identitas resmi fungsionaris kepengurusan Himpunan Mahasiswa Teknik Informatika (HIMTI) dengan tipografi tegas, tata letak modern, dan palet warna kontras.',
+    tools: ['Figma', 'Vector Design', 'Sublimation Print'],
+    image: '/designs/physical/Lanyard_ID_himpunan.webp',
   },
   {
-    id: 'himti-brand',
-    title: 'HIMTI USU Brand Identity',
-    category: 'Brand Identity',
-    accent: '#FFAA00',
-    description: 'Comprehensive visual branding guidelines, event promotion kits, and social media design systems.',
-    tools: ['Figma', 'Branding', 'Vector Art'],
-    icon: Sparkles,
-    figmaUrl: 'https://www.figma.com/@zandyka',
+    id: 'lanyard-panitia-pkkmb',
+    title: 'Lanyard Panitia PKKMB Fakultas Vokasi USU 2025',
+    category: 'Kepanitiaan Kampus',
+    accent: '#3B82F6',
+    description:
+      'Desain tali lanyard resmi seluruh panitia masa orientasi PKKMB Vokasi USU 2025 dengan kombinasi warna almamater dan identitas acara.',
+    tools: ['Figma', 'Event Branding', 'Sublimation Print'],
+    image: '/designs/physical/lanyard_panitia_pkkmb.webp',
   },
   {
-    id: 'analytics-kit',
-    title: 'Enterprise Analytics UI Kit',
-    category: 'Design System',
-    accent: '#61DAFB',
-    description: 'High-contrast dark mode dashboard UI kit with data visualization cards and responsive components.',
-    tools: ['Figma', 'Design System', 'Dark Mode'],
-    icon: Layers,
-    figmaUrl: 'https://www.figma.com/@zandyka',
-  },
-  {
-    id: 'bisindo-design',
-    title: 'Sign Language AI Companion',
-    category: 'Product Design',
+    id: 'id-card-panitia-pkkmb',
+    title: 'ID Card Panitia PKKMB Fakultas Vokasi USU 2025',
+    category: 'Kepanitiaan Kampus',
     accent: '#10B981',
-    description: 'Human-centered mobile interface designed for real-time camera gesture recognition accessibility.',
-    tools: ['Figma', 'Accessibility', 'Prototyping'],
-    icon: Smartphone,
-    figmaUrl: 'https://www.figma.com/@zandyka',
+    description:
+      'Desain kartu tanda pengenal PVC panitia pelaksana kegiatan orientasi mahasiswa baru Vokasi USU dengan kode divisi dan hierarki informasi terstruktur.',
+    tools: ['Figma', 'PVC Card', 'Event Signage'],
+    image: '/designs/physical/id_card_panitia_pkkmb.webp',
+  },
+  {
+    id: 'design-id-card-internship',
+    title: 'Desain ID Card Staff Internship',
+    category: 'Identitas Perusahaan',
+    accent: '#C084FC',
+    description:
+      'Desain kartu tanda pengenal resmi staf magang dengan layout profesional, barcode verifikasi, dan standar hierarki visual institusi.',
+    tools: ['Figma', 'Corporate Identity', 'Card Design'],
+    image: '/designs/physical/design_id_card_internship_4_3.webp',
+  },
+  {
+    id: 'poster-handspeak',
+    title: 'Poster Promosi & Peluncuran Aplikasi Handspeak',
+    category: 'Poster Inovasi AI',
+    accent: '#FF3B1D',
+    description:
+      'Media publikasi cetak dan promosi fitur unggulan aplikasi penerjemah bahasa isyarat BISINDO berbasis Computer Vision AI.',
+    tools: ['Figma', 'Product Showcase', 'Visual Layout'],
+    image: '/designs/physical/poster_aplikasi_handspeak.webp',
+  },
+  {
+    id: 'poster-menu-himti-games',
+    title: 'Poster Menu Tenant & Konsumsi HIMTI Games',
+    category: 'Event Signage',
+    accent: '#FFAA00',
+    description:
+      'Desain daftar menu tenant makanan dan minuman pada venue acara kompetisi dengan layout harga yang mudah dibaca pengunjung.',
+    tools: ['Graphic Design', 'Menu Layout', 'Typography'],
+    image: '/designs/physical/poster_menu_makanan_di_event_himti_games.webp',
+  },
+  {
+    id: 'lanyard-himti-games',
+    title: 'Lanyard & Tali ID Event HIMTI Games',
+    category: 'Event Merchandise',
+    accent: '#F59E0B',
+    description:
+      'Desain tali lanyard cetak ganda dengan motif visual khas ajang kompetisi olahraga dan e-sports HIMTI Games.',
+    tools: ['Vector Art', 'Sublimation Lanyard', 'Event Branding'],
+    image: '/designs/physical/lanyard_event_himti_games.webp',
+  },
+  {
+    id: 'spanduk-pelantikan',
+    title: 'Spanduk Utama Pelantikan Pengurus HIMTI',
+    category: 'Backdrop & Spanduk',
+    accent: '#3B82F6',
+    description:
+      'Spanduk panggung seremoni pelantikan resmi badan pengurus harian HIMTI USU dengan kesan formal, berwibawa, dan megah.',
+    tools: ['Large Format Banner', 'Vector Layout', 'Outdoor Print'],
+    image: '/designs/physical/spanduk_pelantikan_himpunan.webp',
+  },
+  {
+    id: 'x-banner-produk',
+    title: 'X-Banner Pameran Karya Produk Inovasi',
+    category: 'Standing X-Banner',
+    accent: '#10B981',
+    description:
+      'Standing banner vertikal untuk ekshibisi pameran inovasi teknologi dengan infografis alur sistem dan fitur unggulan.',
+    tools: ['Figma', 'Exhibition Display', 'Vector Infographic'],
+    image: '/designs/physical/x_banner_produk_inovasi_1_1.webp',
+  },
+  {
+    id: 'banner-sidang',
+    title: 'Banner Apresiasi Sidang Sarjana / Ahli Madya',
+    category: 'Banner Selebrasi',
+    accent: '#EC4899',
+    description:
+      'Desain banner selebrasi kelulusan sidang tugas akhir dengan komposisi grafis elegan, ceria, dan tipografi modern.',
+    tools: ['Figma', 'Celebration Banner', 'Print Media'],
+    image: '/designs/physical/banner_sidang_1_1.webp',
+  },
+  {
+    id: 'banner-wisuda-sirkel-1',
+    title: 'Banner Wisuda Graduation Circles (Edisi I)',
+    category: 'Banner Wisuda',
+    accent: '#F59E0B',
+    description:
+      'Spanduk visual selebrasi kelulusan wisuda universitas dengan foto potret wisudawan dan elemen grafis selebrasi hangat.',
+    tools: ['Figma', 'Outdoor Banner', 'Graduation Kit'],
+    image: '/designs/physical/banner_wisuda_sirkel.webp',
+  },
+  {
+    id: 'banner-wisuda-sirkel-2',
+    title: 'Banner Wisuda Graduation Circles (Edisi II)',
+    category: 'Banner Wisuda',
+    accent: '#C084FC',
+    description:
+      'Desain banner ucapan selamat wisuda bertema selebrasi kelulusan penuh keceriaan untuk teman-teman terdekat.',
+    tools: ['Figma', 'Large Format Banner', 'Photo Collage'],
+    image: '/designs/physical/banner_wisuda_another_sirkel.webp',
+  },
+];
+
+// 3. Digital & Social Media Designs (from user's 'desain ig' folder)
+const DIGITAL_DESIGNS = [
+  {
+    id: 'ig-himti',
+    title: 'Desain Feed & Identitas Media Sosial HIMTI USU',
+    category: 'Social Media & Brand Identity',
+    accent: '#FF3B1D',
+    platform: 'Instagram (@himtiusu)',
+    description:
+      'Perancangan sistem konten feed Instagram resmi organisasi HIMTI USU mencakup infografis teknologi, ucapan hari besar, rekap kegiatan, dan feed karusel berkesinambungan yang profesional.',
+    tools: ['Figma', 'Photoshop', 'Grid Feed System', 'Content Strategy'],
+    image: '/designs/digital/ig_himti.webp',
+  },
+  {
+    id: 'ig-pkkmb',
+    title: 'Desain Feed & Informasi Resmi PKKMB Vokasi USU 2025',
+    category: 'Social Media & Event Campaign',
+    accent: '#FFAA00',
+    platform: 'Instagram (@pkkmbvokasiusu)',
+    description:
+      'Desain visual feed informasi panduan mahasiswa baru, penugasan orientasi kampus, pengumuman jadwal, dan publikasi dokumentasi resmi masa orientasi PKKMB Vokasi USU 2025.',
+    tools: ['Figma', 'Social Media Kit', 'Visual Campaign', 'Typography'],
+    image: '/designs/digital/ig_pkkmb.webp',
   },
 ];
 
 const Projects = () => {
   const { playClick, playHover } = useSoundContext();
+  const [activeModal, setActiveModal] = useState(null);
   const { ref, inView } = useInView({
     triggerOnce: true,
-    threshold: 0.1,
+    threshold: 0.05,
   });
 
   const fadeUp = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 25 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: 'easeOut' },
+      transition: { duration: 0.55, ease: 'easeOut' },
     },
   };
 
   const stagger = {
     hidden: {},
     visible: {
-      transition: { staggerChildren: 0.12 },
+      transition: { staggerChildren: 0.08 },
     },
   };
 
@@ -126,7 +225,7 @@ const Projects = () => {
       id="projects"
       ref={ref}
       style={{
-        padding: '44px 20px',
+        padding: '50px 20px 80px',
         background: 'var(--bg)',
         position: 'relative',
         overflow: 'hidden',
@@ -136,19 +235,22 @@ const Projects = () => {
         style={{
           maxWidth: '1200px',
           margin: '0 auto',
+          width: '100%',
         }}
       >
-        {/* Header */}
+        {/* =========================================================================
+            SECTION 1: FEATURED SOFTWARE PROJECTS (Handspeak & Mahaasyik)
+            ========================================================================= */}
         <motion.div
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
           variants={fadeUp}
-          style={{ textAlign: 'center', marginBottom: '28px' }}
+          style={{ textAlign: 'center', marginBottom: '32px' }}
         >
           <span
             style={{
               color: 'var(--accent)',
-              fontSize: '0.85rem',
+              fontSize: '0.82rem',
               fontWeight: 600,
               letterSpacing: '2px',
               textTransform: 'uppercase',
@@ -156,7 +258,7 @@ const Projects = () => {
               marginBottom: '8px',
             }}
           >
-            Portfolio Showcase
+            Software &amp; Digital Products
           </span>
           <h2
             style={{
@@ -171,7 +273,7 @@ const Projects = () => {
           </h2>
           <div
             style={{
-              width: '60px',
+              width: '50px',
               height: '3px',
               background: 'var(--accent)',
               margin: '0 auto 16px',
@@ -181,68 +283,91 @@ const Projects = () => {
           <p
             style={{
               color: 'var(--text-muted)',
-              fontSize: '1rem',
-              maxWidth: '600px',
+              fontSize: '0.98rem',
+              maxWidth: '620px',
               margin: '0 auto',
               fontWeight: 300,
+              lineHeight: 1.6,
             }}
           >
-            Selected software development, mobile intelligence, and data visualization applications.
+            Pengembangan aplikasi mobile berbasis Computer Vision AI dan platform ekosistem digital terintegrasi.
           </p>
         </motion.div>
 
-        {/* 2x2 Projects Grid */}
+        {/* 2 Projects Grid */}
         <motion.div
           variants={stagger}
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
-          className="projects-grid"
+          className="projects-software-grid"
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
+            gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
             gap: '24px',
+            marginBottom: '64px',
           }}
         >
-          {PROJECTS.map((project) => {
+          {SOFTWARE_PROJECTS.map((project) => {
             const TypeIcon = project.typeIcon;
-            const PreviewIcon = project.previewIcon;
 
             return (
               <motion.div
                 key={project.id}
                 variants={fadeUp}
                 onMouseEnter={playHover}
-                whileHover={{ y: -8 }}
-                className="project-card"
+                whileHover={{ y: -6 }}
+                className="project-software-card"
                 style={{
                   background: 'var(--surface)',
                   border: '1px solid var(--border)',
+                  borderLeft: `3px solid ${project.accent}`,
                   borderRadius: '16px',
                   overflow: 'hidden',
                   display: 'flex',
                   flexDirection: 'column',
                   transition: 'border-color 0.25s, box-shadow 0.25s, transform 0.25s',
                   boxShadow: '0 8px 24px rgba(0, 0, 0, 0.25)',
+                  minWidth: 0,
                 }}
               >
-                {/* Visual Banner Preview */}
+                {/* 16:7 Visual Banner Preview */}
                 <div
-                  className="project-img-box"
+                  onClick={() => {
+                    playClick();
+                    setActiveModal({
+                      title: project.title,
+                      category: project.category,
+                      image: project.image,
+                      description: project.description,
+                      tags: project.techStack,
+                      status: project.status,
+                    });
+                  }}
+                  className="project-banner-box"
                   style={{
                     position: 'relative',
                     width: '100%',
                     aspectRatio: '16 / 7',
-                    background: `radial-gradient(circle at center, ${project.accent}15 0%, rgba(255, 255, 255, 0.02) 80%)`,
+                    background: '#0a0a0f',
                     borderBottom: '1px solid var(--border)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
                     overflow: 'hidden',
+                    cursor: 'pointer',
                   }}
                 >
-                  {/* Category Badge (Top-Right) */}
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    loading="lazy"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      display: 'block',
+                      transition: 'transform 0.4s ease',
+                    }}
+                  />
+                  {/* Category Pill on top right */}
                   <div
-                    className="project-cat-badge"
                     style={{
                       position: 'absolute',
                       top: '10px',
@@ -250,47 +375,46 @@ const Projects = () => {
                       display: 'inline-flex',
                       alignItems: 'center',
                       gap: '5px',
-                      padding: '4px 9px',
+                      padding: '4px 10px',
                       borderRadius: '999px',
-                      background: 'rgba(7, 7, 9, 0.8)',
-                      border: '1px solid rgba(255, 255, 255, 0.08)',
+                      background: 'rgba(0, 0, 0, 0.75)',
                       backdropFilter: 'blur(8px)',
-                      color: 'var(--text)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      color: '#ffffff',
                       fontSize: '0.7rem',
                       fontWeight: 600,
-                      zIndex: 2,
                     }}
                   >
                     <TypeIcon size={12} style={{ color: project.accent }} />
                     <span>{project.category}</span>
                   </div>
 
-                  {/* Icon */}
+                  {/* Zoom indicator on hover */}
                   <div
-                    className="project-watermark"
+                    className="project-zoom-overlay"
                     style={{
-                      width: '46px',
-                      height: '46px',
-                      borderRadius: '12px',
-                      background: `${project.accent}18`,
-                      border: `1px solid ${project.accent}30`,
+                      position: 'absolute',
+                      bottom: '8px',
+                      right: '8px',
+                      width: '28px',
+                      height: '28px',
+                      borderRadius: '8px',
+                      background: 'rgba(0, 0, 0, 0.7)',
+                      backdropFilter: 'blur(6px)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      color: project.accent,
-                      boxShadow: `0 6px 18px ${project.accent}20`,
-                      zIndex: 1,
+                      color: '#ffffff',
                     }}
                   >
-                    <PreviewIcon size={22} />
+                    <ZoomIn size={14} />
                   </div>
                 </div>
 
-                {/* Content Section */}
+                {/* Card Content */}
                 <div
-                  className="project-content-box"
                   style={{
-                    padding: '16px',
+                    padding: '20px',
                     display: 'flex',
                     flexDirection: 'column',
                     flex: 1,
@@ -299,52 +423,47 @@ const Projects = () => {
                 >
                   <div>
                     <h3
-                      className="project-title"
                       style={{
-                        margin: '0 0 6px',
-                        fontSize: '1.05rem',
-                        fontWeight: 600,
+                        margin: '0 0 8px',
+                        fontSize: '1.15rem',
+                        fontWeight: 700,
                         color: 'var(--text)',
-                        lineHeight: 1.3,
+                        lineHeight: 1.35,
                       }}
                     >
                       {project.title}
                     </h3>
-
                     <p
-                      className="project-desc"
                       style={{
-                        fontSize: '0.82rem',
+                        fontSize: '0.86rem',
                         color: 'var(--text-muted)',
-                        lineHeight: 1.45,
-                        margin: '0 0 12px',
+                        lineHeight: 1.6,
+                        margin: '0 0 14px',
                         fontWeight: 300,
                       }}
                     >
                       {project.description}
                     </p>
 
-                    {/* Tech Tags */}
+                    {/* Tech Stack Tags */}
                     <div
-                      className="project-tech-tags"
                       style={{
                         display: 'flex',
                         flexWrap: 'wrap',
-                        gap: '5px',
-                        marginBottom: '14px',
+                        gap: '6px',
+                        marginBottom: '16px',
                       }}
                     >
                       {project.techStack.map((tech) => (
                         <span
                           key={tech}
-                          className="project-tag"
                           style={{
-                            fontSize: '0.7rem',
-                            padding: '3px 8px',
+                            fontSize: '0.72rem',
+                            padding: '3px 9px',
                             borderRadius: '6px',
                             background: 'rgba(255, 255, 255, 0.04)',
                             border: '1px solid var(--border)',
-                            color: 'var(--text-muted)',
+                            color: 'var(--text)',
                           }}
                         >
                           {tech}
@@ -353,77 +472,62 @@ const Projects = () => {
                     </div>
                   </div>
 
-                  {/* Actions Footer */}
+                  {/* Actions Footer: Status Coming Soon */}
                   <div
-                    className="project-actions"
                     style={{
                       display: 'flex',
                       alignItems: 'center',
-                      justifyContent: 'flex-end',
-                      gap: '8px',
-                      paddingTop: '10px',
+                      justifyContent: 'space-between',
+                      paddingTop: '12px',
                       borderTop: '1px solid var(--border)',
                     }}
                   >
-                    <motion.a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={playClick}
-                      onMouseEnter={playHover}
-                      whileHover={{ scale: 1.08 }}
-                      whileTap={{ scale: 0.92 }}
-                      title="View Source Code"
-                      aria-label="View Source Code"
-                      className="project-action-btn"
+                    <span
                       style={{
-                        width: '32px',
-                        height: '32px',
-                        borderRadius: '8px',
-                        background: 'rgba(255, 255, 255, 0.04)',
-                        border: '1px solid var(--border)',
-                        display: 'flex',
+                        display: 'inline-flex',
                         alignItems: 'center',
-                        justifyContent: 'center',
-                        color: 'var(--text)',
-                        textDecoration: 'none',
-                        cursor: 'pointer',
+                        gap: '6px',
+                        fontSize: '0.75rem',
+                        fontWeight: 600,
+                        color: project.accent,
+                        background: `${project.accent}15`,
+                        padding: '4px 10px',
+                        borderRadius: '999px',
+                        border: `1px solid ${project.accent}30`,
                       }}
                     >
-                      <Github size={15} />
-                    </motion.a>
+                      <Clock size={12} />
+                      <span>{project.status} (Link Segera Hadir)</span>
+                    </span>
 
-                    <motion.a
-                      href={project.demoUrl}
-                      onClick={(e) => {
+                    <button
+                      onClick={() => {
                         playClick();
-                        if (project.demoUrl === '#') {
-                          e.preventDefault();
-                          alert(`Interactive preview for "${project.title}" will open upon demo deployment.`);
-                        }
+                        setActiveModal({
+                          title: project.title,
+                          category: project.category,
+                          image: project.image,
+                          description: project.description,
+                          tags: project.techStack,
+                          status: project.status,
+                        });
                       }}
                       onMouseEnter={playHover}
-                      whileHover={{ scale: 1.08 }}
-                      whileTap={{ scale: 0.92 }}
-                      title="Live Demonstration"
-                      aria-label="Live Demonstration"
-                      className="project-action-btn"
                       style={{
-                        width: '32px',
-                        height: '32px',
-                        borderRadius: '8px',
-                        background: 'rgba(255, 59, 29, 0.1)',
-                        border: '1px solid rgba(255, 59, 29, 0.3)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: 'var(--accent)',
-                        textDecoration: 'none',
+                        background: 'transparent',
+                        border: 'none',
+                        color: 'var(--text-muted)',
+                        fontSize: '0.8rem',
+                        fontWeight: 600,
                         cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                        padding: '4px',
                       }}
                     >
-                      <ExternalLink size={15} />
-                    </motion.a>
+                      Detail Preview &rarr;
+                    </button>
                   </div>
                 </div>
               </motion.div>
@@ -431,15 +535,15 @@ const Projects = () => {
           })}
         </motion.div>
 
-        {/* Section Divider */}
-        <div style={{ height: '36px' }} />
-
-        {/* Design Section Header */}
+        {/* =========================================================================
+            SECTION 2: HASIL DESAIN FISIK (Physical & Print Media)
+            ========================================================================= */}
         <motion.div
           initial="hidden"
-          animate={inView ? 'visible' : 'hidden'}
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
           variants={fadeUp}
-          style={{ textAlign: 'center', marginBottom: '24px' }}
+          style={{ textAlign: 'center', marginBottom: '32px' }}
         >
           <span
             style={{
@@ -449,94 +553,337 @@ const Projects = () => {
               letterSpacing: '2px',
               textTransform: 'uppercase',
               display: 'block',
-              marginBottom: '6px',
+              marginBottom: '8px',
             }}
           >
-            Creative & UI/UX
+            Physical &amp; Print Media
           </span>
           <h2
             style={{
-              fontSize: 'clamp(1.8rem, 3vw, 2.4rem)',
+              fontSize: 'clamp(2rem, 3.5vw, 2.8rem)',
               fontWeight: 600,
               color: 'var(--text)',
-              margin: '0 auto 10px',
+              margin: '0 auto 12px',
               letterSpacing: '-0.02em',
             }}
           >
-            Design Works
+            Hasil Desain Fisik
           </h2>
           <div
             style={{
               width: '50px',
               height: '3px',
               background: 'var(--accent-2)',
-              margin: '0 auto 14px',
+              margin: '0 auto 16px',
               borderRadius: '2px',
             }}
           />
           <p
             style={{
               color: 'var(--text-muted)',
-              fontSize: '0.92rem',
-              maxWidth: '540px',
+              fontSize: '0.98rem',
+              maxWidth: '640px',
               margin: '0 auto',
               fontWeight: 300,
+              lineHeight: 1.6,
             }}
           >
-            UI/UX prototyping, design systems, and visual identity projects created with Figma.
+            Portofolio perancangan materi cetak dan fisik seperti lanyard resmi, kartu pengenal panitia &amp; magang, spanduk acara, backdrop seremoni, dan x-banner ekshibisi.
           </p>
         </motion.div>
 
-        {/* Design Projects 2x2 Grid */}
+        {/* Physical Designs Grid: 3 cols desktop, 2 cols mobile */}
         <motion.div
           variants={stagger}
           initial="hidden"
-          animate={inView ? 'visible' : 'hidden'}
-          className="projects-grid"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.05 }}
+          className="designs-physical-grid"
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
+            gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
             gap: '20px',
+            marginBottom: '64px',
           }}
         >
-          {DESIGN_PROJECTS.map((design) => {
-            const Icon = design.icon;
-            return (
-              <motion.div
-                key={design.id}
-                variants={fadeUp}
-                onMouseEnter={playHover}
-                whileHover={{ y: -6 }}
-                className="project-card"
-                style={{
-                  background: 'var(--surface)',
-                  border: '1px solid var(--border)',
-                  borderRadius: '16px',
-                  overflow: 'hidden',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  transition: 'border-color 0.25s, box-shadow 0.25s, transform 0.25s',
-                  boxShadow: '0 8px 24px rgba(0, 0, 0, 0.25)',
-                }}
-              >
-                {/* Visual Banner Preview */}
+          {PHYSICAL_DESIGNS.map((item) => (
+            <motion.div
+              key={item.id}
+              variants={fadeUp}
+              onClick={() => {
+                playClick();
+                setActiveModal({
+                  title: item.title,
+                  category: item.category,
+                  image: item.image,
+                  description: item.description,
+                  tags: item.tools,
+                });
+              }}
+              onMouseEnter={playHover}
+              whileHover={{ y: -6 }}
+              className="design-card"
+              style={{
+                background: 'var(--surface)',
+                border: '1px solid var(--border)',
+                borderLeft: `3px solid ${item.accent}`,
+                borderRadius: '14px',
+                overflow: 'hidden',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                transition: 'border-color 0.25s, box-shadow 0.25s, transform 0.25s',
+                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.2)',
+                cursor: 'pointer',
+                minWidth: 0,
+              }}
+            >
+              <div>
+                {/* Photo Frame 4:3 or 16:10 */}
                 <div
-                  className="project-img-box"
+                  className="design-photo-box"
                   style={{
                     position: 'relative',
                     width: '100%',
-                    aspectRatio: '16 / 7',
-                    background: `radial-gradient(circle at center, ${design.accent}15 0%, rgba(255, 255, 255, 0.02) 80%)`,
-                    borderBottom: '1px solid var(--border)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
+                    aspectRatio: '4 / 3',
+                    background: '#0a0a0f',
                     overflow: 'hidden',
                   }}
                 >
-                  {/* Category Badge */}
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    loading="lazy"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      display: 'block',
+                      transition: 'transform 0.4s ease',
+                    }}
+                  />
                   <div
-                    className="project-cat-badge"
+                    style={{
+                      position: 'absolute',
+                      top: '8px',
+                      right: '8px',
+                      width: '26px',
+                      height: '26px',
+                      borderRadius: '8px',
+                      background: 'rgba(0, 0, 0, 0.7)',
+                      backdropFilter: 'blur(6px)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#ffffff',
+                    }}
+                  >
+                    <ZoomIn size={13} />
+                  </div>
+                </div>
+
+                {/* Info Box */}
+                <div style={{ padding: '14px 14px 10px' }}>
+                  <span
+                    className="design-cat-badge"
+                    style={{
+                      fontSize: '0.68rem',
+                      fontWeight: 700,
+                      color: item.accent,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px',
+                      display: 'block',
+                      marginBottom: '4px',
+                    }}
+                  >
+                    {item.category}
+                  </span>
+                  <h3
+                    className="design-title"
+                    style={{
+                      margin: '0 0 6px',
+                      fontSize: '0.98rem',
+                      fontWeight: 600,
+                      color: 'var(--text)',
+                      lineHeight: 1.35,
+                    }}
+                  >
+                    {item.title}
+                  </h3>
+                  <p
+                    className="design-desc"
+                    style={{
+                      fontSize: '0.8rem',
+                      color: 'var(--text-muted)',
+                      lineHeight: 1.5,
+                      margin: 0,
+                      fontWeight: 300,
+                    }}
+                  >
+                    {item.description}
+                  </p>
+                </div>
+              </div>
+
+              {/* Tools footer (Desktop only) */}
+              <div
+                className="design-tools-footer"
+                style={{
+                  padding: '10px 14px 12px',
+                  borderTop: '1px solid rgba(255, 255, 255, 0.05)',
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '5px',
+                }}
+              >
+                {item.tools.map((t) => (
+                  <span
+                    key={t}
+                    style={{
+                      fontSize: '0.68rem',
+                      padding: '2px 7px',
+                      borderRadius: '5px',
+                      background: 'rgba(255, 255, 255, 0.04)',
+                      border: '1px solid rgba(255, 255, 255, 0.06)',
+                      color: 'var(--text-muted)',
+                    }}
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* =========================================================================
+            SECTION 3: DESAIN DIGITAL & INSTAGRAM (Social Media Content)
+            ========================================================================= */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={fadeUp}
+          style={{ textAlign: 'center', marginBottom: '32px' }}
+        >
+          <span
+            style={{
+              color: 'var(--accent)',
+              fontSize: '0.82rem',
+              fontWeight: 600,
+              letterSpacing: '2px',
+              textTransform: 'uppercase',
+              display: 'block',
+              marginBottom: '8px',
+            }}
+          >
+            Digital &amp; Social Media Design
+          </span>
+          <h2
+            style={{
+              fontSize: 'clamp(2rem, 3.5vw, 2.8rem)',
+              fontWeight: 600,
+              color: 'var(--text)',
+              margin: '0 auto 12px',
+              letterSpacing: '-0.02em',
+            }}
+          >
+            Desain Feed Instagram &amp; Digital
+          </h2>
+          <div
+            style={{
+              width: '50px',
+              height: '3px',
+              background: 'var(--accent)',
+              margin: '0 auto 16px',
+              borderRadius: '2px',
+            }}
+          />
+          <p
+            style={{
+              color: 'var(--text-muted)',
+              fontSize: '0.98rem',
+              maxWidth: '640px',
+              margin: '0 auto',
+              fontWeight: 300,
+              lineHeight: 1.6,
+            }}
+          >
+            Perancangan strategi identitas visual media sosial, publikasi informasi resmi, dan desain feed terpadu untuk organisasi dan kepanitiaan.
+          </p>
+        </motion.div>
+
+        {/* Digital Designs Grid: 2 cols desktop & mobile */}
+        <motion.div
+          variants={stagger}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.05 }}
+          className="designs-digital-grid"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+            gap: '24px',
+          }}
+        >
+          {DIGITAL_DESIGNS.map((item) => (
+            <motion.div
+              key={item.id}
+              variants={fadeUp}
+              onClick={() => {
+                playClick();
+                setActiveModal({
+                  title: item.title,
+                  category: item.category,
+                  image: item.image,
+                  description: item.description,
+                  tags: item.tools,
+                  platform: item.platform,
+                });
+              }}
+              onMouseEnter={playHover}
+              whileHover={{ y: -6 }}
+              className="design-digital-card"
+              style={{
+                background: 'var(--surface)',
+                border: '1px solid var(--border)',
+                borderLeft: `3px solid ${item.accent}`,
+                borderRadius: '16px',
+                overflow: 'hidden',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                transition: 'border-color 0.25s, box-shadow 0.25s, transform 0.25s',
+                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.25)',
+                cursor: 'pointer',
+                minWidth: 0,
+              }}
+            >
+              <div>
+                {/* Visual Banner 4:3 */}
+                <div
+                  className="digital-photo-box"
+                  style={{
+                    position: 'relative',
+                    width: '100%',
+                    aspectRatio: '4 / 3',
+                    background: '#0a0a0f',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    loading="lazy"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      display: 'block',
+                      transition: 'transform 0.4s ease',
+                    }}
+                  />
+                  <div
                     style={{
                       position: 'absolute',
                       top: '10px',
@@ -544,226 +891,303 @@ const Projects = () => {
                       display: 'inline-flex',
                       alignItems: 'center',
                       gap: '5px',
-                      padding: '4px 9px',
+                      padding: '4px 10px',
                       borderRadius: '999px',
-                      background: 'rgba(7, 7, 9, 0.8)',
-                      border: '1px solid rgba(255, 255, 255, 0.08)',
+                      background: 'rgba(0, 0, 0, 0.75)',
                       backdropFilter: 'blur(8px)',
-                      color: 'var(--text)',
-                      fontSize: '0.7rem',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      color: '#ffffff',
+                      fontSize: '0.72rem',
                       fontWeight: 600,
-                      zIndex: 2,
                     }}
                   >
-                    <Palette size={12} style={{ color: design.accent }} />
-                    <span>{design.category}</span>
+                    <Instagram size={13} style={{ color: item.accent }} />
+                    <span>{item.platform}</span>
                   </div>
 
-                  {/* Icon */}
                   <div
-                    className="project-watermark"
                     style={{
-                      width: '46px',
-                      height: '46px',
-                      borderRadius: '12px',
-                      background: `${design.accent}18`,
-                      border: `1px solid ${design.accent}30`,
+                      position: 'absolute',
+                      bottom: '8px',
+                      right: '8px',
+                      width: '28px',
+                      height: '28px',
+                      borderRadius: '8px',
+                      background: 'rgba(0, 0, 0, 0.7)',
+                      backdropFilter: 'blur(6px)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      color: design.accent,
-                      boxShadow: `0 6px 18px ${design.accent}20`,
-                      zIndex: 1,
+                      color: '#ffffff',
                     }}
                   >
-                    <Icon size={22} />
+                    <ZoomIn size={14} />
                   </div>
                 </div>
 
-                {/* Content Section */}
+                {/* Content */}
+                <div style={{ padding: '18px 18px 12px' }}>
+                  <span
+                    style={{
+                      fontSize: '0.72rem',
+                      fontWeight: 700,
+                      color: item.accent,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px',
+                      display: 'block',
+                      marginBottom: '4px',
+                    }}
+                  >
+                    {item.category}
+                  </span>
+                  <h3
+                    style={{
+                      margin: '0 0 8px',
+                      fontSize: '1.1rem',
+                      fontWeight: 600,
+                      color: 'var(--text)',
+                      lineHeight: 1.35,
+                    }}
+                  >
+                    {item.title}
+                  </h3>
+                  <p
+                    style={{
+                      fontSize: '0.84rem',
+                      color: 'var(--text-muted)',
+                      lineHeight: 1.6,
+                      margin: 0,
+                      fontWeight: 300,
+                    }}
+                  >
+                    {item.description}
+                  </p>
+                </div>
+              </div>
+
+              {/* Tools footer */}
+              <div
+                style={{
+                  padding: '12px 18px 16px',
+                  borderTop: '1px solid rgba(255, 255, 255, 0.05)',
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '6px',
+                }}
+              >
+                {item.tools.map((t) => (
+                  <span
+                    key={t}
+                    style={{
+                      fontSize: '0.72rem',
+                      padding: '3px 9px',
+                      borderRadius: '6px',
+                      background: 'rgba(255, 255, 255, 0.04)',
+                      border: '1px solid var(--border)',
+                      color: 'var(--text)',
+                    }}
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* =========================================================================
+            UNIVERSAL MODAL LIGHTBOX
+            ========================================================================= */}
+        <AnimatePresence>
+          {activeModal && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => {
+                playClick();
+                setActiveModal(null);
+              }}
+              style={{
+                position: 'fixed',
+                inset: 0,
+                zIndex: 9999,
+                background: 'rgba(0, 0, 0, 0.92)',
+                backdropFilter: 'blur(16px)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '16px',
+              }}
+            >
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  background: 'var(--surface)',
+                  border: '1px solid var(--border)',
+                  borderRadius: '16px',
+                  maxWidth: '880px',
+                  width: '100%',
+                  maxHeight: '90vh',
+                  overflowY: 'auto',
+                  boxShadow: '0 24px 80px rgba(0, 0, 0, 0.6)',
+                }}
+              >
                 <div
-                  className="project-content-box"
                   style={{
-                    padding: '16px',
+                    position: 'relative',
+                    width: '100%',
+                    maxHeight: '68vh',
+                    background: '#0a0a0f',
                     display: 'flex',
-                    flexDirection: 'column',
-                    flex: 1,
-                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    overflow: 'hidden',
                   }}
                 >
-                  <div>
-                    <h3
-                      className="project-title"
+                  <img
+                    src={activeModal.image}
+                    alt={activeModal.title}
+                    style={{
+                      maxWidth: '100%',
+                      maxHeight: '68vh',
+                      objectFit: 'contain',
+                      display: 'block',
+                    }}
+                  />
+                  <button
+                    onClick={() => {
+                      playClick();
+                      setActiveModal(null);
+                    }}
+                    style={{
+                      position: 'absolute',
+                      top: '12px',
+                      right: '12px',
+                      width: '34px',
+                      height: '34px',
+                      borderRadius: '50%',
+                      background: 'rgba(0,0,0,0.65)',
+                      border: '1px solid rgba(255,255,255,0.2)',
+                      color: '#ffffff',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
+                <div style={{ padding: '18px 22px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px', flexWrap: 'wrap' }}>
+                    <span
                       style={{
-                        margin: '0 0 6px',
-                        fontSize: '1.05rem',
-                        fontWeight: 600,
-                        color: 'var(--text)',
-                        lineHeight: 1.3,
+                        fontSize: '0.72rem',
+                        fontWeight: 700,
+                        color: 'var(--accent)',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.8px',
                       }}
                     >
-                      {design.title}
-                    </h3>
-
-                    <p
-                      className="project-desc"
-                      style={{
-                        fontSize: '0.82rem',
-                        color: 'var(--text-muted)',
-                        lineHeight: 1.45,
-                        margin: '0 0 12px',
-                        fontWeight: 300,
-                      }}
-                    >
-                      {design.description}
-                    </p>
-
-                    {/* Tools Tags */}
-                    <div
-                      className="project-tech-tags"
-                      style={{
-                        display: 'flex',
-                        flexWrap: 'wrap',
-                        gap: '5px',
-                        marginBottom: '14px',
-                      }}
-                    >
-                      {design.tools.map((tool) => (
+                      {activeModal.category}
+                    </span>
+                    {activeModal.platform && (
+                      <>
+                        <span style={{ color: 'var(--text-dim)' }}>&bull;</span>
+                        <span style={{ fontSize: '0.76rem', color: 'var(--accent-2)' }}>
+                          {activeModal.platform}
+                        </span>
+                      </>
+                    )}
+                    {activeModal.status && (
+                      <>
+                        <span style={{ color: 'var(--text-dim)' }}>&bull;</span>
+                        <span style={{ fontSize: '0.74rem', color: '#10B981', fontWeight: 600 }}>
+                          {activeModal.status}
+                        </span>
+                      </>
+                    )}
+                  </div>
+                  <h3 style={{ margin: '0 0 8px', fontSize: '1.25rem', color: 'var(--text)' }}>
+                    {activeModal.title}
+                  </h3>
+                  <p style={{ margin: '0 0 14px', fontSize: '0.88rem', color: 'var(--text-muted)', lineHeight: 1.6 }}>
+                    {activeModal.description}
+                  </p>
+                  {activeModal.tags && (
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                      {activeModal.tags.map((t) => (
                         <span
-                          key={tool}
-                          className="project-tag"
+                          key={t}
                           style={{
-                            fontSize: '0.7rem',
-                            padding: '3px 8px',
+                            fontSize: '0.72rem',
+                            padding: '4px 10px',
                             borderRadius: '6px',
-                            background: 'rgba(255, 255, 255, 0.04)',
-                            border: '1px solid var(--border)',
-                            color: 'var(--text-muted)',
+                            background: 'rgba(255, 255, 255, 0.05)',
+                            color: 'var(--text)',
+                            border: '1px solid rgba(255, 255, 255, 0.08)',
                           }}
                         >
-                          {tool}
+                          {t}
                         </span>
                       ))}
                     </div>
-                  </div>
-
-                  {/* Action Link */}
-                  <div
-                    className="project-actions"
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'flex-end',
-                      gap: '8px',
-                      paddingTop: '10px',
-                      borderTop: '1px solid var(--border)',
-                    }}
-                  >
-                    <motion.a
-                      href={design.figmaUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={playClick}
-                      onMouseEnter={playHover}
-                      whileHover={{ scale: 1.08 }}
-                      whileTap={{ scale: 0.92 }}
-                      title="View in Figma"
-                      aria-label="View Design"
-                      className="project-action-btn"
-                      style={{
-                        width: '32px',
-                        height: '32px',
-                        borderRadius: '8px',
-                        background: `${design.accent}15`,
-                        border: `1px solid ${design.accent}30`,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: design.accent,
-                        textDecoration: 'none',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      <ExternalLink size={15} />
-                    </motion.a>
-                  </div>
+                  )}
                 </div>
               </motion.div>
-            );
-          })}
-        </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         <style>{`
-          .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+          .design-card:hover .design-photo-box img,
+          .design-digital-card:hover .digital-photo-box img,
+          .project-software-card:hover .project-banner-box img {
+            transform: scale(1.04);
           }
+
           @media (max-width: 860px) {
-            .projects-grid {
-              grid-template-columns: repeat(2, 1fr) !important;
-              gap: 12px !important;
+            #projects {
+              padding: 36px 12px 60px !important;
             }
-            .project-card {
-              border-radius: 14px !important;
+            .projects-software-grid {
+              grid-template-columns: 1fr !important;
+              gap: 16px !important;
+              margin-bottom: 48px !important;
             }
-            .project-cat-badge {
-              padding: 3px 7px !important;
-              font-size: 0.62rem !important;
-              top: 8px !important;
-              right: 8px !important;
+            .designs-physical-grid {
+              grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+              gap: 10px !important;
+              margin-bottom: 48px !important;
             }
-            .project-watermark {
-              width: 38px !important;
-              height: 38px !important;
+            .designs-digital-grid {
+              grid-template-columns: 1fr !important;
+              gap: 16px !important;
+            }
+            .design-card {
               border-radius: 10px !important;
             }
-            .project-watermark svg {
-              width: 18px !important;
-              height: 18px !important;
-            }
-            .project-content-box {
-              padding: 14px 12px !important;
-            }
-            .project-title {
-              font-size: 0.92rem !important;
-              margin-bottom: 4px !important;
-            }
-            .project-desc {
-              font-size: 0.76rem !important;
-              line-height: 1.35 !important;
-              margin-bottom: 10px !important;
-              display: -webkit-box;
-              -webkit-line-clamp: 2;
-              -webkit-box-orient: vertical;
-              overflow: hidden;
-            }
-            .project-tag {
-              font-size: 0.65rem !important;
-              padding: 2px 6px !important;
-            }
-            .project-action-btn {
-              width: 28px !important;
-              height: 28px !important;
-              border-radius: 6px !important;
-            }
-            .project-action-btn svg {
-              width: 13px !important;
-              height: 13px !important;
-            }
-          }
-          @media (max-width: 480px) {
-            .projects-grid {
-              gap: 8px !important;
-            }
-            .project-content-box {
-              padding: 10px 8px !important;
-            }
-            .project-title {
+            .design-title {
               font-size: 0.82rem !important;
+              line-height: 1.25 !important;
+              display: -webkit-box !important;
+              -webkit-line-clamp: 2 !important;
+              -webkit-box-orient: vertical !important;
+              overflow: hidden !important;
             }
-            .project-desc {
-              font-size: 0.72rem !important;
+            .design-desc {
+              display: none !important;
+            }
+            .design-tools-footer {
+              display: none !important;
+            }
+            .design-cat-badge {
+              font-size: 0.58rem !important;
             }
           }
         `}</style>
@@ -773,4 +1197,3 @@ const Projects = () => {
 };
 
 export default Projects;
-
