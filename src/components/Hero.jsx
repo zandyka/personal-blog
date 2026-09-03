@@ -63,7 +63,7 @@ const Hero = () => {
         {/* Hero text block */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', padding: '0 clamp(16px, 3vw, 36px)' }}>
 
-          {/* Desktop Intro Eyebrow - positioned above headline, perfectly left-aligned */}
+          {/* Intro Eyebrow - Enhanced Typography for Zacky Andyka */}
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -72,28 +72,74 @@ const Hero = () => {
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '10px',
-              marginBottom: '12px',
+              gap: '12px',
+              marginBottom: 'clamp(10px, 1.8vh, 16px)',
+              padding: '0 4px',
             }}
           >
-            <span style={{
-              width: '8px',
-              height: '8px',
-              borderRadius: '50%',
-              background: 'var(--accent)',
-              boxShadow: '0 0 10px var(--accent)',
-            }} />
-            <p style={{
-              fontSize: 'clamp(10px, 0.9vw, 12px)',
-              color: 'var(--text-muted)',
-              textTransform: 'uppercase',
-              letterSpacing: '0.2em',
-              fontFamily: "'JetBrains Mono', monospace",
-              fontWeight: 600,
-              margin: 0,
-            }}>
-              Hi, I'm Zacky Andyka — Solutions across Design, Tech &amp; Banking
-            </p>
+            {/* Pulsing Live Dot */}
+            <span
+              style={{
+                position: 'relative',
+                display: 'inline-flex',
+                width: '8px',
+                height: '8px',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+              }}
+            >
+              <span
+                style={{
+                  position: 'absolute',
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: '50%',
+                  background: 'var(--accent)',
+                  opacity: 0.7,
+                  boxShadow: '0 0 10px var(--accent)',
+                }}
+              />
+              <span
+                style={{
+                  width: '6px',
+                  height: '6px',
+                  borderRadius: '50%',
+                  background: 'var(--accent)',
+                }}
+              />
+            </span>
+
+            {/* Elevated Name Typography */}
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: 'clamp(11px, 1.05vw, 13.5px)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.24em',
+                lineHeight: 1,
+              }}
+            >
+              <span style={{ color: 'var(--text-muted)', fontWeight: 500 }}>
+                HI, I'M
+              </span>
+              <span
+                style={{
+                  fontWeight: 800,
+                  color: '#ffffff',
+                  background: 'linear-gradient(135deg, #ffffff 50%, var(--accent) 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  letterSpacing: '0.28em',
+                  textShadow: '0 0 20px rgba(255, 59, 29, 0.35)',
+                }}
+              >
+                ZACKY ANDYKA
+              </span>
+            </div>
           </motion.div>
 
           {/* Line 1: GRAPHIC DESIGNER, */}
@@ -455,7 +501,8 @@ const Hero = () => {
             padding-bottom: 60px !important;
           }
           .hero-intro-eyebrow {
-            display: none !important;
+            display: flex !important;
+            margin-bottom: 8px !important;
           }
           .hero-socials-float {
             display: none !important;
