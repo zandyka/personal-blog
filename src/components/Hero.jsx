@@ -15,9 +15,9 @@ const GREETING_FONTS = [
 ];
 
 const HERO_LINES = [
-  { text: 'WEB & DESIGN,', delay: 0 },
-  { text: 'MOBILE APPS', delay: 0.15 },
-  { text: 'DEVELOPER', delay: 0.3 },
+  { text: 'GRAPHIC DESIGNER,', delay: 0 },
+  { text: 'WEB &', delay: 0.15 },
+  { text: 'AI ENGINEER', delay: 0.3 },
 ];
 
 const SOCIALS = [
@@ -35,7 +35,7 @@ const Hero = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setFontIndex((prev) => (prev + 1) % GREETING_FONTS.length);
-    }, 1800);
+    }, 1100);
     return () => clearInterval(interval);
   }, []);
 
@@ -166,7 +166,7 @@ const Hero = () => {
             </div>
           </motion.div>
 
-          {/* Line 1: WEB & DESIGN, */}
+          {/* Line 1: GRAPHIC DESIGNER, */}
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -183,10 +183,10 @@ const Hero = () => {
             }}
             className="text-gradient-static"
           >
-            WEB &amp; DESIGN,
+            GRAPHIC DESIGNER,
           </motion.h1>
 
-          {/* Line 2: MOBILE APPS with desktop floating socials */}
+          {/* Line 2: WEB & with desktop floating socials */}
           <div
             style={{
               display: 'flex',
@@ -213,7 +213,7 @@ const Hero = () => {
               }}
               className="text-gradient-static"
             >
-              <span>MOBILE APPS</span>
+              <span>WEB &amp;</span>
               <motion.span
                 animate={{ scale: [1, 1.2, 1] }}
                 transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}
@@ -268,7 +268,7 @@ const Hero = () => {
             </div>
           </div>
 
-          {/* Line 3: DEVELOPER + Tagline */}
+          {/* Line 3: AI ENGINEER + Tagline */}
           <div
             style={{
               display: 'flex',
@@ -293,7 +293,7 @@ const Hero = () => {
               }}
               className="text-gradient-static"
             >
-              DEVELOPER
+              AI ENGINEER
             </motion.h1>
 
             {/* Tagline beside AI ENGINEER */}

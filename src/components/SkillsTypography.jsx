@@ -30,10 +30,9 @@ const SkillsTypography = () => {
             color: 'var(--text)',
           }}>
             <span style={{ color: 'var(--text-muted)', fontWeight: 300 }}>&ldquo; </span>
-            Web Development.{' '}
-            <span style={{ color: 'var(--accent)' }}>Mobile</span>
+            Web Development &amp; Design.
             <br />
-            <span style={{ color: 'var(--accent)' }}>Apps.</span>
+            <span style={{ color: 'var(--accent)' }}>Mobile Apps.</span>
             <br />
             <span style={{
               color: 'var(--accent-2)',
