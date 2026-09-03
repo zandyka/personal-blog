@@ -291,12 +291,13 @@ export default function Gallery() {
           })}
         </motion.div>
 
-        {/* Masonry Grid */}
+        {/* Grid */}
         <motion.div
           layout
+          className="gallery-grid"
           style={{
-            columns: '3 220px',
-            columnGap: '14px',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 1fr)',
             gap: '14px',
           }}
         >
@@ -309,13 +310,28 @@ export default function Gallery() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.3 }}
-                style={{ breakInside: 'avoid', marginBottom: '14px', display: 'inline-block', width: '100%' }}
               >
                 <GalleryCard item={item} index={i} onClick={setSelectedItem} />
               </motion.div>
             ))}
           </AnimatePresence>
         </motion.div>
+
+        <style>{`
+          @media (max-width: 480px) {
+            .gallery-grid {
+              gap: 6px !important;
+            }
+            .gallery-grid > div > div {
+              border-radius: 8px !important;
+            }
+          }
+          @media (max-width: 768px) {
+            .gallery-grid {
+              gap: 8px !important;
+            }
+          }
+        `}</style>
       </div>
 
       {/* Lightbox */}
