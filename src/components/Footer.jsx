@@ -23,7 +23,7 @@ const NAV_LINKS = [
 ];
 
 const SOCIAL_LINKS = [
-  { icon: Github, href: 'https://github.com/zackyandyka', label: 'GitHub' },
+  { icon: Github, href: 'https://github.com/zandyka', label: 'GitHub' },
   { icon: Linkedin, href: 'https://www.linkedin.com/in/zacky-andyka/', label: 'LinkedIn' },
   { icon: Instagram, href: 'https://www.instagram.com/zandyka._/', label: 'Instagram' },
   { icon: Mail, href: 'mailto:zackyandyka1@gmail.com', label: 'Email' },

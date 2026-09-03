@@ -12,7 +12,7 @@ const HERO_LINES = [
 ];
 
 const SOCIALS = [
-  { icon: Github, href: 'https://github.com/zackyandyka', label: 'GitHub', y: -10 },
+  { icon: Github, href: 'https://github.com/zandyka', label: 'GitHub', y: -10 },
   { icon: Linkedin, href: 'https://www.linkedin.com/in/zacky-andyka/', label: 'LinkedIn', y: 10 },
   { icon: Instagram, href: 'https://www.instagram.com/zandyka._/', label: 'Instagram', x: 8 },
 ];

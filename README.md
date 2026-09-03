@@ -87,7 +87,7 @@ Ensure you have **Node.js** (version 18.0 or higher) and **npm** installed on yo
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/zackyandyka/portfolio.git
+   git clone https://github.com/zandyka/portofolio.git
    cd portfolio
    ```
 
@@ -125,7 +125,7 @@ npm run preview
 - **Email:** [zackyandyka1@gmail.com](mailto:zackyandyka1@gmail.com)  
 - **LinkedIn:** [linkedin.com/in/zacky-andyka](https://www.linkedin.com/in/zacky-andyka/)  
 - **Instagram:** [@zandyka._](https://www.instagram.com/zandyka._/)  
-- **GitHub:** [@zackyandyka](https://github.com/zackyandyka)
+- **GitHub:** [@zandyka](https://github.com/zandyka)
 
 ---
 
