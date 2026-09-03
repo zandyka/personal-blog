@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import {
@@ -11,9 +11,6 @@ import {
   Volume2,
   VolumeX,
   ChevronDown,
-  Maximize2,
-  Minimize2,
-  Globe,
 } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
 import ThemeToggle from './ui/ThemeToggle';
@@ -110,19 +107,6 @@ export default function Navbar() {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
-
-  // Fullscreen state & toggle
-  const [isFullscreen, setIsFullscreen] = useState(false);
-  const handleToggleFullscreen = () => {
-    playClick();
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen?.().catch(() => {});
-      setIsFullscreen(true);
-    } else {
-      document.exitFullscreen?.().catch(() => {});
-      setIsFullscreen(false);
-    }
-  };
 
   const isHome = location.pathname === '/';
   const isAboutActive = ['/about', '/experience', '/projects', '/skills'].some((p) =>
@@ -326,70 +310,15 @@ export default function Navbar() {
           </a>
         </nav>
 
-        {/* Right: Circular Icon Actions (Fullscreen, Sound/Globe, Theme) */}
+        {/* Right: Theme Toggle */}
         <div
           style={{
             pointerEvents: 'auto',
             display: 'flex',
             alignItems: 'center',
-            gap: '10px',
           }}
         >
-          {/* Fullscreen Button */}
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.92 }}
-            onClick={handleToggleFullscreen}
-            onMouseEnter={playHover}
-            title={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
-            style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '50%',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              background: 'rgba(255, 255, 255, 0.04)',
-              color: 'var(--text-muted)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              transition: 'border-color 0.2s, color 0.2s',
-            }}
-          >
-            {isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
-          </motion.button>
-
-          {/* Sound / Audio Toggle */}
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.92 }}
-            onClick={() => {
-              playClick();
-              toggleSound();
-            }}
-            onMouseEnter={playHover}
-            title={soundEnabled ? 'Mute Sound' : 'Enable Sound'}
-            style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '50%',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              background: 'rgba(255, 255, 255, 0.04)',
-              color: 'var(--text-muted)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              transition: 'border-color 0.2s, color 0.2s',
-            }}
-          >
-            <Globe size={16} />
-          </motion.button>
-
-          {/* Theme Toggle (Sun / Moon) */}
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <ThemeToggle />
-          </div>
+          <ThemeToggle />
         </div>
       </header>
 

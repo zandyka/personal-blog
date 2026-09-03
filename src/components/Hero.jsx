@@ -1,16 +1,15 @@
-﻿import { useState } from 'react';
-import { motion } from 'framer-motion';
+﻿import { motion } from 'framer-motion';
 import { ArrowDown, Github, Linkedin, Instagram } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
 import SpotlightOverlay from './ui/SpotlightOverlay';
 
-// Custom Geometric Electric Neon Blue Bolt SVG (matches reference image)
-const NeonLightningBolt = () => {
+// Electric Vermilion Energy Glyph (Zacky Brand Palette: #FF3B1D)
+const EnergyBolt = () => {
   const { playHover } = useSoundContext();
   return (
     <motion.span
       onMouseEnter={playHover}
-      whileHover={{ scale: 1.15, filter: 'drop-shadow(0 0 24px #38bdf8)' }}
+      whileHover={{ scale: 1.15, filter: 'drop-shadow(0 0 22px #FF3B1D)' }}
       transition={{ duration: 0.25 }}
       style={{
         display: 'inline-flex',
@@ -22,19 +21,19 @@ const NeonLightningBolt = () => {
       }}
     >
       <svg
-        viewBox="0 0 90 110"
+        viewBox="0 0 80 100"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         style={{
           height: '0.84em',
           width: 'auto',
-          filter: 'drop-shadow(0 0 16px #38bdf8)',
+          filter: 'drop-shadow(0 0 14px rgba(255, 59, 29, 0.75))',
         }}
       >
         <path
-          d="M54 6 L14 58 H46 L38 104 L82 48 H48 L54 6 Z"
-          stroke="#38bdf8"
-          strokeWidth="7"
+          d="M48 6L14 54H42L34 94L72 44H44L48 6Z"
+          stroke="#FF3B1D"
+          strokeWidth="6.5"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
@@ -43,14 +42,14 @@ const NeonLightningBolt = () => {
   );
 };
 
-// Custom Golden Yellow Robot Character SVG (matches reference image)
-const GoldenRobot = () => {
+// Sunfire Amber Tech Core Glyph (Zacky Brand Palette: #FFAA00)
+const TechCore = () => {
   const { playHover } = useSoundContext();
   return (
     <motion.span
       onMouseEnter={playHover}
-      whileHover={{ rotate: [0, -10, 10, -5, 0], scale: 1.12 }}
-      transition={{ duration: 0.5 }}
+      whileHover={{ rotate: 90, scale: 1.15, filter: 'drop-shadow(0 0 22px #FFAA00)' }}
+      transition={{ duration: 0.4 }}
       style={{
         display: 'inline-flex',
         alignItems: 'center',
@@ -61,32 +60,23 @@ const GoldenRobot = () => {
       }}
     >
       <svg
-        viewBox="0 0 100 85"
+        viewBox="0 0 90 90"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         style={{
-          height: '0.84em',
+          height: '0.82em',
           width: 'auto',
-          filter: 'drop-shadow(0 0 16px #facc15)',
+          filter: 'drop-shadow(0 0 14px rgba(255, 170, 0, 0.75))',
         }}
       >
-        {/* Antenna */}
-        <line x1="50" y1="4" x2="50" y2="18" stroke="#facc15" strokeWidth="5.5" strokeLinecap="round" />
-        <circle cx="50" cy="4" r="4.5" fill="#facc15" />
-
-        {/* Ears */}
-        <rect x="8" y="32" width="8" height="18" rx="3" fill="#facc15" />
-        <rect x="84" y="32" width="8" height="18" rx="3" fill="#facc15" />
-
-        {/* Head Outline */}
-        <rect x="16" y="18" width="68" height="52" rx="14" stroke="#facc15" strokeWidth="6.5" />
-
-        {/* Eyes */}
-        <rect x="30" y="34" width="10" height="14" rx="4" fill="#facc15" />
-        <rect x="60" y="34" width="10" height="14" rx="4" fill="#facc15" />
-
-        {/* Mouth */}
-        <line x1="36" y1="56" x2="64" y2="56" stroke="#facc15" strokeWidth="5.5" strokeLinecap="round" />
+        <polygon
+          points="45,8 56,34 82,45 56,56 45,82 34,56 8,45 34,34"
+          stroke="#FFAA00"
+          strokeWidth="6"
+          strokeLinejoin="round"
+          fill="rgba(255, 170, 0, 0.12)"
+        />
+        <circle cx="45" cy="45" r="4.5" fill="#FFAA00" />
       </svg>
     </motion.span>
   );
@@ -105,53 +95,53 @@ export default function Hero() {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        background: '#070709',
+        background: 'var(--bg, #070709)',
         overflow: 'hidden',
         userSelect: 'none',
-        paddingTop: 'clamp(80px, 12vh, 120px)',
-        paddingBottom: 'clamp(40px, 6vh, 60px)',
+        paddingTop: 'clamp(72px, 10vh, 100px)',
+        paddingBottom: 'clamp(36px, 5vh, 60px)',
       }}
     >
-      {/* Dot Grid Background */}
+      {/* Tactical Dot Grid Background */}
       <div className="dot-grid" style={{ position: 'absolute', inset: 0, zIndex: 0 }} />
 
       {/* Atmospheric Spotlight Beams */}
       <SpotlightOverlay />
 
-      {/* Diagonal Glass Beam Ray (matches screenshot top-left light sheen) */}
+      {/* Diagonal Glass Sheen */}
       <div
         aria-hidden="true"
         style={{
           position: 'absolute',
           top: 0,
           left: 0,
-          width: '70vw',
+          width: '65vw',
           height: '100vh',
-          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 35%, transparent 60%)',
+          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 30%, transparent 55%)',
           pointerEvents: 'none',
           zIndex: 2,
         }}
       />
 
-      {/* Main Typography Stage */}
+      {/* Main Content Stage */}
       <main
         style={{
           position: 'relative',
           zIndex: 10,
-          maxWidth: '1440px',
+          maxWidth: '1360px',
           width: '100%',
           margin: '0 auto',
-          padding: '0 clamp(16px, 4vw, 48px)',
+          padding: '0 clamp(16px, 3.5vw, 44px)',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
           flex: 1,
         }}
       >
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0px', width: '100%' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
 
           {/* =========================================================================
-              LINE 1: [Bio Paragraph on Left] + [AI & DATA on Right] + [GitHub on top]
+              LINE 1: [Bio snippet on left] + [WEB & MOBILE] + [Floating GitHub]
               ========================================================================= */}
           <div
             className="hero-line-1"
@@ -159,43 +149,41 @@ export default function Hero() {
               display: 'flex',
               alignItems: 'flex-end',
               justifyContent: 'flex-end',
-              gap: 'clamp(20px, 4vw, 56px)',
+              gap: 'clamp(16px, 3vw, 40px)',
               position: 'relative',
               width: '100%',
             }}
           >
-            {/* Bio Paragraph on the Left */}
-            <motion.p
+            {/* Bio Snippet */}
+            <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3, duration: 0.7 }}
+              transition={{ delay: 0.25, duration: 0.6 }}
               className="hero-bio-left"
               style={{
                 fontFamily: "'JetBrains Mono', monospace",
-                fontSize: 'clamp(9.5px, 0.95vw, 13px)',
+                fontSize: 'clamp(9px, 0.9vw, 12px)',
                 color: 'var(--text-muted, #94a3b8)',
                 textTransform: 'uppercase',
-                letterSpacing: '0.14em',
+                letterSpacing: '0.12em',
                 lineHeight: 1.6,
                 maxWidth: '240px',
                 fontWeight: 600,
-                margin: 0,
                 textAlign: 'right',
-                paddingBottom: '0.6em',
+                paddingBottom: '0.8em',
               }}
             >
+              <span style={{ color: 'var(--accent, #FF3B1D)', fontWeight: 700 }}>// CREATIVE DEVELOPER</span>
+              <br />
               HI, I'M ZACKY ANDYKA.
               <br />
-              I BUILD SCALABLE
+              BUILDING WEB &amp; MOBILE
               <br />
-              SYSTEMS BRIDGING
-              <br />
-              TECH &amp; BANKING.
-            </motion.p>
+              SOLUTIONS FOR BANKING.
+            </motion.div>
 
-            {/* Giant Title: AI & DATA + Floating GitHub Icon */}
+            {/* Title: WEB & MOBILE with floating GitHub */}
             <div style={{ position: 'relative', display: 'inline-block' }}>
-              {/* Floating GitHub Icon */}
               <motion.a
                 href="https://github.com/zandyka"
                 target="_blank"
@@ -204,47 +192,47 @@ export default function Hero() {
                 onMouseEnter={playHover}
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 0.85, scale: 1 }}
-                whileHover={{ opacity: 1, scale: 1.25, color: '#ffffff' }}
-                transition={{ delay: 0.6, duration: 0.5 }}
+                whileHover={{ opacity: 1, scale: 1.2, color: 'var(--accent, #FF3B1D)' }}
+                transition={{ delay: 0.5, duration: 0.4 }}
                 title="GitHub @zandyka"
                 style={{
                   position: 'absolute',
-                  top: '-16px',
-                  right: '-8px',
-                  color: 'rgba(255, 255, 255, 0.75)',
+                  top: '-12px',
+                  right: '-6px',
+                  color: 'rgba(255, 255, 255, 0.7)',
                   textDecoration: 'none',
                   zIndex: 20,
                   display: 'flex',
                   padding: '4px',
                 }}
               >
-                <Github size={26} strokeWidth={1.8} />
+                <Github size={24} strokeWidth={1.8} />
               </motion.a>
 
               <motion.h1
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.15, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                className="hero-title-text"
+                transition={{ delay: 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                className="hero-headline"
                 style={{
-                  fontSize: 'clamp(3.4rem, 11.5vw, 12rem)',
+                  fontSize: 'clamp(2.6rem, 8.8vw, 9.2rem)',
                   fontWeight: 900,
-                  lineHeight: 0.86,
-                  letterSpacing: '-0.04em',
+                  lineHeight: 0.92,
+                  letterSpacing: '-0.035em',
                   margin: 0,
-                  background: 'linear-gradient(180deg, #FFFFFF 15%, #E2E8F0 60%, #94A3B8 100%)',
+                  background: 'linear-gradient(180deg, #FFFFFF 25%, #E2E8F0 65%, #94A3B8 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   whiteSpace: 'nowrap',
                 }}
               >
-                AI &amp; DATA
+                WEB &amp; MOBILE
               </motion.h1>
             </div>
           </div>
 
           {/* =========================================================================
-              LINE 2: [LinkedIn on top-left] + [SOFT] + [Neon Blue Bolt] + [WARE]
+              LINE 2: [Floating LinkedIn] + [SOFT] + [EnergyBolt] + [WARE]
               ========================================================================= */}
           <div
             className="hero-line-2"
@@ -254,10 +242,9 @@ export default function Hero() {
               justifyContent: 'flex-start',
               position: 'relative',
               width: '100%',
-              marginTop: '-0.06em',
+              marginTop: '-0.04em',
             }}
           >
-            {/* Floating LinkedIn Icon */}
             <motion.a
               href="https://www.linkedin.com/in/zacky-andyka/"
               target="_blank"
@@ -266,35 +253,35 @@ export default function Hero() {
               onMouseEnter={playHover}
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 0.85, scale: 1 }}
-              whileHover={{ opacity: 1, scale: 1.25, color: '#0A66C2' }}
-              transition={{ delay: 0.7, duration: 0.5 }}
+              whileHover={{ opacity: 1, scale: 1.2, color: 'var(--accent, #FF3B1D)' }}
+              transition={{ delay: 0.6, duration: 0.4 }}
               title="LinkedIn @zacky-andyka"
               style={{
                 position: 'absolute',
-                top: '-18px',
-                left: 'clamp(8px, 1.5vw, 24px)',
-                color: 'rgba(255, 255, 255, 0.75)',
+                top: '-14px',
+                left: 'clamp(6px, 1.5vw, 20px)',
+                color: 'rgba(255, 255, 255, 0.7)',
                 textDecoration: 'none',
                 zIndex: 20,
                 display: 'flex',
                 padding: '4px',
               }}
             >
-              <Linkedin size={26} strokeWidth={1.8} />
+              <Linkedin size={24} strokeWidth={1.8} />
             </motion.a>
 
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="hero-title-text"
+              transition={{ delay: 0.22, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              className="hero-headline"
               style={{
-                fontSize: 'clamp(3.4rem, 11.5vw, 12rem)',
+                fontSize: 'clamp(2.6rem, 8.8vw, 9.2rem)',
                 fontWeight: 900,
-                lineHeight: 0.86,
-                letterSpacing: '-0.04em',
+                lineHeight: 0.92,
+                letterSpacing: '-0.035em',
                 margin: 0,
-                background: 'linear-gradient(180deg, #FFFFFF 15%, #E2E8F0 60%, #94A3B8 100%)',
+                background: 'linear-gradient(180deg, #FFFFFF 25%, #E2E8F0 65%, #94A3B8 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 display: 'flex',
@@ -303,13 +290,13 @@ export default function Hero() {
               }}
             >
               <span>SOFT</span>
-              <NeonLightningBolt />
+              <EnergyBolt />
               <span>WARE</span>
             </motion.h1>
           </div>
 
           {/* =========================================================================
-              LINE 3: [EN] + [Yellow Robot] + [GINEER] + [Instagram] + [Collab on Right]
+              LINE 3: [EN] + [TechCore] + [GINEER] + [Instagram] + [Collab note]
               ========================================================================= */}
           <div
             className="hero-line-3"
@@ -317,26 +304,25 @@ export default function Hero() {
               display: 'flex',
               alignItems: 'flex-end',
               justifyContent: 'space-between',
-              gap: 'clamp(16px, 3vw, 48px)',
+              gap: 'clamp(16px, 3vw, 40px)',
               position: 'relative',
               width: '100%',
-              marginTop: '-0.06em',
+              marginTop: '-0.04em',
             }}
           >
-            {/* EN + Robot + GINEER Container */}
             <div style={{ position: 'relative', display: 'inline-flex', alignItems: 'center' }}>
               <motion.h1
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.45, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                className="hero-title-text"
+                transition={{ delay: 0.35, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                className="hero-headline"
                 style={{
-                  fontSize: 'clamp(3.4rem, 11.5vw, 12rem)',
+                  fontSize: 'clamp(2.6rem, 8.8vw, 9.2rem)',
                   fontWeight: 900,
-                  lineHeight: 0.86,
-                  letterSpacing: '-0.04em',
+                  lineHeight: 0.92,
+                  letterSpacing: '-0.035em',
                   margin: 0,
-                  background: 'linear-gradient(180deg, #FFFFFF 15%, #E2E8F0 60%, #94A3B8 100%)',
+                  background: 'linear-gradient(180deg, #FFFFFF 25%, #E2E8F0 65%, #94A3B8 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   display: 'flex',
@@ -345,11 +331,11 @@ export default function Hero() {
                 }}
               >
                 <span>EN</span>
-                <GoldenRobot />
+                <TechCore />
                 <span>GINEER</span>
               </motion.h1>
 
-              {/* Floating Instagram Icon above GINEER */}
+              {/* Floating Instagram */}
               <motion.a
                 href="https://www.instagram.com/zandyka._/"
                 target="_blank"
@@ -358,52 +344,51 @@ export default function Hero() {
                 onMouseEnter={playHover}
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 0.85, scale: 1 }}
-                whileHover={{ opacity: 1, scale: 1.25, color: '#E1306C' }}
-                transition={{ delay: 0.8, duration: 0.5 }}
+                whileHover={{ opacity: 1, scale: 1.2, color: 'var(--accent-2, #FFAA00)' }}
+                transition={{ delay: 0.7, duration: 0.4 }}
                 title="Instagram @zandyka._"
                 style={{
                   position: 'absolute',
-                  top: '-18px',
-                  right: '-10px',
-                  color: 'rgba(255, 255, 255, 0.75)',
+                  top: '-14px',
+                  right: '-6px',
+                  color: 'rgba(255, 255, 255, 0.7)',
                   textDecoration: 'none',
                   zIndex: 20,
                   display: 'flex',
                   padding: '4px',
                 }}
               >
-                <Instagram size={26} strokeWidth={1.8} />
+                <Instagram size={24} strokeWidth={1.8} />
               </motion.a>
             </div>
 
-            {/* Collaboration Note on the Right */}
-            <motion.p
+            {/* Collaboration Note */}
+            <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.6, duration: 0.7 }}
+              transition={{ delay: 0.5, duration: 0.6 }}
               className="hero-collab-right"
               style={{
                 fontFamily: "'JetBrains Mono', monospace",
-                fontSize: 'clamp(9px, 0.88vw, 12px)',
+                fontSize: 'clamp(8.5px, 0.85vw, 11px)',
                 color: 'var(--text-muted, #94a3b8)',
                 textTransform: 'uppercase',
-                letterSpacing: '0.14em',
+                letterSpacing: '0.12em',
                 lineHeight: 1.6,
-                maxWidth: '260px',
+                maxWidth: '240px',
                 fontWeight: 600,
-                margin: 0,
                 textAlign: 'left',
-                paddingBottom: '0.6em',
+                paddingBottom: '0.8em',
               }}
             >
-              OPEN TO ALL FORMS OF
+              <span style={{ color: 'var(--accent-2, #FFAA00)', fontWeight: 700 }}>● OPEN TO COLLAB</span>
               <br />
-              COLLABORATION,
+              GLOBAL &amp; REMOTE
               <br />
-              REGARDLESS OF LOCATION
+              MEDAN, INDONESIA
               <br />
-              AND LANGUAGE.
-            </motion.p>
+              CLASS OF 2026.
+            </motion.div>
           </div>
 
         </div>
@@ -413,10 +398,10 @@ export default function Hero() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
+        transition={{ delay: 1 }}
         style={{
           position: 'absolute',
-          bottom: '20px',
+          bottom: '16px',
           left: '50%',
           transform: 'translateX(-50%)',
           display: 'flex',
@@ -442,7 +427,7 @@ export default function Hero() {
         </motion.div>
       </motion.div>
 
-      {/* Responsive adjustments */}
+      {/* Mobile Responsive Layout Styles */}
       <style>{`
         @media (max-width: 859px) {
           .hero-bio-left {
