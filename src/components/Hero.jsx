@@ -61,62 +61,83 @@ const Hero = () => {
       }}>
 
         {/* Hero text block */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', padding: '0 24px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', padding: '0 clamp(16px, 3vw, 36px)' }}>
 
-          {/* Line 1: intro text + WEB & */}
-          <div className="hero-line-1" style={{ display: 'flex', gap: '32px', alignItems: 'center', position: 'relative' }}>
-            <motion.p
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.8, duration: 0.7 }}
-              style={{
-                fontSize: 'clamp(9px, 1vw, 12px)',
-                color: 'var(--text-muted)',
-                textTransform: 'uppercase',
-                letterSpacing: '0.2em',
-                lineHeight: 1.6,
-                maxWidth: '220px',
-                fontWeight: 500,
-                padding: '0 16px',
-                display: 'none',
-              }}
-              className="hero-intro-text"
-            >
-              Hi, I'm Zacky Andyka. I build solutions bridging tech & banking.
-            </motion.p>
+          {/* Desktop Intro Eyebrow - positioned above headline, perfectly left-aligned */}
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15, duration: 0.6 }}
+            className="hero-intro-eyebrow"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              marginBottom: '12px',
+            }}
+          >
+            <span style={{
+              width: '8px',
+              height: '8px',
+              borderRadius: '50%',
+              background: 'var(--accent)',
+              boxShadow: '0 0 10px var(--accent)',
+            }} />
+            <p style={{
+              fontSize: 'clamp(10px, 0.9vw, 12px)',
+              color: 'var(--text-muted)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.2em',
+              fontFamily: "'JetBrains Mono', monospace",
+              fontWeight: 600,
+              margin: 0,
+            }}>
+              Hi, I'm Zacky Andyka — Solutions across Design, Tech &amp; Banking
+            </p>
+          </motion.div>
+
+          {/* Line 1: GRAPHIC DESIGNER, */}
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.22, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              fontSize: 'clamp(2.3rem, 7.5vw, 7.6rem)',
+              fontWeight: 900,
+              lineHeight: 0.9,
+              letterSpacing: '-0.04em',
+              color: 'var(--text)',
+              margin: 0,
+              padding: 0,
+              textAlign: 'left',
+            }}
+            className="text-gradient-static"
+          >
+            GRAPHIC DESIGNER,
+          </motion.h1>
+
+          {/* Line 2: WEB & with desktop floating socials */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              position: 'relative',
+              gap: '24px',
+            }}
+          >
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ delay: 0.36, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               style={{
-                fontSize: 'clamp(2.2rem, 7.5vw, 7.8rem)',
+                fontSize: 'clamp(2.3rem, 7.5vw, 7.6rem)',
                 fontWeight: 900,
-                lineHeight: 0.88,
+                lineHeight: 0.9,
                 letterSpacing: '-0.04em',
                 color: 'var(--text)',
                 margin: 0,
-                padding: '0 16px',
-              }}
-              className="text-gradient-static"
-            >
-              GRAPHIC DESIGNER,
-            </motion.h1>
-          </div>
-
-          {/* Line 2: WEB & with floating socials */}
-          <div style={{ display: 'flex', gap: '32px', alignItems: 'center', position: 'relative' }}>
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.35, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              style={{
-                fontSize: 'clamp(2.2rem, 7.5vw, 7.8rem)',
-                fontWeight: 900,
-                lineHeight: 0.88,
-                letterSpacing: '-0.04em',
-                color: 'var(--text)',
-                margin: 0,
-                padding: '0 16px',
+                padding: 0,
                 display: 'flex',
                 alignItems: 'center',
               }}
@@ -125,83 +146,127 @@ const Hero = () => {
               <span>WEB &amp;</span>
               <motion.span
                 animate={{ scale: [1, 1.2, 1] }}
-                transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut' }}
-                style={{ display: 'inline-flex', margin: '0 0.05em', color: 'var(--accent)' }}
+                transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}
+                style={{ display: 'inline-flex', margin: '0 0.08em', color: 'var(--accent)' }}
               >
-                <Sparkles style={{ width: '0.35em', height: '0.35em' }} />
+                <Sparkles style={{ width: '0.36em', height: '0.36em' }} />
               </motion.span>
             </motion.h1>
 
-            {/* Floating social icons - desktop only */}
-            <div className="hero-socials-float" style={{ position: 'absolute', right: '60px', top: '-40px', display: 'none' }}>
-              {SOCIALS.map(({ icon: Icon, href, label, y, x }, i) => (
+            {/* Desktop Socials Row - placed neatly on the right side of Line 2 */}
+            <div
+              className="hero-socials-float"
+              style={{
+                display: 'flex',
+                gap: '12px',
+                alignItems: 'center',
+                marginRight: '20px',
+              }}
+            >
+              {SOCIALS.map(({ icon: Icon, href, label }, i) => (
                 <motion.a
                   key={label}
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  initial={{ opacity: 0, y: 40 }}
-                  animate={{ opacity: 0.5, y: 0 }}
-                  transition={{ delay: 1 + i * 0.1, duration: 0.8 }}
-                  whileHover={{ opacity: 1, scale: 1.15 }}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 0.85, scale: 1 }}
+                  transition={{ delay: 0.7 + i * 0.1, duration: 0.4 }}
+                  whileHover={{ scale: 1.15, opacity: 1 }}
                   onMouseEnter={() => { playHover(); setHoveredSocial(label); }}
                   onMouseLeave={() => setHoveredSocial(null)}
                   onClick={playClick}
                   style={{
-                    position: 'absolute',
-                    top: `${i * 55}px`,
-                    right: `${i * 30}px`,
+                    width: '44px',
+                    height: '44px',
+                    borderRadius: '12px',
+                    background: 'var(--surface)',
+                    border: '1px solid var(--border)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                     color: 'var(--accent)',
-                    display: 'block',
+                    textDecoration: 'none',
+                    boxShadow: '0 4px 16px rgba(0,0,0,0.25)',
+                    transition: 'all 0.2s ease',
                   }}
                   aria-label={label}
                 >
-                  <Icon size={28} />
+                  <Icon size={18} />
                 </motion.a>
               ))}
             </div>
           </div>
 
-          {/* Line 3: AI ENGINEER + tag line */}
-          <div className="hero-line-3" style={{ display: 'flex', gap: '32px', alignItems: 'flex-end', position: 'relative' }}>
+          {/* Line 3: AI ENGINEER + Tagline */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'flex-end',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: '24px',
+            }}
+          >
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               style={{
-                fontSize: 'clamp(2.2rem, 7.5vw, 7.8rem)',
+                fontSize: 'clamp(2.3rem, 7.5vw, 7.6rem)',
                 fontWeight: 900,
-                lineHeight: 0.88,
+                lineHeight: 0.9,
                 letterSpacing: '-0.04em',
                 color: 'var(--text)',
                 margin: 0,
-                padding: '0 16px',
+                padding: 0,
               }}
               className="text-gradient-static"
             >
               AI ENGINEER
             </motion.h1>
 
-            <motion.p
+            {/* Tagline beside AI ENGINEER */}
+            <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 1, duration: 0.7 }}
+              transition={{ delay: 0.85, duration: 0.7 }}
+              className="hero-tagline-wrapper"
               style={{
-                fontSize: 'clamp(9px, 1vw, 12px)',
-                color: 'var(--text-muted)',
-                textTransform: 'uppercase',
-                letterSpacing: '0.2em',
-                lineHeight: 1.6,
-                maxWidth: '220px',
-                fontWeight: 500,
-                paddingBottom: '0.2em',
-                padding: '0 16px',
-                display: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                paddingBottom: '0.4em',
               }}
-              className="hero-tagline-text"
             >
-              Open to all forms of collaboration, regardless of location and language.
-            </motion.p>
+              <div style={{
+                width: '18px',
+                height: '18px',
+                borderRadius: '50%',
+                border: '1px solid var(--accent)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+              }}>
+                <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--accent)' }} />
+              </div>
+              <p
+                style={{
+                  fontSize: 'clamp(9.5px, 0.85vw, 11.5px)',
+                  color: 'var(--text-muted)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.18em',
+                  lineHeight: 1.6,
+                  maxWidth: '240px',
+                  fontWeight: 500,
+                  margin: 0,
+                }}
+                className="hero-tagline-text"
+              >
+                Open to all forms of collaboration, regardless of location and language.
+              </p>
+            </motion.div>
           </div>
         </div>
 
@@ -214,7 +279,7 @@ const Hero = () => {
           style={{
             gap: '12px',
             alignItems: 'center',
-            padding: '12px 40px',
+            padding: '14px clamp(16px, 3vw, 36px)',
             display: 'none',
           }}
         >
@@ -379,9 +444,8 @@ const Hero = () => {
       {/* Responsive adjustments */}
       <style>{`
         @media (min-width: 860px) {
-          .hero-intro-text { display: block !important; }
-          .hero-tagline-text { display: block !important; }
-          .hero-socials-float { display: block !important; }
+          .hero-intro-eyebrow { display: flex !important; }
+          .hero-socials-float { display: flex !important; }
           .hero-mobile-socials { display: none !important; }
         }
         @media (max-width: 859px) {
@@ -390,32 +454,24 @@ const Hero = () => {
             overflow: visible !important;
             padding-bottom: 60px !important;
           }
-          .hero-line-1 {
-            flex-direction: column-reverse !important;
-            align-items: flex-start !important;
-            gap: 6px !important;
-          }
-          .hero-line-3 {
-            flex-direction: column !important;
-            align-items: flex-start !important;
-            gap: 6px !important;
-          }
-          .hero-intro-text {
+          .hero-intro-eyebrow {
             display: none !important;
           }
-          .hero-tagline-text {
-            display: block !important;
-            max-width: 100% !important;
-            font-size: 11px !important;
-            letter-spacing: 0.12em !important;
-            line-height: 1.5 !important;
-            margin-top: 10px !important;
+          .hero-socials-float {
+            display: none !important;
           }
           .hero-mobile-socials {
             display: flex !important;
           }
-          .hero-socials-float {
-            display: none !important;
+          .hero-tagline-wrapper {
+            margin-top: 10px !important;
+            padding-left: 0 !important;
+          }
+          .hero-tagline-text {
+            max-width: 100% !important;
+            font-size: 11px !important;
+            letter-spacing: 0.12em !important;
+            line-height: 1.5 !important;
           }
         }
         .hero-resume-pill:hover {

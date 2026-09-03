@@ -26,13 +26,12 @@ const BackToTop = () => {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.8 }}
           onClick={scrollToTop}
+          className="back-to-top-btn"
           style={{
             position: 'fixed',
-            bottom: '28px',
-            right: '28px',
-            zIndex: 50,
-            width: '44px',
-            height: '44px',
+            zIndex: 900,
+            width: '42px',
+            height: '42px',
             borderRadius: '12px',
             background: 'var(--surface)',
             border: '1px solid var(--border)',
@@ -41,16 +40,28 @@ const BackToTop = () => {
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer',
-            boxShadow: '0 4px 16px var(--shadow-color)',
+            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)',
             transition: 'color 0.2s, border-color 0.2s',
           }}
-          whileHover={{ scale: 1.05, borderColor: 'var(--accent)' }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.08, borderColor: 'var(--accent)' }}
+          whileTap={{ scale: 0.92 }}
           aria-label="Back to top"
         >
           <ArrowUp size={16} />
         </motion.button>
       )}
+      <style>{`
+        .back-to-top-btn {
+          bottom: 28px;
+          right: 28px;
+        }
+        @media (max-width: 859px) {
+          .back-to-top-btn {
+            bottom: 84px !important;
+            right: 18px !important;
+          }
+        }
+      `}</style>
     </AnimatePresence>
   );
 };
