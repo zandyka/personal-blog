@@ -30,14 +30,12 @@ const HomePage = () => {
       <SkillsTypography />
 
       {/* Gallery */}
-      <section className="section">
-        <Gallery />
-      </section>
+      <Gallery />
 
       {/* Contact */}
-      <section className="section" style={{ borderTop: '1px solid var(--border)' }}>
+      <div style={{ borderTop: '1px solid var(--border)' }}>
         <Contact />
-      </section>
+      </div>
     </motion.div>
   );
 };

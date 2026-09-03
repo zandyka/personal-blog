@@ -102,10 +102,10 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" style={{ padding: '90px 0', background: 'var(--bg)', position: 'relative' }}>
+    <section id="contact" style={{ padding: '48px 0', background: 'var(--bg)', position: 'relative' }}>
       <div className="container" ref={ref}>
         {/* Section Header */}
-        <motion.div {...fadeUp(0)} style={{ marginBottom: '48px', textAlign: 'center' }}>
+        <motion.div {...fadeUp(0)} style={{ marginBottom: '28px', textAlign: 'center' }}>
           <span
             style={{
               fontSize: '0.8rem',

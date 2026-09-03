@@ -126,7 +126,7 @@ const Projects = () => {
       id="projects"
       ref={ref}
       style={{
-        padding: '90px 20px',
+        padding: '44px 20px',
         background: 'var(--bg)',
         position: 'relative',
         overflow: 'hidden',
@@ -143,7 +143,7 @@ const Projects = () => {
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
           variants={fadeUp}
-          style={{ textAlign: 'center', marginBottom: '60px' }}
+          style={{ textAlign: 'center', marginBottom: '28px' }}
         >
           <span
             style={{
@@ -432,14 +432,14 @@ const Projects = () => {
         </motion.div>
 
         {/* Section Divider */}
-        <div style={{ height: '60px' }} />
+        <div style={{ height: '36px' }} />
 
         {/* Design Section Header */}
         <motion.div
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
           variants={fadeUp}
-          style={{ textAlign: 'center', marginBottom: '40px' }}
+          style={{ textAlign: 'center', marginBottom: '24px' }}
         >
           <span
             style={{

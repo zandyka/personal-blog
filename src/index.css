@@ -219,17 +219,17 @@ img { display: block; max-width: 100%; }
   * { cursor: auto !important; }
   .container { padding: 0 16px; }
   .hide-mobile { display: none !important; }
-  .page-container { padding-top: 64px; padding-bottom: 80px; }
-  body { padding-bottom: 72px; }
+  .page-container { padding-top: 52px; padding-bottom: 72px; }
+  body { padding-bottom: 64px; }
 }
 
 /* ============================================
    SECTION PADDING
    ============================================ */
-.section { padding: 100px 0; }
-.section-sm { padding: 60px 0; }
+.section { padding: 44px 0; }
+.section-sm { padding: 28px 0; }
 
 @media (max-width: 768px) {
-  .section { padding: 72px 0; }
-  .section-sm { padding: 40px 0; }
+  .section { padding: 32px 0; }
+  .section-sm { padding: 20px 0; }
 }

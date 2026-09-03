@@ -8,7 +8,7 @@ const SkillsTypography = () => {
     <section
       ref={ref}
       style={{
-        padding: 'clamp(80px, 12vh, 140px) 0',
+        padding: 'clamp(44px, 6vh, 64px) 0',
         background: 'var(--bg)',
         borderTop: '1px solid var(--border)',
         borderBottom: '1px solid var(--border)',
@@ -20,7 +20,7 @@ const SkillsTypography = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          style={{ marginBottom: 'clamp(40px, 6vh, 72px)' }}
+          style={{ marginBottom: 'clamp(20px, 3vh, 32px)' }}
         >
           <h2 style={{
             fontSize: 'clamp(2.2rem, 5.5vw, 4.5rem)',

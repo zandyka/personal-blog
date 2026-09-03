@@ -238,7 +238,7 @@ export default function Gallery() {
     : GALLERY_ITEMS.filter(i => i.category === activeCategory);
 
   return (
-    <section style={{ padding: '100px 0', background: 'var(--bg)' }}>
+    <section style={{ padding: '48px 0', background: 'var(--bg)' }}>
       <div className="container">
         {/* Header */}
         <motion.div
@@ -246,7 +246,7 @@ export default function Gallery() {
           initial={{ opacity: 0, y: 24 }}
           animate={titleVisible ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          style={{ marginBottom: '48px' }}
+          style={{ marginBottom: '24px' }}
         >
           <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '2px' }}>
             Visual Work

@@ -269,7 +269,7 @@ const Experience = () => {
       id="experience"
       ref={ref}
       style={{
-        padding: '100px 24px',
+        padding: '44px 20px',
         background: 'var(--bg)',
         position: 'relative',
         overflow: 'hidden',
@@ -286,7 +286,7 @@ const Experience = () => {
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
           variants={fadeUp}
-          style={{ textAlign: 'center', marginBottom: '60px' }}
+          style={{ textAlign: 'center', marginBottom: '32px' }}
         >
           <span
             style={{
@@ -368,7 +368,7 @@ const Experience = () => {
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
           variants={fadeUp}
-          style={{ textAlign: 'center', marginTop: '90px', marginBottom: '60px' }}
+          style={{ textAlign: 'center', marginTop: '44px', marginBottom: '32px' }}
         >
           <span
             style={{

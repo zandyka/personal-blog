@@ -62,7 +62,7 @@ const Certifications = () => {
       id="certifications"
       ref={ref}
       style={{
-        padding: '90px 20px',
+        padding: '44px 20px',
         background: 'var(--bg)',
         position: 'relative',
         overflow: 'hidden',
@@ -79,7 +79,7 @@ const Certifications = () => {
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
           variants={fadeUp}
-          style={{ textAlign: 'center', marginBottom: '60px' }}
+          style={{ textAlign: 'center', marginBottom: '28px' }}
         >
           <span
             style={{

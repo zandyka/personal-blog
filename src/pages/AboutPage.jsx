@@ -7,9 +7,9 @@ export default function AboutPage() {
     <div className="page-container">
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
         <About />
-        <section className="section" style={{ borderTop: '1px solid var(--border)' }}>
+        <div style={{ borderTop: '1px solid var(--border)' }}>
           <Gallery />
-        </section>
+        </div>
       </motion.div>
     </div>
   );

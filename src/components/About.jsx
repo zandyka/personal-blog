@@ -111,7 +111,7 @@ const About = () => {
       id="about"
       ref={ref}
       style={{
-        padding: '90px 24px',
+        padding: '44px 20px',
         background: 'var(--bg)',
         position: 'relative',
         overflow: 'hidden',
@@ -128,7 +128,7 @@ const About = () => {
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
           variants={fadeUp}
-          style={{ textAlign: 'center', marginBottom: '50px' }}
+          style={{ textAlign: 'center', marginBottom: '28px' }}
         >
           <span
             style={{

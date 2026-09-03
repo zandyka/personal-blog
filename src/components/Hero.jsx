@@ -27,7 +27,7 @@ const Hero = () => {
       id="hero"
       style={{
         position: 'relative',
-        minHeight: '100vh',
+        minHeight: 'clamp(480px, 80vh, 740px)',
         width: '100%',
         display: 'flex',
         flexDirection: 'column',
@@ -52,8 +52,8 @@ const Hero = () => {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        paddingTop: 'clamp(72px, 12vh, 160px)',
-        paddingBottom: 'clamp(40px, 6vh, 80px)',
+        paddingTop: 'clamp(40px, 6vh, 72px)',
+        paddingBottom: 'clamp(20px, 3vh, 40px)',
         zIndex: 10,
         maxWidth: '1400px',
         width: '100%',

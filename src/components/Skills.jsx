@@ -692,7 +692,7 @@ const Skills = ({ preview = false }) => {
       id="skills"
       ref={ref}
       style={{
-        padding: '90px 20px',
+        padding: '44px 20px',
         background: 'var(--bg)',
         position: 'relative',
         overflow: 'hidden',
@@ -709,7 +709,7 @@ const Skills = ({ preview = false }) => {
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
           variants={fadeUp}
-          style={{ textAlign: 'center', marginBottom: '40px' }}
+          style={{ textAlign: 'center', marginBottom: '24px' }}
         >
           <span
             style={{
