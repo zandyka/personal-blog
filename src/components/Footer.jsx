@@ -281,12 +281,7 @@ const Footer = () => {
             padding-left: 20px !important;
           }
           .footer-time-col {
-            width: 100% !important;
-            max-width: 220px !important;
-            background: var(--surface) !important;
-            border: 1px solid var(--border) !important;
-            border-radius: 12px !important;
-            padding: 14px 16px !important;
+            display: none !important;
           }
         }
       `}</style>

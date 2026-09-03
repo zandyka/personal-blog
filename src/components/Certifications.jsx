@@ -14,7 +14,7 @@ const CERTIFICATIONS = [
   {
     id: 'vsga-jmp',
     title: 'Junior Mobile Programmer (JMP)',
-    issuer: 'VSGA Kominfo — Digital Talent Scholarship',
+    issuer: 'VSGA Kominfo — DTS',
     period: 'April 2023 - Mei 2023',
     focusArea: 'Pengembangan Aplikasi Android, Arsitektur Mobile & Siklus Hidup Aplikasi',
     credentialType: 'Standar SKKNI',
@@ -24,7 +24,7 @@ const CERTIFICATIONS = [
   {
     id: 'vsga-jwd',
     title: 'Junior Web Developer (JWD)',
-    issuer: 'VSGA Kominfo — Digital Talent Scholarship',
+    issuer: 'VSGA Kominfo — DTS',
     period: 'Agustus 2024',
     focusArea: 'Pemrograman Web Dinamis, Database Integration & Arsitektur RESTful API',
     credentialType: 'Standar SKKNI',
@@ -33,11 +33,11 @@ const CERTIFICATIONS = [
   },
   {
     id: 'dicoding-fabric',
-    title: 'Belajar Penerapan Data Science dengan Microsoft Fabric',
-    issuer: 'Dicoding Indonesia & Microsoft',
+    title: 'Data Science dengan Microsoft Fabric',
+    issuer: 'Dicoding & Microsoft',
     period: '2025',
     focusArea: 'Penerapan Data Science Modern, Cloud Analytics & Ekosistem Microsoft Fabric',
-    credentialType: 'Industry Certification',
+    credentialType: 'Industry Cert',
     skillsGained: ['Data Science', 'Microsoft Fabric', 'Cloud Analytics', 'Data Engineering'],
     image: '/certificates/sertifikat dicoding belajar penerapan data science dengan microsoft fabric.webp',
   },
@@ -47,107 +47,107 @@ const CERTIFICATIONS = [
     issuer: 'Google & Gemini Academy',
     period: '2025',
     focusArea: 'Generative AI, Prompt Engineering & Model Multimodal Google Gemini',
-    credentialType: 'Global Tech Certification',
+    credentialType: 'Global Tech Cert',
     skillsGained: ['Generative AI', 'Prompt Engineering', 'Google Gemini', 'Multimodal AI'],
     image: '/certificates/sertif gemini certified student.webp',
   },
   {
     id: 'claude-ai',
     title: 'Claude AI Certified Practitioner',
-    issuer: 'Anthropic & AI Training Academy',
+    issuer: 'Anthropic & AI Academy',
     period: '2025',
     focusArea: 'Large Language Models, Automasi Alur Kerja AI & Prompt Design',
-    credentialType: 'Global Tech Certification',
+    credentialType: 'Global Tech Cert',
     skillsGained: ['Claude AI', 'LLM Workflow', 'Prompt Design', 'AI Automation'],
     image: '/certificates/sertif ai claude zacky andyka-1.webp',
   },
   {
     id: 'huawei-ai',
-    title: 'Artificial Intelligence Fundamentals & Applications',
+    title: 'AI Fundamentals & Applications',
     issuer: 'Huawei ICT Academy',
     period: '2025',
     focusArea: 'Konsep Kecerdasan Buatan, Algoritma Machine Learning & Model Terapan',
-    credentialType: 'Huawei Certification',
+    credentialType: 'Huawei Cert',
     skillsGained: ['Artificial Intelligence', 'Machine Learning', 'Neural Networks', 'Python'],
     image: '/certificates/Sertif Ai Zacky Andyka.webp',
   },
   {
     id: 'huawei-datacom',
-    title: 'Data Communication & Network Fundamentals',
+    title: 'Data Communication & Network',
     issuer: 'Huawei ICT Academy',
     period: '2025',
     focusArea: 'Arsitektur Komunikasi Data, Protokol Jaringan & Routing Switching',
-    credentialType: 'Huawei Certification',
+    credentialType: 'Huawei Cert',
     skillsGained: ['Data Communication', 'Network Protocols', 'Routing & Switching', 'IP Addressing'],
     image: '/certificates/Sertif Datacom Zacky Andyka.webp',
   },
   {
     id: 'mbkm-bpjs',
-    title: 'Sertifikat Magang MBKM BPJS Ketenagakerjaan',
-    issuer: 'BPJS Ketenagakerjaan & Kemendikbudristek',
+    title: 'Sertifikat Magang MBKM BPJS',
+    issuer: 'BPJS Ketenagakerjaan',
     period: 'Sep 2025 - Des 2025',
     focusArea: 'IT Support, Pemeliharaan Database Peserta & Operasional Dashboard',
-    credentialType: 'Magang Berdampak MBKM',
+    credentialType: 'Magang MBKM',
     skillsGained: ['IT Support', 'Database Operations', 'JMO Troubleshooting', 'Administrative Governance'],
     image: '/certificates/sertif akhir mbkm bpjs-1.webp',
   },
   {
     id: 'mbkm-bsi',
-    title: 'Sertifikat Magang MBKM Bank Syariah Indonesia',
-    issuer: 'PT Bank Syariah Indonesia Tbk (BSI)',
+    title: 'Sertifikat Magang MBKM Bank BSI',
+    issuer: 'PT Bank Syariah Indonesia',
     period: 'Mar 2025 - Mei 2025',
     focusArea: 'Back Office Operations, Verifikasi Data Perbankan & Kepatuhan Arsip',
-    credentialType: 'Magang Berdampak MBKM',
+    credentialType: 'Magang MBKM',
     skillsGained: ['Banking Operations', 'Financial Data Verification', 'Archival Management'],
     image: '/certificates/sertif mbkm bsi-1.webp',
   },
   {
     id: 'ukk-bnsp',
-    title: 'Sertifikat Uji Kompetensi Keahlian (UKK) TKJ',
-    issuer: 'Badan Nasional Sertifikasi Profesi (BNSP) / LSP',
+    title: 'Uji Kompetensi Keahlian (UKK) TKJ',
+    issuer: 'BNSP / LSP',
     period: '2023',
     focusArea: 'Administrasi Server, Troubleshooting Jaringan & Sistem Komputer',
-    credentialType: 'Sertifikasi BNSP / LSP',
+    credentialType: 'Sertifikasi BNSP',
     skillsGained: ['Network Administration', 'Server Configuration', 'Hardware & System Support'],
     image: '/certificates/sertif kompetensi ukk-1.webp',
   },
   {
     id: 'lomba-it-network',
-    title: 'Penghargaan Kejuaraan IT Network Configuration',
-    issuer: 'Kompetisi Bidang Kejuruan Jaringan Komputer',
+    title: 'Kejuaraan IT Network Configuration',
+    issuer: 'Kompetisi SMK Jaringan',
     period: '2022',
     focusArea: 'Konfigurasi Routing, Subnetting & Troubleshooting Jaringan Terpadu',
-    credentialType: 'Penghargaan Kejuaraan',
+    credentialType: 'Penghargaan',
     skillsGained: ['Network Configuration', 'Network Troubleshooting', 'Subnetting'],
     image: '/certificates/sertif it network configuration hut smk.webp',
   },
   {
     id: 'lomba-fotografi-coca-cola',
-    title: 'Penghargaan Lomba Fotografi Produk Coca-Cola',
-    issuer: 'Kompetisi Fotografi Komersial Kreatif',
+    title: 'Lomba Fotografi Produk Coca-Cola',
+    issuer: 'Kompetisi Fotografi Komersial',
     period: '2022',
     focusArea: 'Fotografi Produk Komersial, Studio Lighting & Visual Composition',
-    credentialType: 'Penghargaan Kejuaraan',
+    credentialType: 'Penghargaan',
     skillsGained: ['Commercial Photography', 'Product Lighting', 'Color Grading', 'Visual Composition'],
     image: '/certificates/sertif lomba fotografi produk coca cola.webp',
   },
   {
     id: 'lomba-fotografi-smk',
     title: 'Penghargaan Lomba Fotografi SMK',
-    issuer: 'Ajang Kompetisi Fotografi Kejuruan',
+    issuer: 'Ajang Fotografi Kejuruan',
     period: '2022',
     focusArea: 'Eksplorasi Sudut Pandang, Komposisi Visual & Storytelling Fotografi',
-    credentialType: 'Penghargaan Kejuaraan',
+    credentialType: 'Penghargaan',
     skillsGained: ['Photography Composition', 'Street Photography', 'Visual Storytelling'],
     image: '/certificates/sertif lomba fotografi smk-1.webp',
   },
   {
     id: 'training-english',
-    title: 'Pelatihan Bahasa Inggris & Komunikasi Profesional',
-    issuer: 'English Language Development Program',
+    title: 'Pelatihan Bahasa Inggris Profesional',
+    issuer: 'English Language Program',
     period: '2023',
     focusArea: 'Komunikasi Bisnis, Presentasi Teknis & Tata Bahasa Inggris Kerja',
-    credentialType: 'Pelatihan Profesional',
+    credentialType: 'Pelatihan',
     skillsGained: ['Professional English', 'Workplace Communication', 'Technical Vocabulary'],
     image: '/certificates/sertif training bahasa inggris-1.webp',
   },
@@ -192,6 +192,7 @@ const Certifications = () => {
         style={{
           maxWidth: '1200px',
           margin: '0 auto',
+          width: '100%',
         }}
       >
         {/* Section Header */}
@@ -278,9 +279,13 @@ const Certifications = () => {
                 boxShadow: '0 6px 20px rgba(0, 0, 0, 0.2)',
                 position: 'relative',
                 cursor: 'pointer',
+                minWidth: 0,
+                width: '100%',
+                overflow: 'hidden',
+                boxSizing: 'border-box',
               }}
             >
-              <div>
+              <div style={{ width: '100%', minWidth: 0 }}>
                 {/* Certificate Photo Frame */}
                 <div
                   className="cert-photo-frame"
@@ -296,6 +301,7 @@ const Certifications = () => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    minWidth: 0,
                   }}
                 >
                   <img
@@ -305,6 +311,7 @@ const Certifications = () => {
                     style={{
                       width: '100%',
                       height: '100%',
+                      maxWidth: '100%',
                       objectFit: 'cover',
                       display: 'block',
                       transition: 'transform 0.35s ease',
@@ -316,8 +323,8 @@ const Certifications = () => {
                       position: 'absolute',
                       top: '6px',
                       right: '6px',
-                      width: '24px',
-                      height: '24px',
+                      width: '22px',
+                      height: '22px',
                       borderRadius: '6px',
                       background: 'rgba(0, 0, 0, 0.65)',
                       backdropFilter: 'blur(6px)',
@@ -327,7 +334,7 @@ const Certifications = () => {
                       color: '#ffffff',
                     }}
                   >
-                    <ZoomIn size={13} />
+                    <ZoomIn size={12} />
                   </div>
                 </div>
 
@@ -338,8 +345,10 @@ const Certifications = () => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    gap: '6px',
+                    gap: '4px',
                     marginBottom: '6px',
+                    minWidth: 0,
+                    width: '100%',
                   }}
                 >
                   <span
@@ -349,7 +358,7 @@ const Certifications = () => {
                       fontWeight: 700,
                       color: 'var(--accent)',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.5px',
+                      letterSpacing: '0.4px',
                       whiteSpace: 'nowrap',
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
@@ -384,6 +393,7 @@ const Certifications = () => {
                     fontWeight: 600,
                     color: 'var(--text)',
                     lineHeight: 1.3,
+                    wordBreak: 'break-word',
                   }}
                 >
                   {cert.title}
@@ -396,6 +406,9 @@ const Certifications = () => {
                     margin: '0 0 6px',
                     color: 'var(--text-muted)',
                     lineHeight: 1.35,
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
                   }}
                 >
                   {cert.issuer}
@@ -445,11 +458,6 @@ const Certifications = () => {
                     </span>
                   ))}
                 </div>
-              </div>
-
-              {/* Mobile "Tap for preview" indicator */}
-              <div className="cert-mobile-tap">
-                <span>Ketuk untuk zoom &amp; detail &rarr;</span>
               </div>
             </motion.div>
           ))}
@@ -594,8 +602,9 @@ const Certifications = () => {
         <style>{`
           .cert-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 18px;
+            width: 100%;
           }
           .cert-card {
             padding: 16px;
@@ -609,61 +618,56 @@ const Certifications = () => {
           .cert-desktop-details {
             display: block;
           }
-          .cert-mobile-tap {
-            display: none;
-          }
 
-          /* Tablet & Mobile: Clean, unified 2 Columns */
-          @media (max-width: 820px) {
+          /* Tablet & Mobile: 2 Compact Columns Perfectly Fitting Screen */
+          @media (max-width: 860px) {
+            #certifications {
+              padding: 36px 12px 60px !important;
+            }
             .cert-grid {
-              grid-template-columns: repeat(2, 1fr) !important;
-              gap: 10px !important;
+              grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+              gap: 8px !important;
+              width: 100% !important;
             }
             .cert-card {
-              padding: 10px !important;
-              border-radius: 12px !important;
+              padding: 8px !important;
+              border-radius: 10px !important;
+              border-left-width: 2.5px !important;
+            }
+            .cert-photo-frame {
+              margin-bottom: 6px !important;
+              border-radius: 6px !important;
             }
             .cert-header-meta {
               flex-direction: column !important;
               align-items: flex-start !important;
-              gap: 2px !important;
-              margin-bottom: 4px !important;
+              gap: 1px !important;
+              margin-bottom: 3px !important;
             }
             .cert-badge {
-              font-size: 0.6rem !important;
-              letter-spacing: 0.3px !important;
+              font-size: 0.54rem !important;
+              letter-spacing: 0.2px !important;
+              line-height: 1.2 !important;
             }
             .cert-period {
-              font-size: 0.62rem !important;
+              font-size: 0.56rem !important;
             }
             .cert-title {
-              font-size: 0.82rem !important;
-              line-height: 1.25 !important;
-              margin-bottom: 3px !important;
+              font-size: 0.72rem !important;
+              line-height: 1.22 !important;
+              margin-bottom: 2px !important;
               display: -webkit-box !important;
               -webkit-line-clamp: 2 !important;
               -webkit-box-orient: vertical !important;
               overflow: hidden !important;
             }
             .cert-issuer {
-              font-size: 0.7rem !important;
+              font-size: 0.62rem !important;
               line-height: 1.2 !important;
-              margin-bottom: 4px !important;
-              white-space: nowrap !important;
-              overflow: hidden !important;
-              text-overflow: ellipsis !important;
+              margin: 0 !important;
             }
             .cert-desktop-details {
               display: none !important;
-            }
-            .cert-mobile-tap {
-              display: block !important;
-              margin-top: 6px !important;
-              padding-top: 6px !important;
-              border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
-              font-size: 0.62rem !important;
-              color: var(--accent) !important;
-              font-weight: 500 !important;
             }
           }
         `}</style>
