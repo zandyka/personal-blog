@@ -8,92 +8,92 @@ const GALLERY_ITEMS = [
   {
     id: 1,
     category: 'Photography',
-    title: 'Portrait Session',
-    caption: 'Natural light portrait photography and street framing',
+    title: 'Fotografi',
+    caption: 'fotografi 9_16',
     aspectRatio: '9 / 16',
     ratioLabel: '9:16',
-    bg: 'linear-gradient(145deg, #180503 0%, #FF3B1D 60%, #FFAA00 100%)',
-    alt: 'Portrait Session in 9:16 vertical ratio',
+    src: '/gallery/fotografi 9_16.png',
+    alt: 'Fotografi 9:16',
   },
   {
     id: 2,
     category: 'Creative',
-    title: 'Design Work — Figma',
-    caption: 'Visual identity and vector asset creation',
+    title: 'X Banner Produk Inovasi',
+    caption: 'x banner produk inovasi 1_1',
     aspectRatio: '1 / 1',
     ratioLabel: '1:1',
-    bg: 'linear-gradient(135deg, #FFAA00 0%, #FF3B1D 100%)',
-    alt: 'Figma Design Work in 1:1 square ratio',
+    src: '/gallery/x banner produk inovasi 1_1.png',
+    alt: 'X Banner Produk Inovasi 1:1',
   },
   {
     id: 3,
-    category: 'Photography',
-    title: 'Urban Landscape',
-    caption: 'Street architectural exploration and lighting',
+    category: 'Creative',
+    title: 'Design ID Card',
+    caption: 'design id card 4_3',
     aspectRatio: '4 / 3',
     ratioLabel: '4:3',
-    bg: 'linear-gradient(145deg, #0d0605 0%, #24110d 60%, #FF3B1D 100%)',
-    alt: 'Urban Landscape in 4:3 photo ratio',
+    src: '/gallery/design id card 4_3.png',
+    alt: 'Design ID Card 4:3',
   },
   {
     id: 4,
     category: 'Events',
-    title: 'HIMTI Documentation',
-    caption: 'Stage and media coverage for HIMTI USU',
+    title: 'Event Organizer Rindu Tenang',
+    caption: 'event organizer rindu tenang 16_9',
     aspectRatio: '16 / 9',
     ratioLabel: '16:9',
-    bg: 'linear-gradient(135deg, #09090b 0%, #1f1412 50%, #FF3B1D 100%)',
-    alt: 'HIMTI Documentation in 16:9 cinematic ratio',
+    src: '/gallery/event organizer rindu tenang 16_9.png',
+    alt: 'Event Organizer Rindu Tenang 16:9',
   },
   {
     id: 5,
-    category: 'Creative',
-    title: 'Social Media Stories',
-    caption: 'Engaging animated vertical editorial stories',
+    category: 'Events',
+    title: 'Event',
+    caption: 'event 9_16',
     aspectRatio: '9 / 16',
     ratioLabel: '9:16',
-    bg: 'linear-gradient(135deg, #FF3B1D 0%, #FF7744 100%)',
-    alt: 'Social Media Stories in 9:16 vertical format',
+    src: '/gallery/event 9_16.png',
+    alt: 'Event 9:16',
   },
   {
     id: 6,
     category: 'Photography',
-    title: 'Nature & Textures',
-    caption: 'Organic textures and natural light study',
+    title: 'Tim Publikasi Dokumentasi PKKMB Vokasi 2025',
+    caption: 'tim publikasi dokumentasi pkkmb vokasi 2025 4_3',
     aspectRatio: '4 / 3',
     ratioLabel: '4:3',
-    bg: 'linear-gradient(145deg, #140908 0%, #2a110e 50%, #FF4500 100%)',
-    alt: 'Nature and Textures in 4:3 ratio',
+    src: '/gallery/tim publikasi dokumentasi pkkmb vokasi 2025 4_3.png',
+    alt: 'Tim Publikasi Dokumentasi PKKMB Vokasi 2025 4:3',
   },
   {
     id: 7,
     category: 'Creative',
-    title: 'Brand Identity',
-    caption: 'Minimalist branding and poster design',
+    title: 'Banner Sidang',
+    caption: 'banner sidang 1_1',
     aspectRatio: '1 / 1',
     ratioLabel: '1:1',
-    bg: 'linear-gradient(135deg, #FF5500 0%, #FFAA00 100%)',
-    alt: 'Brand Identity in 1:1 square ratio',
+    src: '/gallery/banner sidang 1_1.png',
+    alt: 'Banner Sidang 1:1',
   },
   {
     id: 8,
     category: 'Events',
-    title: 'Team Collaboration',
-    caption: 'Team planning and milestone documentation',
+    title: 'Mengajar Komputer di PKBM Bintula',
+    caption: 'mengajar komputer di pkbm bintula 16_9',
     aspectRatio: '16 / 9',
     ratioLabel: '16:9',
-    bg: 'linear-gradient(135deg, #18181c 0%, #2b1f1a 50%, #FFAA00 100%)',
-    alt: 'Team Collaboration in 16:9 ratio',
+    src: '/gallery/mengajar komputer di pkbm bintula 16_9.png',
+    alt: 'Mengajar Komputer di PKBM Bintula 16:9',
   },
   {
     id: 9,
     category: 'Events',
-    title: 'Tech Exhibition',
-    caption: 'Student technology innovation showcase at USU',
+    title: 'Magang BPJS',
+    caption: 'magang bpjs 9_16',
     aspectRatio: '9 / 16',
     ratioLabel: '9:16',
-    bg: 'linear-gradient(135deg, #1a0805 0%, #FF3B1D 50%, #FFAA00 100%)',
-    alt: 'Tech Exhibition in 9:16 vertical format',
+    src: '/gallery/magang bpjs 9_16.png',
+    alt: 'Magang BPJS 9:16',
   },
 ];
 
@@ -157,32 +157,21 @@ function GalleryCard({ item, index, onClick }) {
       >
         {item.ratioLabel}
       </div>
-      {/* Background artwork with smooth zoom */}
-      <div
+      {/* Real Image artwork with smooth zoom */}
+      <img
+        src={item.src}
+        alt={item.title}
+        loading="lazy"
         style={{
           position: 'absolute',
           inset: 0,
-          background: item.bg,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
           transition: 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-          transform: hovered ? 'scale(1.08)' : 'scale(1)',
+          transform: hovered ? 'scale(1.06)' : 'scale(1)',
         }}
       />
-
-      {/* Elegant idle category icon in center (faint, disappears on hover) */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          opacity: hovered ? 0 : 0.3,
-          transition: 'opacity 0.25s ease',
-          pointerEvents: 'none',
-        }}
-      >
-        <CategoryIcon size={26} color="#ffffff" />
-      </div>
 
       {/* Hover / tap overlay */}
       <motion.div
@@ -283,16 +272,26 @@ function Lightbox({ item, onClose }) {
           boxShadow: '0 24px 80px rgba(0,0,0,0.5)',
         }}
       >
-        <div style={{ position: 'relative', aspectRatio: '16 / 10', width: '100%', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', inset: 0, background: item.bg }} />
-          <div style={{
-            position: 'absolute', inset: 0,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '1rem', color: 'rgba(255,255,255,0.5)',
-            fontWeight: 400, letterSpacing: '1px',
-          }}>
-            {item.alt}
-          </div>
+        <div style={{
+          position: 'relative',
+          width: '100%',
+          maxHeight: '70vh',
+          background: '#070709',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          overflow: 'hidden',
+        }}>
+          <img
+            src={item.src}
+            alt={item.title}
+            style={{
+              maxWidth: '100%',
+              maxHeight: '70vh',
+              objectFit: 'contain',
+              display: 'block',
+            }}
+          />
         </div>
         <div style={{ padding: '20px 24px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>

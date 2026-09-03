@@ -209,68 +209,75 @@ const About = () => {
                 }}
               />
 
-              {/* Placeholder Inner Box */}
+              {/* Real Profile Photo Frame */}
               <div
                 style={{
                   width: '100%',
                   height: '100%',
                   borderRadius: '14px',
-                  background: 'var(--surface-2)',
-                  border: '1px dashed var(--border)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '12px',
-                  textAlign: 'center',
-                  padding: '20px',
                   position: 'relative',
                   overflow: 'hidden',
+                  background: 'var(--surface-2)',
                 }}
               >
+                <img
+                  src="/about/profile.png"
+                  alt="Muhammad Daffa Zacky Andyka"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    display: 'block',
+                    transition: 'transform 0.5s ease',
+                  }}
+                />
                 <div
                   style={{
-                    width: '72px',
-                    height: '72px',
-                    borderRadius: '50%',
-                    background: 'var(--accent-2-dim)',
-                    border: '1.5px solid var(--accent-2)',
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.15) 45%, transparent 100%)',
+                    pointerEvents: 'none',
+                  }}
+                />
+                <div
+                  style={{
+                    position: 'absolute',
+                    bottom: '12px',
+                    left: '12px',
+                    right: '12px',
                     display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'var(--accent-2)',
-                    fontSize: '1.5rem',
-                    fontWeight: 700,
+                    flexDirection: 'column',
+                    gap: '4px',
                   }}
                 >
-                  ZA
-                </div>
-
-                <div>
-                  <h4 style={{ margin: '0 0 4px', fontSize: '1rem', color: 'var(--text)', fontWeight: 600 }}>
+                  <span
+                    style={{
+                      fontSize: '1rem',
+                      fontWeight: 700,
+                      color: '#ffffff',
+                      textShadow: '0 2px 8px rgba(0,0,0,0.8)',
+                    }}
+                  >
                     Zacky Andyka
-                  </h4>
-                  <p style={{ margin: 0, fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                    3:4 Profile Photo Placeholder
-                  </p>
-                </div>
-
-                <div
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    marginTop: '4px',
-                    padding: '6px 12px',
-                    borderRadius: '8px',
-                    background: 'var(--surface)',
-                    border: '1px solid var(--border)',
-                    fontSize: '0.75rem',
-                    color: 'var(--text)',
-                  }}
-                >
-                  <Award size={14} style={{ color: 'var(--accent)' }} />
-                  <span>Teknik Informatika USU</span>
+                  </span>
+                  <div
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '5px',
+                      padding: '4px 8px',
+                      borderRadius: '6px',
+                      background: 'rgba(15, 15, 20, 0.88)',
+                      backdropFilter: 'blur(8px)',
+                      border: '1px solid rgba(255, 255, 255, 0.12)',
+                      fontSize: '0.72rem',
+                      color: '#f7f7fa',
+                      width: 'fit-content',
+                    }}
+                  >
+                    <Award size={12} style={{ color: 'var(--accent)' }} />
+                    <span>Teknik Informatika USU</span>
+                  </div>
                 </div>
               </div>
             </div>
