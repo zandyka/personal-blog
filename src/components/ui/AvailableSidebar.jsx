@@ -12,7 +12,7 @@ import { useSoundContext } from './SoundProvider'
  * @param {() => void} onClick - Optional click handler
  */
 export default function AvailableSidebar({
-  text = 'AVAILABLE FOR OPPORTUNITY',
+  text = 'AVAILABLE FOR WORK',
   className = '',
   style = {},
   onClick,

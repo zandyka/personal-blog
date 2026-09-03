@@ -6,9 +6,9 @@ import { useSoundContext } from './ui/SoundProvider';
 import SpotlightOverlay from './ui/SpotlightOverlay';
 
 const HERO_LINES = [
-  { text: 'WEB &', delay: 0 },
-  { text: 'MOBILE', delay: 0.15 },
-  { text: 'DEVELOPER', delay: 0.3 },
+  { text: 'GRAPHIC DESIGNER,', delay: 0 },
+  { text: 'WEB &', delay: 0.15 },
+  { text: 'AI ENGINEER', delay: 0.3 },
 ];
 
 const SOCIALS = [
@@ -89,9 +89,9 @@ const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               style={{
-                fontSize: 'clamp(3.2rem, 11vw, 11rem)',
+                fontSize: 'clamp(2.2rem, 7.5vw, 7.8rem)',
                 fontWeight: 900,
-                lineHeight: 0.85,
+                lineHeight: 0.88,
                 letterSpacing: '-0.04em',
                 color: 'var(--text)',
                 margin: 0,
@@ -99,20 +99,20 @@ const Hero = () => {
               }}
               className="text-gradient-static"
             >
-              WEB &
+              GRAPHIC DESIGNER,
             </motion.h1>
           </div>
 
-          {/* Line 2: MOBILE with floating socials */}
+          {/* Line 2: WEB & with floating socials */}
           <div style={{ display: 'flex', gap: '32px', alignItems: 'center', position: 'relative' }}>
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.35, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               style={{
-                fontSize: 'clamp(3.2rem, 11vw, 11rem)',
+                fontSize: 'clamp(2.2rem, 7.5vw, 7.8rem)',
                 fontWeight: 900,
-                lineHeight: 0.85,
+                lineHeight: 0.88,
                 letterSpacing: '-0.04em',
                 color: 'var(--text)',
                 margin: 0,
@@ -122,7 +122,7 @@ const Hero = () => {
               }}
               className="text-gradient-static"
             >
-              <span>MOBILE</span>
+              <span>WEB &amp;</span>
               <motion.span
                 animate={{ scale: [1, 1.2, 1] }}
                 transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut' }}
@@ -162,16 +162,16 @@ const Hero = () => {
             </div>
           </div>
 
-          {/* Line 3: DEVELOPER + tag line */}
+          {/* Line 3: AI ENGINEER + tag line */}
           <div className="hero-line-3" style={{ display: 'flex', gap: '32px', alignItems: 'flex-end', position: 'relative' }}>
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               style={{
-                fontSize: 'clamp(3.2rem, 11vw, 11rem)',
+                fontSize: 'clamp(2.2rem, 7.5vw, 7.8rem)',
                 fontWeight: 900,
-                lineHeight: 0.85,
+                lineHeight: 0.88,
                 letterSpacing: '-0.04em',
                 color: 'var(--text)',
                 margin: 0,
@@ -179,7 +179,7 @@ const Hero = () => {
               }}
               className="text-gradient-static"
             >
-              DEVELOPER
+              AI ENGINEER
             </motion.h1>
 
             <motion.p
@@ -401,12 +401,7 @@ const Hero = () => {
             gap: 6px !important;
           }
           .hero-intro-text {
-            display: block !important;
-            max-width: 100% !important;
-            font-size: 11px !important;
-            letter-spacing: 0.15em !important;
-            line-height: 1.5 !important;
-            margin-bottom: 4px !important;
+            display: none !important;
           }
           .hero-tagline-text {
             display: block !important;

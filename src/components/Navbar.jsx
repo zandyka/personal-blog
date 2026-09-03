@@ -310,15 +310,19 @@ export default function Navbar() {
           </a>
         </nav>
 
-        {/* Right: Theme Toggle */}
+        {/* Right: Circular Icon Actions (Fullscreen, Sound/Globe, Theme) */}
         <div
           style={{
             pointerEvents: 'auto',
             display: 'flex',
             alignItems: 'center',
+            gap: '10px',
           }}
         >
-          <ThemeToggle />
+          {/* Theme Toggle (Sun / Moon) */}
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <ThemeToggle />
+          </div>
         </div>
       </header>
 
@@ -436,8 +440,8 @@ export default function Navbar() {
           title="Contact Email"
           aria-label="Contact Email"
           style={{
-            width: '38px',
-            height: '38px',
+            width: '36px',
+            height: '36px',
             borderRadius: '50%',
             border: '1px solid var(--border)',
             background: 'rgba(255, 255, 255, 0.03)',
@@ -448,11 +452,14 @@ export default function Navbar() {
             textDecoration: 'none',
             position: 'relative',
             cursor: 'pointer',
+            flexShrink: 0,
           }}
         >
-          <Mail size={16} />
+          <Mail size={15} />
         </motion.a>
-        <ThemeToggle />
+        <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center' }}>
+          <ThemeToggle />
+        </div>
       </nav>
 
       {/* Responsive Visibility Controls */}
@@ -464,8 +471,59 @@ export default function Navbar() {
         }
         @media (max-width: 859px) {
           .desktop-top-header { display: none !important; }
-          .mobile-top-bar { display: flex !important; }
-          .mobile-dock-nav { display: flex !important; }
+          .mobile-top-bar {
+            display: flex !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            height: 52px !important;
+            padding: 0 16px !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            background: rgba(7, 7, 9, 0.88) !important;
+            backdrop-filter: blur(16px) !important;
+            -webkit-backdrop-filter: blur(16px) !important;
+            border-bottom: 1px solid var(--border) !important;
+            z-index: 1000 !important;
+          }
+          .mobile-dock-nav {
+            display: flex !important;
+            position: fixed !important;
+            bottom: 16px !important;
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            z-index: 9999 !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 5px !important;
+            padding: 5px 10px !important;
+            background: rgba(14, 14, 20, 0.92) !important;
+            backdrop-filter: blur(24px) !important;
+            -webkit-backdrop-filter: blur(24px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.14) !important;
+            border-radius: 9999px !important;
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7), 0 0 1px rgba(255, 255, 255, 0.25) !important;
+            max-width: calc(100vw - 24px) !important;
+            overflow-x: auto !important;
+            scrollbar-width: none !important;
+            -ms-overflow-style: none !important;
+          }
+          .mobile-dock-nav::-webkit-scrollbar {
+            display: none !important;
+          }
+          .dock-divider {
+            width: 1px !important;
+            height: 18px !important;
+            background: rgba(255, 255, 255, 0.15) !important;
+            margin: 0 1px !important;
+            flex-shrink: 0 !important;
+          }
+          .dock-circle-btn {
+            width: 36px !important;
+            height: 36px !important;
+            flex-shrink: 0 !important;
+          }
         }
       `}</style>
     </>
