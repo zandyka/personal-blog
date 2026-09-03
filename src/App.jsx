@@ -12,6 +12,7 @@ import Footer from './components/Footer';
 import BackToTop from './components/BackToTop';
 import AvailableSidebar from './components/ui/AvailableSidebar';
 import ScrollToTop from './components/ui/ScrollToTop';
+import { Analytics } from '@vercel/analytics/react';
 
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
@@ -60,6 +61,7 @@ function AppInner() {
       </AnimatePresence>
       <Footer />
       <BackToTop />
+      <Analytics />
     </>
   );
 }

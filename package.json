@@ -15,6 +15,7 @@
     "type": "module",
     "dependencies": {
         "@emailjs/browser": "^4.4.1",
+        "@vercel/analytics": "^2.0.1",
         "framer-motion": "^11.3.21",
         "lucide-react": "^0.408.0",
         "react": "^18.3.1",
