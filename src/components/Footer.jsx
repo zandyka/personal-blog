@@ -102,7 +102,8 @@ const Footer = () => {
             </Link>
             <a
               href="/cv.pdf"
-              download
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={playClick}
               onMouseEnter={playHover}
               style={{

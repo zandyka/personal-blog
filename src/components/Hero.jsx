@@ -1,14 +1,23 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { ArrowDown, ArrowDownRight, Github, Linkedin, Instagram, Mail, Sparkles, Download } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowDown, ArrowDownRight, Github, Linkedin, Instagram, Mail, Sparkles } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useSoundContext } from './ui/SoundProvider';
 import SpotlightOverlay from './ui/SpotlightOverlay';
 
+const GREETING_FONTS = [
+  { name: 'Playfair Italic', font: "'Playfair Display', 'Georgia', serif", style: 'italic', weight: 600 },
+  { name: 'JetBrains Mono', font: "'JetBrains Mono', monospace", style: 'normal', weight: 600 },
+  { name: 'Caveat Script', font: "'Caveat', cursive", style: 'normal', weight: 700, sizeAdjust: true },
+  { name: 'Cinzel Roman', font: "'Cinzel', 'Times New Roman', serif", style: 'normal', weight: 700, letterSpacing: '0.06em' },
+  { name: 'Space Grotesk', font: "'Space Grotesk', sans-serif", style: 'normal', weight: 700 },
+  { name: 'Syne Display', font: "'Syne', sans-serif", style: 'italic', weight: 800 },
+];
+
 const HERO_LINES = [
-  { text: 'GRAPHIC DESIGNER,', delay: 0 },
-  { text: 'WEB &', delay: 0.15 },
-  { text: 'AI ENGINEER', delay: 0.3 },
+  { text: 'WEB & DESIGN,', delay: 0 },
+  { text: 'MOBILE APPS', delay: 0.15 },
+  { text: 'DEVELOPER', delay: 0.3 },
 ];
 
 const SOCIALS = [
@@ -21,6 +30,14 @@ const Hero = () => {
   const { playClick, playHover } = useSoundContext();
   const location = useLocation();
   const [hoveredSocial, setHoveredSocial] = useState(null);
+  const [fontIndex, setFontIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFontIndex((prev) => (prev + 1) % GREETING_FONTS.length);
+    }, 1800);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <section
@@ -72,7 +89,7 @@ const Hero = () => {
           }}
         >
 
-          {/* New Typographic Identity Capsule for Zacky Andyka */}
+          {/* Typographic Identity Capsule for Zacky Andyka */}
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -82,7 +99,7 @@ const Hero = () => {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '10px',
-              padding: '6px 16px 6px 10px',
+              padding: '7px 18px',
               borderRadius: '999px',
               background: 'rgba(255, 255, 255, 0.03)',
               border: '1px solid rgba(255, 255, 255, 0.08)',
@@ -93,76 +110,63 @@ const Hero = () => {
               marginBottom: 'clamp(10px, 1.8vh, 16px)',
             }}
           >
-            {/* Live Indicator Pill */}
-            <span
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '5px',
-                background: 'rgba(34, 197, 94, 0.1)',
-                border: '1px solid rgba(34, 197, 94, 0.25)',
-                padding: '2px 7px',
-                borderRadius: '999px',
-                flexShrink: 0,
-              }}
-            >
-              <span
-                style={{
-                  width: '6px',
-                  height: '6px',
-                  borderRadius: '50%',
-                  background: '#22c55e',
-                  boxShadow: '0 0 8px #22c55e',
-                }}
-              />
-              <span
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: '9px',
-                  fontWeight: 800,
-                  color: '#22c55e',
-                  letterSpacing: '1px',
-                }}
-              >
-                LIVE
-              </span>
-            </span>
-
-            {/* Editorial Contrast Name */}
+            {/* Dynamic Font Changing Greeting + Title Case Name */}
             <div
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '7px',
+                gap: '8px',
               }}
             >
-              <span
+              <div
                 style={{
-                  fontFamily: "'Georgia', serif",
-                  fontStyle: 'italic',
-                  fontSize: 'clamp(12px, 1.1vw, 14.5px)',
-                  color: 'var(--text-muted)',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  minWidth: '56px',
+                  justifyContent: 'flex-start',
                 }}
               >
-                Hi, I'm
-              </span>
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={fontIndex}
+                    initial={{ opacity: 0, y: 4, filter: 'blur(3px)' }}
+                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                    exit={{ opacity: 0, y: -4, filter: 'blur(3px)' }}
+                    transition={{ duration: 0.28, ease: 'easeInOut' }}
+                    style={{
+                      fontFamily: GREETING_FONTS[fontIndex].font,
+                      fontStyle: GREETING_FONTS[fontIndex].style,
+                      fontWeight: GREETING_FONTS[fontIndex].weight,
+                      letterSpacing: GREETING_FONTS[fontIndex].letterSpacing || 'normal',
+                      fontSize: GREETING_FONTS[fontIndex].sizeAdjust
+                        ? `calc(clamp(13px, 1.15vw, 15px) * 1.15)`
+                        : 'clamp(13px, 1.15vw, 15px)',
+                      color: 'var(--accent)',
+                      display: 'inline-block',
+                      lineHeight: 1,
+                    }}
+                  >
+                    Hi, I'm
+                  </motion.span>
+                </AnimatePresence>
+              </div>
               <span
                 style={{
                   fontFamily: "'Space Grotesk', sans-serif",
-                  fontSize: 'clamp(11px, 1.05vw, 13.5px)',
-                  fontWeight: 900,
-                  letterSpacing: '0.22em',
-                  textTransform: 'uppercase',
+                  fontSize: 'clamp(13px, 1.15vw, 15px)',
+                  fontWeight: 700,
+                  letterSpacing: '0.04em',
                   color: '#ffffff',
                   textShadow: '0 0 16px rgba(255, 255, 255, 0.2)',
+                  lineHeight: 1,
                 }}
               >
-                ZACKY ANDYKA
+                Zacky Andyka
               </span>
             </div>
           </motion.div>
 
-          {/* Line 1: GRAPHIC DESIGNER, */}
+          {/* Line 1: WEB & DESIGN, */}
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -179,10 +183,10 @@ const Hero = () => {
             }}
             className="text-gradient-static"
           >
-            GRAPHIC DESIGNER,
+            WEB &amp; DESIGN,
           </motion.h1>
 
-          {/* Line 2: WEB & with desktop floating socials */}
+          {/* Line 2: MOBILE APPS with desktop floating socials */}
           <div
             style={{
               display: 'flex',
@@ -209,7 +213,7 @@ const Hero = () => {
               }}
               className="text-gradient-static"
             >
-              <span>WEB &amp;</span>
+              <span>MOBILE APPS</span>
               <motion.span
                 animate={{ scale: [1, 1.2, 1] }}
                 transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}
@@ -264,7 +268,7 @@ const Hero = () => {
             </div>
           </div>
 
-          {/* Line 3: AI ENGINEER + Tagline */}
+          {/* Line 3: DEVELOPER + Tagline */}
           <div
             style={{
               display: 'flex',
@@ -289,7 +293,7 @@ const Hero = () => {
               }}
               className="text-gradient-static"
             >
-              AI ENGINEER
+              DEVELOPER
             </motion.h1>
 
             {/* Tagline beside AI ENGINEER */}
@@ -436,7 +440,8 @@ const Hero = () => {
             {/* View Resume expanding pill */}
             <motion.a
               href="/cv.pdf"
-              download="Zacky_Andyka_CV.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={playClick}
               onMouseEnter={playHover}
               whileHover={{ scale: 1.02 }}
