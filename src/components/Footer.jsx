@@ -121,15 +121,10 @@ const Footer = () => {
         </div>
       )}
 
-      {/* Bottom grid */}
-      <div style={{
-        maxWidth: '1200px', margin: '0 auto', padding: '48px 24px',
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
-        gap: '40px',
-      }}>
+      {/* Footer Content */}
+      <div className="footer-main-container">
         {/* Brand Icon */}
-        <div>
+        <div className="footer-brand-col">
           <div style={{
             width: '42px', height: '42px', borderRadius: '12px',
             overflow: 'hidden', border: '1px solid var(--border)',
@@ -149,80 +144,83 @@ const Footer = () => {
               }}
             />
           </div>
-          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
+          <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', lineHeight: 1.5, margin: 0, maxWidth: '280px' }}>
             Building digital solutions with passion and precision.
           </p>
         </div>
 
-        {/* Links */}
-        <div>
-          <h4 className="font-mono" style={{
-            fontSize: '10px', fontWeight: 700, color: 'var(--text-muted)',
-            letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '16px',
-          }}>
-            LINKS
-          </h4>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {NAV_LINKS.map(({ label, path }) => (
-              <Link
-                key={path}
-                to={path}
-                onClick={playClick}
-                onMouseEnter={playHover}
-                style={{
-                  fontSize: '0.85rem', color: 'var(--text-muted)',
-                  textDecoration: 'none', transition: 'color 0.2s',
-                }}
-              >
-                {label}
-              </Link>
-            ))}
+        {/* Links & Socials Split with Center Divider Line */}
+        <div className="footer-nav-socials-wrapper">
+          {/* Links */}
+          <div className="footer-links-col">
+            <h4 className="font-mono" style={{
+              fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)',
+              letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '16px',
+            }}>
+              LINKS
+            </h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {NAV_LINKS.map(({ label, path }) => (
+                <Link
+                  key={path}
+                  to={path}
+                  onClick={playClick}
+                  onMouseEnter={playHover}
+                  style={{
+                    fontSize: '0.88rem', color: 'var(--text-muted)',
+                    textDecoration: 'none', transition: 'color 0.2s',
+                  }}
+                >
+                  {label}
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
 
-        {/* Socials */}
-        <div>
-          <h4 className="font-mono" style={{
-            fontSize: '10px', fontWeight: 700, color: 'var(--text-muted)',
-            letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '16px',
-          }}>
-            SOCIALS
-          </h4>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {SOCIAL_LINKS.map(({ icon: Icon, href, label }) => (
-              <a
-                key={label}
-                href={href}
-                target={href.startsWith('http') ? '_blank' : undefined}
-                rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                onClick={playClick}
-                onMouseEnter={playHover}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: '8px',
-                  fontSize: '0.85rem', color: 'var(--text-muted)',
-                  textDecoration: 'none',
-                }}
-              >
-                <Icon size={14} /> {label}
-              </a>
-            ))}
+          {/* Socials */}
+          <div className="footer-socials-col">
+            <h4 className="font-mono" style={{
+              fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)',
+              letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '16px',
+            }}>
+              SOCIALS
+            </h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {SOCIAL_LINKS.map(({ icon: Icon, href, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target={href.startsWith('http') ? '_blank' : undefined}
+                  rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  onClick={playClick}
+                  onMouseEnter={playHover}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: '10px',
+                    fontSize: '0.88rem', color: 'var(--text-muted)',
+                    textDecoration: 'none',
+                  }}
+                >
+                  <Icon size={15} /> {label}
+                </a>
+              ))}
+            </div>
           </div>
         </div>
 
         {/* Local time */}
-        <div>
+        <div className="footer-time-col">
           <h4 className="font-mono" style={{
-            fontSize: '10px', fontWeight: 700, color: 'var(--text-muted)',
-            letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '16px',
+            fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)',
+            letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '14px',
           }}>
             LOCAL TIME
           </h4>
-          <p className="font-mono" style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+          <p className="font-mono" style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--text)', margin: '0 0 4px' }}>
             {new Date().toLocaleTimeString('en-US', {
               hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Jakarta', hour12: true,
             })}
           </p>
-          <p style={{ fontSize: '0.8rem', color: 'var(--text-dim)', marginTop: '4px' }}>
+          <p style={{ fontSize: '0.8rem', color: 'var(--text-dim)', margin: 0 }}>
             Jakarta (WIB), UTC+7
           </p>
         </div>
@@ -238,6 +236,60 @@ const Footer = () => {
         <span>&copy; {year} Zacky Andyka. Made with</span>
         <Heart size={12} style={{ color: 'var(--accent)' }} fill="var(--accent)" />
       </div>
+
+      <style>{`
+        .footer-main-container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 48px 24px;
+          display: grid;
+          grid-template-columns: 1.4fr 2fr 1fr;
+          gap: 40px;
+          align-items: flex-start;
+        }
+        .footer-nav-socials-wrapper {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 36px;
+        }
+        .footer-links-col {
+          border-right: 1px solid var(--border);
+          padding-right: 28px;
+        }
+        .footer-socials-col {
+          padding-left: 8px;
+        }
+
+        @media (max-width: 768px) {
+          .footer-main-container {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 28px !important;
+            padding: 32px 20px !important;
+          }
+          .footer-nav-socials-wrapper {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 0 !important;
+            width: 100% !important;
+          }
+          .footer-links-col {
+            border-right: 1px solid var(--border) !important;
+            padding-right: 20px !important;
+          }
+          .footer-socials-col {
+            padding-left: 20px !important;
+          }
+          .footer-time-col {
+            width: 100% !important;
+            max-width: 220px !important;
+            background: var(--surface) !important;
+            border: 1px solid var(--border) !important;
+            border-radius: 12px !important;
+            padding: 14px 16px !important;
+          }
+        }
+      `}</style>
     </footer>
   );
 };

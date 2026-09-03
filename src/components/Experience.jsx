@@ -255,114 +255,126 @@ const TimelineCard = ({ item, index }) => {
           transition: 'border-color 0.2s, transform 0.2s, box-shadow 0.2s',
         }}
       >
-        {/* Header: Logo/Icon & Badge */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'flex-start',
-            justifyContent: 'space-between',
-            gap: '12px',
-            marginBottom: '12px',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        {/* Card Header: Top row with Logo + Type Badge on left, and Period on right */}
+        <div style={{ marginBottom: '14px' }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '10px',
+              marginBottom: '12px',
+              flexWrap: 'wrap',
+            }}
+          >
+            {/* Logo + Type Badge */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div
+                style={{
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: '12px',
+                  background: hasLogo ? (item.logoBg || '#ffffff') : badgeStyle.bg,
+                  border: `1px solid ${hasLogo ? (item.logoBg ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.2)') : badgeStyle.border}`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: hasLogo ? '6px' : 0,
+                  color: badgeStyle.color,
+                  flexShrink: 0,
+                  overflow: 'hidden',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                }}
+              >
+                {hasLogo ? (
+                  <img
+                    src={item.logo}
+                    alt={item.company}
+                    onError={() => setImgError(true)}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'contain',
+                    }}
+                  />
+                ) : (
+                  <Icon size={20} />
+                )}
+              </div>
+
+              <span
+                style={{
+                  fontSize: '0.72rem',
+                  fontWeight: 600,
+                  padding: '3px 10px',
+                  borderRadius: '999px',
+                  background: badgeStyle.bg,
+                  border: `1px solid ${badgeStyle.border}`,
+                  color: badgeStyle.color,
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {item.type}
+              </span>
+            </div>
+
+            {/* Period Badge on the right */}
             <div
               style={{
-                width: '42px',
-                height: '42px',
-                borderRadius: '12px',
-                background: hasLogo ? (item.logoBg || '#ffffff') : badgeStyle.bg,
-                border: `1px solid ${hasLogo ? (item.logoBg ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.2)') : badgeStyle.border}`,
-                display: 'flex',
+                display: 'inline-flex',
                 alignItems: 'center',
-                justifyContent: 'center',
-                padding: hasLogo ? '6px' : 0,
-                color: badgeStyle.color,
-                flexShrink: 0,
-                overflow: 'hidden',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                gap: '5px',
+                fontSize: '0.76rem',
+                color: 'var(--text-muted)',
+                whiteSpace: 'nowrap',
+                background: 'rgba(255, 255, 255, 0.03)',
+                padding: '3px 8px',
+                borderRadius: '6px',
+                border: '1px solid rgba(255, 255, 255, 0.05)',
               }}
             >
-              {hasLogo ? (
-                <img
-                  src={item.logo}
-                  alt={item.company}
-                  onError={() => setImgError(true)}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'contain',
-                  }}
-                />
-              ) : (
-                <Icon size={20} />
-              )}
-            </div>
-            <div>
-              <h3
-                style={{
-                  margin: 0,
-                  fontSize: '1.05rem',
-                  fontWeight: 600,
-                  color: 'var(--text)',
-                  lineHeight: 1.25,
-                }}
-              >
-                {item.company}
-              </h3>
-              {item.organizer && (
-                <p
-                  style={{
-                    margin: '2px 0 0',
-                    fontSize: '0.78rem',
-                    color: 'var(--text-muted)',
-                  }}
-                >
-                  {item.organizer}
-                </p>
-              )}
-              <p
-                style={{
-                  margin: '3px 0 0',
-                  fontSize: '0.88rem',
-                  fontWeight: 500,
-                  color: badgeStyle.color,
-                }}
-              >
-                {item.role}
-              </p>
+              <Calendar size={12} style={{ color: 'var(--accent)' }} />
+              <span>{item.period}</span>
             </div>
           </div>
 
-          <span
-            style={{
-              fontSize: '0.7rem',
-              fontWeight: 600,
-              padding: '4px 10px',
-              borderRadius: '999px',
-              background: badgeStyle.bg,
-              border: `1px solid ${badgeStyle.border}`,
-              color: badgeStyle.color,
-              whiteSpace: 'nowrap',
-            }}
-          >
-            {item.type}
-          </span>
-        </div>
-
-        {/* Period */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px',
-            fontSize: '0.78rem',
-            color: 'var(--text-muted)',
-            marginBottom: '12px',
-          }}
-        >
-          <Calendar size={13} />
-          <span>{item.period}</span>
+          {/* Full-width Title & Role without lateral squeeze */}
+          <div>
+            <h3
+              style={{
+                margin: '0 0 4px',
+                fontSize: 'clamp(1rem, 2vw, 1.12rem)',
+                fontWeight: 700,
+                color: 'var(--text)',
+                lineHeight: 1.35,
+                wordBreak: 'break-word',
+              }}
+            >
+              {item.company}
+            </h3>
+            {item.organizer && (
+              <p
+                style={{
+                  margin: '0 0 4px',
+                  fontSize: '0.8rem',
+                  color: 'var(--text-muted)',
+                }}
+              >
+                {item.organizer}
+              </p>
+            )}
+            <p
+              style={{
+                margin: 0,
+                fontSize: '0.9rem',
+                fontWeight: 600,
+                color: badgeStyle.color,
+                lineHeight: 1.35,
+              }}
+            >
+              {item.role}
+            </p>
+          </div>
         </div>
 
         {/* Description */}
@@ -661,19 +673,20 @@ const Experience = () => {
       <style>{`
         @media (max-width: 850px) {
           .timeline-vertical-line {
-            left: 20px !important;
+            left: 16px !important;
             transform: none !important;
           }
           .timeline-center-node {
-            left: 20px !important;
+            left: 16px !important;
             transform: translateX(-50%) !important;
           }
           .timeline-row {
             justify-content: flex-end !important;
           }
           .timeline-card {
-            width: calc(100% - 50px) !important;
-            margin-left: 50px !important;
+            width: calc(100% - 38px) !important;
+            margin-left: 38px !important;
+            padding: 16px !important;
           }
         }
       `}</style>

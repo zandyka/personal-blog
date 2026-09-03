@@ -333,17 +333,28 @@ export default function Navbar() {
         <Link to="/" onClick={playClick} style={{ textDecoration: 'none' }}>
           <div
             style={{
-              width: '34px',
-              height: '34px',
-              borderRadius: '50%',
-              background: 'var(--accent)',
+              width: '36px',
+              height: '36px',
+              borderRadius: '10px',
+              overflow: 'hidden',
+              background: 'var(--surface-2)',
+              border: '1px solid var(--border)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 4px 12px var(--accent-glow)',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
             }}
           >
-            <span style={{ fontSize: '11px', fontWeight: 800, color: 'var(--bg)' }}>ZA</span>
+            <img
+              src="/icon.png"
+              alt="Zacky Andyka"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                display: 'block',
+              }}
+            />
           </div>
         </Link>
 
