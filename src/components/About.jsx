@@ -68,12 +68,12 @@ const STATS = [
     accent: '#10B981',
   },
   {
-    label: 'Kepemimpinan',
-    sub: 'Kadiv Media Kreatif',
-    value: '1',
+    label: 'Sertifikasi',
+    sub: 'Dicoding, Google & BNSP',
+    value: '5',
     decimals: 0,
-    suffix: ' Organisasi',
-    icon: Users2,
+    suffix: '+',
+    icon: Award,
     accent: 'var(--accent-2)',
   },
 ];
