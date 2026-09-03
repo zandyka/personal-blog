@@ -281,7 +281,11 @@ const Footer = () => {
             padding-left: 20px !important;
           }
           .footer-time-col {
-            display: none !important;
+            display: block !important;
+            background: transparent !important;
+            border: none !important;
+            padding: 4px 0 0 0 !important;
+            width: 100% !important;
           }
         }
       `}</style>
