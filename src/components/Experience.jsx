@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import {
@@ -48,6 +48,7 @@ const WORK_EXPERIENCES = [
     period: 'Juni 2025 - Juli 2025',
     type: 'Internship',
     logo: '/logos/logo bank sumut.png',
+    logoBg: '#224192',
     icon: Building2,
     description:
       'Mendukung pemrosesan transaksi harian nasabah, penanganan pertanyaan layanan, serta penerapan standar operasional prosedur (SOP) perbankan.',
@@ -101,11 +102,12 @@ const TRAINING_EXPERIENCES = [
 const ACTIVITY_EXPERIENCES = [
   {
     id: 'himti',
-    company: 'HIMTI Universitas Sumatera Utara',
+    company: 'Himpunan Mahasiswa Teknik Informatika (HIMTI)',
     role: 'Head of Creative Media Division (Kadiv Media Kreatif)',
     period: '2024 - 2025',
     type: 'Organisasi',
     logo: '/logos/logo himti.png',
+    logoBg: '#121212',
     icon: Users,
     description:
       'Memimpin divisi media kreatif dalam perancangan identitas visual organisasi, standarisasi aset grafis, pengelolaan publikasi media sosial, serta supervisi tim dokumentasi kegiatan himpunan.',
@@ -129,7 +131,7 @@ const ACTIVITY_EXPERIENCES = [
     role: 'Tim Publikasi, Dokumentasi & Desain Kreatif',
     period: '2025',
     type: 'Kepanitiaan',
-    logo: '/logos/logo usu.png',
+    logo: '/logos/logo pkkmb.png',
     icon: Camera,
     description:
       'Bertanggung jawab penuh atas liputan fotografi, videografi, dan publikasi konten visual selama masa orientasi mahasiswa baru Fakultas Vokasi USU 2025. Sekaligus menjadi perancang utama untuk seluruh kebutuhan desain fisik dan digital acara, mencakup backdrop panggung utama, kartu tanda pengenal (ID card), badge nama peserta & panitia, serta desain feed Instagram resmi.',
@@ -192,6 +194,7 @@ const getBadgeStyle = (type) => {
 
 const TimelineCard = ({ item, index }) => {
   const { playHover } = useSoundContext();
+  const [imgError, setImgError] = useState(false);
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: 0.15,
@@ -200,6 +203,7 @@ const TimelineCard = ({ item, index }) => {
   const isEven = index % 2 === 0;
   const Icon = item.icon;
   const badgeStyle = getBadgeStyle(item.type);
+  const hasLogo = item.logo && !imgError;
 
   return (
     <div
@@ -267,22 +271,23 @@ const TimelineCard = ({ item, index }) => {
                 width: '42px',
                 height: '42px',
                 borderRadius: '12px',
-                background: item.logo ? '#ffffff' : badgeStyle.bg,
-                border: `1px solid ${item.logo ? 'rgba(255,255,255,0.2)' : badgeStyle.border}`,
+                background: hasLogo ? (item.logoBg || '#ffffff') : badgeStyle.bg,
+                border: `1px solid ${hasLogo ? (item.logoBg ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.2)') : badgeStyle.border}`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                padding: item.logo ? '5px' : 0,
+                padding: hasLogo ? '6px' : 0,
                 color: badgeStyle.color,
                 flexShrink: 0,
                 overflow: 'hidden',
                 boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
               }}
             >
-              {item.logo ? (
+              {hasLogo ? (
                 <img
                   src={item.logo}
                   alt={item.company}
+                  onError={() => setImgError(true)}
                   style={{
                     width: '100%',
                     height: '100%',
