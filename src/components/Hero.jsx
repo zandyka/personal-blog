@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDown, ArrowDownRight, Github, Linkedin, Instagram, Mail, Sparkles, Download } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useSoundContext } from './ui/SoundProvider';
 import SpotlightOverlay from './ui/SpotlightOverlay';
 
@@ -19,6 +19,7 @@ const SOCIALS = [
 
 const Hero = () => {
   const { playClick, playHover } = useSoundContext();
+  const location = useLocation();
   const [hoveredSocial, setHoveredSocial] = useState(null);
 
   return (
@@ -62,26 +63,128 @@ const Hero = () => {
         {/* Hero text block */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', padding: '0 24px' }}>
 
-          {/* Line 1: intro text + WEB & */}
-          <div style={{ display: 'flex', gap: '32px', alignItems: 'center', position: 'relative' }}>
-            <motion.p
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.8, duration: 0.7 }}
+          {/* Animated Intro Typography: "Hello I'm.." */}
+          <motion.div
+            key={`hero-greeting-${location.key}`}
+            initial={{ opacity: 0, y: -16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="hero-greeting-container"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: '10px',
+              marginBottom: '10px',
+              padding: '0 16px',
+            }}
+          >
+            {/* Pill Capsule with Waving Hand & "Hello I'm.." character animation */}
+            <div
+              className="hero-greeting-capsule"
               style={{
-                fontSize: 'clamp(9px, 1vw, 12px)',
-                color: 'var(--text-muted)',
-                textTransform: 'uppercase',
-                letterSpacing: '0.2em',
-                lineHeight: 1.6,
-                maxWidth: '200px',
-                fontWeight: 500,
-                display: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '6px 14px',
+                borderRadius: '999px',
+                background: 'var(--surface)',
+                border: '1px solid var(--border)',
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.25)',
               }}
-              className="hero-intro-text"
             >
-              Hi, I'm Zacky Andyka. I build solutions bridging tech & banking.
-            </motion.p>
+              {/* Waving Hand Emoji */}
+              <motion.span
+                animate={{ rotate: [0, 18, -10, 18, 0] }}
+                transition={{
+                  duration: 1.5,
+                  repeat: Infinity,
+                  repeatDelay: 2,
+                  ease: 'easeInOut',
+                }}
+                style={{
+                  display: 'inline-block',
+                  transformOrigin: '70% 70%',
+                  fontSize: '1rem',
+                }}
+              >
+                👋
+              </motion.span>
+
+              {/* Kinetic Character-by-Character Typography for "Hello I'm.." */}
+              <span
+                style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: 'clamp(0.85rem, 1.2vw, 1.05rem)',
+                  fontWeight: 600,
+                  color: 'var(--text-muted)',
+                  letterSpacing: '0.5px',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                }}
+              >
+                {"Hello I'm..".split('').map((char, index) => (
+                  <motion.span
+                    key={index}
+                    initial={{ opacity: 0, y: 8, filter: 'blur(4px)' }}
+                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                    transition={{
+                      delay: 0.1 + index * 0.045,
+                      duration: 0.35,
+                      ease: 'easeOut',
+                    }}
+                    style={{
+                      display: 'inline-block',
+                      color: char === '.' ? 'var(--accent)' : 'inherit',
+                      fontWeight: char === '.' ? 800 : 'inherit',
+                    }}
+                  >
+                    {char === ' ' ? '\u00A0' : char}
+                  </motion.span>
+                ))}
+              </span>
+
+              {/* Glowing Blinking Cursor */}
+              <motion.span
+                animate={{ opacity: [1, 0, 1] }}
+                transition={{ duration: 0.8, repeat: Infinity, ease: 'linear' }}
+                style={{
+                  display: 'inline-block',
+                  width: '2px',
+                  height: '14px',
+                  background: 'var(--accent)',
+                  marginLeft: '2px',
+                  boxShadow: '0 0 6px var(--accent)',
+                }}
+              />
+            </div>
+
+            {/* Name Reveal Badge */}
+            <motion.div
+              initial={{ opacity: 0, x: -10, scale: 0.95 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              transition={{ delay: 0.65, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '5px 12px',
+                borderRadius: '999px',
+                background: 'rgba(255, 59, 29, 0.1)',
+                border: '1px solid rgba(255, 59, 29, 0.25)',
+                color: 'var(--accent)',
+                fontSize: 'clamp(0.82rem, 1.1vw, 0.95rem)',
+                fontWeight: 700,
+                letterSpacing: '0.5px',
+              }}
+            >
+              <span>Zacky Andyka</span>
+              <Sparkles size={13} style={{ color: 'var(--accent-2)' }} />
+            </motion.div>
+          </motion.div>
+
+          {/* Line 1: WEB & */}
+          <div style={{ display: 'flex', gap: '32px', alignItems: 'center', position: 'relative' }}>
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
