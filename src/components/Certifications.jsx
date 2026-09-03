@@ -6,7 +6,6 @@ import {
   Calendar,
   ZoomIn,
   X,
-  FileCheck,
   Sparkles,
 } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
@@ -20,7 +19,7 @@ const CERTIFICATIONS = [
     focusArea: 'Pengembangan Aplikasi Android, Arsitektur Mobile & Siklus Hidup Aplikasi',
     credentialType: 'Standar SKKNI',
     skillsGained: ['Mobile Programming', 'Android Studio', 'Java/Kotlin', 'Standar SKKNI'],
-    image: '/certificates/serti vsga jmp-1.png',
+    image: '/certificates/serti vsga jmp-1.webp',
   },
   {
     id: 'vsga-jwd',
@@ -30,7 +29,7 @@ const CERTIFICATIONS = [
     focusArea: 'Pemrograman Web Dinamis, Database Integration & Arsitektur RESTful API',
     credentialType: 'Standar SKKNI',
     skillsGained: ['Web Programming', 'PHP', 'MySQL', 'RESTful API'],
-    image: '/certificates/sertif vsga kominfo-1.png',
+    image: '/certificates/sertif vsga kominfo-1.webp',
   },
   {
     id: 'dicoding-fabric',
@@ -40,7 +39,7 @@ const CERTIFICATIONS = [
     focusArea: 'Penerapan Data Science Modern, Cloud Analytics & Ekosistem Microsoft Fabric',
     credentialType: 'Industry Certification',
     skillsGained: ['Data Science', 'Microsoft Fabric', 'Cloud Analytics', 'Data Engineering'],
-    image: '/certificates/sertifikat dicoding belajar penerapan data science dengan microsoft fabric.png',
+    image: '/certificates/sertifikat dicoding belajar penerapan data science dengan microsoft fabric.webp',
   },
   {
     id: 'google-gemini',
@@ -50,7 +49,7 @@ const CERTIFICATIONS = [
     focusArea: 'Generative AI, Prompt Engineering & Model Multimodal Google Gemini',
     credentialType: 'Global Tech Certification',
     skillsGained: ['Generative AI', 'Prompt Engineering', 'Google Gemini', 'Multimodal AI'],
-    image: '/certificates/sertif gemini certified student.png',
+    image: '/certificates/sertif gemini certified student.webp',
   },
   {
     id: 'claude-ai',
@@ -60,7 +59,7 @@ const CERTIFICATIONS = [
     focusArea: 'Large Language Models, Automasi Alur Kerja AI & Prompt Design',
     credentialType: 'Global Tech Certification',
     skillsGained: ['Claude AI', 'LLM Workflow', 'Prompt Design', 'AI Automation'],
-    image: '/certificates/sertif ai claude zacky andyka-1.png',
+    image: '/certificates/sertif ai claude zacky andyka-1.webp',
   },
   {
     id: 'huawei-ai',
@@ -70,7 +69,7 @@ const CERTIFICATIONS = [
     focusArea: 'Konsep Kecerdasan Buatan, Algoritma Machine Learning & Model Terapan',
     credentialType: 'Huawei Certification',
     skillsGained: ['Artificial Intelligence', 'Machine Learning', 'Neural Networks', 'Python'],
-    image: '/certificates/Sertif Ai Zacky Andyka.png',
+    image: '/certificates/Sertif Ai Zacky Andyka.webp',
   },
   {
     id: 'huawei-datacom',
@@ -80,27 +79,27 @@ const CERTIFICATIONS = [
     focusArea: 'Arsitektur Komunikasi Data, Protokol Jaringan & Routing Switching',
     credentialType: 'Huawei Certification',
     skillsGained: ['Data Communication', 'Network Protocols', 'Routing & Switching', 'IP Addressing'],
-    image: '/certificates/Sertif Datacom Zacky Andyka.png',
+    image: '/certificates/Sertif Datacom Zacky Andyka.webp',
   },
   {
     id: 'mbkm-bpjs',
     title: 'Sertifikat Magang MBKM BPJS Ketenagakerjaan',
     issuer: 'BPJS Ketenagakerjaan & Kemendikbudristek',
-    period: 'September 2025 - Desember 2025',
+    period: 'Sep 2025 - Des 2025',
     focusArea: 'IT Support, Pemeliharaan Database Peserta & Operasional Dashboard',
     credentialType: 'Magang Berdampak MBKM',
     skillsGained: ['IT Support', 'Database Operations', 'JMO Troubleshooting', 'Administrative Governance'],
-    image: '/certificates/sertif akhir mbkm bpjs-1.png',
+    image: '/certificates/sertif akhir mbkm bpjs-1.webp',
   },
   {
     id: 'mbkm-bsi',
     title: 'Sertifikat Magang MBKM Bank Syariah Indonesia',
     issuer: 'PT Bank Syariah Indonesia Tbk (BSI)',
-    period: 'Maret 2025 - Mei 2025',
+    period: 'Mar 2025 - Mei 2025',
     focusArea: 'Back Office Operations, Verifikasi Data Perbankan & Kepatuhan Arsip',
     credentialType: 'Magang Berdampak MBKM',
     skillsGained: ['Banking Operations', 'Financial Data Verification', 'Archival Management'],
-    image: '/certificates/sertif mbkm bsi-1.png',
+    image: '/certificates/sertif mbkm bsi-1.webp',
   },
   {
     id: 'ukk-bnsp',
@@ -110,7 +109,7 @@ const CERTIFICATIONS = [
     focusArea: 'Administrasi Server, Troubleshooting Jaringan & Sistem Komputer',
     credentialType: 'Sertifikasi BNSP / LSP',
     skillsGained: ['Network Administration', 'Server Configuration', 'Hardware & System Support'],
-    image: '/certificates/sertif kompetensi ukk-1.png',
+    image: '/certificates/sertif kompetensi ukk-1.webp',
   },
   {
     id: 'lomba-it-network',
@@ -120,7 +119,7 @@ const CERTIFICATIONS = [
     focusArea: 'Konfigurasi Routing, Subnetting & Troubleshooting Jaringan Terpadu',
     credentialType: 'Penghargaan Kejuaraan',
     skillsGained: ['Network Configuration', 'Network Troubleshooting', 'Subnetting'],
-    image: '/certificates/sertif it network configuration hut smk.png',
+    image: '/certificates/sertif it network configuration hut smk.webp',
   },
   {
     id: 'lomba-fotografi-coca-cola',
@@ -130,7 +129,7 @@ const CERTIFICATIONS = [
     focusArea: 'Fotografi Produk Komersial, Studio Lighting & Visual Composition',
     credentialType: 'Penghargaan Kejuaraan',
     skillsGained: ['Commercial Photography', 'Product Lighting', 'Color Grading', 'Visual Composition'],
-    image: '/certificates/sertif lomba fotografi produk coca cola.png',
+    image: '/certificates/sertif lomba fotografi produk coca cola.webp',
   },
   {
     id: 'lomba-fotografi-smk',
@@ -140,7 +139,7 @@ const CERTIFICATIONS = [
     focusArea: 'Eksplorasi Sudut Pandang, Komposisi Visual & Storytelling Fotografi',
     credentialType: 'Penghargaan Kejuaraan',
     skillsGained: ['Photography Composition', 'Street Photography', 'Visual Storytelling'],
-    image: '/certificates/sertif lomba fotografi smk-1.png',
+    image: '/certificates/sertif lomba fotografi smk-1.webp',
   },
   {
     id: 'training-english',
@@ -150,7 +149,7 @@ const CERTIFICATIONS = [
     focusArea: 'Komunikasi Bisnis, Presentasi Teknis & Tata Bahasa Inggris Kerja',
     credentialType: 'Pelatihan Profesional',
     skillsGained: ['Professional English', 'Workplace Communication', 'Technical Vocabulary'],
-    image: '/certificates/sertif training bahasa inggris-1.png',
+    image: '/certificates/sertif training bahasa inggris-1.webp',
   },
 ];
 
@@ -159,22 +158,22 @@ const Certifications = () => {
   const [activeCert, setActiveCert] = useState(null);
   const { ref, inView } = useInView({
     triggerOnce: true,
-    threshold: 0.1,
+    threshold: 0.05,
   });
 
   const fadeUp = {
-    hidden: { opacity: 0, y: 25 },
+    hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.55, ease: 'easeOut' },
+      transition: { duration: 0.5, ease: 'easeOut' },
     },
   };
 
   const stagger = {
     hidden: {},
     visible: {
-      transition: { staggerChildren: 0.06 },
+      transition: { staggerChildren: 0.05 },
     },
   };
 
@@ -260,6 +259,10 @@ const Certifications = () => {
             <motion.div
               key={cert.id}
               variants={fadeUp}
+              onClick={() => {
+                playClick();
+                setActiveCert(cert);
+              }}
               onMouseEnter={playHover}
               whileHover={{ y: -5 }}
               className="cert-card"
@@ -274,15 +277,12 @@ const Certifications = () => {
                 transition: 'box-shadow 0.25s, transform 0.25s, border-color 0.25s',
                 boxShadow: '0 6px 20px rgba(0, 0, 0, 0.2)',
                 position: 'relative',
+                cursor: 'pointer',
               }}
             >
               <div>
-                {/* Certificate Photo Frame / Lightbox Trigger */}
+                {/* Certificate Photo Frame */}
                 <div
-                  onClick={() => {
-                    playClick();
-                    setActiveCert(cert);
-                  }}
                   className="cert-photo-frame"
                   style={{
                     position: 'relative',
@@ -296,7 +296,6 @@ const Certifications = () => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    cursor: 'pointer',
                   }}
                 >
                   <img
@@ -334,6 +333,7 @@ const Certifications = () => {
 
                 {/* Header: Credential Type & Period */}
                 <div
+                  className="cert-header-meta"
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -349,7 +349,7 @@ const Certifications = () => {
                       fontWeight: 700,
                       color: 'var(--accent)',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.6px',
+                      letterSpacing: '0.5px',
                       whiteSpace: 'nowrap',
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
@@ -361,16 +361,17 @@ const Certifications = () => {
                   <span
                     className="cert-period"
                     style={{
-                      fontSize: '0.7rem',
+                      fontSize: '0.68rem',
                       fontWeight: 500,
                       color: 'var(--text-muted)',
                       display: 'inline-flex',
                       alignItems: 'center',
                       gap: '3px',
                       whiteSpace: 'nowrap',
+                      flexShrink: 0,
                     }}
                   >
-                    <Calendar size={11} />
+                    <Calendar size={10} />
                     <span>{cert.period}</span>
                   </span>
                 </div>
@@ -392,7 +393,7 @@ const Certifications = () => {
                 <p
                   className="cert-issuer"
                   style={{
-                    margin: '0 0 8px',
+                    margin: '0 0 6px',
                     color: 'var(--text-muted)',
                     lineHeight: 1.35,
                   }}
@@ -400,23 +401,26 @@ const Certifications = () => {
                   {cert.issuer}
                 </p>
 
-                {/* Focus Area / Description */}
-                <p
-                  className="cert-desc"
-                  style={{
-                    color: 'var(--text-muted)',
-                    lineHeight: 1.45,
-                    margin: '0 0 10px',
-                    fontWeight: 300,
-                  }}
-                >
-                  {cert.focusArea}
-                </p>
+                {/* Desktop-only: Description */}
+                <div className="cert-desktop-details">
+                  <p
+                    className="cert-desc"
+                    style={{
+                      color: 'var(--text-muted)',
+                      lineHeight: 1.45,
+                      margin: '6px 0 10px',
+                      fontWeight: 300,
+                      fontSize: '0.78rem',
+                    }}
+                  >
+                    {cert.focusArea}
+                  </p>
+                </div>
               </div>
 
-              {/* Skills Gained Tags */}
+              {/* Skills Gained Tags (Desktop only) */}
               <div
-                className="cert-tags-wrapper"
+                className="cert-tags-wrapper cert-desktop-details"
                 style={{
                   marginTop: 'auto',
                   paddingTop: '8px',
@@ -434,12 +438,18 @@ const Certifications = () => {
                         background: 'rgba(255, 255, 255, 0.04)',
                         color: 'var(--text-muted)',
                         border: '1px solid rgba(255, 255, 255, 0.06)',
+                        fontSize: '0.68rem',
                       }}
                     >
                       {skill}
                     </span>
                   ))}
                 </div>
+              </div>
+
+              {/* Mobile "Tap for preview" indicator */}
+              <div className="cert-mobile-tap">
+                <span>Ketuk untuk zoom &amp; detail &rarr;</span>
               </div>
             </motion.div>
           ))}
@@ -480,7 +490,8 @@ const Certifications = () => {
                   borderRadius: '16px',
                   maxWidth: '840px',
                   width: '100%',
-                  overflow: 'hidden',
+                  maxHeight: '90vh',
+                  overflowY: 'auto',
                   boxShadow: '0 24px 80px rgba(0, 0, 0, 0.6)',
                 }}
               >
@@ -488,7 +499,7 @@ const Certifications = () => {
                   style={{
                     position: 'relative',
                     width: '100%',
-                    maxHeight: '72vh',
+                    maxHeight: '68vh',
                     background: '#0a0a0f',
                     display: 'flex',
                     alignItems: 'center',
@@ -501,7 +512,7 @@ const Certifications = () => {
                     alt={activeCert.title}
                     style={{
                       maxWidth: '100%',
-                      maxHeight: '72vh',
+                      maxHeight: '68vh',
                       objectFit: 'contain',
                       display: 'block',
                     }}
@@ -531,7 +542,7 @@ const Certifications = () => {
                   </button>
                 </div>
                 <div style={{ padding: '16px 20px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px', flexWrap: 'wrap' }}>
                     <span
                       style={{
                         fontSize: '0.72rem',
@@ -548,12 +559,32 @@ const Certifications = () => {
                       {activeCert.period}
                     </span>
                   </div>
-                  <h3 style={{ margin: '0 0 4px', fontSize: '1.1rem', color: 'var(--text)' }}>
+                  <h3 style={{ margin: '0 0 6px', fontSize: '1.15rem', color: 'var(--text)' }}>
                     {activeCert.title}
                   </h3>
-                  <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--accent-2)' }}>
+                  <p style={{ margin: '0 0 10px', fontSize: '0.88rem', color: 'var(--accent-2)' }}>
                     {activeCert.issuer}
                   </p>
+                  <p style={{ margin: '0 0 12px', fontSize: '0.82rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
+                    {activeCert.focusArea}
+                  </p>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                    {activeCert.skillsGained.map((skill) => (
+                      <span
+                        key={skill}
+                        style={{
+                          fontSize: '0.7rem',
+                          padding: '3px 8px',
+                          borderRadius: '6px',
+                          background: 'rgba(255, 255, 255, 0.05)',
+                          color: 'var(--text)',
+                          border: '1px solid rgba(255, 255, 255, 0.08)',
+                        }}
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </motion.div>
             </motion.div>
@@ -575,45 +606,64 @@ const Certifications = () => {
           .cert-issuer {
             font-size: 0.82rem;
           }
-          .cert-desc {
-            font-size: 0.78rem;
+          .cert-desktop-details {
+            display: block;
           }
-          .cert-tag {
-            font-size: 0.68rem;
+          .cert-mobile-tap {
+            display: none;
           }
 
-          /* Tablet & Mobile: Always 2 Columns */
+          /* Tablet & Mobile: Clean, unified 2 Columns */
           @media (max-width: 820px) {
             .cert-grid {
               grid-template-columns: repeat(2, 1fr) !important;
-              gap: 12px !important;
+              gap: 10px !important;
             }
             .cert-card {
-              padding: 12px !important;
+              padding: 10px !important;
               border-radius: 12px !important;
             }
-            .cert-title {
-              font-size: 0.88rem !important;
-              margin-bottom: 3px !important;
-            }
-            .cert-issuer {
-              font-size: 0.74rem !important;
-              margin-bottom: 6px !important;
-            }
-            .cert-desc {
-              font-size: 0.72rem !important;
-              line-height: 1.4 !important;
-              margin-bottom: 8px !important;
-            }
-            .cert-tag {
-              font-size: 0.62rem !important;
-              padding: 2px 5px !important;
+            .cert-header-meta {
+              flex-direction: column !important;
+              align-items: flex-start !important;
+              gap: 2px !important;
+              margin-bottom: 4px !important;
             }
             .cert-badge {
-              font-size: 0.62rem !important;
+              font-size: 0.6rem !important;
+              letter-spacing: 0.3px !important;
             }
             .cert-period {
-              font-size: 0.65rem !important;
+              font-size: 0.62rem !important;
+            }
+            .cert-title {
+              font-size: 0.82rem !important;
+              line-height: 1.25 !important;
+              margin-bottom: 3px !important;
+              display: -webkit-box !important;
+              -webkit-line-clamp: 2 !important;
+              -webkit-box-orient: vertical !important;
+              overflow: hidden !important;
+            }
+            .cert-issuer {
+              font-size: 0.7rem !important;
+              line-height: 1.2 !important;
+              margin-bottom: 4px !important;
+              white-space: nowrap !important;
+              overflow: hidden !important;
+              text-overflow: ellipsis !important;
+            }
+            .cert-desktop-details {
+              display: none !important;
+            }
+            .cert-mobile-tap {
+              display: block !important;
+              margin-top: 6px !important;
+              padding-top: 6px !important;
+              border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+              font-size: 0.62rem !important;
+              color: var(--accent) !important;
+              font-weight: 500 !important;
             }
           }
         `}</style>

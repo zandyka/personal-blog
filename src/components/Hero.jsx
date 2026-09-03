@@ -31,6 +31,7 @@ const Hero = () => {
   const location = useLocation();
   const [hoveredSocial, setHoveredSocial] = useState(null);
   const [fontIndex, setFontIndex] = useState(0);
+  const [resumeActive, setResumeActive] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -38,6 +39,28 @@ const Hero = () => {
     }, 1100);
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    if (!resumeActive) return;
+    const handleOutsideClick = (e) => {
+      if (!e.target.closest('.hero-resume-pill')) {
+        setResumeActive(false);
+      }
+    };
+    window.addEventListener('click', handleOutsideClick);
+    return () => window.removeEventListener('click', handleOutsideClick);
+  }, [resumeActive]);
+
+  const handleResumeClick = (e) => {
+    const isMobile = window.innerWidth <= 860;
+    if (isMobile && !resumeActive) {
+      e.preventDefault();
+      setResumeActive(true);
+      playHover();
+      return;
+    }
+    playClick();
+  };
 
   return (
     <section
@@ -442,11 +465,11 @@ const Hero = () => {
               href="/cv.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              onClick={playClick}
+              onClick={handleResumeClick}
               onMouseEnter={playHover}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="hero-resume-pill"
+              className={`hero-resume-pill ${resumeActive ? 'is-active' : ''}`}
               style={{
                 position: 'relative',
                 display: 'flex',
@@ -550,14 +573,17 @@ const Hero = () => {
             line-height: 1.5 !important;
           }
         }
-        .hero-resume-pill:hover {
+        .hero-resume-pill:hover,
+        .hero-resume-pill.is-active {
           width: 180px !important;
         }
-        .hero-resume-pill:hover .pill-label {
+        .hero-resume-pill:hover .pill-label,
+        .hero-resume-pill.is-active .pill-label {
           opacity: 1 !important;
           transition-delay: 0.15s !important;
         }
-        .hero-resume-pill:hover .pill-icon {
+        .hero-resume-pill:hover .pill-icon,
+        .hero-resume-pill.is-active .pill-icon {
           transform: rotate(45deg) !important;
         }
       `}</style>
