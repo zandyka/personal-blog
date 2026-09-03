@@ -179,7 +179,7 @@ const CompetencyCarousel = () => {
       glowColor: 'var(--accent-glow)',
       icon: Zap,
       description:
-        'Architectural design patterns, full-stack web architectures, mobile application lifecycles, and relational database governance.',
+        'Full-stack web architectures, mobile application lifecycles, and relational database systems.',
       skills: SKILL_PILLS.technical,
       counter: '01 / 03',
     },
@@ -195,7 +195,7 @@ const CompetencyCarousel = () => {
       glowColor: 'rgba(16, 185, 129, 0.2)',
       icon: ShieldCheck,
       description:
-        'Disciplined adherence to corporate banking workflows, confidential data archival, analytical problem resolution, and adaptive team coordination.',
+        'Strict banking workflow compliance, confidential data archival, and cross-functional team coordination.',
       skills: SKILL_PILLS.soft,
       counter: '02 / 03',
     },
@@ -211,7 +211,7 @@ const CompetencyCarousel = () => {
       glowColor: 'rgba(255, 170, 0, 0.2)',
       icon: Network,
       description:
-        'Certified vocational field competency in optical fiber fusion splicing, GPON distribution architectures, OTDR testing, and physical line repairs.',
+        'Hands-on optical fiber fusion splicing, GPON distribution architectures, and physical field diagnostics.',
       skills: SKILL_PILLS.networking,
       counter: '03 / 03',
     },

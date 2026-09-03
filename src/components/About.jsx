@@ -287,44 +287,27 @@ const About = () => {
             <motion.div variants={fadeUp}>
               <h3
                 style={{
-                  fontSize: '1.35rem',
+                  fontSize: '1.25rem',
                   fontWeight: 600,
                   color: 'var(--text)',
-                  marginBottom: '12px',
-                  lineHeight: 1.4,
+                  marginBottom: '10px',
+                  lineHeight: 1.35,
                 }}
               >
-                A versatile professional bridging{' '}
-                <span style={{ color: 'var(--accent-2)', fontWeight: 700 }}>Information Technology</span>,{' '}
-                <span style={{ color: 'var(--accent)', fontWeight: 700 }}>Banking Operations</span> &amp;{' '}
-                <span style={{ color: 'var(--text)', fontWeight: 700 }}>Administration</span>.
+                Bridging{' '}
+                <span style={{ color: 'var(--accent)', fontWeight: 700 }}>Software Engineering</span>,{' '}
+                <span style={{ color: 'var(--accent-2)', fontWeight: 700 }}>Banking Operations</span> &amp; Infrastructure.
               </h3>
               <p
                 style={{
-                  fontSize: '0.94rem',
+                  fontSize: '0.92rem',
                   color: 'var(--text-muted)',
-                  lineHeight: 1.7,
-                  margin: '0 0 12px',
-                  fontWeight: 400,
-                }}
-              >
-                Zacky Andyka adalah lulusan <strong>Teknik Informatika dari Universitas Sumatera Utara (USU)</strong>{' '}
-                dengan latar belakang multidisiplin di bidang operasional perbankan, administrasi, IT support,
-                pengembangan aplikasi web/mobile, jaringan komputer, serta manajemen data.
-              </p>
-              <p
-                style={{
-                  fontSize: '0.94rem',
-                  color: 'var(--text-muted)',
-                  lineHeight: 1.7,
+                  lineHeight: 1.65,
                   margin: 0,
                   fontWeight: 400,
                 }}
               >
-                Pengalaman kerja terbukti melalui program magang di <strong>PT Bank Syariah Indonesia (BSI)</strong>,{' '}
-                <strong>PT Bank Sumut</strong>, <strong>BPJS Ketenagakerjaan</strong>, dan{' '}
-                <strong>PT Telkom Akses Indonesia</strong>. Berorientasi pada akurasi tinggi, disiplin prosedural,
-                serta pemecahan masalah teknis secara adaptif.
+                Lulusan <strong>Teknik Informatika USU</strong> dengan rekam jejak di bidang operasional perbankan (BSI & Bank Sumut), IT support & dashboard analytics (BPJS Ketenagakerjaan), serta infrastruktur fiber optik (Telkom Akses). Mengutamakan akurasi, efisiensi kerja, dan kode yang tangguh.
               </p>
             </motion.div>
 

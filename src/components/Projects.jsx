@@ -7,57 +7,49 @@ import { useSoundContext } from './ui/SoundProvider';
 const PROJECTS = [
   {
     id: 'bisindo',
-    title: 'BISINDO Sign Language Translator App',
+    title: 'BISINDO Sign Language Translator',
     category: 'Mobile App',
     typeIcon: Smartphone,
     accent: '#54C5F8',
-    description:
-      'A cutting-edge mobile application for real-time translation of BISINDO (Indonesian Sign Language) two-handed gestures into text. Powered by Computer Vision, Roboflow custom dataset, and lightweight TensorFlow Lite (TFLite) offline inference.',
-    techStack: ['Flutter', 'Dart', 'TensorFlow Lite', 'Computer Vision', 'Roboflow', 'Android Studio'],
+    description: 'Real-time Indonesian sign language translator powered by offline TensorFlow Lite computer vision.',
+    techStack: ['Flutter', 'Dart', 'TFLite'],
     previewIcon: Cpu,
-    highlights: 'Real-time gesture recognition with zero cloud latency',
     githubUrl: 'https://github.com/zackyandyka',
     demoUrl: '#',
   },
   {
     id: 'bpjs-dashboard',
-    title: 'BPJS Intern Performance Dashboard',
+    title: 'BPJS Performance Dashboard',
     category: 'Web App',
     typeIcon: Globe,
     accent: '#10B981',
-    description:
-      'Internal management and analytics dashboard developed during the BPJS Ketenagakerjaan internship. Visualizes intern KPI performance, JMO (Jamsostek Mobile) activation tracking, and participant analytics with interactive charts.',
-    techStack: ['PHP', 'MySQL', 'Bootstrap 5', 'Chart.js', 'Data Visualization', 'AdminLTE'],
+    description: 'Operational analytics dashboard for tracking intern performance and JMO account activations.',
+    techStack: ['PHP', 'MySQL', 'Chart.js'],
     previewIcon: BarChart3,
-    highlights: 'Automated data metrics and operational reporting',
     githubUrl: 'https://github.com/zackyandyka',
     demoUrl: '#',
   },
   {
     id: 'web-management',
-    title: 'Full-Stack Enterprise Web Application',
+    title: 'Enterprise Web Application',
     category: 'Web App',
     typeIcon: Globe,
     accent: '#61DAFB',
-    description:
-      'Modular web application featuring secure role-based access control (RBAC), relational database transactions, responsive interface, and robust RESTful API endpoints for corporate data management.',
-    techStack: ['React', 'PHP / Laravel', 'MySQL', 'MariaDB', 'REST APIs', 'Tailwind CSS'],
+    description: 'Enterprise data management platform featuring secure role-based access control and REST APIs.',
+    techStack: ['React', 'Laravel', 'MySQL'],
     previewIcon: Database,
-    highlights: 'Secure CRUD transactions & responsive modern frontend',
     githubUrl: 'https://github.com/zackyandyka',
     demoUrl: '#',
   },
   {
     id: 'mobile-suites',
-    title: 'Android & Flutter Utility Ecosystem',
+    title: 'Android & Flutter Ecosystem',
     category: 'Mobile App',
     typeIcon: Smartphone,
     accent: '#E76F00',
-    description:
-      'Suite of mobile applications engineered with Java and Flutter. Demonstrates custom widget architecture, local SQLite persistence, reactive state management, and device hardware integration.',
-    techStack: ['Flutter', 'Java', 'Android Studio', 'SQLite', 'Material UI', 'REST Client'],
+    description: 'Modular Android utilities with local SQLite persistence, reactive state, and hardware integration.',
+    techStack: ['Flutter', 'Java', 'Android'],
     previewIcon: Layers,
-    highlights: 'Offline-first architecture and smooth UI transitions',
     githubUrl: 'https://github.com/zackyandyka',
     demoUrl: '#',
   },
@@ -182,110 +174,80 @@ const Projects = () => {
                 style={{
                   background: 'var(--surface)',
                   border: '1px solid var(--border)',
-                  borderRadius: '20px',
+                  borderRadius: '16px',
                   overflow: 'hidden',
                   display: 'flex',
                   flexDirection: 'column',
                   transition: 'border-color 0.25s, box-shadow 0.25s, transform 0.25s',
-                  boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
+                  boxShadow: '0 8px 24px rgba(0, 0, 0, 0.25)',
                 }}
               >
-                {/* 16:9 Aspect Ratio Image / Placeholder Div */}
+                {/* Visual Banner Preview */}
                 <div
                   className="project-img-box"
                   style={{
                     position: 'relative',
                     width: '100%',
-                    aspectRatio: '16 / 9',
-                    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%)',
+                    aspectRatio: '16 / 7',
+                    background: `radial-gradient(circle at center, ${project.accent}15 0%, rgba(255, 255, 255, 0.02) 80%)`,
                     borderBottom: '1px solid var(--border)',
                     display: 'flex',
-                    flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    padding: '20px',
                     overflow: 'hidden',
                   }}
                 >
-                  {/* Subtle Grid Lines in preview */}
-                  <div
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      backgroundImage: `
-                        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px)
-                      `,
-                      backgroundSize: '24px 24px',
-                      pointerEvents: 'none',
-                    }}
-                  />
-
                   {/* Category Badge (Top-Right) */}
                   <div
                     className="project-cat-badge"
                     style={{
                       position: 'absolute',
-                      top: '14px',
-                      right: '14px',
+                      top: '10px',
+                      right: '10px',
                       display: 'inline-flex',
                       alignItems: 'center',
-                      gap: '6px',
-                      padding: '5px 12px',
+                      gap: '5px',
+                      padding: '4px 9px',
                       borderRadius: '999px',
-                      background: 'rgba(10, 10, 10, 0.75)',
-                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      background: 'rgba(7, 7, 9, 0.8)',
+                      border: '1px solid rgba(255, 255, 255, 0.08)',
                       backdropFilter: 'blur(8px)',
                       color: 'var(--text)',
-                      fontSize: '0.75rem',
+                      fontSize: '0.7rem',
                       fontWeight: 600,
                       zIndex: 2,
                     }}
                   >
-                    <TypeIcon size={13} style={{ color: project.accent }} />
+                    <TypeIcon size={12} style={{ color: project.accent }} />
                     <span>{project.category}</span>
                   </div>
 
-                  {/* Preview Watermark Icon */}
+                  {/* Icon */}
                   <div
                     className="project-watermark"
                     style={{
-                      width: '64px',
-                      height: '64px',
-                      borderRadius: '16px',
-                      background: `${project.accent}15`,
+                      width: '46px',
+                      height: '46px',
+                      borderRadius: '12px',
+                      background: `${project.accent}18`,
                       border: `1px solid ${project.accent}30`,
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       color: project.accent,
-                      marginBottom: '10px',
-                      boxShadow: `0 8px 24px ${project.accent}20`,
+                      boxShadow: `0 6px 18px ${project.accent}20`,
                       zIndex: 1,
                     }}
                   >
-                    <PreviewIcon size={30} />
+                    <PreviewIcon size={22} />
                   </div>
-
-                  <span
-                    className="project-mockup-label"
-                    style={{
-                      fontSize: '0.75rem',
-                      color: 'var(--text-muted)',
-                      letterSpacing: '0.5px',
-                      textTransform: 'uppercase',
-                      zIndex: 1,
-                    }}
-                  >
-                    16:9 Project Mockup Frame
-                  </span>
                 </div>
 
                 {/* Content Section */}
                 <div
                   className="project-content-box"
                   style={{
-                    padding: '24px',
+                    padding: '16px',
                     display: 'flex',
                     flexDirection: 'column',
                     flex: 1,
@@ -296,8 +258,8 @@ const Projects = () => {
                     <h3
                       className="project-title"
                       style={{
-                        margin: '0 0 10px',
-                        fontSize: '1.2rem',
+                        margin: '0 0 6px',
+                        fontSize: '1.05rem',
                         fontWeight: 600,
                         color: 'var(--text)',
                         lineHeight: 1.3,
@@ -309,36 +271,15 @@ const Projects = () => {
                     <p
                       className="project-desc"
                       style={{
-                        fontSize: '0.88rem',
+                        fontSize: '0.82rem',
                         color: 'var(--text-muted)',
-                        lineHeight: 1.6,
-                        margin: '0 0 16px',
+                        lineHeight: 1.45,
+                        margin: '0 0 12px',
                         fontWeight: 300,
                       }}
                     >
                       {project.description}
                     </p>
-
-                    {/* Highlights Pill */}
-                    <div
-                      className="project-highlight"
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                        padding: '4px 10px',
-                        borderRadius: '6px',
-                        background: 'rgba(255, 59, 29, 0.08)',
-                        border: '1px solid rgba(255, 59, 29, 0.2)',
-                        color: 'var(--accent)',
-                        fontSize: '0.75rem',
-                        fontWeight: 500,
-                        marginBottom: '16px',
-                      }}
-                    >
-                      <Sparkles size={12} />
-                      <span>{project.highlights}</span>
-                    </div>
 
                     {/* Tech Tags */}
                     <div
@@ -346,8 +287,8 @@ const Projects = () => {
                       style={{
                         display: 'flex',
                         flexWrap: 'wrap',
-                        gap: '6px',
-                        marginBottom: '20px',
+                        gap: '5px',
+                        marginBottom: '14px',
                       }}
                     >
                       {project.techStack.map((tech) => (
@@ -355,12 +296,12 @@ const Projects = () => {
                           key={tech}
                           className="project-tag"
                           style={{
-                            fontSize: '0.75rem',
-                            padding: '4px 10px',
+                            fontSize: '0.7rem',
+                            padding: '3px 8px',
                             borderRadius: '6px',
                             background: 'rgba(255, 255, 255, 0.04)',
                             border: '1px solid var(--border)',
-                            color: 'var(--text)',
+                            color: 'var(--text-muted)',
                           }}
                         >
                           {tech}
@@ -375,76 +316,71 @@ const Projects = () => {
                     style={{
                       display: 'flex',
                       alignItems: 'center',
-                      justifyContent: 'space-between',
-                      paddingTop: '16px',
+                      justifyContent: 'flex-end',
+                      gap: '8px',
+                      paddingTop: '10px',
                       borderTop: '1px solid var(--border)',
                     }}
                   >
-                    <span className="project-actions-label" style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                      Source & Demo
-                    </span>
+                    <motion.a
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={playClick}
+                      onMouseEnter={playHover}
+                      whileHover={{ scale: 1.08 }}
+                      whileTap={{ scale: 0.92 }}
+                      title="View Source Code"
+                      aria-label="View Source Code"
+                      className="project-action-btn"
+                      style={{
+                        width: '32px',
+                        height: '32px',
+                        borderRadius: '8px',
+                        background: 'rgba(255, 255, 255, 0.04)',
+                        border: '1px solid var(--border)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: 'var(--text)',
+                        textDecoration: 'none',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <Github size={15} />
+                    </motion.a>
 
-                    <div style={{ display: 'flex', gap: '8px' }}>
-                      <motion.a
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={playClick}
-                        onMouseEnter={playHover}
-                        whileHover={{ scale: 1.08 }}
-                        whileTap={{ scale: 0.92 }}
-                        title="View Source Code"
-                        aria-label="View Source Code"
-                        className="project-action-btn"
-                        style={{
-                          width: '38px',
-                          height: '38px',
-                          borderRadius: '10px',
-                          background: 'rgba(255, 255, 255, 0.04)',
-                          border: '1px solid var(--border)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          color: 'var(--text)',
-                          textDecoration: 'none',
-                          cursor: 'pointer',
-                        }}
-                      >
-                        <Github size={17} />
-                      </motion.a>
-
-                      <motion.a
-                        href={project.demoUrl}
-                        onClick={(e) => {
-                          playClick();
-                          if (project.demoUrl === '#') {
-                            e.preventDefault();
-                            alert(`Interactive preview for "${project.title}" will open upon demo deployment.`);
-                          }
-                        }}
-                        onMouseEnter={playHover}
-                        whileHover={{ scale: 1.08 }}
-                        whileTap={{ scale: 0.92 }}
-                        title="Live Demonstration"
-                        aria-label="Live Demonstration"
-                        className="project-action-btn"
-                        style={{
-                          width: '38px',
-                          height: '38px',
-                          borderRadius: '10px',
-                          background: 'rgba(255, 59, 29, 0.1)',
-                          border: '1px solid rgba(255, 59, 29, 0.3)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          color: 'var(--accent)',
-                          textDecoration: 'none',
-                          cursor: 'pointer',
-                        }}
-                      >
-                        <ExternalLink size={17} />
-                      </motion.a>
-                    </div>
+                    <motion.a
+                      href={project.demoUrl}
+                      onClick={(e) => {
+                        playClick();
+                        if (project.demoUrl === '#') {
+                          e.preventDefault();
+                          alert(`Interactive preview for "${project.title}" will open upon demo deployment.`);
+                        }
+                      }}
+                      onMouseEnter={playHover}
+                      whileHover={{ scale: 1.08 }}
+                      whileTap={{ scale: 0.92 }}
+                      title="Live Demonstration"
+                      aria-label="Live Demonstration"
+                      className="project-action-btn"
+                      style={{
+                        width: '32px',
+                        height: '32px',
+                        borderRadius: '8px',
+                        background: 'rgba(255, 59, 29, 0.1)',
+                        border: '1px solid rgba(255, 59, 29, 0.3)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: 'var(--accent)',
+                        textDecoration: 'none',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <ExternalLink size={15} />
+                    </motion.a>
                   </div>
                 </div>
               </motion.div>
@@ -456,7 +392,7 @@ const Projects = () => {
           .projects-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 24px;
+            gap: 20px;
           }
           @media (max-width: 860px) {
             .projects-grid {
@@ -466,86 +402,63 @@ const Projects = () => {
             .project-card {
               border-radius: 14px !important;
             }
-            .project-img-box {
-              padding: 12px 10px !important;
-            }
             .project-cat-badge {
-              padding: 3px 8px !important;
-              font-size: 0.65rem !important;
+              padding: 3px 7px !important;
+              font-size: 0.62rem !important;
               top: 8px !important;
               right: 8px !important;
             }
             .project-watermark {
-              width: 44px !important;
-              height: 44px !important;
-              border-radius: 12px !important;
-              margin-bottom: 4px !important;
+              width: 38px !important;
+              height: 38px !important;
+              border-radius: 10px !important;
             }
             .project-watermark svg {
-              width: 22px !important;
-              height: 22px !important;
-            }
-            .project-mockup-label {
-              display: none !important;
+              width: 18px !important;
+              height: 18px !important;
             }
             .project-content-box {
-              padding: 16px 12px !important;
+              padding: 14px 12px !important;
             }
             .project-title {
-              font-size: 0.95rem !important;
-              margin-bottom: 6px !important;
+              font-size: 0.92rem !important;
+              margin-bottom: 4px !important;
             }
             .project-desc {
               font-size: 0.76rem !important;
-              line-height: 1.4 !important;
-              margin-bottom: 8px !important;
+              line-height: 1.35 !important;
+              margin-bottom: 10px !important;
               display: -webkit-box;
               -webkit-line-clamp: 2;
               -webkit-box-orient: vertical;
               overflow: hidden;
             }
-            .project-highlight {
-              font-size: 0.65rem !important;
-              padding: 3px 8px !important;
-              margin-bottom: 8px !important;
-            }
             .project-tag {
-              font-size: 0.68rem !important;
-              padding: 3px 7px !important;
-            }
-            .project-actions {
-              padding-top: 10px !important;
-            }
-            .project-actions-label {
-              font-size: 0.72rem !important;
+              font-size: 0.65rem !important;
+              padding: 2px 6px !important;
             }
             .project-action-btn {
-              width: 32px !important;
-              height: 32px !important;
-              border-radius: 8px !important;
+              width: 28px !important;
+              height: 28px !important;
+              border-radius: 6px !important;
             }
             .project-action-btn svg {
-              width: 15px !important;
-              height: 15px !important;
+              width: 13px !important;
+              height: 13px !important;
             }
           }
           @media (max-width: 480px) {
             .projects-grid {
-              gap: 10px !important;
+              gap: 8px !important;
             }
             .project-content-box {
-              padding: 12px 10px !important;
+              padding: 10px 8px !important;
             }
             .project-title {
-              font-size: 0.88rem !important;
-              line-height: 1.25 !important;
+              font-size: 0.82rem !important;
             }
             .project-desc {
               font-size: 0.72rem !important;
-              -webkit-line-clamp: 2;
-            }
-            .project-actions-label {
-              display: none !important;
             }
           }
         `}</style>

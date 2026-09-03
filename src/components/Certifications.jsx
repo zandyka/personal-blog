@@ -149,34 +149,34 @@ const Certifications = () => {
               style={{
                 background: 'var(--surface)',
                 border: '1px solid var(--border)',
-                borderLeft: '4px solid var(--accent)',
-                borderRadius: '16px',
-                padding: '24px',
+                borderLeft: '3px solid var(--accent)',
+                borderRadius: '14px',
+                padding: '16px',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
                 transition: 'box-shadow 0.25s, transform 0.25s, border-color 0.25s',
-                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.25)',
+                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.2)',
                 position: 'relative',
               }}
             >
               <div>
-                {/* Header: Icon & Type Badge */}
+                {/* Header: Icon & Period Badge */}
                 <div
                   style={{
                     display: 'flex',
-                    alignItems: 'flex-start',
+                    alignItems: 'center',
                     justifyContent: 'space-between',
                     gap: '8px',
-                    marginBottom: '14px',
+                    marginBottom: '10px',
                   }}
                 >
                   <div
                     className="cert-icon"
                     style={{
-                      width: '44px',
-                      height: '44px',
-                      borderRadius: '12px',
+                      width: '34px',
+                      height: '34px',
+                      borderRadius: '10px',
                       background: 'rgba(255, 59, 29, 0.12)',
                       border: '1px solid rgba(255, 59, 29, 0.3)',
                       display: 'flex',
@@ -186,23 +186,22 @@ const Certifications = () => {
                       flexShrink: 0,
                     }}
                   >
-                    <Award size={22} />
+                    <Award size={18} />
                   </div>
 
                   <span
-                    className="cert-badge"
+                    className="cert-period"
                     style={{
                       fontSize: '0.72rem',
-                      fontWeight: 600,
-                      padding: '4px 8px',
-                      borderRadius: '999px',
-                      background: 'rgba(255, 255, 255, 0.04)',
-                      border: '1px solid var(--border)',
-                      color: 'var(--accent)',
-                      whiteSpace: 'nowrap',
+                      fontWeight: 500,
+                      color: 'var(--text-muted)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
                     }}
                   >
-                    {cert.credentialType}
+                    <Calendar size={11} />
+                    <span>{cert.period}</span>
                   </span>
                 </div>
 
@@ -210,11 +209,11 @@ const Certifications = () => {
                 <h3
                   className="cert-title"
                   style={{
-                    margin: '0 0 6px',
-                    fontSize: '1.15rem',
+                    margin: '0 0 4px',
+                    fontSize: '1rem',
                     fontWeight: 600,
                     color: 'var(--text)',
-                    lineHeight: 1.3,
+                    lineHeight: 1.25,
                   }}
                 >
                   {cert.title}
@@ -224,78 +223,27 @@ const Certifications = () => {
                 <p
                   className="cert-issuer"
                   style={{
-                    margin: '0 0 10px',
-                    fontSize: '0.88rem',
+                    margin: '0 0 12px',
+                    fontSize: '0.8rem',
                     color: 'var(--accent)',
                     fontWeight: 500,
+                    lineHeight: 1.3,
                   }}
                 >
                   {cert.issuer}
                 </p>
-
-                {/* Period */}
-                <div
-                  className="cert-period"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    fontSize: '0.78rem',
-                    color: 'var(--text-muted)',
-                    marginBottom: '14px',
-                  }}
-                >
-                  <Calendar size={13} />
-                  <span>{cert.period}</span>
-                </div>
-
-                {/* Focus Area */}
-                <div
-                  className="cert-focus"
-                  style={{
-                    padding: '12px',
-                    borderRadius: '10px',
-                    background: 'rgba(255, 255, 255, 0.02)',
-                    border: '1px solid var(--border)',
-                    marginBottom: '14px',
-                  }}
-                >
-                  <span
-                    style={{
-                      display: 'block',
-                      fontSize: '0.7rem',
-                      color: 'var(--text-muted)',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.5px',
-                      marginBottom: '4px',
-                    }}
-                  >
-                    Focus Area
-                  </span>
-                  <p
-                    style={{
-                      margin: 0,
-                      fontSize: '0.82rem',
-                      color: 'var(--text)',
-                      lineHeight: 1.4,
-                      fontWeight: 400,
-                    }}
-                  >
-                    {cert.focusArea}
-                  </p>
-                </div>
               </div>
 
-              {/* Skills Gained Tags */}
+              {/* Skills Gained Tags (Max 2-3) */}
               <div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
-                  {cert.skillsGained.map((skill) => (
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                  {cert.skillsGained.slice(0, 2).map((skill) => (
                     <span
                       key={skill}
                       className="cert-tag"
                       style={{
-                        fontSize: '0.7rem',
-                        padding: '3px 7px',
+                        fontSize: '0.68rem',
+                        padding: '2px 7px',
                         borderRadius: '6px',
                         background: 'rgba(255, 255, 255, 0.04)',
                         color: 'var(--text-muted)',
@@ -315,84 +263,55 @@ const Certifications = () => {
           .cert-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            gap: 16px;
           }
           @media (max-width: 860px) {
             .cert-grid {
               grid-template-columns: repeat(2, 1fr) !important;
-              gap: 12px !important;
+              gap: 10px !important;
             }
             .cert-card {
-              padding: 16px 14px !important;
-              border-radius: 14px !important;
+              padding: 12px 10px !important;
+              border-radius: 12px !important;
             }
             .cert-icon {
-              width: 36px !important;
-              height: 36px !important;
-              border-radius: 10px !important;
+              width: 28px !important;
+              height: 28px !important;
+              border-radius: 8px !important;
             }
             .cert-icon svg {
-              width: 18px !important;
-              height: 18px !important;
-            }
-            .cert-badge {
-              font-size: 0.65rem !important;
-              padding: 3px 8px !important;
+              width: 15px !important;
+              height: 15px !important;
             }
             .cert-title {
-              font-size: 0.95rem !important;
-              margin-bottom: 4px !important;
+              font-size: 0.85rem !important;
+              margin-bottom: 3px !important;
             }
             .cert-issuer {
-              font-size: 0.78rem !important;
+              font-size: 0.72rem !important;
               margin-bottom: 8px !important;
             }
             .cert-period {
-              font-size: 0.72rem !important;
-              margin-bottom: 10px !important;
-            }
-            .cert-focus {
-              padding: 10px !important;
-              margin-bottom: 10px !important;
-            }
-            .cert-focus span {
-              font-size: 0.64rem !important;
-            }
-            .cert-focus p {
-              font-size: 0.75rem !important;
-              line-height: 1.4 !important;
+              font-size: 0.65rem !important;
             }
             .cert-tag {
-              font-size: 0.68rem !important;
-              padding: 3px 7px !important;
+              font-size: 0.62rem !important;
+              padding: 2px 5px !important;
             }
           }
           @media (max-width: 480px) {
             .cert-grid {
-              gap: 10px !important;
+              gap: 8px !important;
             }
             .cert-card {
-              padding: 14px 12px !important;
-              border-radius: 12px !important;
-              border-left-width: 3px !important;
+              padding: 10px 8px !important;
+              border-radius: 10px !important;
             }
             .cert-title {
-              font-size: 0.88rem !important;
-              line-height: 1.3 !important;
+              font-size: 0.8rem !important;
             }
             .cert-issuer {
-              font-size: 0.75rem !important;
-            }
-            .cert-focus {
-              padding: 8px !important;
-              margin-bottom: 8px !important;
-            }
-            .cert-focus p {
-              font-size: 0.72rem !important;
-            }
-            .cert-tag {
-              font-size: 0.64rem !important;
-              padding: 2px 6px !important;
+              font-size: 0.68rem !important;
             }
           }
         `}</style>

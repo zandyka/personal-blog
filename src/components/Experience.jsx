@@ -9,65 +9,45 @@ const WORK_EXPERIENCES = [
     id: 'bsi',
     company: 'PT. Bank Syariah Indonesia (BSI)',
     role: 'Back Office Intern',
-    period: 'Mar 2025 – Jun 2025',
+    period: 'Mar 2025 - Jun 2025',
     type: 'Internship',
     icon: Landmark,
     description:
-      'Supported core administrative and back-office operations in a strict procedural banking environment. Handled operational data management, document verification, archival governance, and daily banking administrative workflows requiring high confidentiality and precision.',
-    responsibilities: [
-      'Managed and organized operational banking datasets',
-      'Assisted document verification and administrative archival',
-      'Supported compliance with procedural and compliance standards',
-    ],
-    tags: ['Banking Administration', 'Data Management', 'Document Control', 'Procedural Compliance'],
+      'Handled operational banking data verification, document archival governance, and administrative compliance with strict confidentiality.',
+    tags: ['Banking Admin', 'Data Verification', 'Compliance'],
   },
   {
     id: 'bank-sumut',
     company: 'PT. Bank Sumut',
     role: 'Operational Division Intern',
-    period: 'Jun 2025 – Jul 2025',
+    period: 'Jun 2025 - Jul 2025',
     type: 'Internship',
     icon: Building2,
     description:
-      'Assisted the operational division with daily banking transaction workflows and customer service functions. Supported operational procedures, customer inquiries, and procedural compliance in routine banking operations.',
-    responsibilities: [
-      'Assisted operational team with daily transaction processing',
-      'Supported customer service and customer inquiry workflows',
-      'Maintained adherence to standard operating procedures',
-    ],
-    tags: ['Banking Operations', 'Transaction Processing', 'Customer Service', 'Operational Support'],
+      'Assisted daily customer transaction processing, service inquiries, and adherence to standard banking operating procedures.',
+    tags: ['Banking Operations', 'Transaction Processing', 'Customer Service'],
   },
   {
     id: 'bpjs',
     company: 'BPJS Ketenagakerjaan',
-    role: 'IT / Internship Administration Support',
+    role: 'IT / Admin Support Intern',
     period: '2024',
     type: 'Internship',
     icon: Server,
     description:
-      'Coordinated IT-related internship systems, participant data management, and technical webinar support. Assisted users with JMO (Jamsostek Mobile) activation and troubleshooting, and engineered a performance visualization dashboard for tracking intern metrics.',
-    responsibilities: [
-      'Built a dashboard for intern performance & JMO activation metrics',
-      'Handled user technical support and JMO account activation',
-      'Managed participant data administration and automated communication blasting',
-    ],
-    tags: ['IT Support', 'Dashboard Development', 'Data Administration', 'JMO Troubleshooting'],
+      'Engineered an intern performance analytics dashboard, handled JMO app troubleshooting, and managed participant datasets.',
+    tags: ['IT Support', 'Dashboard Analytics', 'Data Management'],
   },
   {
     id: 'telkom-akses',
     company: 'PT. Telkom Akses Indonesia',
-    role: 'Fiber Technician — Certified Internship',
-    period: 'Feb 2022 – Apr 2022',
+    role: 'Fiber Technician Intern',
+    period: 'Feb 2022 - Apr 2022',
     type: 'Internship',
     icon: Network,
     description:
-      'Certified vocational internship focused on optical telecommunication infrastructure. Performed fiber optic deployment, fusion splicing, optical power meter testing, GPON system maintenance, and network troubleshooting in field operations.',
-    responsibilities: [
-      'Installed and maintained optical fiber distribution infrastructure',
-      'Operated GPON-related network systems and optical diagnostic tools',
-      'Assisted with field technical diagnostics and line repairs',
-    ],
-    tags: ['Fiber Optic', 'GPON Systems', 'Network Engineering', 'Field Operations'],
+      'Conducted fiber optic fusion splicing, GPON network infrastructure diagnostics, and optical power meter testing in field operations.',
+    tags: ['Fiber Optic', 'GPON Infrastructure', 'Field Diagnostics'],
   },
 ];
 
@@ -76,17 +56,12 @@ const ORGANIZATION_EXPERIENCES = [
     id: 'himti',
     company: 'HIMTI Universitas Sumatera Utara',
     role: 'Head of Creative Media Division',
-    period: '2023 – 2024',
+    period: '2023 - 2024',
     type: 'Organization',
     icon: Users,
     description:
-      'Led the Creative Media Division of the Informatics Engineering Student Association. Directed visual branding, managed team members, produced social media content, event photography, certificates, banners, and digital promotional assets.',
-    responsibilities: [
-      'Managed division members and coordinated event media teams',
-      'Directed visual design production via Figma and photography assets',
-      'Led creative strategy and official organizational social media channels',
-    ],
-    tags: ['Leadership', 'Team Management', 'Figma', 'Event Documentation', 'Visual Design'],
+      'Led visual branding, creative design workflows, event documentation teams, and organizational digital media channels.',
+    tags: ['Creative Direction', 'Figma', 'Team Leadership'],
   },
 ];
 
@@ -241,32 +216,15 @@ const TimelineCard = ({ item, index }) => {
         {/* Description */}
         <p
           style={{
-            fontSize: '0.9rem',
+            fontSize: '0.86rem',
             color: 'var(--text-muted)',
-            lineHeight: 1.6,
-            margin: '0 0 16px',
+            lineHeight: 1.55,
+            margin: '0 0 14px',
             fontWeight: 300,
           }}
         >
           {item.description}
         </p>
-
-        {/* Key Responsibilities */}
-        <ul
-          style={{
-            margin: '0 0 16px',
-            paddingLeft: '18px',
-            fontSize: '0.85rem',
-            color: 'var(--text-muted)',
-            lineHeight: 1.6,
-          }}
-        >
-          {item.responsibilities.map((resp, i) => (
-            <li key={i} style={{ marginBottom: '4px' }}>
-              {resp}
-            </li>
-          ))}
-        </ul>
 
         {/* Tags */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
