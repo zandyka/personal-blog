@@ -1,7 +1,18 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Award, Calendar, CheckCircle2, ShieldCheck, ExternalLink, BookmarkCheck } from 'lucide-react';
+import {
+  Award,
+  Calendar,
+  CheckCircle2,
+  ShieldCheck,
+  ExternalLink,
+  BookmarkCheck,
+  Image as ImageIcon,
+  ZoomIn,
+  X,
+  FileCheck,
+} from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
 
 const CERTIFICATIONS = [
@@ -13,15 +24,17 @@ const CERTIFICATIONS = [
     focusArea: 'Mobile Application Programming & Android Architecture Fundamentals',
     credentialType: 'Government Accreditation',
     skillsGained: ['Mobile Development', 'Android Studio', 'Java / Kotlin Basics', 'App Lifecycle'],
+    image: null, // Ready to receive certificate photo
   },
   {
     id: 'vsga-web',
     title: 'Junior Web Developer',
     issuer: 'VSGA Kominfo (Digital Talent Scholarship)',
-    period: 'Aug 2024',
+    period: 'Agu 2024',
     focusArea: 'Web Application Programming, Database Integration & Frontend Standards',
     credentialType: 'Government Accreditation',
     skillsGained: ['Web Programming', 'PHP / MySQL', 'Responsive Layout', 'REST Architecture'],
+    image: null, // Ready to receive certificate photo
   },
   {
     id: 'telkom-fiber',
@@ -31,14 +44,16 @@ const CERTIFICATIONS = [
     focusArea: 'Fiber Optic Deployment, GPON Infrastructure & Optical Diagnostics',
     credentialType: 'Industry Certification',
     skillsGained: ['Fiber Optic Splicing', 'GPON Systems', 'OTDR / OPM Testing', 'Field Troubleshooting'],
+    image: null, // Ready to receive certificate photo
   },
 ];
 
 const Certifications = () => {
   const { playClick, playHover } = useSoundContext();
+  const [activeCert, setActiveCert] = useState(null);
   const { ref, inView } = useInView({
     triggerOnce: true,
-    threshold: 0.15,
+    threshold: 0.1,
   });
 
   const fadeUp = {
@@ -62,7 +77,7 @@ const Certifications = () => {
       id="certifications"
       ref={ref}
       style={{
-        padding: '44px 20px',
+        padding: '44px 20px 60px',
         background: 'var(--bg)',
         position: 'relative',
         overflow: 'hidden',
@@ -79,7 +94,7 @@ const Certifications = () => {
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
           variants={fadeUp}
-          style={{ textAlign: 'center', marginBottom: '28px' }}
+          style={{ textAlign: 'center', marginBottom: '32px' }}
         >
           <span
             style={{
@@ -92,7 +107,7 @@ const Certifications = () => {
               marginBottom: '8px',
             }}
           >
-            Credentials & Training
+            Credentials &amp; Licenses
           </span>
           <h2
             style={{
@@ -103,7 +118,7 @@ const Certifications = () => {
               letterSpacing: '-0.02em',
             }}
           >
-            Certifications
+            Certifications &amp; Accreditations
           </h2>
           <div
             style={{
@@ -117,13 +132,13 @@ const Certifications = () => {
           <p
             style={{
               color: 'var(--text-muted)',
-              fontSize: '1rem',
-              maxWidth: '600px',
+              fontSize: '0.98rem',
+              maxWidth: '620px',
               margin: '0 auto',
               fontWeight: 300,
             }}
           >
-            Vocational and industry-standard certifications verifying competencies in mobile, web, and network infrastructure.
+            Sertifikasi resmi terakreditasi standar nasional (Kominfo / SKKNI) dan industri yang memvalidasi kompetensi di bidang mobile, web, dan infrastruktur jaringan.
           </p>
         </motion.div>
 
@@ -150,8 +165,8 @@ const Certifications = () => {
                 background: 'var(--surface)',
                 border: '1px solid var(--border)',
                 borderLeft: '3px solid var(--accent)',
-                borderRadius: '14px',
-                padding: '16px',
+                borderRadius: '16px',
+                padding: '18px',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
@@ -161,7 +176,118 @@ const Certifications = () => {
               }}
             >
               <div>
-                {/* Header: Icon & Period Badge */}
+                {/* Certificate Photo Frame / Placeholder Area */}
+                <div
+                  onClick={() => {
+                    if (cert.image) {
+                      playClick();
+                      setActiveCert(cert);
+                    }
+                  }}
+                  style={{
+                    position: 'relative',
+                    width: '100%',
+                    aspectRatio: '16 / 10',
+                    borderRadius: '12px',
+                    overflow: 'hidden',
+                    background: cert.image
+                      ? 'var(--surface-2)'
+                      : 'linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%)',
+                    border: cert.image ? '1px solid var(--border)' : '1px dashed var(--border)',
+                    marginBottom: '14px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: cert.image ? 'pointer' : 'default',
+                  }}
+                >
+                  {cert.image ? (
+                    <>
+                      <img
+                        src={cert.image}
+                        alt={cert.title}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                          display: 'block',
+                          transition: 'transform 0.4s ease',
+                        }}
+                      />
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: '8px',
+                          right: '8px',
+                          width: '28px',
+                          height: '28px',
+                          borderRadius: '8px',
+                          background: 'rgba(0, 0, 0, 0.6)',
+                          backdropFilter: 'blur(6px)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: '#ffffff',
+                        }}
+                      >
+                        <ZoomIn size={14} />
+                      </div>
+                    </>
+                  ) : (
+                    /* Elegant Certificate Placeholder */
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '8px',
+                        padding: '16px',
+                        textAlign: 'center',
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: '40px',
+                          height: '40px',
+                          borderRadius: '10px',
+                          background: 'var(--accent-dim)',
+                          border: '1px solid var(--accent-border)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: 'var(--accent)',
+                        }}
+                      >
+                        <FileCheck size={20} />
+                      </div>
+                      <div>
+                        <span
+                          style={{
+                            fontSize: '0.8rem',
+                            fontWeight: 600,
+                            color: 'var(--text)',
+                            display: 'block',
+                          }}
+                        >
+                          Area Foto Sertifikat
+                        </span>
+                        <span
+                          style={{
+                            fontSize: '0.7rem',
+                            color: 'var(--text-muted)',
+                            display: 'block',
+                            marginTop: '2px',
+                          }}
+                        >
+                          Siap menampilkan sertifikat
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Header: Issuer & Period */}
                 <div
                   style={{
                     display: 'flex',
@@ -171,28 +297,22 @@ const Certifications = () => {
                     marginBottom: '10px',
                   }}
                 >
-                  <div
-                    className="cert-icon"
+                  <span
                     style={{
-                      width: '34px',
-                      height: '34px',
-                      borderRadius: '10px',
-                      background: 'rgba(255, 59, 29, 0.12)',
-                      border: '1px solid rgba(255, 59, 29, 0.3)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
+                      fontSize: '0.72rem',
+                      fontWeight: 700,
                       color: 'var(--accent)',
-                      flexShrink: 0,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.8px',
                     }}
                   >
-                    <Award size={18} />
-                  </div>
+                    {cert.credentialType}
+                  </span>
 
                   <span
                     className="cert-period"
                     style={{
-                      fontSize: '0.72rem',
+                      fontSize: '0.74rem',
                       fontWeight: 500,
                       color: 'var(--text-muted)',
                       display: 'flex',
@@ -200,7 +320,7 @@ const Certifications = () => {
                       gap: '4px',
                     }}
                   >
-                    <Calendar size={11} />
+                    <Calendar size={12} />
                     <span>{cert.period}</span>
                   </span>
                 </div>
@@ -209,11 +329,11 @@ const Certifications = () => {
                 <h3
                   className="cert-title"
                   style={{
-                    margin: '0 0 4px',
-                    fontSize: '1rem',
+                    margin: '0 0 6px',
+                    fontSize: '1.05rem',
                     fontWeight: 600,
                     color: 'var(--text)',
-                    lineHeight: 1.25,
+                    lineHeight: 1.3,
                   }}
                 >
                   {cert.title}
@@ -224,30 +344,29 @@ const Certifications = () => {
                   className="cert-issuer"
                   style={{
                     margin: '0 0 12px',
-                    fontSize: '0.8rem',
-                    color: 'var(--accent)',
-                    fontWeight: 500,
-                    lineHeight: 1.3,
+                    fontSize: '0.84rem',
+                    color: 'var(--text-muted)',
+                    lineHeight: 1.4,
                   }}
                 >
                   {cert.issuer}
                 </p>
               </div>
 
-              {/* Skills Gained Tags (Max 2-3) */}
-              <div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
-                  {cert.skillsGained.slice(0, 2).map((skill) => (
+              {/* Skills Gained Tags */}
+              <div style={{ marginTop: '12px', paddingTop: '10px', borderTop: '1px solid rgba(255, 255, 255, 0.05)' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
+                  {cert.skillsGained.map((skill) => (
                     <span
                       key={skill}
                       className="cert-tag"
                       style={{
-                        fontSize: '0.68rem',
-                        padding: '2px 7px',
+                        fontSize: '0.7rem',
+                        padding: '3px 8px',
                         borderRadius: '6px',
                         background: 'rgba(255, 255, 255, 0.04)',
                         color: 'var(--text-muted)',
-                        border: '1px solid rgba(255, 255, 255, 0.05)',
+                        border: '1px solid rgba(255, 255, 255, 0.06)',
                       }}
                     >
                       {skill}
@@ -259,59 +378,120 @@ const Certifications = () => {
           ))}
         </motion.div>
 
+        {/* Modal Lightbox for Certificate Full View */}
+        <AnimatePresence>
+          {activeCert && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => {
+                playClick();
+                setActiveCert(null);
+              }}
+              style={{
+                position: 'fixed',
+                inset: 0,
+                zIndex: 9999,
+                background: 'rgba(0, 0, 0, 0.92)',
+                backdropFilter: 'blur(16px)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '24px',
+              }}
+            >
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  background: 'var(--surface)',
+                  border: '1px solid var(--border)',
+                  borderRadius: '20px',
+                  maxWidth: '820px',
+                  width: '100%',
+                  overflow: 'hidden',
+                  boxShadow: '0 24px 80px rgba(0, 0, 0, 0.6)',
+                }}
+              >
+                <div
+                  style={{
+                    position: 'relative',
+                    width: '100%',
+                    maxHeight: '75vh',
+                    background: '#0a0a0f',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <img
+                    src={activeCert.image}
+                    alt={activeCert.title}
+                    style={{
+                      maxWidth: '100%',
+                      maxHeight: '75vh',
+                      objectFit: 'contain',
+                      display: 'block',
+                    }}
+                  />
+                  <button
+                    onClick={() => {
+                      playClick();
+                      setActiveCert(null);
+                    }}
+                    style={{
+                      position: 'absolute',
+                      top: '16px',
+                      right: '16px',
+                      width: '36px',
+                      height: '36px',
+                      borderRadius: '50%',
+                      background: 'rgba(0,0,0,0.6)',
+                      border: '1px solid rgba(255,255,255,0.2)',
+                      color: '#ffffff',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
+                <div style={{ padding: '20px 24px' }}>
+                  <h3 style={{ margin: '0 0 6px', fontSize: '1.2rem', color: 'var(--text)' }}>
+                    {activeCert.title}
+                  </h3>
+                  <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--accent)' }}>
+                    {activeCert.issuer} &bull; {activeCert.period}
+                  </p>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         <style>{`
           .cert-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
+            gap: 20px;
           }
-          @media (max-width: 860px) {
+          @media (max-width: 900px) {
             .cert-grid {
               grid-template-columns: repeat(2, 1fr) !important;
-              gap: 10px !important;
-            }
-            .cert-card {
-              padding: 12px 10px !important;
-              border-radius: 12px !important;
-            }
-            .cert-icon {
-              width: 28px !important;
-              height: 28px !important;
-              border-radius: 8px !important;
-            }
-            .cert-icon svg {
-              width: 15px !important;
-              height: 15px !important;
-            }
-            .cert-title {
-              font-size: 0.85rem !important;
-              margin-bottom: 3px !important;
-            }
-            .cert-issuer {
-              font-size: 0.72rem !important;
-              margin-bottom: 8px !important;
-            }
-            .cert-period {
-              font-size: 0.65rem !important;
-            }
-            .cert-tag {
-              font-size: 0.62rem !important;
-              padding: 2px 5px !important;
+              gap: 14px !important;
             }
           }
-          @media (max-width: 480px) {
+          @media (max-width: 580px) {
             .cert-grid {
-              gap: 8px !important;
-            }
-            .cert-card {
-              padding: 10px 8px !important;
-              border-radius: 10px !important;
-            }
-            .cert-title {
-              font-size: 0.8rem !important;
-            }
-            .cert-issuer {
-              font-size: 0.68rem !important;
+              grid-template-columns: 1fr !important;
+              gap: 14px !important;
             }
           }
         `}</style>
@@ -321,4 +501,3 @@ const Certifications = () => {
 };
 
 export default Certifications;
-

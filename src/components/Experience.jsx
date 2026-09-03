@@ -1,7 +1,18 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Building2, Calendar, Tag, Landmark, Network, Server, Users, Award } from 'lucide-react';
+import {
+  Building2,
+  Calendar,
+  Landmark,
+  Network,
+  Server,
+  Users,
+  Award,
+  BookOpen,
+  Camera,
+  Sparkles,
+} from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
 
 const WORK_EXPERIENCES = [
@@ -9,11 +20,11 @@ const WORK_EXPERIENCES = [
     id: 'bsi',
     company: 'PT. Bank Syariah Indonesia (BSI)',
     role: 'Back Office Intern',
-    period: 'Mar 2025 - Jun 2025',
+    period: 'Maret 2025 - Mei 2025',
     type: 'Internship',
     icon: Landmark,
     description:
-      'Handled operational banking data verification, document archival governance, and administrative compliance with strict confidentiality.',
+      'Bertanggung jawab atas verifikasi data operasional perbankan, tata kelola kearsipan dokumen nasabah, dan kepatuhan administrasi dengan standar kerahasiaan tinggi.',
     tags: ['Banking Admin', 'Data Verification', 'Compliance'],
   },
   {
@@ -24,19 +35,19 @@ const WORK_EXPERIENCES = [
     type: 'Internship',
     icon: Building2,
     description:
-      'Assisted daily customer transaction processing, service inquiries, and adherence to standard banking operating procedures.',
+      'Mendukung pemrosesan transaksi harian nasabah, penanganan pertanyaan layanan, serta penerapan standar operasional prosedur (SOP) perbankan.',
     tags: ['Banking Operations', 'Transaction Processing', 'Customer Service'],
   },
   {
     id: 'bpjs',
     company: 'BPJS Ketenagakerjaan',
     role: 'IT / Admin Support Intern',
-    period: '2024',
+    period: 'September 2025 - Desember 2025',
     type: 'Internship',
     icon: Server,
     description:
-      'Engineered an intern performance analytics dashboard, handled JMO app troubleshooting, and managed participant datasets.',
-    tags: ['IT Support', 'Dashboard Analytics', 'Data Management'],
+      'Mengembangkan dashboard analitik performa magang, melakukan troubleshooting aplikasi JMO (Jamsostek Mobile), dan mengelola dataset kepesertaan.',
+    tags: ['IT Support', 'Dashboard Analytics', 'Data Management', 'JMO Troubleshooting'],
   },
   {
     id: 'telkom-akses',
@@ -46,41 +57,131 @@ const WORK_EXPERIENCES = [
     type: 'Internship',
     icon: Network,
     description:
-      'Conducted fiber optic fusion splicing, GPON network infrastructure diagnostics, and optical power meter testing in field operations.',
-    tags: ['Fiber Optic', 'GPON Infrastructure', 'Field Diagnostics'],
+      'Melakukan penyambungan kabel fiber optik (fusion splicing), pengujian redaman OPM/OTDR, serta pemeliharaan infrastruktur jaringan GPON di lapangan.',
+    tags: ['Fiber Optic', 'GPON Infrastructure', 'Field Diagnostics', 'Fusion Splicing'],
   },
 ];
 
-const ORGANIZATION_EXPERIENCES = [
+const TRAINING_EXPERIENCES = [
+  {
+    id: 'vsga-kominfo',
+    company: 'Vocational School Graduate Academy (VSGA)',
+    organizer: 'Digital Talent Scholarship (DTS) — Kominfo RI',
+    role: 'Pelatihan Junior Mobile Programmer & Junior Web Developer',
+    period: '2023 - 2024',
+    type: 'Pelatihan',
+    icon: Award,
+    description:
+      'Mengikuti program pelatihan intensif peningkatan kompetensi digital berbasis SKKNI yang diselenggarakan oleh Digitalent Kementerian Komunikasi dan Informatika (Kominfo RI), berfokus pada perancangan arsitektur aplikasi mobile Android dan pengembangan sistem web dinamis.',
+    tags: ['Kominfo RI', 'Digitalent', 'VSGA', 'Digital Talent Scholarship', 'Standar SKKNI'],
+  },
+];
+
+const ACTIVITY_EXPERIENCES = [
   {
     id: 'himti',
     company: 'HIMTI Universitas Sumatera Utara',
-    role: 'Head of Creative Media Division',
-    period: '2023 - 2024',
-    type: 'Organization',
+    role: 'Head of Creative Media Division (Kadiv Media Kreatif)',
+    period: '2024 - 2025',
+    type: 'Organisasi',
     icon: Users,
     description:
-      'Led visual branding, creative design workflows, event documentation teams, and organizational digital media channels.',
-    tags: ['Creative Direction', 'Figma', 'Team Leadership'],
+      'Memimpin divisi media kreatif dalam perancangan identitas visual organisasi, standarisasi aset grafis, pengelolaan publikasi media sosial, serta supervisi tim dokumentasi kegiatan himpunan.',
+    tags: ['HIMTI USU', 'Kadiv Media Kreatif', 'Creative Direction', 'Team Leadership'],
+  },
+  {
+    id: 'pkbm',
+    company: 'PKBM Bintula (Pusat Kegiatan Belajar Masyarakat)',
+    role: 'Volunteer Pengajar Komputer & Literasi Digital',
+    period: '2024',
+    type: 'Volunteer',
+    icon: BookOpen,
+    description:
+      'Aksi sosial pengabdian masyarakat dengan memberikan edukasi dan pendampingan dasar-dasar pengoperasian komputer, aplikasi perkantoran, dan pemanfaatan internet produktif untuk para peserta didik.',
+    tags: ['Pengabdian Masyarakat', 'Volunteer', 'Edukasi Komputer', 'Digital Literacy'],
+  },
+  {
+    id: 'pkkmb',
+    company: 'PKKMB Fakultas Vokasi USU 2025',
+    role: 'Tim Publikasi & Dokumentasi (Pubdok)',
+    period: '2025',
+    type: 'Kepanitiaan',
+    icon: Camera,
+    description:
+      'Bertanggung jawab penuh atas liputan fotografi, videografi, dan publikasi konten visual selama masa orientasi dan penyambutan mahasiswa baru Fakultas Vokasi USU 2025.',
+    tags: ['PKKMB Vokasi 2025', 'Pubdok', 'Media Coverage', 'Dokumentasi Acara'],
+  },
+  {
+    id: 'rindu-tenang',
+    company: 'Pagelaran Seni & Musik "Rindu Tenang"',
+    role: 'Event Organizer & Stage Coordinator',
+    period: '2024',
+    type: 'Event Organizer',
+    icon: Sparkles,
+    description:
+      'Mengkoordinasikan manajemen operasional panggung, logistik perlengkapan pementasan, serta koordinasi lintas divisi guna menyukseskan gelaran acara seni musik Rindu Tenang.',
+    tags: ['Event Organizer', 'Stage Management', 'Live Event Production'],
   },
 ];
+
+const getBadgeStyle = (type) => {
+  switch (type) {
+    case 'Organisasi':
+      return {
+        bg: 'rgba(16, 185, 129, 0.12)',
+        border: 'rgba(16, 185, 129, 0.3)',
+        color: '#10B981',
+      };
+    case 'Volunteer':
+      return {
+        bg: 'rgba(245, 158, 11, 0.12)',
+        border: 'rgba(245, 158, 11, 0.3)',
+        color: '#F59E0B',
+      };
+    case 'Kepanitiaan':
+      return {
+        bg: 'rgba(59, 130, 246, 0.12)',
+        border: 'rgba(59, 130, 246, 0.3)',
+        color: '#3B82F6',
+      };
+    case 'Event Organizer':
+      return {
+        bg: 'rgba(192, 132, 252, 0.12)',
+        border: 'rgba(192, 132, 252, 0.3)',
+        color: '#C084FC',
+      };
+    case 'Pelatihan':
+      return {
+        bg: 'rgba(255, 59, 29, 0.12)',
+        border: 'rgba(255, 59, 29, 0.3)',
+        color: 'var(--accent)',
+      };
+    default:
+      return {
+        bg: 'var(--accent-2-dim)',
+        border: 'var(--accent-2-border)',
+        color: 'var(--accent)',
+      };
+  }
+};
 
 const TimelineCard = ({ item, index }) => {
   const { playHover } = useSoundContext();
   const { ref, inView } = useInView({
     triggerOnce: true,
-    threshold: 0.2,
+    threshold: 0.15,
   });
 
   const isEven = index % 2 === 0;
   const Icon = item.icon;
+  const badgeStyle = getBadgeStyle(item.type);
 
   return (
     <div
       ref={ref}
       style={{
         position: 'relative',
-        marginBottom: '48px',
+        marginBottom: '40px',
         display: 'flex',
         justifyContent: isEven ? 'flex-start' : 'flex-end',
         width: '100%',
@@ -95,12 +196,12 @@ const TimelineCard = ({ item, index }) => {
           left: '50%',
           top: '24px',
           transform: 'translateX(-50%)',
-          width: '20px',
-          height: '20px',
+          width: '18px',
+          height: '18px',
           borderRadius: '50%',
-          background: inView ? 'var(--accent)' : 'var(--border)',
-          border: '4px solid var(--bg)',
-          boxShadow: inView ? '0 0 16px var(--accent-glow)' : 'none',
+          background: inView ? badgeStyle.color : 'var(--border)',
+          border: '3px solid var(--bg)',
+          boxShadow: inView ? `0 0 14px ${badgeStyle.color}` : 'none',
           zIndex: 3,
           transition: 'all 0.4s ease-out',
         }}
@@ -108,20 +209,20 @@ const TimelineCard = ({ item, index }) => {
 
       {/* Card Body */}
       <motion.div
-        initial={{ opacity: 0, x: isEven ? -50 : 50, y: 20 }}
-        animate={inView ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x: isEven ? -50 : 50, y: 20 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+        initial={{ opacity: 0, x: isEven ? -40 : 40, y: 20 }}
+        animate={inView ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x: isEven ? -40 : 40, y: 20 }}
+        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
         onMouseEnter={playHover}
-        whileHover={{ y: -4, borderColor: 'var(--accent-2-border)' }}
+        whileHover={{ y: -4, borderColor: badgeStyle.border }}
         className="timeline-card"
         style={{
-          width: 'calc(50% - 40px)',
+          width: 'calc(50% - 36px)',
           background: 'var(--surface)',
           border: '1px solid var(--border)',
-          borderRadius: '18px',
-          padding: '24px',
+          borderRadius: '16px',
+          padding: '22px',
           position: 'relative',
-          boxShadow: inView ? '0 10px 30px rgba(0, 0, 0, 0.3)' : 'none',
+          boxShadow: inView ? '0 10px 30px rgba(0, 0, 0, 0.25)' : 'none',
           transition: 'border-color 0.2s, transform 0.2s, box-shadow 0.2s',
         }}
       >
@@ -132,42 +233,54 @@ const TimelineCard = ({ item, index }) => {
             alignItems: 'flex-start',
             justifyContent: 'space-between',
             gap: '12px',
-            marginBottom: '8px',
+            marginBottom: '10px',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div
               style={{
-                width: '36px',
-                height: '36px',
+                width: '38px',
+                height: '38px',
                 borderRadius: '10px',
-                background: 'var(--accent-2-dim)',
+                background: badgeStyle.bg,
+                border: `1px solid ${badgeStyle.border}`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: 'var(--accent)',
+                color: badgeStyle.color,
                 flexShrink: 0,
               }}
             >
-              <Icon size={18} />
+              <Icon size={19} />
             </div>
             <div>
               <h3
                 style={{
                   margin: 0,
-                  fontSize: '1.1rem',
+                  fontSize: '1.05rem',
                   fontWeight: 600,
                   color: 'var(--text)',
                 }}
               >
                 {item.company}
               </h3>
+              {item.organizer && (
+                <p
+                  style={{
+                    margin: '1px 0 0',
+                    fontSize: '0.78rem',
+                    color: 'var(--text-muted)',
+                  }}
+                >
+                  {item.organizer}
+                </p>
+              )}
               <p
                 style={{
                   margin: '2px 0 0',
-                  fontSize: '0.9rem',
+                  fontSize: '0.88rem',
                   fontWeight: 500,
-                  color: 'var(--accent)',
+                  color: badgeStyle.color,
                 }}
               >
                 {item.role}
@@ -177,20 +290,13 @@ const TimelineCard = ({ item, index }) => {
 
           <span
             style={{
-              fontSize: '0.72rem',
+              fontSize: '0.7rem',
               fontWeight: 600,
               padding: '4px 10px',
               borderRadius: '999px',
-              background:
-                item.type === 'Organization'
-                  ? 'rgba(16, 185, 129, 0.12)'
-                  : 'var(--accent-2-dim)',
-              border: `1px solid ${
-                item.type === 'Organization'
-                  ? 'rgba(16, 185, 129, 0.3)'
-                  : 'var(--accent-2-border)'
-              }`,
-              color: item.type === 'Organization' ? '#10B981' : 'var(--accent)',
+              background: badgeStyle.bg,
+              border: `1px solid ${badgeStyle.border}`,
+              color: badgeStyle.color,
               whiteSpace: 'nowrap',
             }}
           >
@@ -204,9 +310,9 @@ const TimelineCard = ({ item, index }) => {
             display: 'flex',
             alignItems: 'center',
             gap: '6px',
-            fontSize: '0.8rem',
+            fontSize: '0.78rem',
             color: 'var(--text-muted)',
-            marginBottom: '14px',
+            marginBottom: '12px',
           }}
         >
           <Calendar size={13} />
@@ -216,9 +322,9 @@ const TimelineCard = ({ item, index }) => {
         {/* Description */}
         <p
           style={{
-            fontSize: '0.86rem',
+            fontSize: '0.85rem',
             color: 'var(--text-muted)',
-            lineHeight: 1.55,
+            lineHeight: 1.6,
             margin: '0 0 14px',
             fontWeight: 300,
           }}
@@ -232,8 +338,8 @@ const TimelineCard = ({ item, index }) => {
             <span
               key={tag}
               style={{
-                fontSize: '0.75rem',
-                padding: '4px 10px',
+                fontSize: '0.72rem',
+                padding: '3px 9px',
                 borderRadius: '6px',
                 background: 'rgba(255, 255, 255, 0.03)',
                 border: '1px solid var(--border)',
@@ -281,7 +387,7 @@ const Experience = () => {
           margin: '0 auto',
         }}
       >
-        {/* Section Header */}
+        {/* Section 1: Professional Work Experience */}
         <motion.div
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
@@ -324,24 +430,18 @@ const Experience = () => {
           <p
             style={{
               color: 'var(--text-muted)',
-              fontSize: '1rem',
+              fontSize: '0.98rem',
               maxWidth: '620px',
               margin: '0 auto',
               fontWeight: 300,
             }}
           >
-            Demonstrated adaptability and precision across corporate banking operations, institutional IT systems, and telecommunication field engineering.
+            Rekam jejak pengalaman magang dan kerja profesional di bidang perbankan syariah, IT &amp; analisis data, dan instalasi jaringan telekomunikasi.
           </p>
         </motion.div>
 
-        {/* Timeline Container */}
-        <div
-          style={{
-            position: 'relative',
-            width: '100%',
-          }}
-        >
-          {/* Vertical Center Line */}
+        {/* Work Timeline Container */}
+        <div style={{ position: 'relative', width: '100%' }}>
           <div
             className="timeline-vertical-line"
             style={{
@@ -356,19 +456,93 @@ const Experience = () => {
             }}
           />
 
-          {/* Work Experience Cards */}
           {WORK_EXPERIENCES.map((item, idx) => (
             <TimelineCard key={item.id} item={item} index={idx} />
           ))}
         </div>
 
-        {/* Section 2: Organizational Experience */}
+        {/* Section 2: Pelatihan Profesional (VSGA DTS Kominfo) */}
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
           variants={fadeUp}
-          style={{ textAlign: 'center', marginTop: '44px', marginBottom: '32px' }}
+          style={{ textAlign: 'center', marginTop: '54px', marginBottom: '32px' }}
+        >
+          <span
+            style={{
+              color: 'var(--accent)',
+              fontSize: '0.85rem',
+              fontWeight: 600,
+              letterSpacing: '2px',
+              textTransform: 'uppercase',
+              display: 'block',
+              marginBottom: '8px',
+            }}
+          >
+            Pelatihan &amp; Kompetensi
+          </span>
+          <h2
+            style={{
+              fontSize: 'clamp(2rem, 3.5vw, 2.8rem)',
+              fontWeight: 600,
+              color: 'var(--text)',
+              margin: '0 auto 12px',
+              letterSpacing: '-0.02em',
+            }}
+          >
+            Pelatihan Profesional
+          </h2>
+          <div
+            style={{
+              width: '60px',
+              height: '3px',
+              background: 'var(--accent)',
+              margin: '0 auto 16px',
+              borderRadius: '2px',
+            }}
+          />
+          <p
+            style={{
+              color: 'var(--text-muted)',
+              fontSize: '0.98rem',
+              maxWidth: '620px',
+              margin: '0 auto',
+              fontWeight: 300,
+            }}
+          >
+            Program pelatihan peningkatan kompetensi digital nasional berstandar SKKNI yang diselenggarakan oleh Kementerian Kominfo RI.
+          </p>
+        </motion.div>
+
+        {/* Training Timeline Container */}
+        <div style={{ position: 'relative', width: '100%' }}>
+          <div
+            className="timeline-vertical-line"
+            style={{
+              position: 'absolute',
+              left: '50%',
+              top: '20px',
+              bottom: '40px',
+              width: '2px',
+              background: 'linear-gradient(180deg, var(--accent) 0%, var(--accent-2) 90%, transparent 100%)',
+              transform: 'translateX(-50%)',
+              zIndex: 1,
+            }}
+          />
+
+          {TRAINING_EXPERIENCES.map((item, idx) => (
+            <TimelineCard key={item.id} item={item} index={idx} />
+          ))}
+        </div>
+
+        {/* Section 3: Keaktifan Kegiatan, Organisasi & Volunteer */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={fadeUp}
+          style={{ textAlign: 'center', marginTop: '54px', marginBottom: '32px' }}
         >
           <span
             style={{
@@ -381,7 +555,7 @@ const Experience = () => {
               marginBottom: '8px',
             }}
           >
-            Leadership & Community
+            Activities &amp; Community
           </span>
           <h2
             style={{
@@ -392,7 +566,7 @@ const Experience = () => {
               letterSpacing: '-0.02em',
             }}
           >
-            Organizational Experience
+            Keaktifan Kegiatan, Organisasi &amp; Volunteer
           </h2>
           <div
             style={{
@@ -406,24 +580,18 @@ const Experience = () => {
           <p
             style={{
               color: 'var(--text-muted)',
-              fontSize: '1rem',
-              maxWidth: '620px',
+              fontSize: '0.98rem',
+              maxWidth: '640px',
               margin: '0 auto',
               fontWeight: 300,
             }}
           >
-            Demonstrated creative media leadership, team governance, and visual communication strategy within academic student associations.
+            Rekam jejak kontribusi kepengurusan organisasi mahasiswa, aksi sosial volunteer pengabdian masyarakat, kepanitiaan orientasi kampus, dan manajemen event.
           </p>
         </motion.div>
 
-        {/* Organization Timeline Container */}
-        <div
-          style={{
-            position: 'relative',
-            width: '100%',
-          }}
-        >
-          {/* Vertical Center Line for Organization */}
+        {/* Activity Timeline Container */}
+        <div style={{ position: 'relative', width: '100%' }}>
           <div
             className="timeline-vertical-line"
             style={{
@@ -438,8 +606,7 @@ const Experience = () => {
             }}
           />
 
-          {/* Organization Cards */}
-          {ORGANIZATION_EXPERIENCES.map((item, idx) => (
+          {ACTIVITY_EXPERIENCES.map((item, idx) => (
             <TimelineCard key={item.id} item={item} index={idx} />
           ))}
         </div>
