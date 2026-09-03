@@ -9,7 +9,7 @@ const CERTIFICATIONS = [
     id: 'vsga-mobile',
     title: 'Junior Mobile Programmer',
     issuer: 'VSGA Kominfo (Digital Talent Scholarship)',
-    period: 'Jun 2023 â€“ Jul 2023',
+    period: 'Jun 2023 - Jul 2023',
     focusArea: 'Mobile Application Programming & Android Architecture Fundamentals',
     credentialType: 'Government Accreditation',
     skillsGained: ['Mobile Development', 'Android Studio', 'Java / Kotlin Basics', 'App Lifecycle'],
@@ -27,7 +27,7 @@ const CERTIFICATIONS = [
     id: 'telkom-fiber',
     title: 'Certified Fiber Technician',
     issuer: 'PT. Telkom Akses Indonesia',
-    period: 'Feb 2022 â€“ Apr 2022',
+    period: 'Feb 2022 - Apr 2022',
     focusArea: 'Fiber Optic Deployment, GPON Infrastructure & Optical Diagnostics',
     credentialType: 'Industry Certification',
     skillsGained: ['Fiber Optic Splicing', 'GPON Systems', 'OTDR / OPM Testing', 'Field Troubleshooting'],
@@ -319,76 +319,80 @@ const Certifications = () => {
           }
           @media (max-width: 860px) {
             .cert-grid {
-              gap: 8px !important;
+              grid-template-columns: repeat(2, 1fr) !important;
+              gap: 12px !important;
             }
             .cert-card {
-              padding: 12px 10px !important;
-              border-radius: 12px !important;
+              padding: 16px 14px !important;
+              border-radius: 14px !important;
             }
             .cert-icon {
-              width: 32px !important;
-              height: 32px !important;
-              border-radius: 8px !important;
+              width: 36px !important;
+              height: 36px !important;
+              border-radius: 10px !important;
             }
             .cert-icon svg {
-              width: 16px !important;
-              height: 16px !important;
+              width: 18px !important;
+              height: 18px !important;
             }
             .cert-badge {
-              font-size: 0.62rem !important;
-              padding: 2px 6px !important;
+              font-size: 0.65rem !important;
+              padding: 3px 8px !important;
             }
             .cert-title {
-              font-size: 0.85rem !important;
+              font-size: 0.95rem !important;
               margin-bottom: 4px !important;
             }
             .cert-issuer {
-              font-size: 0.72rem !important;
-              margin-bottom: 6px !important;
+              font-size: 0.78rem !important;
+              margin-bottom: 8px !important;
             }
             .cert-period {
+              font-size: 0.72rem !important;
+              margin-bottom: 10px !important;
+            }
+            .cert-focus {
+              padding: 10px !important;
+              margin-bottom: 10px !important;
+            }
+            .cert-focus span {
+              font-size: 0.64rem !important;
+            }
+            .cert-focus p {
+              font-size: 0.75rem !important;
+              line-height: 1.4 !important;
+            }
+            .cert-tag {
               font-size: 0.68rem !important;
-              margin-bottom: 8px !important;
+              padding: 3px 7px !important;
+            }
+          }
+          @media (max-width: 480px) {
+            .cert-grid {
+              gap: 10px !important;
+            }
+            .cert-card {
+              padding: 14px 12px !important;
+              border-radius: 12px !important;
+              border-left-width: 3px !important;
+            }
+            .cert-title {
+              font-size: 0.88rem !important;
+              line-height: 1.3 !important;
+            }
+            .cert-issuer {
+              font-size: 0.75rem !important;
             }
             .cert-focus {
               padding: 8px !important;
               margin-bottom: 8px !important;
             }
-            .cert-focus span {
-              font-size: 0.6rem !important;
-            }
             .cert-focus p {
-              font-size: 0.7rem !important;
+              font-size: 0.72rem !important;
             }
             .cert-tag {
-              font-size: 0.62rem !important;
-              padding: 2px 5px !important;
-            }
-          }
-          @media (max-width: 520px) {
-            .cert-grid {
-              gap: 6px !important;
-            }
-            .cert-card {
-              padding: 8px 6px !important;
-              border-radius: 10px !important;
-              border-left-width: 3px !important;
-            }
-            .cert-badge {
-              display: none !important;
-            }
-            .cert-title {
-              font-size: 0.75rem !important;
-              line-height: 1.2 !important;
-            }
-            .cert-issuer {
-              font-size: 0.65rem !important;
-            }
-            .cert-focus {
-              display: none !important;
-            }
-            .cert-tag:nth-child(n+3) {
-              display: none !important;
+              font-size: 0.64rem !important;
+              padding: 2px 6px !important;
             }
           }
         `}</style>

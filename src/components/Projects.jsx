@@ -156,7 +156,7 @@ const Projects = () => {
           </p>
         </motion.div>
 
-        {/* 3 Columns Projects Grid */}
+        {/* 2x2 Projects Grid */}
         <motion.div
           variants={stagger}
           initial="hidden"
@@ -164,7 +164,7 @@ const Projects = () => {
           className="projects-grid"
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
+            gridTemplateColumns: 'repeat(2, 1fr)',
             gap: '24px',
           }}
         >
@@ -455,47 +455,48 @@ const Projects = () => {
         <style>{`
           .projects-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: 24px;
           }
           @media (max-width: 860px) {
             .projects-grid {
-              gap: 10px !important;
+              grid-template-columns: repeat(2, 1fr) !important;
+              gap: 12px !important;
             }
             .project-card {
               border-radius: 14px !important;
             }
             .project-img-box {
-              padding: 10px !important;
+              padding: 12px 10px !important;
             }
             .project-cat-badge {
-              padding: 2px 6px !important;
-              font-size: 0.6rem !important;
+              padding: 3px 8px !important;
+              font-size: 0.65rem !important;
               top: 8px !important;
               right: 8px !important;
             }
             .project-watermark {
-              width: 36px !important;
-              height: 36px !important;
-              border-radius: 10px !important;
+              width: 44px !important;
+              height: 44px !important;
+              border-radius: 12px !important;
               margin-bottom: 4px !important;
             }
             .project-watermark svg {
-              width: 18px !important;
-              height: 18px !important;
+              width: 22px !important;
+              height: 22px !important;
             }
             .project-mockup-label {
               display: none !important;
             }
             .project-content-box {
-              padding: 14px 10px !important;
+              padding: 16px 12px !important;
             }
             .project-title {
-              font-size: 0.88rem !important;
-              margin-bottom: 4px !important;
+              font-size: 0.95rem !important;
+              margin-bottom: 6px !important;
             }
             .project-desc {
-              font-size: 0.72rem !important;
+              font-size: 0.76rem !important;
               line-height: 1.4 !important;
               margin-bottom: 8px !important;
               display: -webkit-box;
@@ -504,58 +505,46 @@ const Projects = () => {
               overflow: hidden;
             }
             .project-highlight {
-              font-size: 0.62rem !important;
-              padding: 2px 6px !important;
+              font-size: 0.65rem !important;
+              padding: 3px 8px !important;
               margin-bottom: 8px !important;
             }
             .project-tag {
-              font-size: 0.62rem !important;
-              padding: 2px 6px !important;
+              font-size: 0.68rem !important;
+              padding: 3px 7px !important;
             }
             .project-actions {
               padding-top: 10px !important;
             }
             .project-actions-label {
-              display: none !important;
+              font-size: 0.72rem !important;
             }
             .project-action-btn {
-              width: 30px !important;
-              height: 30px !important;
+              width: 32px !important;
+              height: 32px !important;
               border-radius: 8px !important;
             }
             .project-action-btn svg {
-              width: 14px !important;
-              height: 14px !important;
+              width: 15px !important;
+              height: 15px !important;
             }
           }
-          @media (max-width: 520px) {
+          @media (max-width: 480px) {
             .projects-grid {
-              gap: 6px !important;
-            }
-            .project-card {
-              border-radius: 10px !important;
-            }
-            .project-cat-badge span {
-              display: none !important;
+              gap: 10px !important;
             }
             .project-content-box {
-              padding: 8px 6px !important;
+              padding: 12px 10px !important;
             }
             .project-title {
-              font-size: 0.76rem !important;
-              line-height: 1.2 !important;
+              font-size: 0.88rem !important;
+              line-height: 1.25 !important;
             }
             .project-desc {
-              display: none !important;
+              font-size: 0.72rem !important;
+              -webkit-line-clamp: 2;
             }
-            .project-highlight {
-              display: none !important;
-            }
-            .project-tech-tags {
-              margin-bottom: 8px !important;
-              gap: 4px !important;
-            }
-            .project-tag:nth-child(n+3) {
+            .project-actions-label {
               display: none !important;
             }
           }
