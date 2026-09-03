@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+﻿import { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import {
   Home,
@@ -10,13 +10,16 @@ import {
   Mail,
   Volume2,
   VolumeX,
+  ChevronDown,
+  Maximize2,
+  Minimize2,
+  Globe,
 } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
 import ThemeToggle from './ui/ThemeToggle';
 
-const NAV_ITEMS = [
-  { label: 'Home', path: '/', icon: Home },
-  { label: 'About', path: '/about', icon: User },
+const ABOUT_DROPDOWN = [
+  { label: 'About Me', path: '/about', icon: User },
   { label: 'Experience', path: '/experience', icon: Briefcase },
   { label: 'Projects', path: '/projects', icon: FolderGit2 },
   { label: 'Skills', path: '/skills', icon: Cpu },
@@ -55,8 +58,6 @@ const DockButton = ({ to, icon: Icon, label, isActive, onClick, onHover }) => {
         }}
       >
         <Icon size={17} />
-
-        {/* Glowing Active Dot Indicator matching reference image */}
         {isActive && (
           <span
             style={{
@@ -76,133 +77,325 @@ const DockButton = ({ to, icon: Icon, label, isActive, onClick, onHover }) => {
   );
 };
 
-const Navbar = () => {
-  const { playClick, playHover, toggleSound, soundEnabled } = useSoundContext();
+export default function Navbar() {
+  const { playClick, playHover, soundEnabled, toggleSound } = useSoundContext();
   const location = useLocation();
-  const [scrolled, setScrolled] = useState(false);
 
+  // Real-time Digital Clock (HH:mm:ss)
+  const [timeString, setTimeString] = useState('');
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    const updateTime = () => {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const s = String(now.getSeconds()).padStart(2, '0');
+      setTimeString(`${h}:${m}:${s}`);
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
   }, []);
 
-  const navStyle = {
-    position: 'fixed',
-    top: '16px',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    zIndex: 1000,
-    display: 'flex',
-    alignItems: 'center',
-    gap: '4px',
-    padding: '6px 8px',
-    borderRadius: '999px',
-    background: scrolled ? 'var(--glass-bg)' : 'transparent',
-    backdropFilter: scrolled ? 'blur(24px) saturate(1.4)' : 'none',
-    WebkitBackdropFilter: scrolled ? 'blur(24px) saturate(1.4)' : 'none',
-    border: scrolled ? '1px solid var(--glass-border)' : '1px solid transparent',
-    boxShadow: scrolled ? '0 8px 32px var(--shadow-color)' : 'none',
-    transition: 'all 0.4s cubic-bezier(0.22, 1, 0.36, 1)',
-    maxWidth: '680px',
+  // Dropdown state for "About ⌵"
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  // Close dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Fullscreen state & toggle
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const handleToggleFullscreen = () => {
+    playClick();
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen?.().catch(() => {});
+      setIsFullscreen(true);
+    } else {
+      document.exitFullscreen?.().catch(() => {});
+      setIsFullscreen(false);
+    }
   };
 
-  const linkStyle = (isActive) => ({
-    padding: '8px 16px',
-    borderRadius: '999px',
-    fontSize: '12px',
-    fontWeight: 600,
-    textDecoration: 'none',
-    letterSpacing: '0.06em',
-    textTransform: 'uppercase',
-    color: isActive ? 'var(--accent)' : 'var(--text-muted)',
-    background: isActive ? 'var(--accent-dim)' : 'transparent',
-    transition: 'all 0.25s ease',
-    whiteSpace: 'nowrap',
-    cursor: 'pointer',
-  });
-
-  const iconBtnStyle = {
-    width: '36px',
-    height: '36px',
-    borderRadius: '50%',
-    border: 'none',
-    background: 'transparent',
-    color: 'var(--text-muted)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    cursor: 'pointer',
-    transition: 'color 0.2s',
-    flexShrink: 0,
-  };
+  const isHome = location.pathname === '/';
+  const isAboutActive = ['/about', '/experience', '/projects', '/skills'].some((p) =>
+    location.pathname.startsWith(p)
+  );
 
   return (
     <>
-      {/* Desktop Navigation */}
-      <nav style={navStyle} className="desktop-nav">
-        {/* Logo */}
-        <Link
-          to="/"
-          onClick={playClick}
-          onMouseEnter={playHover}
+      {/* =========================================================================
+          DESKTOP TOP BAR (Full width layout matching screenshot)
+          ========================================================================= */}
+      <header
+        className="desktop-top-header"
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '76px',
+          padding: '0 clamp(20px, 4vw, 56px)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          zIndex: 1000,
+          pointerEvents: 'none', // Allow clicking behind transparent areas
+        }}
+      >
+        {/* Left: Live Digital Clock (18:08:30) */}
+        <div
           style={{
-            width: '36px',
-            height: '36px',
-            borderRadius: '50%',
-            background: 'var(--accent)',
+            pointerEvents: 'auto',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
-            textDecoration: 'none',
-            marginRight: '4px',
-            flexShrink: 0,
           }}
         >
           <span
             style={{
-              fontSize: '12px',
-              fontWeight: 800,
-              color: 'var(--bg)',
-              letterSpacing: '-0.02em',
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: 'clamp(1rem, 1.3vw, 1.25rem)',
+              fontWeight: 700,
+              letterSpacing: '3px',
+              color: 'var(--text)',
+              userSelect: 'none',
             }}
           >
-            ZA
+            {timeString || '18:08:30'}
           </span>
-        </Link>
+        </div>
 
-        {/* Links */}
-        {NAV_ITEMS.map(({ label, path }) => {
-          const isActive = path === '/' ? location.pathname === '/' : location.pathname.startsWith(path);
-          return (
-            <Link
-              key={path}
-              to={path}
-              style={linkStyle(isActive)}
-              onClick={playClick}
-              onMouseEnter={playHover}
-            >
-              {label}
-            </Link>
-          );
-        })}
-
-        {/* Utils */}
-        <div style={{ width: '1px', height: '20px', background: 'var(--border)', margin: '0 4px' }} />
-        <button
-          style={iconBtnStyle}
-          onClick={() => {
-            playClick();
-            toggleSound();
+        {/* Center: Floating Pill Navbar (Home | About ⌵ | Contact) */}
+        <nav
+          style={{
+            pointerEvents: 'auto',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            padding: '4px 6px',
+            borderRadius: '999px',
+            background: 'rgba(255, 255, 255, 0.04)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
+            position: 'relative',
           }}
-          title="Toggle sound"
         >
-          {soundEnabled ? <Volume2 size={15} /> : <VolumeX size={15} />}
-        </button>
-        <ThemeToggle />
-      </nav>
+          {/* Home */}
+          <Link
+            to="/"
+            onClick={playClick}
+            onMouseEnter={playHover}
+            style={{
+              padding: '7px 20px',
+              borderRadius: '999px',
+              fontSize: '13px',
+              fontWeight: 600,
+              textDecoration: 'none',
+              color: isHome ? '#ffffff' : 'var(--text-muted)',
+              background: isHome ? '#1f1f26' : 'transparent',
+              boxShadow: isHome ? '0 2px 10px rgba(0, 0, 0, 0.4)' : 'none',
+              transition: 'all 0.2s ease',
+              display: 'inline-block',
+            }}
+          >
+            Home
+          </Link>
 
-      {/* Mobile Top Minimal Brand Bar */}
+          {/* About with dropdown */}
+          <div ref={dropdownRef} style={{ position: 'relative' }}>
+            <button
+              onClick={() => {
+                playClick();
+                setDropdownOpen((p) => !p);
+              }}
+              onMouseEnter={() => setDropdownOpen(true)}
+              style={{
+                padding: '7px 16px',
+                borderRadius: '999px',
+                fontSize: '13px',
+                fontWeight: 600,
+                border: 'none',
+                cursor: 'pointer',
+                color: isAboutActive ? '#ffffff' : 'var(--text-muted)',
+                background: isAboutActive && !isHome ? '#1f1f26' : 'transparent',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '5px',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              <span>About</span>
+              <ChevronDown
+                size={13}
+                style={{
+                  transform: dropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                  transition: 'transform 0.2s ease',
+                }}
+              />
+            </button>
+
+            {/* Dropdown Menu */}
+            <AnimatePresence>
+              {dropdownOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                  transition={{ duration: 0.18, ease: 'easeOut' }}
+                  onMouseLeave={() => setDropdownOpen(false)}
+                  style={{
+                    position: 'absolute',
+                    top: 'calc(100% + 8px)',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: '180px',
+                    borderRadius: '16px',
+                    background: 'var(--surface, #101015)',
+                    border: '1px solid var(--border, rgba(255, 255, 255, 0.1))',
+                    boxShadow: '0 16px 40px rgba(0, 0, 0, 0.6)',
+                    backdropFilter: 'blur(20px)',
+                    padding: '6px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '2px',
+                    zIndex: 100,
+                  }}
+                >
+                  {ABOUT_DROPDOWN.map(({ label, path, icon: Icon }) => {
+                    const active = location.pathname.startsWith(path);
+                    return (
+                      <Link
+                        key={path}
+                        to={path}
+                        onClick={() => {
+                          playClick();
+                          setDropdownOpen(false);
+                        }}
+                        onMouseEnter={playHover}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '10px',
+                          padding: '9px 14px',
+                          borderRadius: '10px',
+                          textDecoration: 'none',
+                          fontSize: '13px',
+                          fontWeight: 500,
+                          color: active ? 'var(--accent, #FF3B1D)' : 'var(--text)',
+                          background: active ? 'rgba(255, 59, 29, 0.08)' : 'transparent',
+                          transition: 'background 0.15s, color 0.15s',
+                        }}
+                      >
+                        <Icon size={15} />
+                        <span>{label}</span>
+                      </Link>
+                    );
+                  })}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Contact */}
+          <a
+            href="#contact"
+            onClick={playClick}
+            onMouseEnter={playHover}
+            style={{
+              padding: '7px 20px',
+              borderRadius: '999px',
+              fontSize: '13px',
+              fontWeight: 600,
+              textDecoration: 'none',
+              color: 'var(--text-muted)',
+              background: 'transparent',
+              transition: 'all 0.2s ease',
+              display: 'inline-block',
+            }}
+          >
+            Contact
+          </a>
+        </nav>
+
+        {/* Right: Circular Icon Actions (Fullscreen, Sound/Globe, Theme) */}
+        <div
+          style={{
+            pointerEvents: 'auto',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+          }}
+        >
+          {/* Fullscreen Button */}
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.92 }}
+            onClick={handleToggleFullscreen}
+            onMouseEnter={playHover}
+            title={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
+            style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '50%',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              background: 'rgba(255, 255, 255, 0.04)',
+              color: 'var(--text-muted)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              transition: 'border-color 0.2s, color 0.2s',
+            }}
+          >
+            {isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
+          </motion.button>
+
+          {/* Sound / Audio Toggle */}
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.92 }}
+            onClick={() => {
+              playClick();
+              toggleSound();
+            }}
+            onMouseEnter={playHover}
+            title={soundEnabled ? 'Mute Sound' : 'Enable Sound'}
+            style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '50%',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              background: 'rgba(255, 255, 255, 0.04)',
+              color: 'var(--text-muted)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              transition: 'border-color 0.2s, color 0.2s',
+            }}
+          >
+            <Globe size={16} />
+          </motion.button>
+
+          {/* Theme Toggle (Sun / Moon) */}
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <ThemeToggle />
+          </div>
+        </div>
+      </header>
+
+      {/* =========================================================================
+          MOBILE TOP MINIMAL BAR
+          ========================================================================= */}
       <header className="mobile-top-bar">
         <Link to="/" onClick={playClick} style={{ textDecoration: 'none' }}>
           <div
@@ -220,6 +413,19 @@ const Navbar = () => {
             <span style={{ fontSize: '11px', fontWeight: 800, color: 'var(--bg)' }}>ZA</span>
           </div>
         </Link>
+
+        {/* Live Clock on Mobile Top */}
+        <span
+          style={{
+            fontFamily: "'JetBrains Mono', monospace",
+            fontSize: '12px',
+            fontWeight: 700,
+            letterSpacing: '2px',
+            color: 'var(--text-muted)',
+          }}
+        >
+          {timeString}
+        </span>
 
         <button
           style={{
@@ -245,9 +451,10 @@ const Navbar = () => {
         </button>
       </header>
 
-      {/* Mobile Floating Bottom Dock Navbar (Pixel-perfect to reference image) */}
+      {/* =========================================================================
+          MOBILE BOTTOM FLOATING DOCK NAVBAR
+          ========================================================================= */}
       <nav className="mobile-dock-nav" role="navigation" aria-label="Mobile Navigation">
-        {/* Item 1: Home */}
         <DockButton
           to="/"
           icon={Home}
@@ -256,8 +463,6 @@ const Navbar = () => {
           onClick={playClick}
           onHover={playHover}
         />
-
-        {/* Item 2: About */}
         <DockButton
           to="/about"
           icon={User}
@@ -266,11 +471,7 @@ const Navbar = () => {
           onClick={playClick}
           onHover={playHover}
         />
-
-        {/* Divider 1 */}
         <div className="dock-divider" />
-
-        {/* Item 3: Experience */}
         <DockButton
           to="/experience"
           icon={Briefcase}
@@ -279,8 +480,6 @@ const Navbar = () => {
           onClick={playClick}
           onHover={playHover}
         />
-
-        {/* Item 4: Projects */}
         <DockButton
           to="/projects"
           icon={FolderGit2}
@@ -289,8 +488,6 @@ const Navbar = () => {
           onClick={playClick}
           onHover={playHover}
         />
-
-        {/* Item 5: Skills */}
         <DockButton
           to="/skills"
           icon={Cpu}
@@ -299,11 +496,7 @@ const Navbar = () => {
           onClick={playClick}
           onHover={playHover}
         />
-
-        {/* Divider 2 */}
         <div className="dock-divider" />
-
-        {/* Item 6: Contact / Mail */}
         <motion.a
           href="mailto:zackyandyka1@gmail.com"
           onClick={playClick}
@@ -328,110 +521,24 @@ const Navbar = () => {
             cursor: 'pointer',
           }}
         >
-          <Mail size={17} />
+          <Mail size={16} />
         </motion.a>
-
-        {/* Item 7: Theme Toggle */}
-        <div className="dock-theme-wrapper">
-          <ThemeToggle />
-        </div>
+        <ThemeToggle />
       </nav>
 
+      {/* Responsive Visibility Controls */}
       <style>{`
-        .mobile-top-bar {
-          display: none;
+        @media (min-width: 860px) {
+          .desktop-top-header { display: flex !important; }
+          .mobile-top-bar { display: none !important; }
+          .mobile-dock-nav { display: none !important; }
         }
-        .mobile-dock-nav {
-          display: none;
-        }
-
-        @media (max-width: 768px) {
-          .desktop-nav {
-            display: none !important;
-          }
-
-          /* Mobile Top Bar */
-          .mobile-top-bar {
-            display: flex !important;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 999;
-            padding: 12px 18px;
-            align-items: center;
-            justifyContent: space-between;
-            background: transparent;
-            transition: all 0.3s ease;
-          }
-
-          /* Mobile Floating Dock Navbar */
-          .mobile-dock-nav {
-            display: flex !important;
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1000;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 10px;
-            border-radius: 9999px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            max-width: 94vw;
-            white-space: nowrap;
-          }
-
-          .dock-divider {
-            width: 1px;
-            height: 18px;
-            background: var(--border);
-            margin: 0 2px;
-            flex-shrink: 0;
-          }
-
-          .dock-theme-wrapper button {
-            width: 38px !important;
-            height: 38px !important;
-            border: 1px solid var(--border) !important;
-            background: rgba(255, 255, 255, 0.03) !important;
-          }
-        }
-
-        @media (max-width: 380px) {
-          .mobile-dock-nav {
-            gap: 4px !important;
-            padding: 5px 8px !important;
-            bottom: 14px !important;
-          }
-          .dock-circle-btn {
-            width: 32px !important;
-            height: 32px !important;
-          }
-          .dock-circle-btn svg {
-            width: 14px !important;
-            height: 14px !important;
-          }
-          .dock-theme-wrapper button {
-            width: 32px !important;
-            height: 32px !important;
-          }
-          .dock-theme-wrapper button svg {
-            width: 14px !important;
-            height: 14px !important;
-          }
-          .dock-divider {
-            height: 14px !important;
-            margin: 0 1px !important;
-          }
+        @media (max-width: 859px) {
+          .desktop-top-header { display: none !important; }
+          .mobile-top-bar { display: flex !important; }
+          .mobile-dock-nav { display: flex !important; }
         }
       `}</style>
     </>
   );
-};
-
-export default Navbar;
+}
