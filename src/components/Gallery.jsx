@@ -6,67 +6,94 @@ import { useSoundContext } from './ui/SoundProvider';
 
 const GALLERY_ITEMS = [
   {
-    id: 1, category: 'Photography', title: 'Urban Landscape',
-    caption: 'Street photography capturing everyday moments',
-    ratio: '1:1', width: 1, height: 1,
+    id: 1,
+    category: 'Photography',
+    title: 'Portrait Session',
+    caption: 'Natural light portrait photography and street framing',
+    aspectRatio: '9 / 16',
+    ratioLabel: '9:16',
     bg: 'linear-gradient(145deg, #180503 0%, #FF3B1D 60%, #FFAA00 100%)',
-    alt: 'Urban Landscape Street Photography',
+    alt: 'Portrait Session in 9:16 vertical ratio',
   },
   {
-    id: 2, category: 'Events', title: 'HIMTI Event Documentation',
-    caption: 'Creative media coverage for organizational events at USU',
-    ratio: '1:1', width: 1, height: 1,
-    bg: 'linear-gradient(135deg, #09090b 0%, #1f1412 50%, #FF3B1D 100%)',
-    alt: 'HIMTI Event Documentation at USU',
-  },
-  {
-    id: 3, category: 'Creative', title: 'Design Work — Figma',
-    caption: 'Visual identity and social media content creation',
-    ratio: '1:1', width: 1, height: 1,
+    id: 2,
+    category: 'Creative',
+    title: 'Design Work — Figma',
+    caption: 'Visual identity and vector asset creation',
+    aspectRatio: '1 / 1',
+    ratioLabel: '1:1',
     bg: 'linear-gradient(135deg, #FFAA00 0%, #FF3B1D 100%)',
-    alt: 'Design Work with Figma',
+    alt: 'Figma Design Work in 1:1 square ratio',
   },
   {
-    id: 4, category: 'Photography', title: 'Portrait Session',
-    caption: 'Natural light portrait photography',
-    ratio: '1:1', width: 1, height: 1,
-    bg: 'linear-gradient(145deg, #140908 0%, #2a110e 50%, #FF4500 100%)',
-    alt: 'Natural Light Portrait Photography',
-  },
-  {
-    id: 5, category: 'Creative', title: 'Social Media Content',
-    caption: 'Instagram promotional content for HIMTI USU',
-    ratio: '1:1', width: 1, height: 1,
-    bg: 'linear-gradient(135deg, #FF3B1D 0%, #FF7744 100%)',
-    alt: 'Social Media Content for HIMTI',
-  },
-  {
-    id: 6, category: 'Events', title: 'Team Collaboration',
-    caption: 'Event coordination and team documentation',
-    ratio: '1:1', width: 1, height: 1,
-    bg: 'linear-gradient(135deg, #18181c 0%, #2b1f1a 50%, #FFAA00 100%)',
-    alt: 'Team Collaboration Documentation',
-  },
-  {
-    id: 7, category: 'Photography', title: 'Nature & Architecture',
-    caption: 'Exploring visual composition in everyday settings',
-    ratio: '1:1', width: 1, height: 1,
+    id: 3,
+    category: 'Photography',
+    title: 'Urban Landscape',
+    caption: 'Street architectural exploration and lighting',
+    aspectRatio: '4 / 3',
+    ratioLabel: '4:3',
     bg: 'linear-gradient(145deg, #0d0605 0%, #24110d 60%, #FF3B1D 100%)',
-    alt: 'Nature and Architecture Photography',
+    alt: 'Urban Landscape in 4:3 photo ratio',
   },
   {
-    id: 8, category: 'Creative', title: 'Brand Identity',
-    caption: 'Poster, banner, and print design using Figma',
-    ratio: '1:1', width: 1, height: 1,
+    id: 4,
+    category: 'Events',
+    title: 'HIMTI Documentation',
+    caption: 'Stage and media coverage for HIMTI USU',
+    aspectRatio: '16 / 9',
+    ratioLabel: '16:9',
+    bg: 'linear-gradient(135deg, #09090b 0%, #1f1412 50%, #FF3B1D 100%)',
+    alt: 'HIMTI Documentation in 16:9 cinematic ratio',
+  },
+  {
+    id: 5,
+    category: 'Creative',
+    title: 'Social Media Stories',
+    caption: 'Engaging animated vertical editorial stories',
+    aspectRatio: '9 / 16',
+    ratioLabel: '9:16',
+    bg: 'linear-gradient(135deg, #FF3B1D 0%, #FF7744 100%)',
+    alt: 'Social Media Stories in 9:16 vertical format',
+  },
+  {
+    id: 6,
+    category: 'Photography',
+    title: 'Nature & Textures',
+    caption: 'Organic textures and natural light study',
+    aspectRatio: '4 / 3',
+    ratioLabel: '4:3',
+    bg: 'linear-gradient(145deg, #140908 0%, #2a110e 50%, #FF4500 100%)',
+    alt: 'Nature and Textures in 4:3 ratio',
+  },
+  {
+    id: 7,
+    category: 'Creative',
+    title: 'Brand Identity',
+    caption: 'Minimalist branding and poster design',
+    aspectRatio: '1 / 1',
+    ratioLabel: '1:1',
     bg: 'linear-gradient(135deg, #FF5500 0%, #FFAA00 100%)',
-    alt: 'Brand Identity and Print Design',
+    alt: 'Brand Identity in 1:1 square ratio',
   },
   {
-    id: 9, category: 'Events', title: 'Tech Exhibition',
-    caption: 'Student technology project showcase at USU',
-    ratio: '1:1', width: 1, height: 1,
+    id: 8,
+    category: 'Events',
+    title: 'Team Collaboration',
+    caption: 'Team planning and milestone documentation',
+    aspectRatio: '16 / 9',
+    ratioLabel: '16:9',
+    bg: 'linear-gradient(135deg, #18181c 0%, #2b1f1a 50%, #FFAA00 100%)',
+    alt: 'Team Collaboration in 16:9 ratio',
+  },
+  {
+    id: 9,
+    category: 'Events',
+    title: 'Tech Exhibition',
+    caption: 'Student technology innovation showcase at USU',
+    aspectRatio: '9 / 16',
+    ratioLabel: '9:16',
     bg: 'linear-gradient(135deg, #1a0805 0%, #FF3B1D 50%, #FFAA00 100%)',
-    alt: 'Tech Exhibition Showcase at USU',
+    alt: 'Tech Exhibition in 9:16 vertical format',
   },
 ];
 
@@ -94,21 +121,42 @@ function GalleryCard({ item, index, onClick }) {
       ref={ref}
       initial={{ opacity: 0, y: 24, scale: 0.97 }}
       animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
-      transition={{ duration: 0.45, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.45, delay: index * 0.04, ease: [0.22, 1, 0.36, 1] }}
       onClick={() => { playClick(); onClick(item); }}
       onMouseEnter={() => { playHover(); setHovered(true); }}
       onMouseLeave={() => setHovered(false)}
       className="gallery-card-root"
       style={{
         position: 'relative',
+        width: '100%',
+        aspectRatio: item.aspectRatio || '1 / 1',
         borderRadius: '14px',
         overflow: 'hidden',
         cursor: 'pointer',
         border: '1px solid var(--border)',
-        boxShadow: '0 4px 16px rgba(0, 0, 0, 0.12)',
-        aspectRatio: '1 / 1',
+        boxShadow: '0 4px 16px rgba(0, 0, 0, 0.14)',
       }}
     >
+      {/* Ratio badge in top-left */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '10px',
+          left: '10px',
+          padding: '2px 8px',
+          borderRadius: '6px',
+          background: 'rgba(0, 0, 0, 0.4)',
+          backdropFilter: 'blur(8px)',
+          fontSize: '9px',
+          fontFamily: "'JetBrains Mono', monospace",
+          fontWeight: 700,
+          color: 'rgba(255, 255, 255, 0.75)',
+          letterSpacing: '1px',
+          zIndex: 2,
+        }}
+      >
+        {item.ratioLabel}
+      </div>
       {/* Background artwork with smooth zoom */}
       <div
         style={{
@@ -341,35 +389,54 @@ export default function Gallery() {
           })}
         </motion.div>
 
-        {/* Grid */}
-        <motion.div
-          layout
-          className="gallery-grid"
+        {/* 3-Column Balanced Masonry Layout */}
+        <div
+          className="gallery-masonry-wrapper"
           style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
+            display: 'flex',
             gap: '14px',
+            alignItems: 'flex-start',
           }}
         >
-          <AnimatePresence mode="popLayout">
-            {filtered.map((item, i) => (
-              <motion.div
-                key={item.id}
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3 }}
+          {[0, 1, 2].map((colIndex) => {
+            const colItems = filtered.filter((_, idx) => idx % 3 === colIndex);
+            return (
+              <div
+                key={colIndex}
+                className="gallery-masonry-col"
+                style={{
+                  flex: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '14px',
+                  minWidth: 0,
+                }}
               >
-                <GalleryCard item={item} index={i} onClick={setSelectedItem} />
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+                <AnimatePresence mode="popLayout">
+                  {colItems.map((item, i) => (
+                    <motion.div
+                      key={item.id}
+                      layout
+                      initial={{ opacity: 0, scale: 0.92 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.92 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <GalleryCard item={item} index={colIndex * 3 + i} onClick={setSelectedItem} />
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </div>
+            );
+          })}
+        </div>
 
         <style>{`
           @media (max-width: 768px) {
-            .gallery-grid {
+            .gallery-masonry-wrapper {
+              gap: 8px !important;
+            }
+            .gallery-masonry-col {
               gap: 8px !important;
             }
             .gallery-card-root {
@@ -383,7 +450,10 @@ export default function Gallery() {
             }
           }
           @media (max-width: 480px) {
-            .gallery-grid {
+            .gallery-masonry-wrapper {
+              gap: 6px !important;
+            }
+            .gallery-masonry-col {
               gap: 6px !important;
             }
             .gallery-card-root {

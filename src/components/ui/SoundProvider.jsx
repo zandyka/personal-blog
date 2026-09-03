@@ -1,4 +1,4 @@
-﻿import { createContext, useContext, useState, useCallback, useRef } from 'react'
+import { createContext, useContext, useState, useCallback, useRef } from 'react'
 
 const SoundContext = createContext(null)
 
@@ -11,7 +11,7 @@ function createAudioContext() {
   }
 }
 
-function playTone(ctx, frequency, duration, volume = 0.08, type = 'sine', sweep = false) {
+function playTone(ctx, frequency, duration, volume = 0.15, type = 'sine', sweep = false) {
   if (!ctx) return
   try {
     const osc = ctx.createOscillator()
@@ -63,27 +63,27 @@ export function SoundProvider({ children }) {
   const playClick = useCallback(() => {
     const ctx = getCtx()
     if (!ctx) return
-    playTone(ctx, 880, 0.08, 0.09, 'sine')
+    playTone(ctx, 880, 0.08, 0.18, 'sine')
   }, [getCtx])
 
   const playHover = useCallback(() => {
     const ctx = getCtx()
     if (!ctx) return
-    playTone(ctx, 440, 0.04, 0.04, 'sine')
+    playTone(ctx, 440, 0.04, 0.09, 'sine')
   }, [getCtx])
 
   const playWhoosh = useCallback(() => {
     const ctx = getCtx()
     if (!ctx) return
-    playTone(ctx, 800, 0.18, 0.06, 'sine', true)
+    playTone(ctx, 800, 0.18, 0.15, 'sine', true)
   }, [getCtx])
 
   const playSuccess = useCallback(() => {
     const ctx = getCtx()
     if (!ctx) return
-    playTone(ctx, 523, 0.1, 0.07, 'sine')
-    setTimeout(() => playTone(ctx, 659, 0.1, 0.07, 'sine'), 100)
-    setTimeout(() => playTone(ctx, 784, 0.15, 0.07, 'sine'), 200)
+    playTone(ctx, 523, 0.1, 0.16, 'sine')
+    setTimeout(() => playTone(ctx, 659, 0.1, 0.16, 'sine'), 100)
+    setTimeout(() => playTone(ctx, 784, 0.15, 0.16, 'sine'), 200)
   }, [getCtx])
 
   return (
