@@ -175,7 +175,8 @@ const DIGITAL_DESIGNS = [
     title: 'Desain Feed & Identitas Media Sosial HIMTI USU',
     category: 'Social Media & Brand Identity',
     accent: '#FF3B1D',
-    platform: 'Instagram (@himtiusu)',
+    platform: 'Instagram (@himti_fvusu)',
+    url: 'https://www.instagram.com/himti_fvusu/',
     description:
       'Perancangan sistem konten feed Instagram resmi organisasi HIMTI USU mencakup infografis teknologi, ucapan hari besar, rekap kegiatan, dan feed karusel berkesinambungan yang profesional.',
     tools: ['Figma', 'Photoshop', 'Grid Feed System', 'Content Strategy'],
@@ -186,7 +187,8 @@ const DIGITAL_DESIGNS = [
     title: 'Desain Feed & Informasi Resmi PKKMB Vokasi USU 2025',
     category: 'Social Media & Event Campaign',
     accent: '#FFAA00',
-    platform: 'Instagram (@pkkmbvokasiusu)',
+    platform: 'Instagram (@simarmuda.fv.usu)',
+    url: 'https://www.instagram.com/simarmuda.fv.usu/',
     description:
       'Desain visual feed informasi panduan mahasiswa baru, penugasan orientasi kampus, pengumuman jadwal, dan publikasi dokumentasi resmi masa orientasi PKKMB Vokasi USU 2025.',
     tools: ['Figma', 'Social Media Kit', 'Visual Campaign', 'Typography'],
@@ -818,6 +820,7 @@ const Projects = () => {
                   description: item.description,
                   tags: item.tools,
                   platform: item.platform,
+                  url: item.url,
                 });
               }}
               onMouseEnter={playHover}
@@ -862,7 +865,16 @@ const Projects = () => {
                       transition: 'transform 0.4s ease',
                     }}
                   />
-                  <div
+                  <a
+                    href={item.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      playClick();
+                    }}
+                    onMouseEnter={playHover}
+                    title={`Buka ${item.platform} di Instagram`}
                     style={{
                       position: 'absolute',
                       top: '10px',
@@ -874,15 +886,19 @@ const Projects = () => {
                       borderRadius: '999px',
                       background: 'rgba(0, 0, 0, 0.75)',
                       backdropFilter: 'blur(8px)',
-                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      border: '1px solid rgba(255, 255, 255, 0.15)',
                       color: '#ffffff',
                       fontSize: '0.72rem',
                       fontWeight: 600,
+                      textDecoration: 'none',
+                      zIndex: 3,
+                      transition: 'background-color 0.2s, transform 0.2s',
                     }}
                   >
                     <Instagram size={13} style={{ color: item.accent }} />
                     <span>{item.platform}</span>
-                  </div>
+                    <ExternalLink size={11} style={{ opacity: 0.75 }} />
+                  </a>
 
                   <div
                     style={{
@@ -944,31 +960,64 @@ const Projects = () => {
                 </div>
               </div>
 
-              {/* Tools footer */}
+              {/* Tools & Instagram Link footer */}
               <div
                 style={{
                   padding: '12px 18px 16px',
                   borderTop: '1px solid rgba(255, 255, 255, 0.05)',
                   display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
                   flexWrap: 'wrap',
-                  gap: '6px',
+                  gap: '8px',
                 }}
               >
-                {item.tools.map((t) => (
-                  <span
-                    key={t}
-                    style={{
-                      fontSize: '0.72rem',
-                      padding: '3px 9px',
-                      borderRadius: '6px',
-                      background: 'rgba(255, 255, 255, 0.04)',
-                      border: '1px solid var(--border)',
-                      color: 'var(--text)',
-                    }}
-                  >
-                    {t}
-                  </span>
-                ))}
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                  {item.tools.map((t) => (
+                    <span
+                      key={t}
+                      style={{
+                        fontSize: '0.72rem',
+                        padding: '3px 9px',
+                        borderRadius: '6px',
+                        background: 'rgba(255, 255, 255, 0.04)',
+                        border: '1px solid var(--border)',
+                        color: 'var(--text)',
+                      }}
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+
+                <a
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    playClick();
+                  }}
+                  onMouseEnter={playHover}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '5px',
+                    padding: '5px 12px',
+                    borderRadius: '8px',
+                    background: 'rgba(225, 48, 108, 0.12)',
+                    border: '1px solid rgba(225, 48, 108, 0.3)',
+                    color: '#FF6484',
+                    fontSize: '0.74rem',
+                    fontWeight: 600,
+                    textDecoration: 'none',
+                    transition: 'all 0.2s ease',
+                  }}
+                >
+                  <Instagram size={13} />
+                  <span>Kunjungi IG</span>
+                  <ExternalLink size={11} />
+                </a>
               </div>
             </motion.div>
           ))}
@@ -1107,6 +1156,35 @@ const Projects = () => {
                           {t}
                         </span>
                       ))}
+                    </div>
+                  )}
+
+                  {activeModal.url && (
+                    <div style={{ marginTop: '16px', paddingTop: '14px', borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
+                      <a
+                        href={activeModal.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={playClick}
+                        onMouseEnter={playHover}
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '7px',
+                          padding: '8px 16px',
+                          borderRadius: '8px',
+                          background: 'rgba(225, 48, 108, 0.15)',
+                          border: '1px solid rgba(225, 48, 108, 0.35)',
+                          color: '#FF6484',
+                          fontSize: '0.82rem',
+                          fontWeight: 600,
+                          textDecoration: 'none',
+                        }}
+                      >
+                        <Instagram size={15} />
+                        <span>Kunjungi Akun Instagram Resmi</span>
+                        <ExternalLink size={13} />
+                      </a>
                     </div>
                   )}
                 </div>
