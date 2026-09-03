@@ -15,24 +15,39 @@ import {
 } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
 
+// 1. Work Experiences in chronological timeline order (starting from Telkom Akses)
 const WORK_EXPERIENCES = [
+  {
+    id: 'telkom-akses',
+    company: 'PT. Telkom Akses Indonesia',
+    role: 'Fiber Technician Intern',
+    period: 'Februari 2022 - April 2022',
+    type: 'Internship',
+    logo: '/logos/logo telkom.png',
+    icon: Network,
+    description:
+      'Melakukan penyambungan kabel fiber optik (fusion splicing), pengujian redaman OPM/OTDR, serta pemeliharaan infrastruktur jaringan GPON di lapangan.',
+    tags: ['Fiber Optic', 'GPON Infrastructure', 'Field Diagnostics', 'Fusion Splicing'],
+  },
   {
     id: 'bsi',
     company: 'PT. Bank Syariah Indonesia (BSI)',
     role: 'Back Office Intern',
     period: 'Maret 2025 - Mei 2025',
     type: 'Internship',
+    logo: '/logos/logo bsi.png',
     icon: Landmark,
     description:
       'Bertanggung jawab atas verifikasi data operasional perbankan, tata kelola kearsipan dokumen nasabah, dan kepatuhan administrasi dengan standar kerahasiaan tinggi.',
-    tags: ['Banking Admin', 'Data Verification', 'Compliance'],
+    tags: ['Banking Admin', 'Data Verification', 'Compliance', 'Archival Management'],
   },
   {
     id: 'bank-sumut',
     company: 'PT. Bank Sumut',
     role: 'Operational Division Intern',
-    period: 'Jun 2025 - Jul 2025',
+    period: 'Juni 2025 - Juli 2025',
     type: 'Internship',
+    logo: '/logos/logo bank sumut.png',
     icon: Building2,
     description:
       'Mendukung pemrosesan transaksi harian nasabah, penanganan pertanyaan layanan, serta penerapan standar operasional prosedur (SOP) perbankan.',
@@ -44,39 +59,45 @@ const WORK_EXPERIENCES = [
     role: 'IT / Admin Support Intern',
     period: 'September 2025 - Desember 2025',
     type: 'Internship',
+    logo: '/logos/logo bpjs.png',
     icon: Server,
     description:
       'Mengembangkan dashboard analitik performa magang, melakukan troubleshooting aplikasi JMO (Jamsostek Mobile), dan mengelola dataset kepesertaan.',
     tags: ['IT Support', 'Dashboard Analytics', 'Data Management', 'JMO Troubleshooting'],
   },
-  {
-    id: 'telkom-akses',
-    company: 'PT. Telkom Akses Indonesia',
-    role: 'Fiber Technician Intern',
-    period: 'Feb 2022 - Apr 2022',
-    type: 'Internship',
-    icon: Network,
-    description:
-      'Melakukan penyambungan kabel fiber optik (fusion splicing), pengujian redaman OPM/OTDR, serta pemeliharaan infrastruktur jaringan GPON di lapangan.',
-    tags: ['Fiber Optic', 'GPON Infrastructure', 'Field Diagnostics', 'Fusion Splicing'],
-  },
 ];
 
+// 2. Training Experiences separated into JMP and JWD
 const TRAINING_EXPERIENCES = [
   {
-    id: 'vsga-kominfo',
+    id: 'vsga-jmp',
     company: 'Vocational School Graduate Academy (VSGA)',
     organizer: 'Digital Talent Scholarship (DTS) — Kominfo RI',
-    role: 'Pelatihan Junior Mobile Programmer & Junior Web Developer',
-    period: '2023 - 2024',
+    role: 'Junior Mobile Programmer (JMP)',
+    period: 'April 2023 - Mei 2023',
     type: 'Pelatihan',
+    logo: '/logos/logo kominfo.png',
     icon: Award,
     description:
-      'Mengikuti program pelatihan intensif peningkatan kompetensi digital berbasis SKKNI yang diselenggarakan oleh Digitalent Kementerian Komunikasi dan Informatika (Kominfo RI), berfokus pada perancangan arsitektur aplikasi mobile Android dan pengembangan sistem web dinamis.',
-    tags: ['Kominfo RI', 'Digitalent', 'VSGA', 'Digital Talent Scholarship', 'Standar SKKNI'],
+      'Pelatihan intensif pengembangan aplikasi mobile Android berbasis standar SKKNI dari Digitalent Kominfo RI, mencakup arsitektur aplikasi mobile, komponen UI/UX interaktif, dan manajemen siklus hidup aplikasi.',
+    tags: ['Kominfo RI', 'Digitalent', 'VSGA', 'Junior Mobile Programmer', 'Standar SKKNI'],
+  },
+  {
+    id: 'vsga-jwd',
+    company: 'Vocational School Graduate Academy (VSGA)',
+    organizer: 'Digital Talent Scholarship (DTS) — Kominfo RI',
+    role: 'Junior Web Developer (JWD)',
+    period: 'Agustus 2024',
+    type: 'Pelatihan',
+    logo: '/logos/logo kominfo.png',
+    icon: Award,
+    description:
+      'Pelatihan intensif pemrograman web dinamis berstandar SKKNI dari Digitalent Kominfo RI, mencakup perancangan struktur database relasional, arsitektur REST API, dan integrasi frontend modern.',
+    tags: ['Kominfo RI', 'Digitalent', 'VSGA', 'Junior Web Developer', 'Web Programming'],
   },
 ];
 
+// 3. Activity Experiences (Organisasi, Volunteer, Kepanitiaan, Event)
 const ACTIVITY_EXPERIENCES = [
   {
     id: 'himti',
@@ -84,6 +105,7 @@ const ACTIVITY_EXPERIENCES = [
     role: 'Head of Creative Media Division (Kadiv Media Kreatif)',
     period: '2024 - 2025',
     type: 'Organisasi',
+    logo: '/logos/logo himti.png',
     icon: Users,
     description:
       'Memimpin divisi media kreatif dalam perancangan identitas visual organisasi, standarisasi aset grafis, pengelolaan publikasi media sosial, serta supervisi tim dokumentasi kegiatan himpunan.',
@@ -91,36 +113,39 @@ const ACTIVITY_EXPERIENCES = [
   },
   {
     id: 'pkbm',
-    company: 'PKBM Bintula (Pusat Kegiatan Belajar Masyarakat)',
-    role: 'Volunteer Pengajar Komputer & Literasi Digital',
+    company: 'PKBM Bintula (Bina Tunas Muda Cakrawala)',
+    role: 'Volunteer Pengajar Komputer & Microsoft Office',
     period: '2024',
     type: 'Volunteer',
+    logo: '/logos/logo pkbm.png',
     icon: BookOpen,
     description:
-      'Aksi sosial pengabdian masyarakat dengan memberikan edukasi dan pendampingan dasar-dasar pengoperasian komputer, aplikasi perkantoran, dan pemanfaatan internet produktif untuk para peserta didik.',
-    tags: ['Pengabdian Masyarakat', 'Volunteer', 'Edukasi Komputer', 'Digital Literacy'],
+      'Aksi sosial pengabdian masyarakat dengan memberikan pengajaran dan pendampingan literasi komputer dasar serta aplikasi perkantoran Microsoft Office (Word, Excel, PowerPoint) kepada peserta didik program kesetaraan Paket A (setara SD), Paket B (setara SMP), dan Paket C (setara SMA).',
+    tags: ['Pengabdian Masyarakat', 'Volunteer', 'Komputer Dasar', 'Microsoft Office', 'Paket A, B, C'],
   },
   {
     id: 'pkkmb',
     company: 'PKKMB Fakultas Vokasi USU 2025',
-    role: 'Tim Publikasi & Dokumentasi (Pubdok)',
+    role: 'Tim Publikasi, Dokumentasi & Desain Kreatif',
     period: '2025',
     type: 'Kepanitiaan',
+    logo: '/logos/logo usu.png',
     icon: Camera,
     description:
-      'Bertanggung jawab penuh atas liputan fotografi, videografi, dan publikasi konten visual selama masa orientasi dan penyambutan mahasiswa baru Fakultas Vokasi USU 2025.',
-    tags: ['PKKMB Vokasi 2025', 'Pubdok', 'Media Coverage', 'Dokumentasi Acara'],
+      'Bertanggung jawab penuh atas liputan fotografi, videografi, dan publikasi konten visual selama masa orientasi mahasiswa baru Fakultas Vokasi USU 2025. Sekaligus menjadi perancang utama untuk seluruh kebutuhan desain fisik dan digital acara, mencakup backdrop panggung utama, kartu tanda pengenal (ID card), badge nama peserta & panitia, serta desain feed Instagram resmi.',
+    tags: ['PKKMB Vokasi 2025', 'Pubdok', 'Desain Backdrop', 'Desain ID Card', 'Badge Nama', 'Feed Instagram'],
   },
   {
     id: 'rindu-tenang',
     company: 'Pagelaran Seni & Musik "Rindu Tenang"',
-    role: 'Event Organizer & Stage Coordinator',
+    role: 'Divisi Ticketing & Logistik',
     period: '2024',
     type: 'Event Organizer',
+    logo: '/logos/logo rindu tenang.png',
     icon: Sparkles,
     description:
-      'Mengkoordinasikan manajemen operasional panggung, logistik perlengkapan pementasan, serta koordinasi lintas divisi guna menyukseskan gelaran acara seni musik Rindu Tenang.',
-    tags: ['Event Organizer', 'Stage Management', 'Live Event Production'],
+      'Bertanggung jawab atas manajemen sistem ticketing (penjualan, pendataan, dan validasi tiket pengunjung) serta pengelolaan logistik perlengkapan acara dan operasional panggung guna menyukseskan gelaran acara seni musik Rindu Tenang.',
+    tags: ['Ticketing System', 'Logistik Acara', 'Event Organizer', 'Stage Operations'],
   },
 ];
 
@@ -226,32 +251,47 @@ const TimelineCard = ({ item, index }) => {
           transition: 'border-color 0.2s, transform 0.2s, box-shadow 0.2s',
         }}
       >
-        {/* Header: Company & Badge */}
+        {/* Header: Logo/Icon & Badge */}
         <div
           style={{
             display: 'flex',
             alignItems: 'flex-start',
             justifyContent: 'space-between',
             gap: '12px',
-            marginBottom: '10px',
+            marginBottom: '12px',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div
               style={{
-                width: '38px',
-                height: '38px',
-                borderRadius: '10px',
-                background: badgeStyle.bg,
-                border: `1px solid ${badgeStyle.border}`,
+                width: '42px',
+                height: '42px',
+                borderRadius: '12px',
+                background: item.logo ? '#ffffff' : badgeStyle.bg,
+                border: `1px solid ${item.logo ? 'rgba(255,255,255,0.2)' : badgeStyle.border}`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                padding: item.logo ? '5px' : 0,
                 color: badgeStyle.color,
                 flexShrink: 0,
+                overflow: 'hidden',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
               }}
             >
-              <Icon size={19} />
+              {item.logo ? (
+                <img
+                  src={item.logo}
+                  alt={item.company}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain',
+                  }}
+                />
+              ) : (
+                <Icon size={20} />
+              )}
             </div>
             <div>
               <h3
@@ -260,6 +300,7 @@ const TimelineCard = ({ item, index }) => {
                   fontSize: '1.05rem',
                   fontWeight: 600,
                   color: 'var(--text)',
+                  lineHeight: 1.25,
                 }}
               >
                 {item.company}
@@ -267,7 +308,7 @@ const TimelineCard = ({ item, index }) => {
               {item.organizer && (
                 <p
                   style={{
-                    margin: '1px 0 0',
+                    margin: '2px 0 0',
                     fontSize: '0.78rem',
                     color: 'var(--text-muted)',
                   }}
@@ -277,7 +318,7 @@ const TimelineCard = ({ item, index }) => {
               )}
               <p
                 style={{
-                  margin: '2px 0 0',
+                  margin: '3px 0 0',
                   fontSize: '0.88rem',
                   fontWeight: 500,
                   color: badgeStyle.color,
@@ -436,7 +477,7 @@ const Experience = () => {
               fontWeight: 300,
             }}
           >
-            Rekam jejak pengalaman magang dan kerja profesional di bidang perbankan syariah, IT &amp; analisis data, dan instalasi jaringan telekomunikasi.
+            Rekam jejak pengalaman magang dan kerja profesional yang diurutkan secara kronologis mulai dari telekomunikasi hingga perbankan dan IT operasional.
           </p>
         </motion.div>
 

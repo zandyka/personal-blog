@@ -4,57 +4,198 @@ import { useInView } from 'react-intersection-observer';
 import {
   Award,
   Calendar,
-  CheckCircle2,
-  ShieldCheck,
   ExternalLink,
-  BookmarkCheck,
-  Image as ImageIcon,
   ZoomIn,
   X,
   FileCheck,
+  Grid,
+  Cpu,
+  Briefcase,
+  Trophy,
+  Network,
+  Sparkles,
 } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
 
 const CERTIFICATIONS = [
   {
-    id: 'vsga-mobile',
-    title: 'Junior Mobile Programmer',
-    issuer: 'VSGA Kominfo (Digital Talent Scholarship)',
-    period: 'Jun 2023 - Jul 2023',
-    focusArea: 'Mobile Application Programming & Android Architecture Fundamentals',
-    credentialType: 'Government Accreditation',
-    skillsGained: ['Mobile Development', 'Android Studio', 'Java / Kotlin Basics', 'App Lifecycle'],
-    image: null, // Ready to receive certificate photo
+    id: 'vsga-jmp',
+    title: 'Junior Mobile Programmer (JMP)',
+    issuer: 'VSGA Kominfo — Digital Talent Scholarship',
+    period: 'April 2023 - Mei 2023',
+    focusArea: 'Pengembangan Aplikasi Android, Arsitektur Mobile & Siklus Hidup Aplikasi',
+    credentialType: 'Standar SKKNI',
+    category: 'Pemerintah & SKKNI',
+    skillsGained: ['Mobile Programming', 'Android Studio', 'Java/Kotlin', 'Standar SKKNI'],
+    image: '/certificates/serti vsga jmp-1.png',
   },
   {
-    id: 'vsga-web',
-    title: 'Junior Web Developer',
-    issuer: 'VSGA Kominfo (Digital Talent Scholarship)',
-    period: 'Agu 2024',
-    focusArea: 'Web Application Programming, Database Integration & Frontend Standards',
-    credentialType: 'Government Accreditation',
-    skillsGained: ['Web Programming', 'PHP / MySQL', 'Responsive Layout', 'REST Architecture'],
-    image: null, // Ready to receive certificate photo
+    id: 'vsga-jwd',
+    title: 'Junior Web Developer (JWD)',
+    issuer: 'VSGA Kominfo — Digital Talent Scholarship',
+    period: 'Agustus 2024',
+    focusArea: 'Pemrograman Web Dinamis, Database Integration & Arsitektur RESTful API',
+    credentialType: 'Standar SKKNI',
+    category: 'Pemerintah & SKKNI',
+    skillsGained: ['Web Programming', 'PHP', 'MySQL', 'RESTful API'],
+    image: '/certificates/sertif vsga kominfo-1.png',
   },
   {
-    id: 'telkom-fiber',
-    title: 'Certified Fiber Technician',
-    issuer: 'PT. Telkom Akses Indonesia',
-    period: 'Feb 2022 - Apr 2022',
-    focusArea: 'Fiber Optic Deployment, GPON Infrastructure & Optical Diagnostics',
+    id: 'dicoding-fabric',
+    title: 'Belajar Penerapan Data Science dengan Microsoft Fabric',
+    issuer: 'Dicoding Indonesia & Microsoft',
+    period: '2024',
+    focusArea: 'Penerapan Data Science Modern, Cloud Analytics & Ekosistem Microsoft Fabric',
     credentialType: 'Industry Certification',
-    skillsGained: ['Fiber Optic Splicing', 'GPON Systems', 'OTDR / OPM Testing', 'Field Troubleshooting'],
-    image: null, // Ready to receive certificate photo
+    category: 'AI & Data Science',
+    skillsGained: ['Data Science', 'Microsoft Fabric', 'Cloud Analytics', 'Data Engineering'],
+    image: '/certificates/sertifikat dicoding belajar penerapan data science dengan microsoft fabric.png',
   },
+  {
+    id: 'google-gemini',
+    title: 'Google Gemini Certified Student',
+    issuer: 'Google & Gemini Academy',
+    period: '2024',
+    focusArea: 'Generative AI, Prompt Engineering & Model Multimodal Google Gemini',
+    credentialType: 'Global Tech Certification',
+    category: 'AI & Data Science',
+    skillsGained: ['Generative AI', 'Prompt Engineering', 'Google Gemini', 'Multimodal AI'],
+    image: '/certificates/sertif gemini certified student.png',
+  },
+  {
+    id: 'claude-ai',
+    title: 'Claude AI Certified Practitioner',
+    issuer: 'Anthropic & AI Training Academy',
+    period: '2024',
+    focusArea: 'Large Language Models, Automasi Alur Kerja AI & Prompt Design',
+    credentialType: 'Global Tech Certification',
+    category: 'AI & Data Science',
+    skillsGained: ['Claude AI', 'LLM Workflow', 'Prompt Design', 'AI Automation'],
+    image: '/certificates/sertif ai claude zacky andyka-1.png',
+  },
+  {
+    id: 'ai-fundamentals',
+    title: 'Artificial Intelligence Fundamentals & Applications',
+    issuer: 'AI Academy & Global Certification',
+    period: '2024',
+    focusArea: 'Konsep Kecerdasan Buatan, Algoritma Machine Learning & Model Terapan',
+    credentialType: 'Professional Certification',
+    category: 'AI & Data Science',
+    skillsGained: ['Artificial Intelligence', 'Machine Learning', 'Neural Networks', 'Python'],
+    image: '/certificates/Sertif Ai Zacky Andyka.png',
+  },
+  {
+    id: 'datacom',
+    title: 'Data Communication & Network Fundamentals',
+    issuer: 'Datacom Certification Body',
+    period: '2023',
+    focusArea: 'Arsitektur Komunikasi Data, Protokol Jaringan & Routing Switching',
+    credentialType: 'Network Certification',
+    category: 'Jaringan & Lainnya',
+    skillsGained: ['Data Communication', 'Network Protocols', 'Routing & Switching', 'IP Addressing'],
+    image: '/certificates/Sertif Datacom Zacky Andyka.png',
+  },
+  {
+    id: 'mbkm-bpjs',
+    title: 'Sertifikat Magang MBKM BPJS Ketenagakerjaan',
+    issuer: 'BPJS Ketenagakerjaan & Kemendikbudristek',
+    period: 'September 2025 - Desember 2025',
+    focusArea: 'IT Support, Pemeliharaan Database Peserta & Operasional Dashboard',
+    credentialType: 'Magang Berdampak MBKM',
+    category: 'Magang & Profesi',
+    skillsGained: ['IT Support', 'Database Operations', 'JMO Troubleshooting', 'Administrative Governance'],
+    image: '/certificates/sertif akhir mbkm bpjs-1.png',
+  },
+  {
+    id: 'mbkm-bsi',
+    title: 'Sertifikat Magang MBKM Bank Syariah Indonesia',
+    issuer: 'PT Bank Syariah Indonesia Tbk (BSI)',
+    period: 'Maret 2025 - Mei 2025',
+    focusArea: 'Back Office Operations, Verifikasi Data Perbankan & Kepatuhan Arsip',
+    credentialType: 'Magang Berdampak MBKM',
+    category: 'Magang & Profesi',
+    skillsGained: ['Banking Operations', 'Financial Data Verification', 'Archival Management'],
+    image: '/certificates/sertif mbkm bsi-1.png',
+  },
+  {
+    id: 'ukk-bnsp',
+    title: 'Sertifikat Uji Kompetensi Keahlian (UKK) TKJ',
+    issuer: 'Badan Nasional Sertifikasi Profesi (BNSP) / LSP',
+    period: '2022',
+    focusArea: 'Administrasi Server, Troubleshooting Jaringan & Sistem Komputer',
+    credentialType: 'Sertifikasi BNSP / LSP',
+    category: 'Pemerintah & SKKNI',
+    skillsGained: ['Network Administration', 'Server Configuration', 'Hardware & System Support'],
+    image: '/certificates/sertif kompetensi ukk-1.png',
+  },
+  {
+    id: 'lomba-it-network',
+    title: 'Penghargaan Lomba IT Network Configuration',
+    issuer: 'Kompetisi Bidang Kejuruan Jaringan Komputer',
+    period: '2021',
+    focusArea: 'Konfigurasi Routing, Subnetting & Troubleshooting Jaringan Terpadu',
+    credentialType: 'Penghargaan Kejuaraan',
+    category: 'Penghargaan & Lomba',
+    skillsGained: ['Network Configuration', 'Network Troubleshooting', 'Subnetting'],
+    image: '/certificates/sertif it network configuration hut smk.png',
+  },
+  {
+    id: 'lomba-fotografi-coca-cola',
+    title: 'Penghargaan Lomba Fotografi Produk Coca-Cola',
+    issuer: 'Kompetisi Fotografi Komersial Kreatif',
+    period: '2022',
+    focusArea: 'Fotografi Produk Komersial, Studio Lighting & Visual Composition',
+    credentialType: 'Penghargaan Kejuaraan',
+    category: 'Penghargaan & Lomba',
+    skillsGained: ['Commercial Photography', 'Product Lighting', 'Color Grading', 'Visual Composition'],
+    image: '/certificates/sertif lomba fotografi produk coca cola.png',
+  },
+  {
+    id: 'lomba-fotografi-smk',
+    title: 'Penghargaan Lomba Seni & Fotografi Sekolah',
+    issuer: 'Ajang Kompetisi Fotografi Kejuruan',
+    period: '2021',
+    focusArea: 'Eksplorasi Sudut Pandang, Komposisi Visual & Storytelling Fotografi',
+    credentialType: 'Penghargaan Kejuaraan',
+    category: 'Penghargaan & Lomba',
+    skillsGained: ['Photography Composition', 'Street Photography', 'Visual Storytelling'],
+    image: '/certificates/sertif lomba fotografi smk-1.png',
+  },
+  {
+    id: 'training-english',
+    title: 'Pelatihan Bahasa Inggris & Komunikasi Profesional',
+    issuer: 'English Language Development Program',
+    period: '2023',
+    focusArea: 'Komunikasi Bisnis, Presentasi Teknis & Tata Bahasa Inggris Kerja',
+    credentialType: 'Pelatihan Profesional',
+    category: 'Jaringan & Lainnya',
+    skillsGained: ['Professional English', 'Workplace Communication', 'Technical Vocabulary'],
+    image: '/certificates/sertif training bahasa inggris-1.png',
+  },
+];
+
+const CATEGORIES = [
+  { id: 'All', label: 'Semua', icon: Grid },
+  { id: 'Pemerintah & SKKNI', label: 'SKKNI & Kominfo', icon: Award },
+  { id: 'AI & Data Science', label: 'AI & Data Science', icon: Cpu },
+  { id: 'Magang & Profesi', label: 'Magang MBKM', icon: Briefcase },
+  { id: 'Penghargaan & Lomba', label: 'Penghargaan & Lomba', icon: Trophy },
+  { id: 'Jaringan & Lainnya', label: 'Jaringan & Lainnya', icon: Network },
 ];
 
 const Certifications = () => {
   const { playClick, playHover } = useSoundContext();
+  const [activeCategory, setActiveCategory] = useState('All');
   const [activeCert, setActiveCert] = useState(null);
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
+
+  const filteredCerts =
+    activeCategory === 'All'
+      ? CERTIFICATIONS
+      : CERTIFICATIONS.filter((c) => c.category === activeCategory);
 
   const fadeUp = {
     hidden: { opacity: 0, y: 30 },
@@ -68,7 +209,7 @@ const Certifications = () => {
   const stagger = {
     hidden: {},
     visible: {
-      transition: { staggerChildren: 0.12 },
+      transition: { staggerChildren: 0.08 },
     },
   };
 
@@ -77,7 +218,7 @@ const Certifications = () => {
       id="certifications"
       ref={ref}
       style={{
-        padding: '44px 20px 60px',
+        padding: '54px 20px 80px',
         background: 'var(--bg)',
         position: 'relative',
         overflow: 'hidden',
@@ -107,7 +248,7 @@ const Certifications = () => {
               marginBottom: '8px',
             }}
           >
-            Credentials &amp; Licenses
+            Credentials &amp; Accreditations
           </span>
           <h2
             style={{
@@ -118,7 +259,7 @@ const Certifications = () => {
               letterSpacing: '-0.02em',
             }}
           >
-            Certifications &amp; Accreditations
+            Sertifikasi &amp; Penghargaan Resmi
           </h2>
           <div
             style={{
@@ -133,20 +274,79 @@ const Certifications = () => {
             style={{
               color: 'var(--text-muted)',
               fontSize: '0.98rem',
-              maxWidth: '620px',
+              maxWidth: '640px',
               margin: '0 auto',
               fontWeight: 300,
             }}
           >
-            Sertifikasi resmi terakreditasi standar nasional (Kominfo / SKKNI) dan industri yang memvalidasi kompetensi di bidang mobile, web, dan infrastruktur jaringan.
+            Dokumentasi lengkap sertifikasi kompetensi standar SKKNI, pelatihan AI global, sertifikat magang resmi MBKM, dan penghargaan kompetisi.
           </p>
         </motion.div>
 
-        {/* Certifications Grid — 3 Columns */}
+        {/* Category Filter Tabs */}
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            gap: '8px',
+            marginBottom: '36px',
+          }}
+        >
+          {CATEGORIES.map(({ id, label, icon: Icon }) => {
+            const isActive = activeCategory === id;
+            return (
+              <button
+                key={id}
+                onClick={() => {
+                  playClick();
+                  setActiveCategory(id);
+                }}
+                onMouseEnter={playHover}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '8px 16px',
+                  borderRadius: '999px',
+                  border: isActive ? '1px solid var(--accent)' : '1px solid var(--border)',
+                  background: isActive ? 'var(--accent-dim)' : 'var(--surface)',
+                  color: isActive ? 'var(--accent)' : 'var(--text-muted)',
+                  fontSize: '0.82rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  backdropFilter: 'blur(10px)',
+                }}
+              >
+                <Icon size={14} />
+                <span>{label}</span>
+                <span
+                  style={{
+                    fontSize: '0.7rem',
+                    padding: '2px 6px',
+                    borderRadius: '999px',
+                    background: isActive ? 'var(--accent)' : 'rgba(255,255,255,0.06)',
+                    color: isActive ? '#000000' : 'var(--text-muted)',
+                    fontWeight: 700,
+                    marginLeft: '2px',
+                  }}
+                >
+                  {id === 'All'
+                    ? CERTIFICATIONS.length
+                    : CERTIFICATIONS.filter((c) => c.category === id).length}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Certifications Grid */}
         <motion.div
+          key={activeCategory}
           variants={stagger}
           initial="hidden"
-          animate={inView ? 'visible' : 'hidden'}
+          animate="visible"
           className="cert-grid"
           style={{
             display: 'grid',
@@ -154,7 +354,7 @@ const Certifications = () => {
             gap: '20px',
           }}
         >
-          {CERTIFICATIONS.map((cert) => (
+          {filteredCerts.map((cert) => (
             <motion.div
               key={cert.id}
               variants={fadeUp}
@@ -166,7 +366,7 @@ const Certifications = () => {
                 border: '1px solid var(--border)',
                 borderLeft: '3px solid var(--accent)',
                 borderRadius: '16px',
-                padding: '18px',
+                padding: '16px',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
@@ -176,13 +376,11 @@ const Certifications = () => {
               }}
             >
               <div>
-                {/* Certificate Photo Frame / Placeholder Area */}
+                {/* Certificate Photo Frame / Lightbox Trigger */}
                 <div
                   onClick={() => {
-                    if (cert.image) {
-                      playClick();
-                      setActiveCert(cert);
-                    }
+                    playClick();
+                    setActiveCert(cert);
                   }}
                   style={{
                     position: 'relative',
@@ -190,111 +388,55 @@ const Certifications = () => {
                     aspectRatio: '16 / 10',
                     borderRadius: '12px',
                     overflow: 'hidden',
-                    background: cert.image
-                      ? 'var(--surface-2)'
-                      : 'linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%)',
-                    border: cert.image ? '1px solid var(--border)' : '1px dashed var(--border)',
+                    background: 'var(--surface-2)',
+                    border: '1px solid var(--border)',
                     marginBottom: '14px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    cursor: cert.image ? 'pointer' : 'default',
+                    cursor: 'pointer',
                   }}
                 >
-                  {cert.image ? (
-                    <>
-                      <img
-                        src={cert.image}
-                        alt={cert.title}
-                        style={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'cover',
-                          display: 'block',
-                          transition: 'transform 0.4s ease',
-                        }}
-                      />
-                      <div
-                        style={{
-                          position: 'absolute',
-                          top: '8px',
-                          right: '8px',
-                          width: '28px',
-                          height: '28px',
-                          borderRadius: '8px',
-                          background: 'rgba(0, 0, 0, 0.6)',
-                          backdropFilter: 'blur(6px)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          color: '#ffffff',
-                        }}
-                      >
-                        <ZoomIn size={14} />
-                      </div>
-                    </>
-                  ) : (
-                    /* Elegant Certificate Placeholder */
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '8px',
-                        padding: '16px',
-                        textAlign: 'center',
-                      }}
-                    >
-                      <div
-                        style={{
-                          width: '40px',
-                          height: '40px',
-                          borderRadius: '10px',
-                          background: 'var(--accent-dim)',
-                          border: '1px solid var(--accent-border)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          color: 'var(--accent)',
-                        }}
-                      >
-                        <FileCheck size={20} />
-                      </div>
-                      <div>
-                        <span
-                          style={{
-                            fontSize: '0.8rem',
-                            fontWeight: 600,
-                            color: 'var(--text)',
-                            display: 'block',
-                          }}
-                        >
-                          Area Foto Sertifikat
-                        </span>
-                        <span
-                          style={{
-                            fontSize: '0.7rem',
-                            color: 'var(--text-muted)',
-                            display: 'block',
-                            marginTop: '2px',
-                          }}
-                        >
-                          Siap menampilkan sertifikat
-                        </span>
-                      </div>
-                    </div>
-                  )}
+                  <img
+                    src={cert.image}
+                    alt={cert.title}
+                    loading="lazy"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      display: 'block',
+                      transition: 'transform 0.4s ease',
+                    }}
+                  />
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: '8px',
+                      right: '8px',
+                      width: '28px',
+                      height: '28px',
+                      borderRadius: '8px',
+                      background: 'rgba(0, 0, 0, 0.65)',
+                      backdropFilter: 'blur(6px)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#ffffff',
+                    }}
+                  >
+                    <ZoomIn size={14} />
+                  </div>
                 </div>
 
-                {/* Header: Issuer & Period */}
+                {/* Header: Credential Type & Period */}
                 <div
                   style={{
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     gap: '8px',
-                    marginBottom: '10px',
+                    marginBottom: '8px',
                   }}
                 >
                   <span
@@ -330,7 +472,7 @@ const Certifications = () => {
                   className="cert-title"
                   style={{
                     margin: '0 0 6px',
-                    fontSize: '1.05rem',
+                    fontSize: '1.02rem',
                     fontWeight: 600,
                     color: 'var(--text)',
                     lineHeight: 1.3,
@@ -343,25 +485,38 @@ const Certifications = () => {
                 <p
                   className="cert-issuer"
                   style={{
-                    margin: '0 0 12px',
-                    fontSize: '0.84rem',
+                    margin: '0 0 10px',
+                    fontSize: '0.82rem',
                     color: 'var(--text-muted)',
                     lineHeight: 1.4,
                   }}
                 >
                   {cert.issuer}
                 </p>
+
+                {/* Focus Area / Description */}
+                <p
+                  style={{
+                    fontSize: '0.78rem',
+                    color: 'var(--text-muted)',
+                    lineHeight: 1.5,
+                    margin: '0 0 12px',
+                    fontWeight: 300,
+                  }}
+                >
+                  {cert.focusArea}
+                </p>
               </div>
 
               {/* Skills Gained Tags */}
-              <div style={{ marginTop: '12px', paddingTop: '10px', borderTop: '1px solid rgba(255, 255, 255, 0.05)' }}>
+              <div style={{ marginTop: 'auto', paddingTop: '10px', borderTop: '1px solid rgba(255, 255, 255, 0.05)' }}>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
                   {cert.skillsGained.map((skill) => (
                     <span
                       key={skill}
                       className="cert-tag"
                       style={{
-                        fontSize: '0.7rem',
+                        fontSize: '0.68rem',
                         padding: '3px 8px',
                         borderRadius: '6px',
                         background: 'rgba(255, 255, 255, 0.04)',
@@ -411,7 +566,7 @@ const Certifications = () => {
                   background: 'var(--surface)',
                   border: '1px solid var(--border)',
                   borderRadius: '20px',
-                  maxWidth: '820px',
+                  maxWidth: '840px',
                   width: '100%',
                   overflow: 'hidden',
                   boxShadow: '0 24px 80px rgba(0, 0, 0, 0.6)',
@@ -464,11 +619,28 @@ const Certifications = () => {
                   </button>
                 </div>
                 <div style={{ padding: '20px 24px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                    <span
+                      style={{
+                        fontSize: '0.72rem',
+                        fontWeight: 700,
+                        color: 'var(--accent)',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.8px',
+                      }}
+                    >
+                      {activeCert.credentialType}
+                    </span>
+                    <span style={{ color: 'var(--text-dim)' }}>&bull;</span>
+                    <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                      {activeCert.period}
+                    </span>
+                  </div>
                   <h3 style={{ margin: '0 0 6px', fontSize: '1.2rem', color: 'var(--text)' }}>
                     {activeCert.title}
                   </h3>
-                  <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--accent)' }}>
-                    {activeCert.issuer} &bull; {activeCert.period}
+                  <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--accent-2)' }}>
+                    {activeCert.issuer}
                   </p>
                 </div>
               </motion.div>
