@@ -20,7 +20,7 @@ export function useTheme() {
     }
   }, [])
 
-  const toggleTheme = useCallback((event, transitionMode = 'crossfade') => {
+  const toggleTheme = useCallback((event, transitionMode = 'sweep') => {
     const nextTheme = currentTheme === 'dark' ? 'light' : 'dark'
     currentTheme = nextTheme
     localStorage.setItem('theme', nextTheme)
@@ -46,6 +46,26 @@ export function useTheme() {
     // Fallback if View Transitions API is unsupported
     if (!canUseViewTransition || transitionMode === 'none') {
       document.documentElement.classList.toggle('light', nextTheme === 'light')
+      return
+    }
+
+    // Option 3: Diagonal Sweep / Editorial Curtain Wipe (Active Default)
+    if (transitionMode === 'sweep') {
+      document.documentElement.setAttribute('data-theme-transition', 'sweep')
+      document.documentElement.classList.add('no-transitions')
+
+      try {
+        const transition = document.startViewTransition(() => {
+          document.documentElement.classList.toggle('light', nextTheme === 'light')
+        })
+
+        transition.finished.finally(() => {
+          document.documentElement.classList.remove('no-transitions')
+        })
+      } catch (err) {
+        document.documentElement.classList.toggle('light', nextTheme === 'light')
+        document.documentElement.classList.remove('no-transitions')
+      }
       return
     }
 
