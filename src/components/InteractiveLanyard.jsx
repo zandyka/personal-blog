@@ -5,14 +5,15 @@ import { useSoundContext } from './ui/SoundProvider';
 /**
  * InteractiveLanyard Component
  * Features:
- * - 3D ID badge inside an authentic protective plastic card holder frame with top slot hole
+ * - Slightly reduced scale for elegant proportions and longer hanging strap
+ * - Atmospheric background lighting behind the lanyard
+ * - 3D ID badge inside a protective plastic card holder frame with top slot hole
  * - Custom user ID card graphics for front (/about/id_card_front.png) and back (/about/id_card_back.png)
  * - Transparent / frameless container (no box border, no outer card frame)
  * - Realistic metal swivel clip & carabiner hooking through the badge hole
  * - Flexible physics-based lanyard strap that bends & ripples as you drag
  * - Harmonic pendulum spring physics simulation on release with natural inertia & air damping
  * - Tap/click directly on the card to flip 180 degrees
- * - Clean UI with zero clutter (no buttons below)
  */
 export default function InteractiveLanyard() {
   const mountRef = useRef(null);
@@ -21,7 +22,7 @@ export default function InteractiveLanyard() {
 
   // Physics & interaction state
   const physicsRef = useRef({
-    pos: new THREE.Vector3(0, -0.4, 0),
+    pos: new THREE.Vector3(0, -0.42, 0),
     vel: new THREE.Vector3(0, 0, 0),
     rot: new THREE.Euler(0, 0, 0),
     targetRotY: 0,
@@ -45,8 +46,9 @@ export default function InteractiveLanyard() {
 
     // 1. Scene, Camera, Renderer
     const scene = new THREE.Scene();
+    // Slightly zoomed-out camera (z = 6.6) to scale down the lanyard gracefully
     const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
-    camera.position.set(0, 0.35, 5.7);
+    camera.position.set(0, 0.35, 6.6);
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -57,8 +59,8 @@ export default function InteractiveLanyard() {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     mount.appendChild(renderer.domElement);
 
-    // 2. Lights
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.3);
+    // 2. Lights (Key, Fill, Rim & Back Atmosphere)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.35);
     scene.add(ambientLight);
 
     const topSpot = new THREE.DirectionalLight(0xffffff, 1.5);
@@ -68,6 +70,11 @@ export default function InteractiveLanyard() {
     const backFill = new THREE.DirectionalLight(0xffffff, 0.9);
     backFill.position.set(-1.5, 2, -4);
     scene.add(backFill);
+
+    // Atmosphere backlight behind the badge for rim illumination
+    const backRimLight = new THREE.PointLight(0xffaa00, 3.2, 7);
+    backRimLight.position.set(0, -0.3, -1.2);
+    scene.add(backRimLight);
 
     const redGlow = new THREE.PointLight(0xff3b1d, 3.2, 9);
     redGlow.position.set(-2, 1, 3);
@@ -133,7 +140,6 @@ export default function InteractiveLanyard() {
     // 5. 3D ID Card with Protective Holder Frame (Casing)
     const cardGroup = new THREE.Group();
 
-    // Dimensions:
     // Inner graphic card: width 2.1, height 2.8 (3:4 ratio)
     const cardW = 2.1;
     const cardH = 2.8;
@@ -144,7 +150,7 @@ export default function InteractiveLanyard() {
     const holderD = 0.05;
 
     const frameMat = new THREE.MeshStandardMaterial({
-      color: 0x121218,
+      color: 0x14141c,
       roughness: 0.35,
       metalness: 0.2,
     });
@@ -171,7 +177,7 @@ export default function InteractiveLanyard() {
 
     // Slot hole border rim
     const slotRimGeo = new THREE.RingGeometry(0.18, 0.26, 16);
-    const slotRimMat = new THREE.MeshStandardMaterial({ color: 0x22222c, metalness: 0.8, roughness: 0.3 });
+    const slotRimMat = new THREE.MeshStandardMaterial({ color: 0x242430, metalness: 0.8, roughness: 0.3 });
     const slotRimFront = new THREE.Mesh(slotRimGeo, slotRimMat);
     slotRimFront.position.set(0, holderH / 2 + tabH / 2 - 0.02, holderD / 2 + 0.002);
     cardGroup.add(slotRimFront);
@@ -228,19 +234,16 @@ export default function InteractiveLanyard() {
 
     const clipBaseY = holderH / 2 + tabH / 2 - 0.02;
 
-    // Hook loop going through the hole
     const hookRingGeo = new THREE.TorusGeometry(0.13, 0.028, 8, 24);
     const hookRingMesh = new THREE.Mesh(hookRingGeo, metalMat);
     hookRingMesh.position.set(0, clipBaseY, 0);
     clipGroup.add(hookRingMesh);
 
-    // Swivel clasp stem
     const claspStemGeo = new THREE.CylinderGeometry(0.042, 0.042, 0.28, 12);
     const claspStemMesh = new THREE.Mesh(claspStemGeo, metalMat);
     claspStemMesh.position.set(0, clipBaseY + 0.22, 0);
     clipGroup.add(claspStemMesh);
 
-    // Top loop attached to lanyard
     const topLoopGeo = new THREE.TorusGeometry(0.1, 0.028, 8, 24);
     const topLoopMesh = new THREE.Mesh(topLoopGeo, metalMat);
     topLoopMesh.position.set(0, clipBaseY + 0.42, 0);
@@ -248,9 +251,10 @@ export default function InteractiveLanyard() {
 
     cardGroup.add(clipGroup);
 
-    // G. Flexible Lanyard Strap Mesh (Ribbon Curve)
+    // G. Flexible Lanyard Strap Mesh
     const strapSegments = 16;
-    const topAnchor = new THREE.Vector3(0, 2.6, 0);
+    // Higher top anchor (y = 2.8) for longer, sleeker hanging strap
+    const topAnchor = new THREE.Vector3(0, 2.75, 0);
 
     const strapCurvePoints = [];
     for (let i = 0; i <= strapSegments; i++) {
@@ -277,7 +281,7 @@ export default function InteractiveLanyard() {
 
     // 6. Physics Simulation State
     const p = physicsRef.current;
-    p.pos.set(0, -0.4, 0);
+    p.pos.set(0, -0.42, 0);
     p.vel.set(0, 0, 0);
 
     const getCardAttachPoint = () => {
@@ -404,10 +408,9 @@ export default function InteractiveLanyard() {
       const dt = Math.min(0.033, (now - lastTime) / 1000);
       lastTime = now;
 
-      const restPos = new THREE.Vector3(0, -0.4, 0);
+      const restPos = new THREE.Vector3(0, -0.42, 0);
 
       if (!p.isDragging) {
-        // Damped harmonic pendulum spring physics
         const springK = 36.0;
         const damping = 0.945;
         const gravity = -9.8;
@@ -419,7 +422,6 @@ export default function InteractiveLanyard() {
         p.vel.multiplyScalar(Math.pow(damping, dt * 60));
         p.pos.addScaledVector(p.vel, dt);
 
-        // Idle micro-breeze sway
         if (p.vel.length() < 0.2) {
           const time = now * 0.0015;
           p.pos.x += Math.sin(time * 2.0) * 0.001;
@@ -427,7 +429,6 @@ export default function InteractiveLanyard() {
         }
       }
 
-      // Dynamic tilt based on displacement & speed
       const tiltZ = -p.pos.x * 0.35 - p.vel.x * 0.04;
       const tiltX = (p.pos.y - restPos.y) * 0.25 - p.vel.y * 0.03;
 
@@ -506,12 +507,12 @@ export default function InteractiveLanyard() {
         userSelect: 'none',
       }}
     >
-      {/* 3D Viewport — Completely borderless & seamless (NO box frame, NO bottom buttons) */}
+      {/* 3D Viewport — Completely borderless & seamless */}
       <div
         style={{
           position: 'relative',
           width: '100%',
-          height: '530px',
+          height: '520px',
           background: 'transparent',
           border: 'none',
           boxShadow: 'none',
@@ -519,15 +520,32 @@ export default function InteractiveLanyard() {
           cursor: isDragging ? 'grabbing' : 'grab',
         }}
       >
+        {/* Soft atmospheric background light directly behind the lanyard */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '46%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '270px',
+            height: '270px',
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(255, 59, 29, 0.16) 0%, rgba(255, 170, 0, 0.09) 45%, transparent 70%)',
+            filter: 'blur(32px)',
+            pointerEvents: 'none',
+            zIndex: 0,
+          }}
+        />
+
         {/* Top subtle horizontal spotlight line where lanyard hangs from */}
         <div
           style={{
             position: 'absolute',
-            top: '6px',
-            left: '12%',
-            right: '12%',
+            top: '8px',
+            left: '10%',
+            right: '10%',
             height: '2px',
-            background: 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.45) 50%, transparent 100%)',
+            background: 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%)',
             boxShadow: '0 0 14px rgba(255, 255, 255, 0.35)',
             zIndex: 10,
             pointerEvents: 'none',
@@ -538,9 +556,11 @@ export default function InteractiveLanyard() {
         <div
           ref={mountRef}
           style={{
+            position: 'relative',
             width: '100%',
             height: '100%',
             touchAction: 'none',
+            zIndex: 1,
           }}
         />
       </div>
