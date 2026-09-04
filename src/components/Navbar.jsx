@@ -45,7 +45,7 @@ const DockButton = ({ to, icon: Icon, label, isActive, onClick, onHover }) => {
           height: '38px',
           borderRadius: '50%',
           border: isActive ? '1px solid var(--accent)' : '1px solid var(--border)',
-          background: isActive ? 'var(--accent-dim)' : 'rgba(255, 255, 255, 0.03)',
+          background: isActive ? 'var(--accent-dim)' : 'var(--surface-2)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -173,11 +173,11 @@ export default function Navbar() {
             gap: '6px',
             padding: '4px 6px',
             borderRadius: '999px',
-            background: 'rgba(255, 255, 255, 0.04)',
+            background: 'var(--glass-bg)',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
+            border: '1px solid var(--border)',
+            boxShadow: '0 8px 32px var(--shadow-color)',
             position: 'relative',
           }}
         >
@@ -192,9 +192,9 @@ export default function Navbar() {
               fontSize: '13px',
               fontWeight: 600,
               textDecoration: 'none',
-              color: isHome ? '#ffffff' : 'var(--text-muted)',
-              background: isHome ? '#1f1f26' : 'transparent',
-              boxShadow: isHome ? '0 2px 10px rgba(0, 0, 0, 0.4)' : 'none',
+              color: isHome ? 'var(--text)' : 'var(--text-muted)',
+              background: isHome ? 'var(--surface-2)' : 'transparent',
+              boxShadow: isHome ? '0 2px 10px var(--shadow-color)' : 'none',
               transition: 'all 0.2s ease',
               display: 'inline-block',
             }}
@@ -217,8 +217,8 @@ export default function Navbar() {
                 fontWeight: 600,
                 border: 'none',
                 cursor: 'pointer',
-                color: isAboutActive ? '#ffffff' : 'var(--text-muted)',
-                background: isAboutActive && !isHome ? '#1f1f26' : 'transparent',
+                color: isAboutActive ? 'var(--text)' : 'var(--text-muted)',
+                background: isAboutActive && !isHome ? 'var(--surface-2)' : 'transparent',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '5px',
@@ -308,9 +308,9 @@ export default function Navbar() {
               fontSize: '13px',
               fontWeight: 600,
               textDecoration: 'none',
-              color: isContact ? '#ffffff' : 'var(--text-muted)',
-              background: isContact ? '#1f1f26' : 'transparent',
-              boxShadow: isContact ? '0 2px 10px rgba(0, 0, 0, 0.4)' : 'none',
+              color: isContact ? 'var(--text)' : 'var(--text-muted)',
+              background: isContact ? 'var(--surface-2)' : 'transparent',
+              boxShadow: isContact ? '0 2px 10px var(--shadow-color)' : 'none',
               transition: 'all 0.2s ease',
               display: 'inline-block',
             }}
@@ -474,7 +474,7 @@ export default function Navbar() {
             padding: 0 16px !important;
             align-items: center !important;
             justify-content: space-between !important;
-            background: rgba(7, 7, 9, 0.88) !important;
+            background: var(--glass-bg) !important;
             backdrop-filter: blur(16px) !important;
             -webkit-backdrop-filter: blur(16px) !important;
             border-bottom: 1px solid var(--border) !important;
@@ -491,12 +491,12 @@ export default function Navbar() {
             justify-content: center !important;
             gap: 5px !important;
             padding: 5px 10px !important;
-            background: rgba(14, 14, 20, 0.92) !important;
+            background: var(--glass-bg) !important;
             backdrop-filter: blur(24px) !important;
             -webkit-backdrop-filter: blur(24px) !important;
-            border: 1px solid rgba(255, 255, 255, 0.14) !important;
+            border: 1px solid var(--border) !important;
             border-radius: 9999px !important;
-            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7), 0 0 1px rgba(255, 255, 255, 0.25) !important;
+            box-shadow: 0 12px 36px var(--shadow-color) !important;
             max-width: calc(100vw - 24px) !important;
             overflow-x: auto !important;
             scrollbar-width: none !important;

@@ -263,14 +263,14 @@ export default function SkillsTechStack() {
               gap: '10px',
               padding: '10px 20px',
               borderRadius: '999px',
-              background: 'rgba(14, 14, 20, 0.75)',
-              border: '1px solid rgba(255, 255, 255, 0.09)',
+              background: 'var(--surface)',
+              border: '1px solid var(--border)',
               backdropFilter: 'blur(12px)',
               cursor: 'pointer',
               userSelect: 'none',
               flexShrink: 0,
               transition: 'transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease',
-              boxShadow: '0 4px 16px rgba(0, 0, 0, 0.25)',
+              boxShadow: '0 4px 16px var(--shadow-color)',
             }}
           >
             <div
@@ -450,9 +450,9 @@ export default function SkillsTechStack() {
         /* Pill Hover Glow */
         .skill-pill-card:hover {
           transform: translateY(-3px) scale(1.05) !important;
-          border-color: rgba(255, 59, 29, 0.45) !important;
-          box-shadow: 0 8px 24px rgba(255, 59, 29, 0.22) !important;
-          background: rgba(22, 22, 32, 0.95) !important;
+          border-color: var(--accent-border) !important;
+          box-shadow: 0 8px 24px var(--accent-glow) !important;
+          background: var(--surface-2) !important;
         }
 
         /* Edge Fade Masks */

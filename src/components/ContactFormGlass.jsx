@@ -105,7 +105,7 @@ export default function ContactFormGlass() {
           width: '300px',
           height: '300px',
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(255, 59, 29, 0.22) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, var(--accent-dim) 0%, transparent 70%)',
           filter: 'blur(50px)',
           pointerEvents: 'none',
           zIndex: 0,
@@ -119,7 +119,7 @@ export default function ContactFormGlass() {
           width: '320px',
           height: '320px',
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(255, 170, 0, 0.18) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, var(--accent-2-dim) 0%, transparent 70%)',
           filter: 'blur(54px)',
           pointerEvents: 'none',
           zIndex: 0,
@@ -133,11 +133,11 @@ export default function ContactFormGlass() {
           position: 'relative',
           zIndex: 1,
           borderRadius: '26px',
-          background: 'rgba(15, 15, 21, 0.72)',
+          background: 'var(--glass-bg)',
           backdropFilter: 'blur(28px)',
           WebkitBackdropFilter: 'blur(28px)',
-          border: '1px solid rgba(255, 255, 255, 0.11)',
-          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.12)',
+          border: '1px solid var(--glass-border)',
+          boxShadow: '0 20px 60px var(--shadow-color)',
           overflow: 'hidden',
           padding: 'clamp(22px, 3.5vw, 42px)',
         }}
@@ -146,7 +146,7 @@ export default function ContactFormGlass() {
         <div
           className="glass-card-header"
           style={{
-            borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+            borderBottom: '1px solid var(--border)',
             paddingBottom: '16px',
             marginBottom: '24px',
           }}
@@ -172,7 +172,7 @@ export default function ContactFormGlass() {
             style={{
               fontSize: 'clamp(1.4rem, 3vw, 2.1rem)',
               fontWeight: 800,
-              color: '#ffffff',
+              color: 'var(--text)',
               letterSpacing: '-0.02em',
               margin: 0,
               lineHeight: 1.2,
@@ -200,8 +200,8 @@ export default function ContactFormGlass() {
               gap: '9px',
               padding: '9px 13px',
               borderRadius: '12px',
-              background: 'rgba(255, 255, 255, 0.025)',
-              border: '1px solid rgba(255, 255, 255, 0.06)',
+              background: 'var(--surface-2)',
+              border: '1px solid var(--border)',
               fontSize: '12px',
               color: 'var(--text-muted)',
             }}
@@ -218,8 +218,8 @@ export default function ContactFormGlass() {
               gap: '9px',
               padding: '9px 13px',
               borderRadius: '12px',
-              background: 'rgba(255, 255, 255, 0.025)',
-              border: '1px solid rgba(255, 255, 255, 0.06)',
+              background: 'var(--surface-2)',
+              border: '1px solid var(--border)',
               fontSize: '12px',
               color: 'var(--text-muted)',
             }}
@@ -236,8 +236,8 @@ export default function ContactFormGlass() {
               gap: '9px',
               padding: '9px 13px',
               borderRadius: '12px',
-              background: 'rgba(255, 255, 255, 0.025)',
-              border: '1px solid rgba(255, 255, 255, 0.06)',
+              background: 'var(--surface-2)',
+              border: '1px solid var(--border)',
               fontSize: '12px',
               color: 'var(--text-muted)',
             }}
@@ -289,14 +289,14 @@ export default function ContactFormGlass() {
                     fontWeight: 600,
                     border: isSelected
                       ? '1px solid var(--accent)'
-                      : '1px solid rgba(255, 255, 255, 0.1)',
+                      : '1px solid var(--border)',
                     background: isSelected
-                      ? 'rgba(255, 59, 29, 0.16)'
-                      : 'rgba(255, 255, 255, 0.03)',
-                    color: isSelected ? '#ffffff' : 'var(--text-muted)',
+                      ? 'var(--accent-dim)'
+                      : 'var(--surface-2)',
+                    color: isSelected ? 'var(--accent)' : 'var(--text-muted)',
                     cursor: 'pointer',
                     transition: 'all 0.2s ease',
-                    boxShadow: isSelected ? '0 0 16px rgba(255, 59, 29, 0.25)' : 'none',
+                    boxShadow: isSelected ? '0 0 16px var(--accent-glow)' : 'none',
                   }}
                 >
                   {t.label}
@@ -356,9 +356,9 @@ export default function ContactFormGlass() {
                     width: '100%',
                     padding: '12px 14px 12px 40px',
                     borderRadius: '13px',
-                    background: 'rgba(255, 255, 255, 0.03)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    color: '#ffffff',
+                    background: 'var(--surface-2)',
+                    border: '1px solid var(--border)',
+                    color: 'var(--text)',
                     fontSize: '13.5px',
                     outline: 'none',
                     transition: 'all 0.25s ease',
@@ -407,9 +407,9 @@ export default function ContactFormGlass() {
                     width: '100%',
                     padding: '12px 14px 12px 40px',
                     borderRadius: '13px',
-                    background: 'rgba(255, 255, 255, 0.03)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    color: '#ffffff',
+                    background: 'var(--surface-2)',
+                    border: '1px solid var(--border)',
+                    color: 'var(--text)',
                     fontSize: '13.5px',
                     outline: 'none',
                     transition: 'all 0.25s ease',
@@ -448,9 +448,9 @@ export default function ContactFormGlass() {
                 width: '100%',
                 padding: '12px 14px',
                 borderRadius: '13px',
-                background: 'rgba(255, 255, 255, 0.03)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                color: '#ffffff',
+                background: 'var(--surface-2)',
+                border: '1px solid var(--border)',
+                color: 'var(--text)',
                 fontSize: '13.5px',
                 outline: 'none',
                 transition: 'all 0.25s ease',
@@ -504,9 +504,9 @@ export default function ContactFormGlass() {
                 width: '100%',
                 padding: '14px 15px',
                 borderRadius: '14px',
-                background: 'rgba(255, 255, 255, 0.03)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                color: '#ffffff',
+                background: 'var(--surface-2)',
+                border: '1px solid var(--border)',
+                color: 'var(--text)',
                 fontSize: '13.5px',
                 lineHeight: 1.6,
                 outline: 'none',
@@ -582,15 +582,15 @@ export default function ContactFormGlass() {
               gap: '9px',
               padding: '14px 28px',
               borderRadius: '14px',
-              background: 'linear-gradient(135deg, #FF3B1D 0%, #FFAA00 100%)',
-              color: '#070709',
+              background: 'linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%)',
+              color: '#ffffff',
               fontSize: '13px',
               fontWeight: 800,
               textTransform: 'uppercase',
               letterSpacing: '1px',
               border: 'none',
               cursor: status === 'sending' ? 'not-allowed' : 'pointer',
-              boxShadow: '0 8px 24px rgba(255, 59, 29, 0.3)',
+              boxShadow: '0 8px 24px var(--accent-glow)',
               marginTop: '4px',
               overflow: 'hidden',
               transition: 'box-shadow 0.25s ease',
@@ -617,12 +617,12 @@ export default function ContactFormGlass() {
         .glass-input-no-icon:focus,
         .glass-textarea:focus {
           border-color: var(--accent) !important;
-          background: rgba(255, 255, 255, 0.05) !important;
-          box-shadow: 0 0 18px rgba(255, 59, 29, 0.22) !important;
+          background: var(--surface) !important;
+          box-shadow: 0 0 18px var(--accent-glow) !important;
         }
 
         .submit-glass-btn:hover {
-          box-shadow: 0 12px 36px rgba(255, 59, 29, 0.45) !important;
+          box-shadow: 0 12px 36px var(--accent-glow) !important;
         }
 
         .spin-animation {

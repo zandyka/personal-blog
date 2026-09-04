@@ -28,8 +28,8 @@ export default function ContactPage() {
               gap: '8px',
               padding: '6px 16px',
               borderRadius: '999px',
-              background: 'rgba(255, 59, 29, 0.1)',
-              border: '1px solid rgba(255, 59, 29, 0.28)',
+              background: 'var(--accent-dim)',
+              border: '1px solid var(--accent-border)',
               color: 'var(--accent)',
               fontSize: '11.5px',
               fontWeight: 700,
@@ -57,13 +57,13 @@ export default function ContactPage() {
               letterSpacing: '-0.035em',
               lineHeight: 1.1,
               marginBottom: '14px',
-              color: '#ffffff',
+              color: 'var(--text)',
             }}
           >
             Let's Start a{' '}
             <span
               style={{
-                background: 'linear-gradient(135deg, #FF3B1D 0%, #FFAA00 100%)',
+                background: 'linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
               }}

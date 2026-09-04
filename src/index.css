@@ -34,35 +34,35 @@
 }
 
 /* ============================================
-   LIGHT MODE — Bold Editorial
+   LIGHT MODE — Milky White & Royal Sapphire (No Red/Orange/Yellow)
    ============================================ */
 html.light {
-  --bg: #fbfbfe;
-  --surface: #ffffff;
-  --surface-2: #f2f2f7;
-  --surface-3: #e6e6ee;
-  --border: #dedee8;
-  --border-light: #cdceda;
-  --text: #0e0e14;
-  --text-muted: #56566e;
-  --text-dim: #86869e;
-  --accent: #E02800;
-  --accent-hover: #C42200;
-  --accent-dim: rgba(224, 40, 0, 0.08);
-  --accent-border: rgba(224, 40, 0, 0.22);
-  --accent-glow: rgba(224, 40, 0, 0.16);
-  --accent-2: #D97706;
-  --accent-2-hover: #B45309;
-  --accent-2-dim: rgba(217, 119, 6, 0.08);
-  --accent-2-border: rgba(217, 119, 6, 0.22);
-  --glow: rgba(224, 40, 0, 0.15);
+  --bg: #FAF8F5; /* Putih Susu / Soft Milky White */
+  --surface: #FFFFFF; /* Pure White Elevated Cards */
+  --surface-2: #F2ECE4; /* Soft Warm Milky Tint */
+  --surface-3: #E6DFD4; /* Tertiary Milky Tint */
+  --border: #E5DDD3; /* Delicate Milky Border */
+  --border-light: #D6CCC0;
+  --text: #19181A; /* Crisp Obsidian Charcoal */
+  --text-muted: #5E5A66; /* Elegant Slate Text */
+  --text-dim: #8E8A96; /* Subtle Metadata */
+  --accent: #2563EB; /* Vibrant Royal Sapphire Blue */
+  --accent-hover: #1D4ED8;
+  --accent-dim: rgba(37, 99, 235, 0.08);
+  --accent-border: rgba(37, 99, 235, 0.24);
+  --accent-glow: rgba(37, 99, 235, 0.18);
+  --accent-2: #7C3AED; /* Deep Royal Violet / Iris */
+  --accent-2-hover: #6D28D9;
+  --accent-2-dim: rgba(124, 58, 237, 0.08);
+  --accent-2-border: rgba(124, 58, 237, 0.24);
+  --glow: rgba(37, 99, 235, 0.15);
   --success: #059669;
   --success-dim: rgba(5, 150, 105, 0.1);
   --danger: #dc2626;
-  --warning: #d97706;
-  --shadow-color: rgba(0, 0, 0, 0.08);
+  --warning: #2563EB;
+  --shadow-color: rgba(28, 25, 23, 0.07);
   --glass-bg: rgba(255, 255, 255, 0.88);
-  --glass-border: rgba(0, 0, 0, 0.08);
+  --glass-border: rgba(229, 221, 211, 0.85);
   color-scheme: light;
 }
 

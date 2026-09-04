@@ -100,7 +100,7 @@ const Footer = () => {
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: '8px',
                 padding: '12px 28px', borderRadius: '999px',
-                background: 'var(--accent)', color: 'var(--bg)',
+                background: 'var(--accent)', color: '#ffffff',
                 fontSize: '13px', fontWeight: 700, border: 'none',
                 letterSpacing: '0.05em', textTransform: 'uppercase',
                 cursor: 'pointer',

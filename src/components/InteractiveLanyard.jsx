@@ -60,6 +60,10 @@ export default function InteractiveLanyard() {
     mount.appendChild(renderer.domElement);
 
     // 2. Lights (Key, Fill, Rim & Back Atmosphere)
+    const compStyle = getComputedStyle(document.documentElement);
+    const themeAccent = compStyle.getPropertyValue('--accent').trim() || '#FF3B1D';
+    const themeAccent2 = compStyle.getPropertyValue('--accent-2').trim() || '#FFAA00';
+
     const ambientLight = new THREE.AmbientLight(0xffffff, 1.35);
     scene.add(ambientLight);
 
@@ -71,20 +75,20 @@ export default function InteractiveLanyard() {
     backFill.position.set(-1.5, 2, -4);
     scene.add(backFill);
 
-    // Atmosphere backlight behind the badge for bright, vivid rim illumination
-    const backRimLight = new THREE.PointLight(0xffaa00, 5.5, 9);
+    // Atmosphere backlight behind the badge with dynamic theme colors
+    const backRimLight = new THREE.PointLight(new THREE.Color(themeAccent2), 5.5, 9);
     backRimLight.position.set(0, -0.2, -1.0);
     scene.add(backRimLight);
 
-    const backRedLight = new THREE.PointLight(0xff3b1d, 4.5, 8);
+    const backRedLight = new THREE.PointLight(new THREE.Color(themeAccent), 4.5, 8);
     backRedLight.position.set(0, -0.5, -1.2);
     scene.add(backRedLight);
 
-    const redGlow = new THREE.PointLight(0xff3b1d, 3.2, 9);
+    const redGlow = new THREE.PointLight(new THREE.Color(themeAccent), 3.2, 9);
     redGlow.position.set(-2, 1, 3);
     scene.add(redGlow);
 
-    const amberGlow = new THREE.PointLight(0xffaa00, 2.5, 9);
+    const amberGlow = new THREE.PointLight(new THREE.Color(themeAccent2), 2.5, 9);
     amberGlow.position.set(2, -1, 3);
     scene.add(amberGlow);
 
@@ -97,7 +101,7 @@ export default function InteractiveLanyard() {
     strapCtx.fillStyle = '#111116';
     strapCtx.fillRect(0, 0, 128, 1024);
 
-    strapCtx.strokeStyle = 'rgba(255, 59, 29, 0.65)';
+    strapCtx.strokeStyle = themeAccent;
     strapCtx.lineWidth = 3;
     strapCtx.beginPath();
     strapCtx.moveTo(8, 0);
@@ -117,7 +121,7 @@ export default function InteractiveLanyard() {
       strapCtx.fillText('ZNDYK', 0, 8);
       strapCtx.restore();
 
-      strapCtx.fillStyle = '#FFAA00';
+      strapCtx.fillStyle = themeAccent2;
       strapCtx.beginPath();
       strapCtx.arc(64, y + 60, 4, 0, Math.PI * 2);
       strapCtx.fill();
@@ -535,7 +539,7 @@ export default function InteractiveLanyard() {
             width: '340px',
             height: '340px',
             borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(255, 59, 29, 0.35) 0%, rgba(255, 170, 0, 0.22) 45%, transparent 72%)',
+            background: 'radial-gradient(circle, var(--accent-glow) 0%, var(--accent-2-dim) 45%, transparent 72%)',
             filter: 'blur(42px)',
             pointerEvents: 'none',
             zIndex: 0,
@@ -551,7 +555,7 @@ export default function InteractiveLanyard() {
             width: '210px',
             height: '210px',
             borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(255, 200, 70, 0.65) 0%, rgba(255, 75, 35, 0.42) 52%, transparent 78%)',
+            background: 'radial-gradient(circle, var(--accent-border) 0%, var(--accent-dim) 52%, transparent 78%)',
             filter: 'blur(22px)',
             pointerEvents: 'none',
             zIndex: 0,

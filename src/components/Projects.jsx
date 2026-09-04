@@ -383,7 +383,7 @@ const Projects = () => {
                     position: 'relative',
                     width: '100%',
                     aspectRatio: '16 / 7',
-                    background: '#0a0a0f',
+                    background: 'var(--surface-2)',
                     borderBottom: '1px solid var(--border)',
                     overflow: 'hidden',
                     cursor: 'pointer',
@@ -670,7 +670,7 @@ const Projects = () => {
                     position: 'relative',
                     width: '100%',
                     aspectRatio: '4 / 3',
-                    background: '#0a0a0f',
+                    background: 'var(--surface-2)',
                     overflow: 'hidden',
                   }}
                 >
@@ -960,7 +960,7 @@ const Projects = () => {
                     position: 'relative',
                     width: '100%',
                     aspectRatio: '4 / 3',
-                    background: '#0a0a0f',
+                    background: 'var(--surface-2)',
                     overflow: 'hidden',
                   }}
                 >

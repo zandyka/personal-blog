@@ -124,11 +124,11 @@ const Hero = () => {
               gap: '10px',
               padding: '7px 18px',
               borderRadius: '999px',
-              background: 'rgba(255, 255, 255, 0.03)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
+              background: 'var(--surface-2)',
+              border: '1px solid var(--border)',
               backdropFilter: 'blur(16px)',
               WebkitBackdropFilter: 'blur(16px)',
-              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.35)',
+              boxShadow: '0 4px 20px var(--shadow-color)',
               width: 'fit-content',
               marginBottom: 'clamp(10px, 1.8vh, 16px)',
             }}
@@ -179,8 +179,7 @@ const Hero = () => {
                   fontSize: 'clamp(13px, 1.15vw, 15px)',
                   fontWeight: 700,
                   letterSpacing: '0.04em',
-                  color: '#ffffff',
-                  textShadow: '0 0 16px rgba(255, 255, 255, 0.2)',
+                  color: 'var(--text)',
                   lineHeight: 1,
                 }}
               >

@@ -85,10 +85,10 @@ const ROW_1_CHANNELS = [
     subtitle: 'Code Repositories',
     href: 'https://github.com/zandyka',
     icon: Github,
-    iconBg: 'rgba(255, 255, 255, 0.08)',
-    iconColor: '#ffffff',
+    iconBg: 'var(--surface-2)',
+    iconColor: 'var(--text)',
     Watermark: Watermarks.GitHub,
-    color: '#FF3B1D',
+    color: 'var(--accent)',
   },
 ];
 
@@ -101,10 +101,10 @@ const ROW_2_CHANNELS = [
     subtitle: 'Official Inquiries',
     href: 'mailto:zackyandyka1@gmail.com',
     icon: Mail,
-    iconBg: 'rgba(255, 255, 255, 0.08)',
-    iconColor: '#FFAA00',
+    iconBg: 'rgba(37, 99, 235, 0.12)',
+    iconColor: '#2563EB',
     Watermark: Watermarks.Mail,
-    color: '#FFAA00',
+    color: '#2563EB',
   },
   {
     id: 'spotify',
@@ -154,11 +154,11 @@ const SocialCard = ({ item }) => {
         minWidth: '300px',
         height: '144px',
         borderRadius: '22px',
-        background: 'rgba(14, 14, 20, 0.72)',
+        background: 'var(--glass-bg)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
-        border: '1px solid rgba(255, 255, 255, 0.09)',
-        boxShadow: '0 8px 28px rgba(0, 0, 0, 0.35)',
+        border: '1px solid var(--border)',
+        boxShadow: '0 8px 28px var(--shadow-color)',
         padding: '16px 20px',
         textDecoration: 'none',
         overflow: 'hidden',
@@ -177,7 +177,7 @@ const SocialCard = ({ item }) => {
           width: '135px',
           height: '135px',
           opacity: 0.075,
-          color: '#ffffff',
+          color: 'var(--text)',
           pointerEvents: 'none',
           zIndex: 0,
           transition: 'opacity 0.3s ease, transform 0.3s ease',
@@ -220,7 +220,7 @@ const SocialCard = ({ item }) => {
             style={{
               fontSize: '1.12rem',
               fontWeight: 700,
-              color: '#ffffff',
+              color: 'var(--text)',
               letterSpacing: '-0.01em',
               lineHeight: 1.25,
             }}
@@ -251,7 +251,7 @@ const SocialCard = ({ item }) => {
           zIndex: 1,
           width: '100%',
           height: '1px',
-          background: 'rgba(255, 255, 255, 0.08)',
+          background: 'var(--border)',
           margin: '10px 0 6px',
         }}
       />
@@ -273,7 +273,7 @@ const SocialCard = ({ item }) => {
             fontWeight: 700,
             letterSpacing: '2px',
             textTransform: 'uppercase',
-            color: 'rgba(255, 255, 255, 0.5)',
+            color: 'var(--text-muted)',
             transition: 'color 0.2s ease',
           }}
           className="connect-label"
@@ -282,7 +282,7 @@ const SocialCard = ({ item }) => {
         </span>
         <div
           style={{
-            color: 'rgba(255, 255, 255, 0.45)',
+            color: 'var(--text-muted)',
             transition: 'transform 0.25s ease, color 0.2s ease',
           }}
           className="connect-icon"
@@ -406,9 +406,9 @@ export default function SocialMarquee() {
         /* Card Interactive Hover */
         .social-channel-card:hover {
           transform: translateY(-4px) scale(1.02);
-          border-color: rgba(255, 59, 29, 0.45) !important;
-          background: rgba(22, 22, 32, 0.88) !important;
-          box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 24px rgba(255, 59, 29, 0.16) !important;
+          border-color: var(--accent-border) !important;
+          background: var(--surface-2) !important;
+          box-shadow: 0 16px 40px var(--shadow-color), 0 0 24px var(--accent-glow) !important;
         }
 
         .social-channel-card:hover .watermark-wrapper {
