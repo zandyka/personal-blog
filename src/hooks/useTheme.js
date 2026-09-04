@@ -20,7 +20,7 @@ export function useTheme() {
     }
   }, [])
 
-  const toggleTheme = useCallback((event, transitionMode = 'circular') => {
+  const toggleTheme = useCallback((event, transitionMode = 'crossfade') => {
     const nextTheme = currentTheme === 'dark' ? 'light' : 'dark'
     currentTheme = nextTheme
     localStorage.setItem('theme', nextTheme)
@@ -49,8 +49,29 @@ export function useTheme() {
       return
     }
 
+    // Option 2: Ultra-Smooth Crossfade & Ambient Dissolve (Active)
+    if (transitionMode === 'crossfade') {
+      document.documentElement.setAttribute('data-theme-transition', 'crossfade')
+      document.documentElement.classList.add('no-transitions')
+
+      try {
+        const transition = document.startViewTransition(() => {
+          document.documentElement.classList.toggle('light', nextTheme === 'light')
+        })
+
+        transition.finished.finally(() => {
+          document.documentElement.classList.remove('no-transitions')
+        })
+      } catch (err) {
+        document.documentElement.classList.toggle('light', nextTheme === 'light')
+        document.documentElement.classList.remove('no-transitions')
+      }
+      return
+    }
+
     // Option 1: Circular Expanding Ripple
     if (transitionMode === 'circular') {
+      document.documentElement.setAttribute('data-theme-transition', 'circular')
       const endRadius = Math.hypot(
         Math.max(x, window.innerWidth - x),
         Math.max(y, window.innerHeight - y)
@@ -74,7 +95,7 @@ export function useTheme() {
             },
             {
               duration: 650,
-              easing: 'cubic-bezier(0.2, 0, 0, 1)',
+              easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
               pseudoElement: '::view-transition-new(root)',
             }
           )
