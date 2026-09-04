@@ -42,9 +42,9 @@ const CountUp = ({ end, duration = 1.5, decimals = 0, suffix = '', inView }) => 
 
 const STATS = [
   {
-    label: 'IPK Terbaik',
-    sub: 'Semester 4, 5 & 6 (USU)',
-    value: '4.00',
+    label: 'IPK Kuliah',
+    sub: 'Teknik Informatika (USU)',
+    value: '3.84',
     decimals: 2,
     suffix: '',
     icon: GraduationCap,

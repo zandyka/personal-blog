@@ -442,9 +442,9 @@ export default function SkillsTechStack() {
           animation: scrollRight linear infinite;
         }
 
-        /* Hover Pause */
-        .skills-cloud-wrapper:hover .skills-marquee-row {
-          animation-play-state: paused;
+        /* Marquee Continuous Non-Stop Flow (No pause on hover/click) */
+        .skills-marquee-row {
+          animation-play-state: running !important;
         }
 
         /* Pill Hover Glow */
