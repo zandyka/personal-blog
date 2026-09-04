@@ -1,12 +1,9 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import {
   Linkedin,
   Instagram,
   Github,
   Mail,
-  MessageCircle,
-  Send as TelegramIcon,
   Music,
   Gamepad2,
   ArrowUpRight,
@@ -34,21 +31,10 @@ const Watermarks = {
       <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2Z" />
     </svg>
   ),
-  WhatsApp: () => (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="social-watermark" style={{ width: '100%', height: '100%' }}>
-      <path d="M17.472 14.382c-.301-.15-1.78-.878-2.056-.979-.275-.1-.475-.15-.676.15-.2.3-.776.979-.952 1.18-.175.2-.351.226-.652.075s-1.271-.469-2.42-1.493c-.894-.797-1.498-1.782-1.674-2.083-.175-.3-.019-.463.132-.613.135-.135.301-.351.451-.527.151-.175.201-.301.301-.501.1-.2.05-.376-.025-.526-.075-.15-.677-1.632-.927-2.234-.244-.587-.492-.507-.676-.516l-.577-.01c-.2 0-.526.075-.802.376s-1.053 1.029-1.053 2.508 1.078 2.909 1.228 3.109c.15.2 2.122 3.24 5.141 4.544 3.02 1.304 3.02.869 3.572.819.552-.05 1.78-.727 2.031-1.429.251-.702.251-1.304.175-1.43-.075-.125-.276-.201-.577-.351z" />
-      <path d="M12 21.5a9.5 9.5 0 1 0-9.5-9.5c0 1.66.425 3.22 1.171 4.58L2.5 21.5l5.06-1.127A9.467 9.467 0 0 0 12 21.5z" />
-    </svg>
-  ),
   Mail: () => (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="social-watermark" style={{ width: '100%', height: '100%' }}>
       <rect x="2" y="4" width="20" height="16" rx="3" />
       <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-    </svg>
-  ),
-  Telegram: () => (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="social-watermark" style={{ width: '100%', height: '100%' }}>
-      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z" />
     </svg>
   ),
   Spotify: () => (
@@ -66,6 +52,7 @@ const Watermarks = {
   ),
 };
 
+// ROW 1: LinkedIn, Instagram, GitHub
 const ROW_1_CHANNELS = [
   {
     id: 'linkedin',
@@ -103,20 +90,9 @@ const ROW_1_CHANNELS = [
     Watermark: Watermarks.GitHub,
     color: '#FF3B1D',
   },
-  {
-    id: 'whatsapp',
-    name: 'WhatsApp',
-    handle: '+62 822-7415-4948',
-    subtitle: 'Quick Discussion',
-    href: 'https://wa.me/6282274154948?text=Halo%20Zacky,%20saya%20tertarik%20untuk%20berdiskusi%20dengan%20Anda.',
-    icon: MessageCircle,
-    iconBg: 'rgba(255, 255, 255, 0.08)',
-    iconColor: '#25D366',
-    Watermark: Watermarks.WhatsApp,
-    color: '#25D366',
-  },
 ];
 
+// ROW 2: Email, Spotify, Discord
 const ROW_2_CHANNELS = [
   {
     id: 'email',
@@ -131,22 +107,10 @@ const ROW_2_CHANNELS = [
     color: '#FFAA00',
   },
   {
-    id: 'telegram',
-    name: 'Telegram',
-    handle: '@zndykk',
-    subtitle: 'Direct Message',
-    href: 'https://t.me/zndykk',
-    icon: TelegramIcon,
-    iconBg: 'rgba(255, 255, 255, 0.08)',
-    iconColor: '#229ED9',
-    Watermark: Watermarks.Telegram,
-    color: '#229ED9',
-  },
-  {
     id: 'spotify',
     name: 'Spotify',
-    handle: '@zackyandyka',
-    subtitle: 'Coding & Focus Jams',
+    handle: 'zndyka',
+    subtitle: 'Focus & Coding Playlist',
     href: 'https://open.spotify.com/',
     icon: Music,
     iconBg: 'rgba(255, 255, 255, 0.08)',
@@ -157,7 +121,7 @@ const ROW_2_CHANNELS = [
   {
     id: 'discord',
     name: 'Discord',
-    handle: 'zndykk',
+    handle: 'tenpenci',
     subtitle: 'Dev Community & Voice',
     href: 'https://discord.com/',
     icon: Gamepad2,
@@ -331,8 +295,8 @@ const SocialCard = ({ item }) => {
 };
 
 export default function SocialMarquee() {
-  const row1Repeated = [...ROW_1_CHANNELS, ...ROW_1_CHANNELS, ...ROW_1_CHANNELS];
-  const row2Repeated = [...ROW_2_CHANNELS, ...ROW_2_CHANNELS, ...ROW_2_CHANNELS];
+  const row1Repeated = [...ROW_1_CHANNELS, ...ROW_1_CHANNELS, ...ROW_1_CHANNELS, ...ROW_1_CHANNELS];
+  const row2Repeated = [...ROW_2_CHANNELS, ...ROW_2_CHANNELS, ...ROW_2_CHANNELS, ...ROW_2_CHANNELS];
 
   return (
     <div
@@ -341,7 +305,7 @@ export default function SocialMarquee() {
         width: '100%',
         position: 'relative',
         overflow: 'hidden',
-        padding: '16px 0 32px',
+        padding: '12px 0 28px',
       }}
     >
       {/* Edge gradient fade masks for cinematic softness */}
@@ -413,13 +377,13 @@ export default function SocialMarquee() {
             transform: translateX(0);
           }
           100% {
-            transform: translateX(calc(-100% / 3));
+            transform: translateX(calc(-100% / 4));
           }
         }
 
         @keyframes marqueeScrollRight {
           0% {
-            transform: translateX(calc(-100% / 3));
+            transform: translateX(calc(-100% / 4));
           }
           100% {
             transform: translateX(0);
@@ -427,11 +391,11 @@ export default function SocialMarquee() {
         }
 
         .marquee-scroll-left {
-          animation: marqueeScrollLeft 36s linear infinite;
+          animation: marqueeScrollLeft 32s linear infinite;
         }
 
         .marquee-scroll-right {
-          animation: marqueeScrollRight 40s linear infinite;
+          animation: marqueeScrollRight 36s linear infinite;
         }
 
         /* Hover Pause */
@@ -463,16 +427,17 @@ export default function SocialMarquee() {
 
         @media (max-width: 640px) {
           .social-channel-card {
-            width: 260px !important;
-            min-width: 260px !important;
-            height: 136px !important;
-            padding: 14px 16px !important;
+            width: 250px !important;
+            min-width: 250px !important;
+            height: 132px !important;
+            padding: 13px 15px !important;
+            border-radius: 18px !important;
           }
           .marquee-scroll-left {
-            animation-duration: 25s;
+            animation-duration: 22s;
           }
           .marquee-scroll-right {
-            animation-duration: 28s;
+            animation-duration: 25s;
           }
         }
       `}</style>

@@ -13,9 +13,10 @@ export default function ContactPage() {
       >
         {/* Page Hero Header */}
         <div
+          className="contact-hero-header"
           style={{
             textAlign: 'center',
-            padding: 'clamp(40px, 8vh, 72px) 20px 24px',
+            padding: 'clamp(28px, 6vh, 60px) 20px 16px',
             maxWidth: '800px',
             margin: '0 auto',
           }}
@@ -34,7 +35,7 @@ export default function ContactPage() {
               fontWeight: 700,
               letterSpacing: '2px',
               textTransform: 'uppercase',
-              marginBottom: '16px',
+              marginBottom: '14px',
             }}
           >
             <span
@@ -51,11 +52,11 @@ export default function ContactPage() {
 
           <h1
             style={{
-              fontSize: 'clamp(2.4rem, 6vw, 4.2rem)',
+              fontSize: 'clamp(2.1rem, 5.5vw, 4.2rem)',
               fontWeight: 900,
               letterSpacing: '-0.035em',
               lineHeight: 1.1,
-              marginBottom: '16px',
+              marginBottom: '14px',
               color: '#ffffff',
             }}
           >
@@ -73,11 +74,11 @@ export default function ContactPage() {
 
           <p
             style={{
-              fontSize: 'clamp(0.95rem, 1.3vw, 1.1rem)',
+              fontSize: 'clamp(0.92rem, 1.2vw, 1.05rem)',
               color: 'var(--text-muted)',
-              lineHeight: 1.65,
+              lineHeight: 1.6,
               margin: '0 auto',
-              maxWidth: '620px',
+              maxWidth: '600px',
             }}
           >
             Punya proyek menarik, peluang karir, atau ingin berkolaborasi? Pilih channel favorit Anda di bawah atau kirim transmisi pesan langsung.
@@ -88,10 +89,26 @@ export default function ContactPage() {
         <SocialMarquee />
 
         {/* Section 2: Glassmorphic Direct Transmission Form */}
-        <div style={{ marginTop: '28px' }}>
+        <div style={{ marginTop: '16px' }}>
           <ContactFormGlass />
         </div>
       </motion.div>
+
+      <style>{`
+        @media (max-width: 640px) {
+          .contact-hero-header {
+            padding: 24px 16px 8px !important;
+          }
+          .contact-hero-header h1 {
+            font-size: 1.95rem !important;
+            margin-bottom: 10px !important;
+          }
+          .contact-hero-header p {
+            font-size: 0.88rem !important;
+            line-height: 1.5 !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }
