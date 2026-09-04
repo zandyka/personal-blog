@@ -11,9 +11,12 @@ import {
   Volume2,
   VolumeX,
   ChevronDown,
+  Cat,
+  PawPrint,
 } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
 import ThemeToggle from './ui/ThemeToggle';
+import { usePet } from '../hooks/usePet';
 import { scrollToDirectMessage } from '../utils/scrollHelper';
 
 const ABOUT_DROPDOWN = [
@@ -76,6 +79,7 @@ const DockButton = ({ to, icon: Icon, label, isActive, onClick, onHover }) => {
 
 export default function Navbar() {
   const { playClick, playHover, soundEnabled, toggleSound } = useSoundContext();
+  const { currentPet, isPetVisible, cyclePet, togglePetVisibility } = usePet();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -319,15 +323,70 @@ export default function Navbar() {
           </Link>
         </nav>
 
-        {/* Right: Circular Icon Actions (Fullscreen, Sound/Globe, Theme) */}
+        {/* Right: Circular Icon Actions (Pet Controls & Theme) */}
         <div
           style={{
             pointerEvents: 'auto',
             display: 'flex',
             alignItems: 'center',
-            gap: '10px',
+            gap: '8px',
           }}
         >
+          {/* Pet Visibility Toggle (Cat Head) */}
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => {
+              playClick();
+              togglePetVisibility();
+            }}
+            title={isPetVisible ? 'Sembunyikan Pet' : 'Tampilkan Pet'}
+            aria-label="Toggle Pet Visibility"
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: '50%',
+              border: isPetVisible ? '1px solid var(--accent-border)' : '1px solid var(--border)',
+              background: isPetVisible ? 'var(--accent-dim)' : 'transparent',
+              color: isPetVisible ? 'var(--accent)' : 'var(--text-dim)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              transition: 'border-color 0.2s, background 0.2s, color 0.2s',
+            }}
+          >
+            <Cat size={16} />
+          </motion.button>
+
+          {/* Pet Switcher (PawPrint) */}
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => {
+              playClick();
+              cyclePet();
+            }}
+            title={`Ganti Pet (${currentPet.name})`}
+            aria-label="Ganti Pet"
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: '50%',
+              border: '1px solid var(--border)',
+              background: 'transparent',
+              color: 'var(--text-muted)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              opacity: isPetVisible ? 1 : 0.45,
+              transition: 'opacity 0.2s, border-color 0.2s, color 0.2s',
+            }}
+          >
+            <PawPrint size={15} />
+          </motion.button>
+
           {/* Theme Toggle (Sun / Moon) */}
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <ThemeToggle />
@@ -380,28 +439,83 @@ export default function Navbar() {
           {timeString}
         </span>
 
-        <button
-          style={{
-            width: '34px',
-            height: '34px',
-            borderRadius: '50%',
-            border: '1px solid var(--border)',
-            background: 'var(--surface)',
-            color: 'var(--text-muted)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-          }}
-          onClick={() => {
-            playClick();
-            toggleSound();
-          }}
-          title="Toggle Sound"
-          aria-label="Toggle Sound"
-        >
-          {soundEnabled ? <Volume2 size={15} /> : <VolumeX size={15} />}
-        </button>
+        {/* Right Mobile Actions: Pet Toggle, Pet Switcher, Sound Toggle */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          {/* Pet Visibility Toggle (Cat Head) */}
+          <button
+            style={{
+              width: '32px',
+              height: '32px',
+              borderRadius: '50%',
+              border: isPetVisible ? '1px solid var(--accent-border)' : '1px solid var(--border)',
+              background: isPetVisible ? 'var(--accent-dim)' : 'var(--surface)',
+              color: isPetVisible ? 'var(--accent)' : 'var(--text-dim)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              transition: 'border-color 0.2s, background 0.2s, color 0.2s',
+            }}
+            onClick={() => {
+              playClick();
+              togglePetVisibility();
+            }}
+            title={isPetVisible ? 'Sembunyikan Pet' : 'Tampilkan Pet'}
+            aria-label="Toggle Pet Visibility"
+          >
+            <Cat size={15} />
+          </button>
+
+          {/* Pet Switcher (PawPrint) */}
+          <button
+            style={{
+              width: '32px',
+              height: '32px',
+              borderRadius: '50%',
+              border: '1px solid var(--border)',
+              background: 'var(--surface)',
+              color: 'var(--text-muted)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              opacity: isPetVisible ? 1 : 0.45,
+              transition: 'opacity 0.2s, border-color 0.2s, color 0.2s',
+            }}
+            onClick={() => {
+              playClick();
+              cyclePet();
+            }}
+            title={`Ganti Pet (${currentPet.name})`}
+            aria-label="Ganti Pet"
+          >
+            <PawPrint size={14} />
+          </button>
+
+          {/* Sound Toggle */}
+          <button
+            style={{
+              width: '32px',
+              height: '32px',
+              borderRadius: '50%',
+              border: '1px solid var(--border)',
+              background: 'var(--surface)',
+              color: 'var(--text-muted)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+            }}
+            onClick={() => {
+              playClick();
+              toggleSound();
+            }}
+            title="Toggle Sound"
+            aria-label="Toggle Sound"
+          >
+            {soundEnabled ? <Volume2 size={14} /> : <VolumeX size={14} />}
+          </button>
+        </div>
       </header>
 
       {/* =========================================================================

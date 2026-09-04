@@ -1,57 +1,27 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSoundContext } from './SoundProvider';
-import { Sparkles, Shuffle } from 'lucide-react';
-
-const PETS = [
-  {
-    id: 'maxwell',
-    name: 'Maxwell',
-    tag: 'Loaf Cat',
-    src: '/pet/maxwell.png',
-    defaultQuote: 'Meow~ 🍞',
-    runQuote: 'NYOOOM!! 💨',
-    catchQuote: 'Phew.. kenyang 🐾',
-  },
-  {
-    id: 'akmal',
-    name: 'Akmal',
-    tag: 'Munchkin',
-    src: '/pet/akmal.png',
-    defaultQuote: 'O_O mantau dev',
-    runQuote: 'KABUURRR!! ⚡',
-    catchQuote: 'Aman dari bug 😼',
-  },
-  {
-    id: 'usu',
-    name: 'Kucing USU',
-    tag: 'Anak USU',
-    src: '/pet/kucing-usu.png',
-    defaultQuote: 'Kuliah lagi.. 🎓',
-    runQuote: 'TELAT KELAS!! 🏃💨',
-    catchQuote: 'Dosen belum datang 😹',
-  },
-];
+import { usePet } from '../../hooks/usePet';
 
 export default function FloatingPet() {
   const { playWhoosh, playClick } = useSoundContext();
-  const [petIndex, setPetIndex] = useState(0);
+  const { currentPet, isPetVisible, cyclePet } = usePet();
+
   const [isMobile, setIsMobile] = useState(false);
-  const [targetX, setTargetX] = useState(80);
+  const [posX, setPosX] = useState(80);
+  const [moveDuration, setMoveDuration] = useState(0);
   const [facingRight, setFacingRight] = useState(true);
   const [status, setStatus] = useState('idle'); // 'idle' | 'walking' | 'running'
-  const [speech, setSpeech] = useState({ text: 'Meow~ 🐾', show: false });
-  const [showControls, setShowControls] = useState(false);
+  const [speech, setSpeech] = useState({ text: '', show: false });
   const [dustPuffs, setDustPuffs] = useState([]);
 
   const currentXRef = useRef(80);
-  const runTimeoutRef = useRef(null);
-  const speechTimeoutRef = useRef(null);
-  const wanderTimeoutRef = useRef(null);
+  const isRunningRef = useRef(false);
+  const runTimerRef = useRef(null);
+  const wanderTimerRef = useRef(null);
+  const speechTimerRef = useRef(null);
 
-  const currentPet = PETS[petIndex];
-
-  // Screen size detection for bottom position
+  // Responsive check for bottom dock positioning
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -61,84 +31,86 @@ export default function FloatingPet() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Display initial brief greeting after mount
+  // Show brief greeting when cat changes or first mounts
   useEffect(() => {
-    const greetingTimer = setTimeout(() => {
+    if (!isPetVisible) return;
+    const timer = setTimeout(() => {
       setSpeech({ text: currentPet.defaultQuote, show: true });
-      speechTimeoutRef.current = setTimeout(() => {
+      speechTimerRef.current = setTimeout(() => {
         setSpeech((prev) => ({ ...prev, show: false }));
-      }, 2600);
-    }, 1200);
+      }, 2500);
+    }, 800);
 
-    return () => clearTimeout(greetingTimer);
-  }, [petIndex]);
+    return () => {
+      clearTimeout(timer);
+      if (speechTimerRef.current) clearTimeout(speechTimerRef.current);
+    };
+  }, [currentPet.id, isPetVisible]);
 
-  // Autonomous wandering routine
-  const planNextWander = useCallback(() => {
-    if (status === 'running') return;
+  // Calm, slow autonomous wandering
+  const scheduleNextWander = useCallback(() => {
+    if (isRunningRef.current || !isPetVisible) return;
 
-    const screenW = typeof window !== 'undefined' ? window.innerWidth : 1200;
-    const minX = 24;
-    const maxX = Math.max(minX, screenW - 120);
+    // Pick a leisurely pause time between walks (5.5 to 9.5 seconds)
+    const pauseTime = 5500 + Math.random() * 4000;
 
-    // Pick random target X
-    const newX = Math.floor(minX + Math.random() * (maxX - minX));
-    const distance = Math.abs(newX - currentXRef.current);
+    wanderTimerRef.current = setTimeout(() => {
+      if (isRunningRef.current) return;
 
-    // Only walk if distance is meaningful
-    if (distance > 60) {
-      setFacingRight(newX > currentXRef.current);
+      const screenW = typeof window !== 'undefined' ? window.innerWidth : 1200;
+      const minX = 24;
+      const maxX = Math.max(minX, screenW - 110);
+
+      // Choose a reasonable nearby target rather than jumping wildly across screen
+      const curX = currentXRef.current;
+      const strollDistance = 140 + Math.random() * 220; // 140px to 360px per stroll
+      const goRight = Math.random() > 0.5 ? curX + strollDistance <= maxX : curX - strollDistance < minX;
+
+      let nextX = goRight ? curX + strollDistance : curX - strollDistance;
+      nextX = Math.max(minX, Math.min(maxX, nextX));
+
+      const actualDistance = Math.abs(nextX - curX);
+      if (actualDistance < 50) {
+        scheduleNextWander();
+        return;
+      }
+
+      // Very slow, calm speed (~32px per second)
+      const walkSpeed = 32;
+      const duration = actualDistance / walkSpeed;
+
+      // Set direction once before walk starts
+      setFacingRight(nextX > curX);
       setStatus('walking');
-      setTargetX(newX);
+      setMoveDuration(duration);
+      setPosX(nextX);
+      currentXRef.current = nextX;
 
-      // Random chance to say something while strolling
-      if (Math.random() < 0.35) {
+      // Chance for a cute thought while walking
+      if (Math.random() < 0.25) {
         setSpeech({ text: currentPet.defaultQuote, show: true });
-        if (speechTimeoutRef.current) clearTimeout(speechTimeoutRef.current);
-        speechTimeoutRef.current = setTimeout(() => {
+        if (speechTimerRef.current) clearTimeout(speechTimerRef.current);
+        speechTimerRef.current = setTimeout(() => {
           setSpeech((prev) => ({ ...prev, show: false }));
         }, 2200);
       }
 
-      // Calculate walking duration based on distance (~70px/sec)
-      const walkDuration = Math.max(1.8, Math.min(5.5, distance / 70));
+      // Transition to idle when walking finishes
       setTimeout(() => {
-        currentXRef.current = newX;
-        setStatus('idle');
-      }, walkDuration * 1000);
-    }
-
-    // Schedule next move in 4 to 8 seconds
-    const nextInterval = 4000 + Math.random() * 4500;
-    wanderTimeoutRef.current = setTimeout(planNextWander, nextInterval);
-  }, [status, currentPet]);
+        if (!isRunningRef.current) {
+          setStatus('idle');
+          scheduleNextWander();
+        }
+      }, duration * 1000);
+    }, pauseTime);
+  }, [isPetVisible, currentPet]);
 
   useEffect(() => {
-    wanderTimeoutRef.current = setTimeout(planNextWander, 3000);
+    scheduleNextWander();
     return () => {
-      if (wanderTimeoutRef.current) clearTimeout(wanderTimeoutRef.current);
+      if (wanderTimerRef.current) clearTimeout(wanderTimerRef.current);
     };
-  }, [planNextWander]);
-
-  // Switch pet handler
-  const switchPet = useCallback(
-    (e) => {
-      e?.stopPropagation();
-      try {
-        playClick?.();
-      } catch {}
-
-      setPetIndex((prev) => (prev + 1) % PETS.length);
-      setStatus('idle');
-      setSpeech({ text: 'Poof! ✨', show: true });
-
-      if (speechTimeoutRef.current) clearTimeout(speechTimeoutRef.current);
-      speechTimeoutRef.current = setTimeout(() => {
-        setSpeech((prev) => ({ ...prev, show: false }));
-      }, 1800);
-    },
-    [playClick]
-  );
+  }, [scheduleNextWander]);
 
   // Click handler to make the pet RUN
   const handlePetClick = (e) => {
@@ -149,53 +121,63 @@ export default function FloatingPet() {
       playClick?.();
     } catch {}
 
-    const screenW = window.innerWidth;
-    const currentX = currentXRef.current;
+    if (wanderTimerRef.current) clearTimeout(wanderTimerRef.current);
+    if (runTimerRef.current) clearTimeout(runTimerRef.current);
+    if (speechTimerRef.current) clearTimeout(speechTimerRef.current);
 
-    // Run away to opposite side of screen
-    const runToRight = currentX < screenW / 2;
-    const padding = 30;
-    const escapeX = runToRight ? screenW - padding - 85 : padding;
-
-    setFacingRight(runToRight);
+    isRunningRef.current = true;
     setStatus('running');
-    setTargetX(escapeX);
+
+    const screenW = window.innerWidth;
+    const curX = currentXRef.current;
+
+    // Run away to the farther side of screen
+    const runRight = curX < screenW / 2;
+    const edgePadding = 32;
+    const escapeX = runRight ? screenW - edgePadding - 90 : edgePadding;
+    const distance = Math.abs(escapeX - curX);
+
+    // Fast running speed (~340px/s)
+    const sprintDuration = Math.max(1.0, Math.min(1.8, distance / 340));
+
+    setFacingRight(runRight);
+    setMoveDuration(sprintDuration);
+    setPosX(escapeX);
     currentXRef.current = escapeX;
 
-    // Show startled panic quote
+    // Startled speech bubble
     setSpeech({ text: currentPet.runQuote, show: true });
 
-    // Spawn dust puff animation particles
-    const newPuffs = Array.from({ length: 4 }).map((_, i) => ({
-      id: Date.now() + i,
-      x: currentX + (runToRight ? -15 - i * 14 : 15 + i * 14),
-    }));
-    setDustPuffs(newPuffs);
-    setTimeout(() => setDustPuffs([]), 700);
+    // Spawn dust puff animation
+    const puffs = [
+      { id: Date.now(), x: curX + (runRight ? -12 : 12) },
+      { id: Date.now() + 1, x: curX + (runRight ? -26 : 26) },
+    ];
+    setDustPuffs(puffs);
+    setTimeout(() => setDustPuffs([]), 600);
 
-    if (runTimeoutRef.current) clearTimeout(runTimeoutRef.current);
-    if (speechTimeoutRef.current) clearTimeout(speechTimeoutRef.current);
-
-    // Duration of sprint (~1.4s)
-    runTimeoutRef.current = setTimeout(() => {
+    // Stop running after reaching destination
+    runTimerRef.current = setTimeout(() => {
+      isRunningRef.current = false;
       setStatus('idle');
       setSpeech({ text: currentPet.catchQuote, show: true });
 
-      speechTimeoutRef.current = setTimeout(() => {
+      speechTimerRef.current = setTimeout(() => {
         setSpeech((prev) => ({ ...prev, show: false }));
       }, 2400);
 
-      // Resume regular wander after pause
-      wanderTimeoutRef.current = setTimeout(planNextWander, 3500);
-    }, 1400);
+      scheduleNextWander();
+    }, sprintDuration * 1000);
   };
 
   const isRunning = status === 'running';
   const isWalking = status === 'walking';
 
+  if (!isPetVisible) return null;
+
   return (
     <div
-      aria-label="Interactive Floating Pet"
+      aria-label="Interactive Floating Pet Track"
       style={{
         position: 'fixed',
         left: 0,
@@ -212,15 +194,15 @@ export default function FloatingPet() {
         {dustPuffs.map((puff, idx) => (
           <motion.div
             key={puff.id}
-            initial={{ opacity: 0.8, scale: 0.4, y: 0 }}
-            animate={{ opacity: 0, scale: 1.4, y: -18 }}
+            initial={{ opacity: 0.85, scale: 0.4, y: 0 }}
+            animate={{ opacity: 0, scale: 1.3, y: -16 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.55, delay: idx * 0.08 }}
+            transition={{ duration: 0.5, delay: idx * 0.1 }}
             style={{
               position: 'absolute',
               left: puff.x,
-              bottom: '12px',
-              fontSize: '1.1rem',
+              bottom: '8px',
+              fontSize: '1rem',
               pointerEvents: 'none',
             }}
           >
@@ -229,13 +211,13 @@ export default function FloatingPet() {
         ))}
       </AnimatePresence>
 
-      {/* Main Animated Pet Container */}
+      {/* Layer 1: Horizontal Position Track (Smooth linear / ease-out motion, NO rotation) */}
       <motion.div
         animate={{
-          x: targetX,
+          x: posX,
         }}
         transition={{
-          duration: isRunning ? 1.35 : isWalking ? 3.2 : 0.8,
+          duration: moveDuration,
           ease: isRunning ? [0.22, 1, 0.36, 1] : 'easeInOut',
         }}
         onUpdate={(latest) => {
@@ -254,19 +236,20 @@ export default function FloatingPet() {
           pointerEvents: 'auto',
           cursor: 'pointer',
         }}
-        onMouseEnter={() => setShowControls(true)}
-        onMouseLeave={() => setShowControls(false)}
         onClick={handlePetClick}
-        onDoubleClick={switchPet}
+        onDoubleClick={(e) => {
+          e.stopPropagation();
+          cyclePet();
+        }}
       >
         {/* Speech Bubble / Thought Balloon */}
         <AnimatePresence>
-          {(speech.show || showControls) && (
+          {speech.show && (
             <motion.div
-              initial={{ opacity: 0, y: 8, scale: 0.85 }}
+              initial={{ opacity: 0, y: 6, scale: 0.85 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 4, scale: 0.85 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 0.18 }}
               style={{
                 position: 'absolute',
                 bottom: '100%',
@@ -285,34 +268,11 @@ export default function FloatingPet() {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '6px',
-                pointerEvents: 'auto',
+                pointerEvents: 'none',
                 zIndex: 10,
               }}
             >
-              <span>{speech.show ? speech.text : currentPet.name}</span>
-              {/* Pet switcher quick button */}
-              <button
-                type="button"
-                onClick={switchPet}
-                title="Ganti pet (atau double click)"
-                style={{
-                  background: 'var(--surface-2)',
-                  border: '1px solid var(--border)',
-                  borderRadius: '6px',
-                  width: '20px',
-                  height: '20px',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'var(--accent)',
-                  cursor: 'pointer',
-                  padding: 0,
-                  marginLeft: '2px',
-                }}
-              >
-                <Shuffle size={11} />
-              </button>
-
+              <span>{speech.text}</span>
               {/* Triangle Tail */}
               <div
                 style={{
@@ -331,60 +291,69 @@ export default function FloatingPet() {
           )}
         </AnimatePresence>
 
-        {/* Pet Image with dynamic bobbing / running wobble */}
-        <motion.div
-          animate={
-            isRunning
-              ? {
-                  y: [0, -14, 0],
-                  rotate: [-14, 14, -14],
-                  scaleX: facingRight ? [1.12, 1.22, 1.12] : [-1.12, -1.22, -1.12],
-                  scaleY: [0.84, 1.05, 0.84],
-                }
-              : isWalking
-              ? {
-                  y: [0, -6, 0],
-                  rotate: [-4, 4, -4],
-                  scaleX: facingRight ? 1 : -1,
-                  scaleY: [0.96, 1.04, 0.96],
-                }
-              : {
-                  y: [0, -3, 0],
-                  rotate: [-1.5, 1.5, -1.5],
-                  scaleX: facingRight ? 1 : -1,
-                  scaleY: [1, 1.03, 1],
-                }
-          }
-          transition={{
-            repeat: Infinity,
-            duration: isRunning ? 0.2 : isWalking ? 0.42 : 2.6,
-            ease: 'easeInOut',
-          }}
-          whileHover={{ scale: 1.12 }}
-          whileTap={{ scale: 0.9 }}
+        {/* Layer 2: Direction Flip Container (scaleX only, NO rotate) */}
+        <div
           style={{
-            width: '100%',
-            height: 'auto',
+            transform: facingRight ? 'scaleX(1)' : 'scaleX(-1)',
+            transition: 'transform 0.28s ease',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            filter: 'drop-shadow(0 6px 12px rgba(0, 0, 0, 0.28))',
+            width: '100%',
           }}
         >
-          <img
-            src={currentPet.src}
-            alt={currentPet.name}
-            draggable={false}
+          {/* Layer 3: Vertical bobbing & gait wobble */}
+          <motion.div
+            animate={
+              isRunning
+                ? {
+                    y: [0, -8, 0],
+                    rotate: [-5, 5, -5],
+                    scaleY: [0.94, 1.04, 0.94],
+                  }
+                : isWalking
+                ? {
+                    y: [0, -3, 0],
+                    rotate: [-1.2, 1.2, -1.2],
+                    scaleY: [0.98, 1.02, 0.98],
+                  }
+                : {
+                    y: [0, -1.5, 0],
+                    rotate: 0,
+                    scaleY: [1, 1.02, 1],
+                  }
+            }
+            transition={{
+              repeat: Infinity,
+              duration: isRunning ? 0.22 : isWalking ? 0.6 : 3.0,
+              ease: 'easeInOut',
+            }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.92 }}
             style={{
               width: '100%',
               height: 'auto',
-              maxHeight: '74px',
-              objectFit: 'contain',
-              display: 'block',
-              pointerEvents: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              filter: 'drop-shadow(0 4px 10px rgba(0, 0, 0, 0.22))',
             }}
-          />
-        </motion.div>
+          >
+            <img
+              src={currentPet.src}
+              alt={currentPet.name}
+              draggable={false}
+              style={{
+                width: '100%',
+                height: 'auto',
+                maxHeight: '74px',
+                objectFit: 'contain',
+                display: 'block',
+                pointerEvents: 'none',
+              }}
+            />
+          </motion.div>
+        </div>
       </motion.div>
     </div>
   );
