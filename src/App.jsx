@@ -11,6 +11,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import BackToTop from './components/BackToTop';
 import AvailableSidebar from './components/ui/AvailableSidebar';
+import FloatingPet from './components/ui/FloatingPet';
 import ScrollToTop from './components/ui/ScrollToTop';
 import { Analytics } from '@vercel/analytics/react';
 
@@ -49,6 +50,7 @@ function AppInner() {
       <ScrollProgress />
       <ClickSpark />
       <AvailableSidebar />
+      <FloatingPet />
       <Navbar />
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
