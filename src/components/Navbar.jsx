@@ -20,7 +20,6 @@ const ABOUT_DROPDOWN = [
   { label: 'About Me', path: '/about', icon: User },
   { label: 'Experience', path: '/experience', icon: Briefcase },
   { label: 'Projects', path: '/projects', icon: FolderGit2 },
-  { label: 'Skills', path: '/skills', icon: Cpu },
 ];
 
 const DockButton = ({ to, icon: Icon, label, isActive, onClick, onHover }) => {
@@ -118,7 +117,7 @@ export default function Navbar() {
 
   const isHome = location.pathname === '/';
   const isContact = location.pathname === '/contact';
-  const isAboutActive = ['/about', '/experience', '/projects', '/skills'].some((p) =>
+  const isAboutActive = ['/about', '/experience', '/projects'].some((p) =>
     location.pathname.startsWith(p)
   );
 
@@ -439,14 +438,6 @@ export default function Navbar() {
           icon={FolderGit2}
           label="Projects"
           isActive={location.pathname.startsWith('/projects')}
-          onClick={playClick}
-          onHover={playHover}
-        />
-        <DockButton
-          to="/skills"
-          icon={Cpu}
-          label="Skills"
-          isActive={location.pathname.startsWith('/skills')}
           onClick={playClick}
           onHover={playHover}
         />

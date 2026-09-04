@@ -20,7 +20,6 @@ const NAV_LINKS = [
   { label: 'About', path: '/about' },
   { label: 'Experience', path: '/experience' },
   { label: 'Projects', path: '/projects' },
-  { label: 'Skills', path: '/skills' },
   { label: 'Contact', path: '/contact' },
 ];
 

@@ -2,23 +2,16 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import {
-  Code2,
-  Server,
-  Smartphone,
+  Terminal,
+  Cpu,
   Database,
   Palette,
-  Cpu,
-  Layers,
-  Sparkles,
-  Zap,
-  CheckCircle2,
-  Terminal,
   ShieldCheck,
   GitBranch,
 } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
 
-// SVG Brand Icons (Crisp, standalone, authentic colors)
+// SVG Brand Icons
 const ICONS = {
   react: (
     <svg viewBox="-11.5 -10.23174 23 20.46348" width="18" height="18" fill="#61DAFB">
@@ -228,38 +221,11 @@ const ROW_3 = [
   { name: 'Agile & Scrum', color: '#C084FC', icon: <GitBranch size={18} color="#C084FC" /> },
 ];
 
-const PRINCIPLES = [
-  {
-    icon: Code2,
-    color: '#FF3B1D',
-    title: 'Full-Stack Web Engineering',
-    desc: 'Pengembangan aplikasi web reaktif modern dengan arsitektur RESTful API, otentikasi aman, dan performa loading kilat.',
-  },
-  {
-    icon: Smartphone,
-    color: '#54C5F8',
-    title: 'Mobile & On-Device AI',
-    desc: 'Aplikasi lintas platform Flutter & native Android terintegrasi model Machine Learning offline berbasis TensorFlow Lite.',
-  },
-  {
-    icon: Database,
-    color: '#10B981',
-    title: 'Database & Data Integrity',
-    desc: 'Desain skema relasional terstruktur (MySQL, PostgreSQL, MariaDB) dengan kepatuhan audit data dan integritas perbankan.',
-  },
-  {
-    icon: Palette,
-    color: '#FFAA00',
-    title: 'Visual Identity & Print Media',
-    desc: 'Eksekusi desain menyeluruh mulai dari UI/UX Figma interaktif hingga materi cetak fisik resolusi tinggi berskala besar.',
-  },
-];
-
-const Skills = () => {
+export default function SkillsTechStack() {
   const { playClick, playHover } = useSoundContext();
   const { ref, inView } = useInView({
     triggerOnce: true,
-    threshold: 0.05,
+    threshold: 0.1,
   });
 
   const fadeUp = {
@@ -272,7 +238,6 @@ const Skills = () => {
   };
 
   const renderMarqueeRow = (items, direction = 'left', speed = 35) => {
-    // Duplicate 3 times for seamless infinite loop
     const tripleList = [...items, ...items, ...items];
 
     return (
@@ -339,46 +304,65 @@ const Skills = () => {
 
   return (
     <section
-      id="skills"
+      id="tech-stack"
       ref={ref}
       style={{
-        padding: '50px 0 80px',
+        padding: '56px 0 60px',
         background: 'var(--bg)',
         position: 'relative',
         overflow: 'hidden',
       }}
     >
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
-        {/* Section Header */}
+      {/* Section Header */}
+      <div
+        style={{
+          maxWidth: '800px',
+          margin: '0 auto 36px',
+          textAlign: 'center',
+          padding: '0 20px',
+        }}
+      >
         <motion.div
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
           variants={fadeUp}
-          style={{ textAlign: 'center', marginBottom: '40px' }}
         >
           <span
             style={{
               color: 'var(--accent)',
               fontSize: '0.82rem',
-              fontWeight: 600,
-              letterSpacing: '2px',
+              fontWeight: 700,
+              letterSpacing: '2.5px',
               textTransform: 'uppercase',
               display: 'block',
-              marginBottom: '8px',
+              marginBottom: '10px',
             }}
           >
-            Technical Stack &amp; Capabilities
+            TECHNICAL STACK &amp; CAPABILITIES
           </span>
           <h2
             style={{
-              fontSize: 'clamp(2rem, 3.5vw, 2.8rem)',
-              fontWeight: 600,
+              fontSize: 'clamp(2rem, 4vw, 2.9rem)',
+              fontWeight: 700,
               color: 'var(--text)',
-              margin: '0 auto 12px',
+              margin: '0 auto 14px',
               letterSpacing: '-0.02em',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
             }}
           >
-            Skills &amp; Technology Stack
+            <span>Skills &amp; Technology Stack</span>
+            <span
+              style={{
+                display: 'inline-block',
+                width: '7px',
+                height: '7px',
+                borderRadius: '50%',
+                background: 'var(--accent)',
+                boxShadow: '0 0 10px var(--accent)',
+              }}
+            />
           </h2>
           <div
             style={{
@@ -395,7 +379,7 @@ const Skills = () => {
               fontSize: '0.98rem',
               maxWidth: '640px',
               margin: '0 auto',
-              fontWeight: 300,
+              fontWeight: 400,
               lineHeight: 1.6,
             }}
           >
@@ -404,9 +388,7 @@ const Skills = () => {
         </motion.div>
       </div>
 
-      {/* =========================================================================
-          ANIMATED TECH MARQUEE CLOUD (3 Rows, Alternating Directions)
-          ========================================================================= */}
+      {/* Animated Marquee Cloud (3 Rows) */}
       <div
         className="skills-cloud-wrapper"
         style={{
@@ -416,10 +398,10 @@ const Skills = () => {
           display: 'flex',
           flexDirection: 'column',
           gap: '14px',
-          padding: '16px 0 24px',
+          padding: '8px 0 16px',
         }}
       >
-        {/* Left & Right Fade Masks */}
+        {/* Left & Right Edge Fade Masks */}
         <div className="skills-mask-left" />
         <div className="skills-mask-right" />
 
@@ -433,84 +415,7 @@ const Skills = () => {
         {renderMarqueeRow(ROW_3, 'left', 38)}
       </div>
 
-      {/* =========================================================================
-          CORE DISCIPLINES & EXPERTISE GRID
-          ========================================================= */}
-      <div style={{ maxWidth: '1200px', margin: '48px auto 0', padding: '0 20px' }}>
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-          variants={fadeUp}
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-            gap: '18px',
-          }}
-        >
-          {PRINCIPLES.map((item) => {
-            const Icon = item.icon;
-            return (
-              <div
-                key={item.title}
-                onMouseEnter={playHover}
-                style={{
-                  background: 'var(--surface)',
-                  border: '1px solid var(--border)',
-                  borderTop: `3px solid ${item.color}`,
-                  borderRadius: '14px',
-                  padding: '20px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '10px',
-                  transition: 'transform 0.25s ease, box-shadow 0.25s ease',
-                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)',
-                }}
-              >
-                <div
-                  style={{
-                    width: '38px',
-                    height: '38px',
-                    borderRadius: '10px',
-                    background: `${item.color}15`,
-                    border: `1px solid ${item.color}30`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: item.color,
-                  }}
-                >
-                  <Icon size={19} />
-                </div>
-                <h3
-                  style={{
-                    fontSize: '1rem',
-                    fontWeight: 600,
-                    color: 'var(--text)',
-                    margin: 0,
-                  }}
-                >
-                  {item.title}
-                </h3>
-                <p
-                  style={{
-                    fontSize: '0.84rem',
-                    color: 'var(--text-muted)',
-                    lineHeight: 1.55,
-                    margin: 0,
-                    fontWeight: 300,
-                  }}
-                >
-                  {item.desc}
-                </p>
-              </div>
-            );
-          })}
-        </motion.div>
-      </div>
-
       <style>{`
-        /* Smooth Infinite Marquee Animations */
         @keyframes scrollLeft {
           0% {
             transform: translateX(0);
@@ -545,8 +450,8 @@ const Skills = () => {
         /* Pill Hover Glow */
         .skill-pill-card:hover {
           transform: translateY(-3px) scale(1.05) !important;
-          border-color: rgba(255, 59, 29, 0.4) !important;
-          box-shadow: 0 8px 24px rgba(255, 59, 29, 0.18) !important;
+          border-color: rgba(255, 59, 29, 0.45) !important;
+          box-shadow: 0 8px 24px rgba(255, 59, 29, 0.22) !important;
           background: rgba(22, 22, 32, 0.95) !important;
         }
 
@@ -579,12 +484,10 @@ const Skills = () => {
           }
           .skills-mask-left,
           .skills-mask-right {
-            width: 48px !important;
+            width: 44px !important;
           }
         }
       `}</style>
     </section>
   );
-};
-
-export default Skills;
+}
