@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
 import { useSoundContext } from './SoundProvider'
 
 /**
@@ -18,13 +19,28 @@ export default function AvailableSidebar({
   onClick,
 }) {
   const [isHovered, setIsHovered] = useState(false)
+  const navigate = useNavigate()
 
   let playHover = null
+  let playClick = null
   try {
     const sound = useSoundContext()
     playHover = sound?.playHover
+    playClick = sound?.playClick
   } catch {
     playHover = null
+    playClick = null
+  }
+
+  const handleClick = (e) => {
+    if (playClick) {
+      try { playClick() } catch {}
+    }
+    if (onClick) {
+      onClick(e)
+    } else {
+      navigate('/contact')
+    }
   }
 
   const handleMouseEnter = () => {
@@ -103,7 +119,7 @@ export default function AvailableSidebar({
         className={`available-sidebar-root ${className}`.trim()}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        onClick={onClick}
+        onClick={handleClick}
         style={{
           position: 'fixed',
           left: 0,
@@ -122,7 +138,7 @@ export default function AvailableSidebar({
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          cursor: onClick ? 'pointer' : 'default',
+          cursor: 'pointer',
           userSelect: 'none',
           ...style,
         }}

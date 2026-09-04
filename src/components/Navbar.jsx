@@ -83,7 +83,7 @@ export default function Navbar() {
   const handleContactClick = (e) => {
     if (e) e.preventDefault();
     playClick();
-    scrollToDirectMessage(navigate, location.pathname);
+    navigate('/contact');
   };
 
   // Real-time Digital Clock (HH:mm:ss)
@@ -117,6 +117,7 @@ export default function Navbar() {
   }, []);
 
   const isHome = location.pathname === '/';
+  const isContact = location.pathname === '/contact';
   const isAboutActive = ['/about', '/experience', '/projects', '/skills'].some((p) =>
     location.pathname.startsWith(p)
   );
@@ -298,24 +299,25 @@ export default function Navbar() {
           </div>
 
           {/* Contact */}
-          <button
-            onClick={handleContactClick}
+          <Link
+            to="/contact"
+            onClick={playClick}
             onMouseEnter={playHover}
             style={{
               padding: '7px 20px',
               borderRadius: '999px',
               fontSize: '13px',
               fontWeight: 600,
-              border: 'none',
-              cursor: 'pointer',
-              color: 'var(--text-muted)',
-              background: 'transparent',
+              textDecoration: 'none',
+              color: isContact ? '#ffffff' : 'var(--text-muted)',
+              background: isContact ? '#1f1f26' : 'transparent',
+              boxShadow: isContact ? '0 2px 10px rgba(0, 0, 0, 0.4)' : 'none',
               transition: 'all 0.2s ease',
               display: 'inline-block',
             }}
           >
             Contact
-          </button>
+          </Link>
         </nav>
 
         {/* Right: Circular Icon Actions (Fullscreen, Sound/Globe, Theme) */}
@@ -449,31 +451,14 @@ export default function Navbar() {
           onHover={playHover}
         />
         <div className="dock-divider" />
-        <motion.button
-          onClick={handleContactClick}
-          onMouseEnter={playHover}
-          whileHover={{ scale: 1.12 }}
-          whileTap={{ scale: 0.9 }}
-          className="dock-circle-btn"
-          title="Kirim Pesan Langsung"
-          aria-label="Kirim Pesan Langsung"
-          style={{
-            width: '36px',
-            height: '36px',
-            borderRadius: '50%',
-            border: '1px solid var(--border)',
-            background: 'rgba(255, 255, 255, 0.03)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: 'var(--text-muted)',
-            position: 'relative',
-            cursor: 'pointer',
-            flexShrink: 0,
-          }}
-        >
-          <Mail size={15} />
-        </motion.button>
+        <DockButton
+          to="/contact"
+          icon={Mail}
+          label="Contact"
+          isActive={location.pathname === '/contact'}
+          onClick={playClick}
+          onHover={playHover}
+        />
         <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center' }}>
           <ThemeToggle />
         </div>

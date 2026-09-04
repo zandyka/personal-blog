@@ -21,6 +21,7 @@ const NAV_LINKS = [
   { label: 'Experience', path: '/experience' },
   { label: 'Projects', path: '/projects' },
   { label: 'Skills', path: '/skills' },
+  { label: 'Contact', path: '/contact' },
 ];
 
 const SOCIAL_LINKS = [
@@ -41,7 +42,7 @@ const Footer = () => {
   const handleHireMeClick = (e) => {
     e.preventDefault();
     playClick();
-    scrollToDirectMessage(navigate, location.pathname);
+    navigate('/contact');
   };
 
   return (

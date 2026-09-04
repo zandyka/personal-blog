@@ -2,7 +2,6 @@ import { motion } from 'framer-motion';
 import Hero from '../components/Hero';
 import SkillsTypography from '../components/SkillsTypography';
 import Gallery from '../components/Gallery';
-import Contact from '../components/Contact';
 import InfiniteMarquee from '../components/ui/InfiniteMarquee';
 
 const TECH_ITEMS = [
@@ -31,11 +30,6 @@ const HomePage = () => {
 
       {/* Gallery */}
       <Gallery />
-
-      {/* Contact */}
-      <div style={{ borderTop: '1px solid var(--border)' }}>
-        <Contact />
-      </div>
     </motion.div>
   );
 };
