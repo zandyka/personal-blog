@@ -1,9 +1,12 @@
 ﻿import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useSoundContext } from './ui/SoundProvider';
+import { useTheme } from '../hooks/useTheme';
 
 export default function SplashScreen({ onComplete }) {
   const { playWhoosh, playSuccess } = useSoundContext();
+  const { theme } = useTheme();
+  const isLight = theme === 'light' || (typeof document !== 'undefined' && document.documentElement.classList.contains('light'));
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -70,7 +73,7 @@ export default function SplashScreen({ onComplete }) {
         width: '100vw',
         height: '100vh',
         zIndex: 99999,
-        backgroundColor: '#070709',
+        backgroundColor: isLight ? '#FAF8F5' : '#070709',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -85,7 +88,9 @@ export default function SplashScreen({ onComplete }) {
         style={{
           position: 'absolute',
           inset: 0,
-          backgroundImage: 'radial-gradient(circle, rgba(255, 255, 255, 0.08) 1px, transparent 1px)',
+          backgroundImage: isLight
+            ? 'radial-gradient(circle, rgba(25, 24, 26, 0.08) 1px, transparent 1px)'
+            : 'radial-gradient(circle, rgba(255, 255, 255, 0.08) 1px, transparent 1px)',
           backgroundSize: '24px 24px',
           pointerEvents: 'none',
         }}
@@ -102,7 +107,9 @@ export default function SplashScreen({ onComplete }) {
           width: 'clamp(280px, 45vw, 550px)',
           height: 'clamp(280px, 45vw, 550px)',
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(255, 59, 29, 0.16) 0%, rgba(255, 170, 0, 0.06) 50%, transparent 70%)',
+          background: isLight
+            ? 'radial-gradient(circle, rgba(37, 99, 235, 0.16) 0%, rgba(124, 58, 237, 0.08) 50%, transparent 70%)'
+            : 'radial-gradient(circle, rgba(255, 59, 29, 0.16) 0%, rgba(255, 170, 0, 0.06) 50%, transparent 70%)',
           filter: 'blur(70px)',
           pointerEvents: 'none',
         }}
@@ -135,7 +142,7 @@ export default function SplashScreen({ onComplete }) {
               fontFamily: "'JetBrains Mono', monospace",
               fontSize: 'clamp(2.4rem, 7vw, 5.2rem)',
               fontWeight: 700,
-              color: '#ffffff',
+              color: isLight ? '#19181A' : '#ffffff',
               letterSpacing: '-0.02em',
               display: 'inline-flex',
               alignItems: 'center',
@@ -154,9 +161,9 @@ export default function SplashScreen({ onComplete }) {
                 }}
                 style={{
                   display: 'inline-block',
-                  color: char === '.' ? '#FF3B1D' : '#ffffff',
+                  color: char === '.' ? (isLight ? '#2563EB' : '#FF3B1D') : (isLight ? '#19181A' : '#ffffff'),
                   fontWeight: char === '.' ? 900 : 700,
-                  textShadow: char === '.' ? '0 0 20px #FF3B1D' : '0 0 30px rgba(255, 255, 255, 0.2)',
+                  textShadow: char === '.' ? (isLight ? '0 0 20px rgba(37, 99, 235, 0.5)' : '0 0 20px #FF3B1D') : (isLight ? '0 0 30px rgba(25, 24, 26, 0.08)' : '0 0 30px rgba(255, 255, 255, 0.2)'),
                 }}
               >
                 {char === ' ' ? '\u00A0' : char}
@@ -172,8 +179,8 @@ export default function SplashScreen({ onComplete }) {
               display: 'inline-block',
               width: 'clamp(3px, 0.5vw, 5px)',
               height: 'clamp(2rem, 6vw, 4.4rem)',
-              background: '#FF3B1D',
-              boxShadow: '0 0 14px #FF3B1D',
+              background: isLight ? '#2563EB' : '#FF3B1D',
+              boxShadow: isLight ? '0 0 14px rgba(37, 99, 235, 0.6)' : '0 0 14px #FF3B1D',
               marginLeft: '6px',
               borderRadius: '2px',
             }}
@@ -187,7 +194,7 @@ export default function SplashScreen({ onComplete }) {
           transition={{ delay: 0.2, duration: 0.4 }}
           style={{
             height: '2px',
-            background: 'rgba(255, 255, 255, 0.1)',
+            background: isLight ? 'rgba(25, 24, 26, 0.1)' : 'rgba(255, 255, 255, 0.1)',
             borderRadius: '2px',
             overflow: 'hidden',
             position: 'relative',
@@ -197,9 +204,9 @@ export default function SplashScreen({ onComplete }) {
             style={{
               height: '100%',
               width: `${progress}%`,
-              background: 'linear-gradient(90deg, #FF3B1D, #FFAA00)',
+              background: isLight ? 'linear-gradient(90deg, #2563EB, #7C3AED)' : 'linear-gradient(90deg, #FF3B1D, #FFAA00)',
               borderRadius: '2px',
-              boxShadow: '0 0 10px #FF3B1D',
+              boxShadow: isLight ? '0 0 10px rgba(37, 99, 235, 0.5)' : '0 0 10px #FF3B1D',
               transition: 'width 0.05s linear',
             }}
           />

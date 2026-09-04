@@ -1,4 +1,4 @@
-﻿import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Sun, Moon } from 'lucide-react'
 import { useTheme } from '../../hooks/useTheme'
 import { useSoundContext } from './SoundProvider'
@@ -7,9 +7,9 @@ export default function ThemeToggle({ className = '' }) {
   const { theme, toggleTheme } = useTheme()
   const { playClick } = useSoundContext()
 
-  const handleToggle = () => {
+  const handleToggle = (e) => {
     playClick()
-    toggleTheme()
+    toggleTheme(e)
   }
 
   return (

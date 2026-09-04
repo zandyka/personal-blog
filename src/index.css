@@ -233,3 +233,28 @@ img { display: block; max-width: 100%; }
   .section { padding: 32px 0; }
   .section-sm { padding: 20px 0; }
 }
+
+/* ============================================
+   CIRCULAR VIEW TRANSITION (THEME TOGGLE)
+   ============================================ */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 99999;
+}
+
+/* Disable transitions during view transition snapshot to capture exact target palette */
+.no-transitions,
+.no-transitions *,
+.no-transitions *::before,
+.no-transitions *::after {
+  transition: none !important;
+}

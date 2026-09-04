@@ -92,6 +92,24 @@ export default function InteractiveLanyard() {
     amberGlow.position.set(2, -1, 3);
     scene.add(amberGlow);
 
+    // Dynamically update Three.js lights when theme toggles
+    const themeObserver = new MutationObserver(() => {
+      try {
+        const nextCompStyle = getComputedStyle(document.documentElement);
+        const nextAccent = nextCompStyle.getPropertyValue('--accent').trim();
+        const nextAccent2 = nextCompStyle.getPropertyValue('--accent-2').trim();
+        if (nextAccent) {
+          backRedLight.color.set(nextAccent);
+          redGlow.color.set(nextAccent);
+        }
+        if (nextAccent2) {
+          backRimLight.color.set(nextAccent2);
+          amberGlow.color.set(nextAccent2);
+        }
+      } catch {}
+    });
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
     // 3. Lanyard Strap Repeating Texture
     const strapCanvas = document.createElement('canvas');
     strapCanvas.width = 128;
@@ -466,6 +484,7 @@ export default function InteractiveLanyard() {
     window.addEventListener('resize', handleResize);
 
     return () => {
+      themeObserver.disconnect();
       cancelAnimationFrame(animId);
       window.removeEventListener('resize', handleResize);
       mount.removeEventListener('mousedown', onPointerDown);
