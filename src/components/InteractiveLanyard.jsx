@@ -46,9 +46,9 @@ export default function InteractiveLanyard() {
 
     // 1. Scene, Camera, Renderer
     const scene = new THREE.Scene();
-    // Slightly zoomed-out camera (z = 6.6) to scale down the lanyard gracefully
+    // Zoomed-out camera (z = 7.5) to scale down lanyard gracefully with ample breathing room
     const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
-    camera.position.set(0, 0.35, 6.6);
+    camera.position.set(0, 0.28, 7.5);
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -71,10 +71,14 @@ export default function InteractiveLanyard() {
     backFill.position.set(-1.5, 2, -4);
     scene.add(backFill);
 
-    // Atmosphere backlight behind the badge for rim illumination
-    const backRimLight = new THREE.PointLight(0xffaa00, 3.2, 7);
-    backRimLight.position.set(0, -0.3, -1.2);
+    // Atmosphere backlight behind the badge for bright, vivid rim illumination
+    const backRimLight = new THREE.PointLight(0xffaa00, 5.5, 9);
+    backRimLight.position.set(0, -0.2, -1.0);
     scene.add(backRimLight);
+
+    const backRedLight = new THREE.PointLight(0xff3b1d, 4.5, 8);
+    backRedLight.position.set(0, -0.5, -1.2);
+    scene.add(backRedLight);
 
     const redGlow = new THREE.PointLight(0xff3b1d, 3.2, 9);
     redGlow.position.set(-2, 1, 3);
@@ -253,8 +257,8 @@ export default function InteractiveLanyard() {
 
     // G. Flexible Lanyard Strap Mesh
     const strapSegments = 16;
-    // Higher top anchor (y = 2.8) for longer, sleeker hanging strap
-    const topAnchor = new THREE.Vector3(0, 2.75, 0);
+    // Higher top anchor (y = 2.85) for longer, sleeker hanging strap
+    const topAnchor = new THREE.Vector3(0, 2.85, 0);
 
     const strapCurvePoints = [];
     for (let i = 0; i <= strapSegments; i++) {
@@ -520,18 +524,35 @@ export default function InteractiveLanyard() {
           cursor: isDragging ? 'grabbing' : 'grab',
         }}
       >
-        {/* Soft atmospheric background light directly behind the lanyard */}
+        {/* Bright atmospheric background light directly behind the lanyard */}
+        {/* Layer 1: Wide warm ambient glow */}
         <div
           style={{
             position: 'absolute',
-            top: '46%',
+            top: '48%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: '270px',
-            height: '270px',
+            width: '340px',
+            height: '340px',
             borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(255, 59, 29, 0.16) 0%, rgba(255, 170, 0, 0.09) 45%, transparent 70%)',
-            filter: 'blur(32px)',
+            background: 'radial-gradient(circle, rgba(255, 59, 29, 0.35) 0%, rgba(255, 170, 0, 0.22) 45%, transparent 72%)',
+            filter: 'blur(42px)',
+            pointerEvents: 'none',
+            zIndex: 0,
+          }}
+        />
+        {/* Layer 2: Radiant bright amber core halo */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '48%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '210px',
+            height: '210px',
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(255, 200, 70, 0.65) 0%, rgba(255, 75, 35, 0.42) 52%, transparent 78%)',
+            filter: 'blur(22px)',
             pointerEvents: 'none',
             zIndex: 0,
           }}
