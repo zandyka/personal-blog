@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { GraduationCap, Briefcase, FolderGit2, Users2, Globe, Award, CheckCircle2 } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
+import InteractiveLanyard from './InteractiveLanyard';
 
 const CountUp = ({ end, duration = 1.5, decimals = 0, suffix = '', inView }) => {
   const [count, setCount] = useState(0);
@@ -175,7 +176,7 @@ const About = () => {
           }}
           className="about-grid"
         >
-          {/* Left: Photo Frame Placeholder (3:4 ratio) */}
+          {/* Left: Interactive 3D Lanyard & ID Badge */}
           <motion.div
             initial="hidden"
             animate={inView ? 'visible' : 'hidden'}
@@ -183,104 +184,10 @@ const About = () => {
             style={{
               display: 'flex',
               justifyContent: 'center',
+              width: '100%',
             }}
           >
-            <div
-              style={{
-                position: 'relative',
-                width: '100%',
-                maxWidth: '320px',
-                aspectRatio: '3 / 4',
-                borderRadius: '20px',
-                background: 'var(--surface)',
-                border: '1px solid var(--border)',
-                padding: '14px',
-                boxShadow: '0 16px 36px rgba(0, 0, 0, 0.08)',
-              }}
-            >
-              {/* Outer decorative borders */}
-              <div
-                style={{
-                  position: 'absolute',
-                  inset: '-5px',
-                  borderRadius: '24px',
-                  border: '1px solid var(--accent-2-border)',
-                  pointerEvents: 'none',
-                }}
-              />
-
-              {/* Real Profile Photo Frame */}
-              <div
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  borderRadius: '14px',
-                  position: 'relative',
-                  overflow: 'hidden',
-                  background: 'var(--surface-2)',
-                }}
-              >
-                <img
-                  src="/about/profile.png"
-                  alt="Muhammad Daffa Zacky Andyka"
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    display: 'block',
-                    transition: 'transform 0.5s ease',
-                  }}
-                />
-                <div
-                  style={{
-                    position: 'absolute',
-                    inset: 0,
-                    background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.15) 45%, transparent 100%)',
-                    pointerEvents: 'none',
-                  }}
-                />
-                <div
-                  style={{
-                    position: 'absolute',
-                    bottom: '12px',
-                    left: '12px',
-                    right: '12px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '4px',
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: '1rem',
-                      fontWeight: 700,
-                      color: '#ffffff',
-                      textShadow: '0 2px 8px rgba(0,0,0,0.8)',
-                    }}
-                  >
-                    Zacky Andyka
-                  </span>
-                  <div
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '5px',
-                      padding: '4px 8px',
-                      borderRadius: '6px',
-                      background: 'rgba(15, 15, 20, 0.88)',
-                      backdropFilter: 'blur(8px)',
-                      border: '1px solid rgba(255, 255, 255, 0.12)',
-                      fontSize: '0.72rem',
-                      color: '#f7f7fa',
-                      width: 'fit-content',
-                    }}
-                  >
-                    <Award size={12} style={{ color: 'var(--accent)' }} />
-                    <span>Teknik Informatika USU</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <InteractiveLanyard />
           </motion.div>
 
           {/* Right: Content & Stats */}
