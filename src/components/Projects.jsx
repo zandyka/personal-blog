@@ -337,6 +337,17 @@ const Projects = () => {
               <motion.div
                 key={project.id}
                 variants={fadeUp}
+                onClick={() => {
+                  playClick();
+                  setActiveModal({
+                    title: project.title,
+                    category: project.category,
+                    image: project.image,
+                    description: project.description,
+                    tags: project.techStack,
+                    status: project.status,
+                  });
+                }}
                 onMouseEnter={playHover}
                 whileHover={{ y: -6 }}
                 className="project-software-card"
@@ -351,6 +362,7 @@ const Projects = () => {
                   transition: 'border-color 0.25s, box-shadow 0.25s, transform 0.25s',
                   boxShadow: '0 8px 24px rgba(0, 0, 0, 0.25)',
                   minWidth: 0,
+                  cursor: 'pointer',
                 }}
               >
                 {/* 16:7 Visual Banner Preview */}
@@ -391,6 +403,7 @@ const Projects = () => {
                   />
                   {/* Category Pill on top right */}
                   <div
+                    className="project-category-badge"
                     style={{
                       position: 'absolute',
                       top: '10px',
@@ -436,6 +449,7 @@ const Projects = () => {
 
                 {/* Card Content */}
                 <div
+                  className="project-software-content"
                   style={{
                     padding: '20px',
                     display: 'flex',
@@ -446,6 +460,7 @@ const Projects = () => {
                 >
                   <div>
                     <h3
+                      className="project-software-title"
                       style={{
                         margin: '0 0 8px',
                         fontSize: '1.15rem',
@@ -457,6 +472,7 @@ const Projects = () => {
                       {project.title}
                     </h3>
                     <p
+                      className="project-software-desc"
                       style={{
                         fontSize: '0.86rem',
                         color: 'var(--text-muted)',
@@ -470,6 +486,7 @@ const Projects = () => {
 
                     {/* Tech Stack Tags */}
                     <div
+                      className="project-software-tags"
                       style={{
                         display: 'flex',
                         flexWrap: 'wrap',
@@ -497,6 +514,7 @@ const Projects = () => {
 
                   {/* Actions Footer */}
                   <div
+                    className="project-software-footer"
                     style={{
                       display: 'flex',
                       alignItems: 'center',
@@ -678,6 +696,7 @@ const Projects = () => {
                     }}
                     onMouseEnter={playHover}
                     title={`Buka ${item.platform} di Instagram`}
+                    className="digital-ig-badge"
                     style={{
                       position: 'absolute',
                       top: '10px',
@@ -724,8 +743,9 @@ const Projects = () => {
                 </div>
 
                 {/* Content */}
-                <div style={{ padding: '18px 18px 12px' }}>
+                <div className="digital-card-content" style={{ padding: '18px 18px 12px' }}>
                   <span
+                    className="digital-cat-badge"
                     style={{
                       fontSize: '0.72rem',
                       fontWeight: 700,
@@ -739,6 +759,7 @@ const Projects = () => {
                     {item.category}
                   </span>
                   <h3
+                    className="digital-title"
                     style={{
                       margin: '0 0 8px',
                       fontSize: '1.1rem',
@@ -750,6 +771,7 @@ const Projects = () => {
                     {item.title}
                   </h3>
                   <p
+                    className="digital-desc"
                     style={{
                       fontSize: '0.84rem',
                       color: 'var(--text-muted)',
@@ -765,6 +787,7 @@ const Projects = () => {
 
               {/* Tools & Instagram Link footer */}
               <div
+                className="digital-footer"
                 style={{
                   padding: '12px 18px 16px',
                   borderTop: '1px solid rgba(255, 255, 255, 0.05)',
@@ -1228,16 +1251,93 @@ const Projects = () => {
             #projects {
               padding: 36px 12px 60px !important;
             }
+
+            /* Section 1: Software Projects - 2 Columns on Mobile */
             .projects-software-grid {
-              grid-template-columns: 1fr !important;
-              gap: 16px !important;
+              grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+              gap: 10px !important;
               margin-bottom: 48px !important;
             }
+            .project-software-card {
+              border-radius: 10px !important;
+            }
+            .project-category-badge {
+              font-size: 0.58rem !important;
+              padding: 2px 6px !important;
+              top: 6px !important;
+              right: 6px !important;
+              max-width: 85% !important;
+              white-space: nowrap !important;
+              overflow: hidden !important;
+              text-overflow: ellipsis !important;
+            }
+            .project-category-badge span {
+              display: none !important;
+            }
+            .project-software-content {
+              padding: 10px 10px 12px !important;
+            }
+            .project-software-title {
+              font-size: 0.82rem !important;
+              line-height: 1.25 !important;
+              margin-bottom: 4px !important;
+              display: -webkit-box !important;
+              -webkit-line-clamp: 2 !important;
+              -webkit-box-orient: vertical !important;
+              overflow: hidden !important;
+            }
+            .project-software-desc {
+              display: none !important;
+            }
+            .project-software-tags {
+              display: none !important;
+            }
+            .project-software-footer {
+              display: none !important;
+            }
+
+            /* Section 2: Digital & Social Media Design - 2 Columns on Mobile */
             .designs-digital-grid {
-              grid-template-columns: 1fr !important;
-              gap: 16px !important;
+              grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+              gap: 10px !important;
               margin-bottom: 48px !important;
             }
+            .design-digital-card {
+              border-radius: 10px !important;
+            }
+            .digital-card-content {
+              padding: 10px 10px 12px !important;
+            }
+            .digital-cat-badge {
+              font-size: 0.58rem !important;
+            }
+            .digital-title {
+              font-size: 0.82rem !important;
+              line-height: 1.25 !important;
+              margin-bottom: 4px !important;
+              display: -webkit-box !important;
+              -webkit-line-clamp: 2 !important;
+              -webkit-box-orient: vertical !important;
+              overflow: hidden !important;
+            }
+            .digital-desc {
+              display: none !important;
+            }
+            .digital-footer {
+              display: none !important;
+            }
+            .digital-ig-badge {
+              padding: 4px 6px !important;
+              top: 6px !important;
+              right: 6px !important;
+              gap: 0 !important;
+            }
+            .digital-ig-badge span,
+            .digital-ig-badge svg:last-child {
+              display: none !important;
+            }
+
+            /* Section 3: Physical & Print Media - 2 Columns on Mobile */
             .designs-physical-grid {
               grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
               gap: 10px !important;
