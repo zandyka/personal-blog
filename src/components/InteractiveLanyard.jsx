@@ -1,25 +1,27 @@
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
-import { RotateCw, Sparkles, Hand } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
 
 /**
  * InteractiveLanyard Component
- * - 3D physics-based hanging ID card on flexible lanyard strap
+ * Features:
+ * - 3D ID badge inside an authentic protective plastic card holder frame with top slot hole
  * - Custom user ID card graphics for front (/about/id_card_front.png) and back (/about/id_card_back.png)
- * - Borderless / frameless transparent viewport
- * - Full drag-to-pull physics with natural pendulum harmonic oscillation on release
- * - Tap to flip 180 degrees
+ * - Transparent / frameless container (no box border, no outer card frame)
+ * - Realistic metal swivel clip & carabiner hooking through the badge hole
+ * - Flexible physics-based lanyard strap that bends & ripples as you drag
+ * - Harmonic pendulum spring physics simulation on release with natural inertia & air damping
+ * - Tap/click directly on the card to flip 180 degrees
+ * - Clean UI with zero clutter (no buttons below)
  */
 export default function InteractiveLanyard() {
   const mountRef = useRef(null);
   const { playClick, playHover } = useSoundContext();
-  const [isFlipped, setIsFlipped] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
 
   // Physics & interaction state
   const physicsRef = useRef({
-    pos: new THREE.Vector3(0, -0.32, 0),
+    pos: new THREE.Vector3(0, -0.4, 0),
     vel: new THREE.Vector3(0, 0, 0),
     rot: new THREE.Euler(0, 0, 0),
     targetRotY: 0,
@@ -44,7 +46,7 @@ export default function InteractiveLanyard() {
     // 1. Scene, Camera, Renderer
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
-    camera.position.set(0, 0.3, 5.6);
+    camera.position.set(0, 0.35, 5.7);
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -56,18 +58,18 @@ export default function InteractiveLanyard() {
     mount.appendChild(renderer.domElement);
 
     // 2. Lights
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.25);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.3);
     scene.add(ambientLight);
 
-    const topSpot = new THREE.DirectionalLight(0xffffff, 1.4);
+    const topSpot = new THREE.DirectionalLight(0xffffff, 1.5);
     topSpot.position.set(1.5, 6, 4);
     scene.add(topSpot);
 
-    const backFill = new THREE.DirectionalLight(0xffffff, 0.8);
+    const backFill = new THREE.DirectionalLight(0xffffff, 0.9);
     backFill.position.set(-1.5, 2, -4);
     scene.add(backFill);
 
-    const redGlow = new THREE.PointLight(0xff3b1d, 3.0, 9);
+    const redGlow = new THREE.PointLight(0xff3b1d, 3.2, 9);
     redGlow.position.set(-2, 1, 3);
     scene.add(redGlow);
 
@@ -84,7 +86,7 @@ export default function InteractiveLanyard() {
     strapCtx.fillStyle = '#111116';
     strapCtx.fillRect(0, 0, 128, 1024);
 
-    strapCtx.strokeStyle = 'rgba(255, 59, 29, 0.6)';
+    strapCtx.strokeStyle = 'rgba(255, 59, 29, 0.65)';
     strapCtx.lineWidth = 3;
     strapCtx.beginPath();
     strapCtx.moveTo(8, 0);
@@ -128,77 +130,132 @@ export default function InteractiveLanyard() {
     backTexture.generateMipmaps = true;
     backTexture.minFilter = THREE.LinearMipmapLinearFilter;
 
-    // 5. 3D Card Geometry & Materials
-    // Ratio 3:4 (width 2.1, height 2.8)
+    // 5. 3D ID Card with Protective Holder Frame (Casing)
+    const cardGroup = new THREE.Group();
+
+    // Dimensions:
+    // Inner graphic card: width 2.1, height 2.8 (3:4 ratio)
     const cardW = 2.1;
     const cardH = 2.8;
-    const cardD = 0.045;
-    const cardGeo = new THREE.BoxGeometry(cardW, cardH, cardD);
 
-    const edgeMat = new THREE.MeshStandardMaterial({
-      color: 0x14141c,
-      metalness: 0.85,
-      roughness: 0.25,
+    // Outer holder frame: width 2.26, height 3.02, depth 0.05
+    const holderW = 2.26;
+    const holderH = 3.02;
+    const holderD = 0.05;
+
+    const frameMat = new THREE.MeshStandardMaterial({
+      color: 0x121218,
+      roughness: 0.35,
+      metalness: 0.2,
     });
 
-    const frontMat = new THREE.MeshStandardMaterial({
+    // A. Main Holder Body (Backing & Outer Rim)
+    const holderBodyGeo = new THREE.BoxGeometry(holderW, holderH, holderD);
+    const holderBodyMesh = new THREE.Mesh(holderBodyGeo, frameMat);
+    cardGroup.add(holderBodyMesh);
+
+    // B. Holder Top Extension Tab with Lanyard Slot Hole
+    const tabH = 0.34;
+    const tabW = 1.05;
+    const tabGeo = new THREE.BoxGeometry(tabW, tabH, holderD);
+    const tabMesh = new THREE.Mesh(tabGeo, frameMat);
+    tabMesh.position.set(0, holderH / 2 + tabH / 2 - 0.02, 0);
+    cardGroup.add(tabMesh);
+
+    // Slot hole inside the top tab (dark cutout through which the clip hooks)
+    const slotHoleGeo = new THREE.BoxGeometry(0.48, 0.12, holderD + 0.01);
+    const holeMat = new THREE.MeshBasicMaterial({ color: 0x050508 });
+    const slotHoleMesh = new THREE.Mesh(slotHoleGeo, holeMat);
+    slotHoleMesh.position.set(0, holderH / 2 + tabH / 2 - 0.02, 0);
+    cardGroup.add(slotHoleMesh);
+
+    // Slot hole border rim
+    const slotRimGeo = new THREE.RingGeometry(0.18, 0.26, 16);
+    const slotRimMat = new THREE.MeshStandardMaterial({ color: 0x22222c, metalness: 0.8, roughness: 0.3 });
+    const slotRimFront = new THREE.Mesh(slotRimGeo, slotRimMat);
+    slotRimFront.position.set(0, holderH / 2 + tabH / 2 - 0.02, holderD / 2 + 0.002);
+    cardGroup.add(slotRimFront);
+
+    const slotRimBack = new THREE.Mesh(slotRimGeo, slotRimMat);
+    slotRimBack.position.set(0, holderH / 2 + tabH / 2 - 0.02, -holderD / 2 - 0.002);
+    slotRimBack.rotation.y = Math.PI;
+    cardGroup.add(slotRimBack);
+
+    // C. Inner Graphic Card (Front Face +Z)
+    const frontCardGeo = new THREE.PlaneGeometry(cardW, cardH);
+    const frontCardMat = new THREE.MeshStandardMaterial({
       map: frontTexture,
       roughness: 0.22,
       metalness: 0.12,
     });
+    const frontCardMesh = new THREE.Mesh(frontCardGeo, frontCardMat);
+    frontCardMesh.position.set(0, -0.04, holderD / 2 + 0.003);
+    cardGroup.add(frontCardMesh);
 
-    const backMat = new THREE.MeshStandardMaterial({
+    // D. Inner Graphic Card (Back Face -Z)
+    const backCardGeo = new THREE.PlaneGeometry(cardW, cardH);
+    const backCardMat = new THREE.MeshStandardMaterial({
       map: backTexture,
       roughness: 0.22,
       metalness: 0.12,
     });
+    const backCardMesh = new THREE.Mesh(backCardGeo, backCardMat);
+    backCardMesh.position.set(0, -0.04, -holderD / 2 - 0.003);
+    backCardMesh.rotation.y = Math.PI;
+    cardGroup.add(backCardMesh);
 
-    const cardMesh = new THREE.Mesh(cardGeo, [
-      edgeMat, // +x
-      edgeMat, // -x
-      edgeMat, // +y
-      edgeMat, // -y
-      frontMat, // +z (front face)
-      backMat,  // -z (back face)
-    ]);
-    scene.add(cardMesh);
+    // E. Protective Gloss Layer (Clear Acrylic Glaze)
+    const glossMat = new THREE.MeshStandardMaterial({
+      color: 0xffffff,
+      roughness: 0.05,
+      metalness: 0.1,
+      transparent: true,
+      opacity: 0.08,
+    });
+    const glossMeshFront = new THREE.Mesh(frontCardGeo, glossMat);
+    glossMeshFront.position.set(0, -0.04, holderD / 2 + 0.005);
+    cardGroup.add(glossMeshFront);
 
-    // Metal Clip / Clasp at top of card
+    scene.add(cardGroup);
+
+    // F. Metal Swivel Clip & Carabiner Hook
     const clipGroup = new THREE.Group();
     const metalMat = new THREE.MeshStandardMaterial({
-      color: 0x1c1c24,
+      color: 0x1f1f28,
       metalness: 0.9,
-      roughness: 0.2,
+      roughness: 0.22,
     });
 
-    // Swivel ring
-    const ringGeo = new THREE.TorusGeometry(0.12, 0.025, 8, 24);
-    const ringMesh = new THREE.Mesh(ringGeo, metalMat);
-    ringMesh.position.set(0, cardH / 2 + 0.1, 0);
-    clipGroup.add(ringMesh);
+    const clipBaseY = holderH / 2 + tabH / 2 - 0.02;
 
-    // Carabiner clip stem
-    const hookGeo = new THREE.CylinderGeometry(0.04, 0.04, 0.28, 12);
-    const hookMesh = new THREE.Mesh(hookGeo, metalMat);
-    hookMesh.position.set(0, cardH / 2 + 0.26, 0);
-    clipGroup.add(hookMesh);
+    // Hook loop going through the hole
+    const hookRingGeo = new THREE.TorusGeometry(0.13, 0.028, 8, 24);
+    const hookRingMesh = new THREE.Mesh(hookRingGeo, metalMat);
+    hookRingMesh.position.set(0, clipBaseY, 0);
+    clipGroup.add(hookRingMesh);
 
-    // Top loop attached to strap
-    const topLoopGeo = new THREE.TorusGeometry(0.1, 0.025, 8, 24);
+    // Swivel clasp stem
+    const claspStemGeo = new THREE.CylinderGeometry(0.042, 0.042, 0.28, 12);
+    const claspStemMesh = new THREE.Mesh(claspStemGeo, metalMat);
+    claspStemMesh.position.set(0, clipBaseY + 0.22, 0);
+    clipGroup.add(claspStemMesh);
+
+    // Top loop attached to lanyard
+    const topLoopGeo = new THREE.TorusGeometry(0.1, 0.028, 8, 24);
     const topLoopMesh = new THREE.Mesh(topLoopGeo, metalMat);
-    topLoopMesh.position.set(0, cardH / 2 + 0.42, 0);
+    topLoopMesh.position.set(0, clipBaseY + 0.42, 0);
     clipGroup.add(topLoopMesh);
 
-    cardMesh.add(clipGroup);
+    cardGroup.add(clipGroup);
 
-    // 6. Flexible Lanyard Strap (Ribbon Curve)
+    // G. Flexible Lanyard Strap Mesh (Ribbon Curve)
     const strapSegments = 16;
-    const topAnchor = new THREE.Vector3(0, 2.45, 0);
+    const topAnchor = new THREE.Vector3(0, 2.6, 0);
 
     const strapCurvePoints = [];
     for (let i = 0; i <= strapSegments; i++) {
       const t = i / strapSegments;
-      strapCurvePoints.push(new THREE.Vector3().lerpVectors(topAnchor, new THREE.Vector3(0, 1.2, 0), t));
+      strapCurvePoints.push(new THREE.Vector3().lerpVectors(topAnchor, new THREE.Vector3(0, 1.4, 0), t));
     }
 
     const strapCurve = new THREE.CatmullRomCurve3(strapCurvePoints);
@@ -218,13 +275,13 @@ export default function InteractiveLanyard() {
     barMesh.position.copy(topAnchor);
     scene.add(barMesh);
 
-    // 7. Physics State Initialization
+    // 6. Physics Simulation State
     const p = physicsRef.current;
-    p.pos.set(0, -0.32, 0);
+    p.pos.set(0, -0.4, 0);
     p.vel.set(0, 0, 0);
 
     const getCardAttachPoint = () => {
-      const topOffset = new THREE.Vector3(0, cardH / 2 + 0.42, 0);
+      const topOffset = new THREE.Vector3(0, clipBaseY + 0.42, 0);
       topOffset.applyEuler(p.rot);
       return new THREE.Vector3().addVectors(p.pos, topOffset);
     };
@@ -236,7 +293,6 @@ export default function InteractiveLanyard() {
         const t = i / strapSegments;
         const pt = new THREE.Vector3().lerpVectors(topAnchor, attachPt, t);
 
-        // Subtle ribbon sag curvature
         const sag = Math.sin(t * Math.PI) * 0.14 * (1 - Math.min(1, Math.abs(attachPt.x) * 0.7));
         pt.z += sag;
         points.push(pt);
@@ -248,7 +304,7 @@ export default function InteractiveLanyard() {
       strapMesh.geometry = newStrapGeo;
     };
 
-    // 8. Pointer Drag Handlers
+    // 7. Mouse & Touch Drag Interaction
     const raycaster = p.raycaster;
 
     const onPointerDown = (e) => {
@@ -260,7 +316,7 @@ export default function InteractiveLanyard() {
       p.pointerPos.y = -(((clientY - rect.top) / rect.height) * 2 - 1);
 
       raycaster.setFromCamera(p.pointerPos, camera);
-      const intersects = raycaster.intersectObjects([cardMesh], true);
+      const intersects = raycaster.intersectObjects([cardGroup], true);
 
       if (intersects.length > 0) {
         p.isDragging = true;
@@ -298,7 +354,6 @@ export default function InteractiveLanyard() {
       if (raycaster.ray.intersectPlane(p.dragPlane, planeIntersect)) {
         const targetPos = new THREE.Vector3().addVectors(planeIntersect, p.dragOffset);
 
-        // Limit maximum pull distance from top anchor so it doesn't break
         const maxDist = 3.6;
         const fromAnchor = new THREE.Vector3().subVectors(targetPos, topAnchor);
         if (fromAnchor.length() > maxDist) {
@@ -324,7 +379,7 @@ export default function InteractiveLanyard() {
         p.isDragging = false;
         setIsDragging(false);
 
-        // If simple tap without dragging, flip card
+        // Tap/click toggles 180° flip
         if (p.dragDistance < 0.12) {
           handleFlip();
         }
@@ -339,7 +394,7 @@ export default function InteractiveLanyard() {
     window.addEventListener('touchmove', onPointerMove, { passive: true });
     window.addEventListener('touchend', onPointerUp);
 
-    // 9. Animation & Physics Simulation Loop
+    // 8. Physics & Animation Loop
     let lastTime = performance.now();
 
     const animate = () => {
@@ -349,7 +404,7 @@ export default function InteractiveLanyard() {
       const dt = Math.min(0.033, (now - lastTime) / 1000);
       lastTime = now;
 
-      const restPos = new THREE.Vector3(0, -0.32, 0);
+      const restPos = new THREE.Vector3(0, -0.4, 0);
 
       if (!p.isDragging) {
         // Damped harmonic pendulum spring physics
@@ -364,7 +419,7 @@ export default function InteractiveLanyard() {
         p.vel.multiplyScalar(Math.pow(damping, dt * 60));
         p.pos.addScaledVector(p.vel, dt);
 
-        // Ambient idle breathing sway
+        // Idle micro-breeze sway
         if (p.vel.length() < 0.2) {
           const time = now * 0.0015;
           p.pos.x += Math.sin(time * 2.0) * 0.001;
@@ -372,7 +427,7 @@ export default function InteractiveLanyard() {
         }
       }
 
-      // Tilt card according to displacement & velocity
+      // Dynamic tilt based on displacement & speed
       const tiltZ = -p.pos.x * 0.35 - p.vel.x * 0.04;
       const tiltX = (p.pos.y - restPos.y) * 0.25 - p.vel.y * 0.03;
 
@@ -380,8 +435,8 @@ export default function InteractiveLanyard() {
       p.rot.x += (tiltX - p.rot.x) * 0.12;
       p.rot.y += (p.targetRotY - p.rot.y) * 0.1;
 
-      cardMesh.position.copy(p.pos);
-      cardMesh.rotation.copy(p.rot);
+      cardGroup.position.copy(p.pos);
+      cardGroup.rotation.copy(p.rot);
 
       updateStrap();
 
@@ -390,7 +445,6 @@ export default function InteractiveLanyard() {
 
     animate();
 
-    // Resize
     const handleResize = () => {
       if (!mount) return;
       const newW = mount.clientWidth;
@@ -418,10 +472,17 @@ export default function InteractiveLanyard() {
       frontTexture.dispose();
       backTexture.dispose();
       strapTexture.dispose();
-      cardGeo.dispose();
-      ringGeo.dispose();
-      hookGeo.dispose();
-      topLoopGeo.dispose();
+      holderBodyGeo.dispose();
+      tabGeo.dispose();
+      slotHoleGeo.dispose();
+      slotRimGeo.dispose();
+      frontCardGeo.dispose();
+      backCardGeo.dispose();
+      frameMat.dispose();
+      frontCardMat.dispose();
+      backCardMat.dispose();
+      glossMat.dispose();
+      metalMat.dispose();
       strapMesh.geometry.dispose();
       barGeo.dispose();
       renderer.dispose();
@@ -430,17 +491,7 @@ export default function InteractiveLanyard() {
 
   const handleFlip = () => {
     playClick();
-    setIsFlipped((prev) => {
-      const next = !prev;
-      physicsRef.current.targetRotY = next ? Math.PI : 0;
-      return next;
-    });
-  };
-
-  const handleSwingFlick = () => {
-    playClick();
-    physicsRef.current.vel.x = (Math.random() > 0.5 ? 1 : -1) * 8.5;
-    physicsRef.current.vel.y = -3.5;
+    physicsRef.current.targetRotY = physicsRef.current.targetRotY === 0 ? Math.PI : 0;
   };
 
   return (
@@ -455,12 +506,12 @@ export default function InteractiveLanyard() {
         userSelect: 'none',
       }}
     >
-      {/* 3D Viewport Box — Completely borderless & seamless (NO frame/box) */}
+      {/* 3D Viewport — Completely borderless & seamless (NO box frame, NO bottom buttons) */}
       <div
         style={{
           position: 'relative',
           width: '100%',
-          height: '520px',
+          height: '530px',
           background: 'transparent',
           border: 'none',
           boxShadow: 'none',
@@ -472,7 +523,7 @@ export default function InteractiveLanyard() {
         <div
           style={{
             position: 'absolute',
-            top: '8px',
+            top: '6px',
             left: '12%',
             right: '12%',
             height: '2px',
@@ -492,61 +543,6 @@ export default function InteractiveLanyard() {
             touchAction: 'none',
           }}
         />
-      </div>
-
-      {/* Control Buttons below */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '10px',
-          marginTop: '6px',
-          width: '100%',
-        }}
-      >
-        <button
-          onClick={handleFlip}
-          onMouseEnter={playHover}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '6px',
-            padding: '7px 16px',
-            borderRadius: '999px',
-            background: 'rgba(255, 59, 29, 0.12)',
-            border: '1px solid rgba(255, 59, 29, 0.3)',
-            color: '#FF3B1D',
-            fontSize: '0.78rem',
-            fontWeight: 600,
-            cursor: 'pointer',
-            transition: 'all 0.2s ease',
-          }}
-        >
-          <RotateCw size={12} />
-          <span>{isFlipped ? 'Lihat Sisi Depan' : 'Lihat Sisi Belakang'}</span>
-        </button>
-
-        <button
-          onClick={handleSwingFlick}
-          onMouseEnter={playHover}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '5px',
-            padding: '7px 14px',
-            borderRadius: '999px',
-            background: 'rgba(255, 255, 255, 0.04)',
-            border: '1px solid var(--border)',
-            color: 'var(--text-muted)',
-            fontSize: '0.78rem',
-            fontWeight: 500,
-            cursor: 'pointer',
-            transition: 'all 0.2s ease',
-          }}
-        >
-          <span>Ayukan Kartu 🎯</span>
-        </button>
       </div>
     </div>
   );
