@@ -20,7 +20,7 @@ export function useTheme() {
     }
   }, [])
 
-  const toggleTheme = useCallback((event, transitionMode = 'sweep') => {
+  const toggleTheme = useCallback((event, transitionMode = 'circular') => {
     const nextTheme = currentTheme === 'dark' ? 'light' : 'dark'
     currentTheme = nextTheme
     localStorage.setItem('theme', nextTheme)
@@ -49,47 +49,7 @@ export function useTheme() {
       return
     }
 
-    // Option 3: Diagonal Sweep / Editorial Curtain Wipe (Active Default)
-    if (transitionMode === 'sweep') {
-      document.documentElement.setAttribute('data-theme-transition', 'sweep')
-      document.documentElement.classList.add('no-transitions')
-
-      try {
-        const transition = document.startViewTransition(() => {
-          document.documentElement.classList.toggle('light', nextTheme === 'light')
-        })
-
-        transition.finished.finally(() => {
-          document.documentElement.classList.remove('no-transitions')
-        })
-      } catch (err) {
-        document.documentElement.classList.toggle('light', nextTheme === 'light')
-        document.documentElement.classList.remove('no-transitions')
-      }
-      return
-    }
-
-    // Option 2: Ultra-Smooth Crossfade & Ambient Dissolve (Active)
-    if (transitionMode === 'crossfade') {
-      document.documentElement.setAttribute('data-theme-transition', 'crossfade')
-      document.documentElement.classList.add('no-transitions')
-
-      try {
-        const transition = document.startViewTransition(() => {
-          document.documentElement.classList.toggle('light', nextTheme === 'light')
-        })
-
-        transition.finished.finally(() => {
-          document.documentElement.classList.remove('no-transitions')
-        })
-      } catch (err) {
-        document.documentElement.classList.toggle('light', nextTheme === 'light')
-        document.documentElement.classList.remove('no-transitions')
-      }
-      return
-    }
-
-    // Option 1: Circular Expanding Ripple
+    // Option 1: Circular Expanding Ripple (Active Default)
     if (transitionMode === 'circular') {
       document.documentElement.setAttribute('data-theme-transition', 'circular')
       const endRadius = Math.hypot(
@@ -130,6 +90,47 @@ export function useTheme() {
         document.documentElement.classList.toggle('light', nextTheme === 'light')
         document.documentElement.classList.remove('no-transitions')
       }
+      return
+    }
+
+    // Option 2: Ultra-Smooth Crossfade & Ambient Dissolve (Active)
+    if (transitionMode === 'crossfade') {
+      document.documentElement.setAttribute('data-theme-transition', 'crossfade')
+      document.documentElement.classList.add('no-transitions')
+
+      try {
+        const transition = document.startViewTransition(() => {
+          document.documentElement.classList.toggle('light', nextTheme === 'light')
+        })
+
+        transition.finished.finally(() => {
+          document.documentElement.classList.remove('no-transitions')
+        })
+      } catch (err) {
+        document.documentElement.classList.toggle('light', nextTheme === 'light')
+        document.documentElement.classList.remove('no-transitions')
+      }
+      return
+    }
+
+    // Option 3: Diagonal Sweep / Editorial Curtain Wipe
+    if (transitionMode === 'sweep') {
+      document.documentElement.setAttribute('data-theme-transition', 'sweep')
+      document.documentElement.classList.add('no-transitions')
+
+      try {
+        const transition = document.startViewTransition(() => {
+          document.documentElement.classList.toggle('light', nextTheme === 'light')
+        })
+
+        transition.finished.finally(() => {
+          document.documentElement.classList.remove('no-transitions')
+        })
+      } catch (err) {
+        document.documentElement.classList.toggle('light', nextTheme === 'light')
+        document.documentElement.classList.remove('no-transitions')
+      }
+      return
     }
   }, [])
 

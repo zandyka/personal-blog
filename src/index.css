@@ -235,18 +235,31 @@ img { display: block; max-width: 100%; }
 }
 
 /* ============================================
-   THEME VIEW TRANSITIONS
+   THEME VIEW TRANSITIONS — OPTION 1: CIRCULAR RIPPLE (DEFAULT ACTIVE)
    ============================================ */
 
-/* Option 3: Diagonal Sweep / Editorial Curtain Wipe (Active Default) */
+/* Default & Option 1: Circular Expanding Ripple (Active) */
 ::view-transition-old(root),
-html[data-theme-transition="sweep"]::view-transition-old(root) {
+html[data-theme-transition="circular"]::view-transition-old(root) {
   animation: none;
   mix-blend-mode: normal;
   z-index: 1;
 }
 
 ::view-transition-new(root),
+html[data-theme-transition="circular"]::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+  z-index: 99999;
+}
+
+/* Option 3: Diagonal Sweep (when data-theme-transition="sweep") */
+html[data-theme-transition="sweep"]::view-transition-old(root) {
+  animation: none;
+  mix-blend-mode: normal;
+  z-index: 1;
+}
+
 html[data-theme-transition="sweep"]::view-transition-new(root) {
   animation: 620ms cubic-bezier(0.22, 1, 0.36, 1) both theme-diagonal-sweep;
   mix-blend-mode: normal;
@@ -262,7 +275,7 @@ html[data-theme-transition="sweep"]::view-transition-new(root) {
   }
 }
 
-/* Option 2: Ultra-Smooth Crossfade & Ambient Dissolve (when data-theme-transition="crossfade") */
+/* Option 2: Ultra-Smooth Crossfade (when data-theme-transition="crossfade") */
 html[data-theme-transition="crossfade"]::view-transition-old(root) {
   animation: 450ms cubic-bezier(0.4, 0, 0.2, 1) both theme-fade-out;
   z-index: 1;
@@ -293,19 +306,6 @@ html[data-theme-transition="crossfade"]::view-transition-new(root) {
     opacity: 1;
     filter: blur(0px);
   }
-}
-
-/* Option 1: Circular Expanding Ripple (when data-theme-transition="circular") */
-html[data-theme-transition="circular"]::view-transition-old(root),
-html[data-theme-transition="circular"]::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
-}
-html[data-theme-transition="circular"]::view-transition-old(root) {
-  z-index: 1;
-}
-html[data-theme-transition="circular"]::view-transition-new(root) {
-  z-index: 99999;
 }
 
 /* Disable transitions during view transition snapshot to capture exact target palette */
