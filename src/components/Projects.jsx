@@ -4,6 +4,7 @@ import { useInView } from 'react-intersection-observer';
 import {
   Smartphone,
   Globe,
+  BarChart3,
   Palette,
   Sparkles,
   Layers,
@@ -33,14 +34,36 @@ const SOFTWARE_PROJECTS = [
   },
   {
     id: 'mahaasyik',
-    title: 'Mahaasyik — Platform Kolaborasi & Ekosistem Mahasiswa',
-    category: 'Full-Stack Digital Platform',
+    title: 'Mahaasyik Resto — Sistem Manajemen & Pemesanan Restoran Berbasis Web',
+    category: 'Full-Stack Web & Payment Gateway',
     typeIcon: Globe,
     accent: '#FFAA00',
     description:
-      'Platform digital terpadu untuk ekosistem mahasiswa yang memadukan manajemen aktivitas perkuliahan, pusat informasi terintegrasi, dan jejaring komunitas kampus interaktif.',
-    techStack: ['React', 'Node.js', 'TailwindCSS', 'REST API', 'PostgreSQL'],
+      'Platform aplikasi web manajemen dan pemesanan restoran komprehensif berstandar production-ready dengan arsitektur decoupled (React.js SPA & Laravel 11 REST API). Mendigitalkan operasional kuliner mulai dari katalog menu interaktif, reservasi meja cerdas dengan down payment (DP) otomatis, integrasi Midtrans Snap payment gateway (QRIS, e-wallet, VA), hingga manajemen pesanan dan dashboard analitik omzet.',
+    techStack: ['React.js 18', 'Laravel 11', 'TailwindCSS', 'Midtrans Snap', 'MySQL 8', 'RESTful API'],
     image: '/projects/Mahaasyik.webp',
+  },
+  {
+    id: 'sigma-bpjstk',
+    title: 'SIGMA BPJSTK — Sistem Informasi & Monitoring Aktivitas MBKM BPJS Ketenagakerjaan',
+    category: 'Enterprise Web & Monitoring System',
+    typeIcon: Layers,
+    accent: '#10B981',
+    description:
+      'Platform web terpadu berarsitektur decoupled (React.js SPA & Laravel RESTful API) untuk mendigitalkan, memonitor, dan mengevaluasi seluruh siklus program MBKM BPJS Ketenagakerjaan. Dilengkapi presensi geotagging GPS, kurikulum 6 modul jaminan sosial, pusat penilaian (grading center), audit log, serta role-based access control (RBAC) untuk 198 mahasiswa peserta, mentor koordinator, dan administrator.',
+    techStack: ['React.js', 'Laravel 11', 'TailwindCSS', 'MySQL', 'Geolocation API', 'RBAC'],
+    image: '/projects/sigma-bpjstk.png',
+  },
+  {
+    id: 'bank-sumut',
+    title: 'Visualisasi Rekapan Operasional Bank Sumut',
+    category: 'Banking Analytics & Operational Dashboard',
+    typeIcon: BarChart3,
+    accent: '#0284C7',
+    description:
+      'Dashboard web visualisasi dan analitik data rekapan transaksi operasional harian PT Bank Sumut. Menyajikan pemantauan transaksi tunai & non-tunai per unit kantor cabang, rasio produktivitas teller, tren volume transaksi bulanan, serta rekapitulasi data kliring dan payment perbankan secara terstruktur dan real-time.',
+    techStack: ['Web Dashboard', 'Data Analytics', 'Chart.js', 'Banking Operations', 'Financial Reporting'],
+    image: '/projects/visualisasi-bank-sumut.png',
   },
 ];
 
@@ -290,7 +313,7 @@ const Projects = () => {
               lineHeight: 1.6,
             }}
           >
-            Pengembangan aplikasi mobile berbasis Computer Vision AI dan platform ekosistem digital terintegrasi.
+            Aplikasi mobile kecerdasan buatan (AI), sistem web full-stack, enterprise monitoring MBKM, dan dashboard analitik operasional perbankan.
           </p>
         </motion.div>
 
@@ -517,228 +540,7 @@ const Projects = () => {
         </motion.div>
 
         {/* =========================================================================
-            SECTION 2: HASIL DESAIN FISIK (Physical & Print Media)
-            ========================================================================= */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-          variants={fadeUp}
-          style={{ textAlign: 'center', marginBottom: '32px' }}
-        >
-          <span
-            style={{
-              color: 'var(--accent-2)',
-              fontSize: '0.82rem',
-              fontWeight: 600,
-              letterSpacing: '2px',
-              textTransform: 'uppercase',
-              display: 'block',
-              marginBottom: '8px',
-            }}
-          >
-            Physical &amp; Print Media
-          </span>
-          <h2
-            style={{
-              fontSize: 'clamp(2rem, 3.5vw, 2.8rem)',
-              fontWeight: 600,
-              color: 'var(--text)',
-              margin: '0 auto 12px',
-              letterSpacing: '-0.02em',
-            }}
-          >
-            Hasil Desain Fisik
-          </h2>
-          <div
-            style={{
-              width: '50px',
-              height: '3px',
-              background: 'var(--accent-2)',
-              margin: '0 auto 16px',
-              borderRadius: '2px',
-            }}
-          />
-          <p
-            style={{
-              color: 'var(--text-muted)',
-              fontSize: '0.98rem',
-              maxWidth: '640px',
-              margin: '0 auto',
-              fontWeight: 300,
-              lineHeight: 1.6,
-            }}
-          >
-            Portofolio perancangan materi cetak dan fisik seperti lanyard resmi, kartu pengenal panitia &amp; magang, spanduk acara, backdrop seremoni, dan x-banner ekshibisi.
-          </p>
-        </motion.div>
-
-        {/* Physical Designs Grid: 3 cols desktop, 2 cols mobile */}
-        <motion.div
-          variants={stagger}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.05 }}
-          className="designs-physical-grid"
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
-            gap: '20px',
-            marginBottom: '64px',
-          }}
-        >
-          {PHYSICAL_DESIGNS.map((item) => (
-            <motion.div
-              key={item.id}
-              variants={fadeUp}
-              onClick={() => {
-                playClick();
-                setActiveModal({
-                  title: item.title,
-                  category: item.category,
-                  image: item.image,
-                  description: item.description,
-                  tags: item.tools,
-                });
-              }}
-              onMouseEnter={playHover}
-              whileHover={{ y: -6 }}
-              className="design-card"
-              style={{
-                background: 'var(--surface)',
-                border: '1px solid var(--border)',
-                borderLeft: `3px solid ${item.accent}`,
-                borderRadius: '14px',
-                overflow: 'hidden',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                transition: 'border-color 0.25s, box-shadow 0.25s, transform 0.25s',
-                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.2)',
-                cursor: 'pointer',
-                minWidth: 0,
-              }}
-            >
-              <div>
-                {/* Photo Frame 4:3 or 16:10 */}
-                <div
-                  className="design-photo-box"
-                  style={{
-                    position: 'relative',
-                    width: '100%',
-                    aspectRatio: '4 / 3',
-                    background: '#0a0a0f',
-                    overflow: 'hidden',
-                  }}
-                >
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    loading="lazy"
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      display: 'block',
-                      transition: 'transform 0.4s ease',
-                    }}
-                  />
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: '8px',
-                      right: '8px',
-                      width: '26px',
-                      height: '26px',
-                      borderRadius: '8px',
-                      background: 'rgba(0, 0, 0, 0.7)',
-                      backdropFilter: 'blur(6px)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: '#ffffff',
-                    }}
-                  >
-                    <ZoomIn size={13} />
-                  </div>
-                </div>
-
-                {/* Info Box */}
-                <div style={{ padding: '14px 14px 10px' }}>
-                  <span
-                    className="design-cat-badge"
-                    style={{
-                      fontSize: '0.68rem',
-                      fontWeight: 700,
-                      color: item.accent,
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.5px',
-                      display: 'block',
-                      marginBottom: '4px',
-                    }}
-                  >
-                    {item.category}
-                  </span>
-                  <h3
-                    className="design-title"
-                    style={{
-                      margin: '0 0 6px',
-                      fontSize: '0.98rem',
-                      fontWeight: 600,
-                      color: 'var(--text)',
-                      lineHeight: 1.35,
-                    }}
-                  >
-                    {item.title}
-                  </h3>
-                  <p
-                    className="design-desc"
-                    style={{
-                      fontSize: '0.8rem',
-                      color: 'var(--text-muted)',
-                      lineHeight: 1.5,
-                      margin: 0,
-                      fontWeight: 300,
-                    }}
-                  >
-                    {item.description}
-                  </p>
-                </div>
-              </div>
-
-              {/* Tools footer (Desktop only) */}
-              <div
-                className="design-tools-footer"
-                style={{
-                  padding: '10px 14px 12px',
-                  borderTop: '1px solid rgba(255, 255, 255, 0.05)',
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  gap: '5px',
-                }}
-              >
-                {item.tools.map((t) => (
-                  <span
-                    key={t}
-                    style={{
-                      fontSize: '0.68rem',
-                      padding: '2px 7px',
-                      borderRadius: '5px',
-                      background: 'rgba(255, 255, 255, 0.04)',
-                      border: '1px solid rgba(255, 255, 255, 0.06)',
-                      color: 'var(--text-muted)',
-                    }}
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* =========================================================================
-            SECTION 3: DESAIN DIGITAL & INSTAGRAM (Social Media Content)
+            SECTION 2: DESAIN DIGITAL & INSTAGRAM (Digital & Social Media Design)
             ========================================================================= */}
         <motion.div
           initial="hidden"
@@ -805,6 +607,7 @@ const Projects = () => {
             display: 'grid',
             gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
             gap: '24px',
+            marginBottom: '64px',
           }}
         >
           {DIGITAL_DESIGNS.map((item) => (
@@ -1024,6 +827,227 @@ const Projects = () => {
         </motion.div>
 
         {/* =========================================================================
+            SECTION 3: HASIL DESAIN FISIK (Physical & Print Media)
+            ========================================================================= */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={fadeUp}
+          style={{ textAlign: 'center', marginBottom: '32px' }}
+        >
+          <span
+            style={{
+              color: 'var(--accent-2)',
+              fontSize: '0.82rem',
+              fontWeight: 600,
+              letterSpacing: '2px',
+              textTransform: 'uppercase',
+              display: 'block',
+              marginBottom: '8px',
+            }}
+          >
+            Physical &amp; Print Media
+          </span>
+          <h2
+            style={{
+              fontSize: 'clamp(2rem, 3.5vw, 2.8rem)',
+              fontWeight: 600,
+              color: 'var(--text)',
+              margin: '0 auto 12px',
+              letterSpacing: '-0.02em',
+            }}
+          >
+            Hasil Desain Fisik
+          </h2>
+          <div
+            style={{
+              width: '50px',
+              height: '3px',
+              background: 'var(--accent-2)',
+              margin: '0 auto 16px',
+              borderRadius: '2px',
+            }}
+          />
+          <p
+            style={{
+              color: 'var(--text-muted)',
+              fontSize: '0.98rem',
+              maxWidth: '640px',
+              margin: '0 auto',
+              fontWeight: 300,
+              lineHeight: 1.6,
+            }}
+          >
+            Portofolio perancangan materi cetak dan fisik seperti lanyard resmi, kartu pengenal panitia &amp; magang, spanduk acara, backdrop seremoni, dan x-banner ekshibisi.
+          </p>
+        </motion.div>
+
+        {/* Physical Designs Grid: 3 cols desktop, 2 cols mobile */}
+        <motion.div
+          variants={stagger}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.05 }}
+          className="designs-physical-grid"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+            gap: '20px',
+            
+          }}
+        >
+          {PHYSICAL_DESIGNS.map((item) => (
+            <motion.div
+              key={item.id}
+              variants={fadeUp}
+              onClick={() => {
+                playClick();
+                setActiveModal({
+                  title: item.title,
+                  category: item.category,
+                  image: item.image,
+                  description: item.description,
+                  tags: item.tools,
+                });
+              }}
+              onMouseEnter={playHover}
+              whileHover={{ y: -6 }}
+              className="design-card"
+              style={{
+                background: 'var(--surface)',
+                border: '1px solid var(--border)',
+                borderLeft: `3px solid ${item.accent}`,
+                borderRadius: '14px',
+                overflow: 'hidden',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                transition: 'border-color 0.25s, box-shadow 0.25s, transform 0.25s',
+                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.2)',
+                cursor: 'pointer',
+                minWidth: 0,
+              }}
+            >
+              <div>
+                {/* Photo Frame 4:3 or 16:10 */}
+                <div
+                  className="design-photo-box"
+                  style={{
+                    position: 'relative',
+                    width: '100%',
+                    aspectRatio: '4 / 3',
+                    background: '#0a0a0f',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    loading="lazy"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      display: 'block',
+                      transition: 'transform 0.4s ease',
+                    }}
+                  />
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: '8px',
+                      right: '8px',
+                      width: '26px',
+                      height: '26px',
+                      borderRadius: '8px',
+                      background: 'rgba(0, 0, 0, 0.7)',
+                      backdropFilter: 'blur(6px)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#ffffff',
+                    }}
+                  >
+                    <ZoomIn size={13} />
+                  </div>
+                </div>
+
+                {/* Info Box */}
+                <div style={{ padding: '14px 14px 10px' }}>
+                  <span
+                    className="design-cat-badge"
+                    style={{
+                      fontSize: '0.68rem',
+                      fontWeight: 700,
+                      color: item.accent,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px',
+                      display: 'block',
+                      marginBottom: '4px',
+                    }}
+                  >
+                    {item.category}
+                  </span>
+                  <h3
+                    className="design-title"
+                    style={{
+                      margin: '0 0 6px',
+                      fontSize: '0.98rem',
+                      fontWeight: 600,
+                      color: 'var(--text)',
+                      lineHeight: 1.35,
+                    }}
+                  >
+                    {item.title}
+                  </h3>
+                  <p
+                    className="design-desc"
+                    style={{
+                      fontSize: '0.8rem',
+                      color: 'var(--text-muted)',
+                      lineHeight: 1.5,
+                      margin: 0,
+                      fontWeight: 300,
+                    }}
+                  >
+                    {item.description}
+                  </p>
+                </div>
+              </div>
+
+              {/* Tools footer (Desktop only) */}
+              <div
+                className="design-tools-footer"
+                style={{
+                  padding: '10px 14px 12px',
+                  borderTop: '1px solid rgba(255, 255, 255, 0.05)',
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '5px',
+                }}
+              >
+                {item.tools.map((t) => (
+                  <span
+                    key={t}
+                    style={{
+                      fontSize: '0.68rem',
+                      padding: '2px 7px',
+                      borderRadius: '5px',
+                      background: 'rgba(255, 255, 255, 0.04)',
+                      border: '1px solid rgba(255, 255, 255, 0.06)',
+                      color: 'var(--text-muted)',
+                    }}
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* =========================================================================
             UNIVERSAL MODAL LIGHTBOX
             ========================================================================= */}
         <AnimatePresence>
@@ -1209,14 +1233,15 @@ const Projects = () => {
               gap: 16px !important;
               margin-bottom: 48px !important;
             }
-            .designs-physical-grid {
-              grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-              gap: 10px !important;
-              margin-bottom: 48px !important;
-            }
             .designs-digital-grid {
               grid-template-columns: 1fr !important;
               gap: 16px !important;
+              margin-bottom: 48px !important;
+            }
+            .designs-physical-grid {
+              grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+              gap: 10px !important;
+              margin-bottom: 0 !important;
             }
             .design-card {
               border-radius: 10px !important;

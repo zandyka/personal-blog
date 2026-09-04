@@ -95,35 +95,35 @@ export const profile = {
   ],
   projects: [
     {
-      title: 'BISINDO Translator App',
+      title: 'Handspeak — BISINDO Sign Language Translator',
       description:
         'Mobile application for translating BISINDO two-handed sign language into text in real time using machine learning and computer vision.',
-      tech: ['Flutter', 'TFLite', 'Roboflow', 'Computer Vision', 'Machine Learning'],
-      type: 'Mobile App',
+      tech: ['Flutter', 'Python', 'TensorFlow', 'Computer Vision', 'Mobile AI'],
+      type: 'Mobile AI Application',
       ratio: '16:9',
     },
     {
-      title: 'Intern Performance Dashboard',
+      title: 'Mahaasyik Resto — Sistem Manajemen & Pemesanan Restoran Berbasis Web',
       description:
-        'Web dashboard developed during BPJS Ketenagakerjaan internship to visualize intern performance, JMO activation metrics, and participant data.',
-      tech: ['PHP', 'MySQL', 'Bootstrap', 'Data Visualization'],
-      type: 'Web App',
+        'Full-stack restaurant management and ordering web platform with React.js SPA, Laravel 11 REST API, and Midtrans Snap payment gateway integration.',
+      tech: ['React.js 18', 'Laravel 11', 'TailwindCSS', 'Midtrans Snap', 'MySQL 8'],
+      type: 'Full-Stack Web App',
       ratio: '16:9',
     },
     {
-      title: 'Web Development Projects',
+      title: 'SIGMA BPJSTK — Sistem Informasi & Monitoring Aktivitas MBKM',
       description:
-        'Various CRUD-oriented web applications with backend/frontend integration using modern PHP frameworks and database systems.',
-      tech: ['PHP', 'Laravel', 'MySQL', 'Bootstrap 5', 'React'],
-      type: 'Web App',
+        'Integrated monitoring and evaluation system for BPJS Ketenagakerjaan MBKM internship with GPS geotagging attendance, 6 social security modules, grading center, and RBAC.',
+      tech: ['React.js', 'Laravel 11', 'TailwindCSS', 'MySQL', 'Geolocation API'],
+      type: 'Enterprise Web System',
       ratio: '16:9',
     },
     {
-      title: 'Mobile Development Projects',
+      title: 'Visualisasi Rekapan Operasional Bank Sumut',
       description:
-        'Android and Flutter mobile applications featuring custom UI and application functionality across multiple development platforms.',
-      tech: ['Flutter', 'Dart', 'Java', 'Android Studio'],
-      type: 'Mobile App',
+        'Operational transaction analytics and visualization dashboard for PT Bank Sumut to monitor teller productivity, cash & non-cash transactions, and clearing data.',
+      tech: ['Web Dashboard', 'Data Analytics', 'Chart.js', 'Banking Operations'],
+      type: 'Banking Web Dashboard',
       ratio: '16:9',
     },
   ],
