@@ -302,8 +302,10 @@ export default function SocialMarquee({ compact = false }) {
       className="social-marquee-section"
       style={{
         width: '100%',
+        maxWidth: '100%',
         position: 'relative',
         overflow: 'hidden',
+        boxSizing: 'border-box',
         padding: compact ? '8px 0 16px' : '12px 0 28px',
       }}
     >
@@ -339,6 +341,9 @@ export default function SocialMarquee({ compact = false }) {
           display: 'flex',
           flexDirection: 'column',
           gap: compact ? '12px' : '16px',
+          width: '100%',
+          maxWidth: '100%',
+          overflow: 'hidden',
         }}
       >
         {/* ROW 1 — Scrolls Left */}
@@ -425,11 +430,21 @@ export default function SocialMarquee({ compact = false }) {
         }
 
         @media (max-width: 640px) {
+          .social-marquee-section {
+            width: 100% !important;
+            max-width: 100% !important;
+            overflow: hidden !important;
+          }
+          .social-marquee-container {
+            width: 100% !important;
+            max-width: 100% !important;
+            overflow: hidden !important;
+          }
           .social-channel-card {
-            width: 250px !important;
-            min-width: 250px !important;
-            height: 132px !important;
-            padding: 13px 15px !important;
+            width: 240px !important;
+            min-width: 240px !important;
+            height: 128px !important;
+            padding: 12px 14px !important;
             border-radius: 18px !important;
           }
           .marquee-scroll-left {

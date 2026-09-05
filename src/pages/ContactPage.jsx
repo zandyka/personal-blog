@@ -114,6 +114,9 @@ export default function ContactPage() {
                 justifyContent: 'center',
                 height: '100%',
                 minHeight: '440px',
+                width: '100%',
+                maxWidth: '100%',
+                boxSizing: 'border-box',
               }}
             >
               {/* Background ambient radial lights */}
@@ -138,6 +141,7 @@ export default function ContactPage() {
                   position: 'relative',
                   zIndex: 1,
                   width: '100%',
+                  maxWidth: '100%',
                   overflow: 'hidden',
                 }}
               >
@@ -148,12 +152,12 @@ export default function ContactPage() {
         </div>
 
         {/* Section 3: Interactive Ask Zacky AI Profile Chatbox */}
-        <div style={{ marginTop: '36px', borderTop: '1px solid var(--border)' }}>
+        <div style={{ marginTop: '36px', borderTop: '1px solid var(--border)', width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
           <ProfileAIChatbox />
         </div>
 
         {/* Section 4: Interactive Frequently Asked Questions */}
-        <div style={{ borderTop: '1px solid var(--border)' }}>
+        <div style={{ borderTop: '1px solid var(--border)', width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
           <ContactFAQ />
         </div>
       </motion.div>
@@ -164,9 +168,12 @@ export default function ContactPage() {
           grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
           gap: 28px;
           max-width: 1260px;
+          width: 100%;
+          box-sizing: border-box;
           margin: 0 auto;
           padding: 0 24px;
           align-items: stretch;
+          overflow: hidden;
         }
 
         .contact-grid-col-left,
@@ -174,17 +181,35 @@ export default function ContactPage() {
           height: 100%;
           display: flex;
           flex-direction: column;
+          min-width: 0;
+          max-width: 100%;
+          width: 100%;
+          box-sizing: border-box;
+          overflow: hidden;
         }
 
         @media (max-width: 1023px) {
           .contact-main-split-grid {
-            grid-template-columns: 1fr !important;
+            grid-template-columns: minmax(0, 1fr) !important;
             gap: 24px !important;
             padding: 0 16px !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            overflow: hidden !important;
+          }
+          .contact-grid-col-left,
+          .contact-grid-col-right {
+            width: 100% !important;
+            max-width: 100% !important;
+            min-width: 0 !important;
+            overflow: hidden !important;
           }
           .contact-social-card {
-            padding: 24px 0 !important;
+            padding: 20px 0 !important;
             min-height: auto !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            overflow: hidden !important;
           }
         }
 
@@ -202,7 +227,13 @@ export default function ContactPage() {
           }
           .contact-main-split-grid {
             padding: 0 12px !important;
-            gap: 20px !important;
+            gap: 16px !important;
+            width: 100% !important;
+            max-width: 100% !important;
+          }
+          .contact-social-card {
+            padding: 16px 0 !important;
+            border-radius: 20px !important;
           }
         }
       `}</style>

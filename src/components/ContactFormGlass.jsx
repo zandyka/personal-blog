@@ -8,7 +8,6 @@ import {
   Sparkles,
   Mail,
   User,
-  Tag,
   Clock,
   MapPin,
   Briefcase,
@@ -91,7 +90,10 @@ export default function ContactFormGlass() {
       style={{
         position: 'relative',
         width: '100%',
+        maxWidth: '100%',
         height: '100%',
+        overflow: 'hidden',
+        boxSizing: 'border-box',
       }}
     >
       {/* Background ambient radial lights */}
@@ -139,6 +141,9 @@ export default function ContactFormGlass() {
           overflow: 'hidden',
           padding: 'clamp(22px, 3.5vw, 42px)',
           height: '100%',
+          width: '100%',
+          maxWidth: '100%',
+          boxSizing: 'border-box',
         }}
       >
         {/* Card Header (Clean: No 'Online & Ready' box) */}
@@ -183,23 +188,6 @@ export default function ContactFormGlass() {
 
         {/* Topic Pills */}
         <div className="glass-topic-wrapper" style={{ marginBottom: '22px' }}>
-          <div
-            className="glass-topic-label"
-            style={{
-              fontSize: '11px',
-              fontWeight: 600,
-              textTransform: 'uppercase',
-              letterSpacing: '1.5px',
-              color: 'var(--text-dim)',
-              marginBottom: '9px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-            }}
-          >
-            <Tag size={12} />
-            PILIH TOPIK PESAN (OPSIONAL)
-          </div>
           <div
             style={{
               display: 'flex',
@@ -570,11 +558,17 @@ export default function ContactFormGlass() {
         /* Mobile specific responsiveness - sleek, compact, elegant */
         @media (max-width: 640px) {
           .glass-form-wrapper {
-            padding: 0 12px !important;
+            padding: 0 !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            overflow: hidden !important;
           }
           .glassmorphic-card {
             padding: 20px 16px !important;
             border-radius: 20px !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
           }
           .glass-card-header {
             padding-bottom: 12px !important;
@@ -596,10 +590,6 @@ export default function ContactFormGlass() {
           }
           .glass-topic-wrapper {
             margin-bottom: 16px !important;
-          }
-          .glass-topic-label {
-            font-size: 10px !important;
-            margin-bottom: 7px !important;
           }
           .glass-topic-btn {
             padding: 5px 11px !important;
