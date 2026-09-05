@@ -91,9 +91,7 @@ export default function ContactFormGlass() {
       style={{
         position: 'relative',
         width: '100%',
-        maxWidth: '880px',
-        margin: '0 auto',
-        padding: '0 20px',
+        height: '100%',
       }}
     >
       {/* Background ambient radial lights */}
@@ -140,6 +138,7 @@ export default function ContactFormGlass() {
           boxShadow: '0 20px 60px var(--shadow-color)',
           overflow: 'hidden',
           padding: 'clamp(22px, 3.5vw, 42px)',
+          height: '100%',
         }}
       >
         {/* Card Header (Clean: No 'Online & Ready' box) */}

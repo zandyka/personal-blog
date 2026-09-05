@@ -132,7 +132,7 @@ const ROW_2_CHANNELS = [
   },
 ];
 
-const SocialCard = ({ item }) => {
+const SocialCard = ({ item, compact = false }) => {
   const { playHover, playClick } = useSoundContext();
   const Icon = item.icon;
   const Watermark = item.Watermark;
@@ -150,16 +150,16 @@ const SocialCard = ({ item }) => {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        width: '300px',
-        minWidth: '300px',
-        height: '144px',
-        borderRadius: '22px',
+        width: compact ? '260px' : '300px',
+        minWidth: compact ? '260px' : '300px',
+        height: compact ? '132px' : '144px',
+        borderRadius: '20px',
         background: 'var(--glass-bg)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
         border: '1px solid var(--border)',
         boxShadow: '0 8px 28px var(--shadow-color)',
-        padding: '16px 20px',
+        padding: compact ? '14px 16px' : '16px 20px',
         textDecoration: 'none',
         overflow: 'hidden',
         transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -293,7 +293,7 @@ const SocialCard = ({ item }) => {
   );
 };
 
-export default function SocialMarquee() {
+export default function SocialMarquee({ compact = false }) {
   const row1Repeated = [...ROW_1_CHANNELS, ...ROW_1_CHANNELS, ...ROW_1_CHANNELS, ...ROW_1_CHANNELS];
   const row2Repeated = [...ROW_2_CHANNELS, ...ROW_2_CHANNELS, ...ROW_2_CHANNELS, ...ROW_2_CHANNELS];
 
@@ -304,7 +304,7 @@ export default function SocialMarquee() {
         width: '100%',
         position: 'relative',
         overflow: 'hidden',
-        padding: '12px 0 28px',
+        padding: compact ? '8px 0 16px' : '12px 0 28px',
       }}
     >
       {/* Edge gradient fade masks for cinematic softness */}
@@ -314,7 +314,7 @@ export default function SocialMarquee() {
           top: 0,
           left: 0,
           bottom: 0,
-          width: 'clamp(36px, 8vw, 120px)',
+          width: compact ? '40px' : 'clamp(36px, 8vw, 120px)',
           background: 'linear-gradient(90deg, var(--bg) 0%, transparent 100%)',
           zIndex: 10,
           pointerEvents: 'none',
@@ -326,7 +326,7 @@ export default function SocialMarquee() {
           top: 0,
           right: 0,
           bottom: 0,
-          width: 'clamp(36px, 8vw, 120px)',
+          width: compact ? '40px' : 'clamp(36px, 8vw, 120px)',
           background: 'linear-gradient(-90deg, var(--bg) 0%, transparent 100%)',
           zIndex: 10,
           pointerEvents: 'none',
@@ -338,7 +338,7 @@ export default function SocialMarquee() {
         style={{
           display: 'flex',
           flexDirection: 'column',
-          gap: '16px',
+          gap: compact ? '12px' : '16px',
         }}
       >
         {/* ROW 1 — Scrolls Left */}
@@ -346,12 +346,12 @@ export default function SocialMarquee() {
           className="social-marquee-track marquee-scroll-left"
           style={{
             display: 'flex',
-            gap: '18px',
+            gap: compact ? '14px' : '18px',
             width: 'max-content',
           }}
         >
           {row1Repeated.map((item, idx) => (
-            <SocialCard key={`row1-${item.id}-${idx}`} item={item} />
+            <SocialCard key={`row1-${item.id}-${idx}`} item={item} compact={compact} />
           ))}
         </div>
 
@@ -360,12 +360,12 @@ export default function SocialMarquee() {
           className="social-marquee-track marquee-scroll-right"
           style={{
             display: 'flex',
-            gap: '18px',
+            gap: compact ? '14px' : '18px',
             width: 'max-content',
           }}
         >
           {row2Repeated.map((item, idx) => (
-            <SocialCard key={`row2-${item.id}-${idx}`} item={item} />
+            <SocialCard key={`row2-${item.id}-${idx}`} item={item} compact={compact} />
           ))}
         </div>
       </div>

@@ -131,7 +131,7 @@ export default function ProfileAIChatbox() {
     setInputText('');
     setIsTyping(true);
 
-    // Simulate AI thinking and typing response
+    // Simulate AI thinking and typing response with realistic delay
     setTimeout(() => {
       const responseData = generateAIResponse(query);
       const botMessage = {
@@ -144,7 +144,7 @@ export default function ProfileAIChatbox() {
       };
       setIsTyping(false);
       setMessages((prev) => [...prev, botMessage]);
-    }, 600);
+    }, 1400);
   };
 
   const handleResetChat = () => {
@@ -431,28 +431,50 @@ export default function ProfileAIChatbox() {
             );
           })}
 
-          {/* Typing Indicator */}
+          {/* Typing Indicator with AI Loading Animation */}
           {isTyping && (
             <motion.div
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 8, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -6, scale: 0.96 }}
+              transition={{ duration: 0.22 }}
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '8px',
+                gap: '10px',
                 background: 'var(--surface-2)',
                 border: '1px solid var(--border)',
-                padding: '8px 14px',
-                borderRadius: '16px',
+                padding: '10px 16px',
+                borderRadius: '18px',
                 alignSelf: 'flex-start',
                 width: 'fit-content',
+                boxShadow: '0 4px 16px var(--shadow-color)',
               }}
             >
-              <Bot size={15} style={{ color: 'var(--accent)' }} />
-              <div style={{ display: 'flex', gap: '4px' }}>
-                <span className="typing-dot" style={{ animationDelay: '0ms' }} />
-                <span className="typing-dot" style={{ animationDelay: '150ms' }} />
-                <span className="typing-dot" style={{ animationDelay: '300ms' }} />
+              <div
+                style={{
+                  width: '24px',
+                  height: '24px',
+                  borderRadius: '8px',
+                  background: 'var(--accent-dim)',
+                  border: '1px solid var(--accent-border)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'var(--accent)',
+                }}
+              >
+                <Bot size={14} className="bot-pulse-icon" />
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)', fontWeight: 500 }}>
+                  Ask Zacky AI sedang memproses...
+                </span>
+                <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
+                  <span className="typing-dot" style={{ animationDelay: '0ms' }} />
+                  <span className="typing-dot" style={{ animationDelay: '180ms' }} />
+                  <span className="typing-dot" style={{ animationDelay: '360ms' }} />
+                </div>
               </div>
             </motion.div>
           )}
@@ -475,17 +497,19 @@ export default function ProfileAIChatbox() {
           {SUGGESTIONS.map((sug, idx) => (
             <button
               key={idx}
-              onClick={() => handleSendMessage(sug)}
+              onClick={() => !isTyping && handleSendMessage(sug)}
               onMouseEnter={playHover}
+              disabled={isTyping}
               style={{
-                padding: '4px 10px',
+                padding: '5px 12px',
                 borderRadius: '999px',
                 background: 'var(--surface)',
                 border: '1px solid var(--border)',
-                color: 'var(--text-muted)',
+                color: isTyping ? 'var(--text-dim)' : 'var(--text-muted)',
                 fontSize: '11px',
-                cursor: 'pointer',
+                cursor: isTyping ? 'not-allowed' : 'pointer',
                 flexShrink: 0,
+                opacity: isTyping ? 0.6 : 1,
                 transition: 'all 0.18s',
               }}
             >
@@ -498,7 +522,7 @@ export default function ProfileAIChatbox() {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            handleSendMessage();
+            if (!isTyping) handleSendMessage();
           }}
           style={{
             padding: '14px 16px',
@@ -513,7 +537,8 @@ export default function ProfileAIChatbox() {
             type="text"
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
-            placeholder="Tanyakan sesuatu tentang profil atau pengalaman Zacky..."
+            disabled={isTyping}
+            placeholder={isTyping ? "Sedang memproses respon AI..." : "Tanyakan sesuatu seputar profil Zacky..."}
             style={{
               flex: 1,
               padding: '10px 14px',
@@ -523,29 +548,40 @@ export default function ProfileAIChatbox() {
               color: 'var(--text)',
               fontSize: '0.88rem',
               outline: 'none',
+              opacity: isTyping ? 0.7 : 1,
               transition: 'border-color 0.2s',
             }}
           />
           <button
             type="submit"
-            disabled={!inputText.trim()}
+            disabled={!inputText.trim() || isTyping}
             style={{
               padding: '10px 18px',
               borderRadius: '12px',
-              background: inputText.trim() ? 'var(--accent)' : 'var(--surface-2)',
-              color: inputText.trim() ? '#ffffff' : 'var(--text-muted)',
+              background: inputText.trim() && !isTyping ? 'var(--accent)' : 'var(--surface-2)',
+              color: inputText.trim() && !isTyping ? '#ffffff' : 'var(--text-muted)',
               border: 'none',
               fontWeight: 700,
               fontSize: '0.86rem',
-              cursor: inputText.trim() ? 'pointer' : 'default',
+              cursor: inputText.trim() && !isTyping ? 'pointer' : 'default',
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
               transition: 'all 0.2s',
+              opacity: isTyping ? 0.8 : (inputText.trim() ? 1 : 0.6),
             }}
           >
-            <span>Kirim</span>
-            <Send size={14} />
+            {isTyping ? (
+              <>
+                <span className="btn-ai-spinner" />
+                <span>Memproses...</span>
+              </>
+            ) : (
+              <>
+                <span>Kirim</span>
+                <Send size={14} />
+              </>
+            )}
           </button>
         </form>
       </div>
@@ -560,8 +596,27 @@ export default function ProfileAIChatbox() {
           animation: dotBounce 1.2s infinite ease-in-out;
         }
         @keyframes dotBounce {
-          0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
-          40% { transform: translateY(-5px); opacity: 1; }
+          0%, 80%, 100% { transform: translateY(0); opacity: 0.35; }
+          40% { transform: translateY(-5px); opacity: 1; box-shadow: 0 0 8px var(--accent); }
+        }
+        .bot-pulse-icon {
+          animation: botPulse 1.4s infinite ease-in-out;
+        }
+        @keyframes botPulse {
+          0%, 100% { transform: scale(1); opacity: 1; }
+          50% { transform: scale(1.15); opacity: 0.8; }
+        }
+        .btn-ai-spinner {
+          width: 13px;
+          height: 13px;
+          border: 2px solid rgba(255, 255, 255, 0.3);
+          border-top-color: #ffffff;
+          border-radius: 50%;
+          display: inline-block;
+          animation: spinLoader 0.8s linear infinite;
+        }
+        @keyframes spinLoader {
+          to { transform: rotate(360deg); }
         }
       `}</style>
     </section>
