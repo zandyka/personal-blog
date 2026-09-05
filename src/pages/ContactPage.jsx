@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import { Sparkles } from 'lucide-react';
 import SocialMarquee from '../components/ui/SocialMarquee';
 import ContactFormGlass from '../components/ContactFormGlass';
 import ContactFAQ from '../components/ContactFAQ';
@@ -84,14 +83,19 @@ export default function ContactPage() {
               maxWidth: '600px',
             }}
           >
-            Punya proyek menarik, peluang karir, atau ingin berkolaborasi? Pilih channel favorit Anda, kirim pesan langsung, atau tanyakan profil saya via asisten AI.
+            Punya proyek menarik, peluang karir, atau ingin berkolaborasi? Kirim pesan langsung di bawah, pilih channel favorit Anda, atau tanyakan profil saya via asisten AI.
           </p>
         </div>
 
-        {/* Laptop Side-by-Side Grid: Moving Socials (Left) & Direct Transmission Form (Right) */}
+        {/* Laptop Side-by-Side Grid: Direct Transmission (Left) & Moving Socials (Right) */}
         <div className="contact-main-split-grid">
-          {/* Left Column: Moving Social Contacts Panel */}
+          {/* Left Column: Direct Transmission Form */}
           <div className="contact-grid-col-left">
+            <ContactFormGlass />
+          </div>
+
+          {/* Right Column: Moving Social Contacts Panel */}
+          <div className="contact-grid-col-right">
             <div
               className="glassmorphic-card contact-social-card"
               style={{
@@ -104,19 +108,20 @@ export default function ContactPage() {
                 border: '1px solid var(--glass-border)',
                 boxShadow: '0 20px 60px var(--shadow-color)',
                 overflow: 'hidden',
-                padding: 'clamp(22px, 3.5vw, 42px)',
+                padding: 'clamp(20px, 3vw, 32px) 0',
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'space-between',
+                justifyContent: 'center',
                 height: '100%',
+                minHeight: '440px',
               }}
             >
               {/* Background ambient radial lights */}
               <div
                 style={{
                   position: 'absolute',
-                  top: '15%',
-                  right: '10%',
+                  top: '20%',
+                  right: '15%',
                   width: '280px',
                   height: '280px',
                   borderRadius: '50%',
@@ -127,111 +132,18 @@ export default function ContactPage() {
                 }}
               />
 
-              {/* Panel Header */}
+              {/* Moving Social Cards Track (Clean: No extra text banners) */}
               <div
                 style={{
                   position: 'relative',
                   zIndex: 1,
-                  borderBottom: '1px solid var(--border)',
-                  paddingBottom: '16px',
-                  marginBottom: '20px',
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: '11px',
-                    letterSpacing: '2.5px',
-                    textTransform: 'uppercase',
-                    fontWeight: 700,
-                    color: 'var(--accent)',
-                    marginBottom: '6px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                  }}
-                >
-                  <Sparkles size={13} />
-                  CHANNELS &amp; NETWORKS
-                </div>
-                <h2
-                  style={{
-                    fontSize: 'clamp(1.4rem, 3vw, 2.1rem)',
-                    fontWeight: 800,
-                    color: 'var(--text)',
-                    letterSpacing: '-0.02em',
-                    margin: 0,
-                    lineHeight: 1.2,
-                  }}
-                >
-                  Koneksi Media Sosial
-                </h2>
-                <p
-                  style={{
-                    margin: '6px 0 0',
-                    fontSize: '0.86rem',
-                    color: 'var(--text-muted)',
-                    lineHeight: 1.5,
-                  }}
-                >
-                  Hubungi saya secara langsung melalui media sosial, repositori kode, atau channel musik aktif di bawah ini.
-                </p>
-              </div>
-
-              {/* Center: Moving Social Cards Track */}
-              <div
-                style={{
-                  position: 'relative',
-                  zIndex: 1,
-                  flex: 1,
-                  display: 'flex',
-                  alignItems: 'center',
-                  margin: '4px 0',
+                  width: '100%',
                   overflow: 'hidden',
                 }}
               >
                 <SocialMarquee compact={true} />
               </div>
-
-              {/* Panel Footer */}
-              <div
-                style={{
-                  position: 'relative',
-                  zIndex: 1,
-                  borderTop: '1px solid var(--border)',
-                  paddingTop: '16px',
-                  marginTop: '16px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  flexWrap: 'wrap',
-                  gap: '12px',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span
-                    style={{
-                      width: '8px',
-                      height: '8px',
-                      borderRadius: '50%',
-                      background: '#10b981',
-                      boxShadow: '0 0 10px #10b981',
-                      display: 'inline-block',
-                    }}
-                  />
-                  <span style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--text)' }}>
-                    Available for Work &bull; Respon Cepat
-                  </span>
-                </div>
-                <span style={{ fontSize: '0.78rem', color: 'var(--text-dim)', fontWeight: 500 }}>
-                  Kota Medan &bull; WIB (UTC+7)
-                </span>
-              </div>
             </div>
-          </div>
-
-          {/* Right Column: Direct Transmission Form */}
-          <div className="contact-grid-col-right">
-            <ContactFormGlass />
           </div>
         </div>
 
@@ -249,7 +161,7 @@ export default function ContactPage() {
       <style>{`
         .contact-main-split-grid {
           display: grid;
-          grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+          grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
           gap: 28px;
           max-width: 1260px;
           margin: 0 auto;
@@ -271,7 +183,8 @@ export default function ContactPage() {
             padding: 0 16px !important;
           }
           .contact-social-card {
-            padding: 24px 20px !important;
+            padding: 24px 0 !important;
+            min-height: auto !important;
           }
         }
 

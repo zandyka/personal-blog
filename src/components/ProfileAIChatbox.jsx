@@ -104,10 +104,15 @@ export default function ProfileAIChatbox() {
   ]);
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const messagesEndRef = useRef(null);
+  const chatBodyRef = useRef(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (chatBodyRef.current) {
+      chatBodyRef.current.scrollTo({
+        top: chatBodyRef.current.scrollHeight,
+        behavior: 'smooth',
+      });
+    }
   };
 
   useEffect(() => {
@@ -261,6 +266,7 @@ export default function ProfileAIChatbox() {
 
         {/* Chat Messages Body */}
         <div
+          ref={chatBodyRef}
           style={{
             padding: '20px',
             minHeight: '340px',
@@ -478,8 +484,6 @@ export default function ProfileAIChatbox() {
               </div>
             </motion.div>
           )}
-
-          <div ref={messagesEndRef} />
         </div>
 
         {/* Quick Suggestion Chips */}
