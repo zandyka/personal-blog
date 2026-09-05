@@ -145,7 +145,7 @@ export default function ProfileAIChatbox() {
     };
   }, []);
 
-  const handleSendMessage = (textToSend) => {
+  const handleSendMessage = async (textToSend) => {
     const query = textToSend || inputText;
     if (!query.trim() || isTyping || isStreaming) return;
 
@@ -168,58 +168,84 @@ export default function ProfileAIChatbox() {
     setInputText('');
     setIsTyping(true);
 
-    // AI Thinking delay (~650ms), then begin typewriter streaming
-    setTimeout(() => {
-      const responseData = generateAIResponse(query);
-      const fullText = responseData.text;
-      const botMsgId = `bot-${Date.now()}`;
+    // Prepare recent history for conversational context
+    const historyPayload = messages.slice(-6).map((m) => ({
+      sender: m.sender,
+      text: m.text,
+    }));
 
-      // Insert empty bot message with streaming active
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: botMsgId,
-          sender: 'bot',
-          text: '',
-          badge: responseData.badge,
-          actions: responseData.actions,
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          isStreaming: true,
-        },
-      ]);
-      setIsTyping(false);
-      setIsStreaming(true);
+    // Fetch response from serverless Cloud LLM endpoint with graceful fallback
+    let responseData = null;
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: query,
+          history: historyPayload,
+        }),
+      });
 
-      // Character-by-character typewriter effect (~2 chars every 16ms = ~120 chars/sec)
-      let charIdx = 0;
-      const chunkSize = 2;
-      const speed = 16;
+      if (res.ok) {
+        responseData = await res.json();
+      }
+    } catch (err) {
+      console.warn('Chat API error, switching to local knowledge fallback:', err);
+    }
 
-      streamingIntervalRef.current = setInterval(() => {
-        charIdx += chunkSize;
-        if (charIdx >= fullText.length) {
-          clearInterval(streamingIntervalRef.current);
-          streamingIntervalRef.current = null;
-          setIsStreaming(false);
-          setMessages((prev) =>
-            prev.map((msg) =>
-              msg.id === botMsgId
-                ? { ...msg, text: fullText, isStreaming: false }
-                : msg
-            )
-          );
-        } else {
-          const currentChunk = fullText.slice(0, charIdx);
-          setMessages((prev) =>
-            prev.map((msg) =>
-              msg.id === botMsgId
-                ? { ...msg, text: currentChunk }
-                : msg
-            )
-          );
-        }
-      }, speed);
-    }, 650);
+    // Graceful offline fallback if API is unreachable or key not set
+    if (!responseData || !responseData.text) {
+      responseData = generateAIResponse(query);
+    }
+
+    const fullText = responseData.text;
+    const botMsgId = `bot-${Date.now()}`;
+
+    // Insert empty bot message with streaming active
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: botMsgId,
+        sender: 'bot',
+        text: '',
+        badge: responseData.badge || 'Ask Zacky AI',
+        actions: responseData.actions || [],
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        isStreaming: true,
+      },
+    ]);
+    setIsTyping(false);
+    setIsStreaming(true);
+
+    // Character-by-character typewriter effect (~2 chars every 16ms = ~120 chars/sec)
+    let charIdx = 0;
+    const chunkSize = 2;
+    const speed = 16;
+
+    streamingIntervalRef.current = setInterval(() => {
+      charIdx += chunkSize;
+      if (charIdx >= fullText.length) {
+        clearInterval(streamingIntervalRef.current);
+        streamingIntervalRef.current = null;
+        setIsStreaming(false);
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg.id === botMsgId
+              ? { ...msg, text: fullText, isStreaming: false }
+              : msg
+          )
+        );
+      } else {
+        const currentChunk = fullText.slice(0, charIdx);
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg.id === botMsgId
+              ? { ...msg, text: currentChunk }
+              : msg
+          )
+        );
+      }
+    }, speed);
   };
 
   const handleResetChat = () => {
