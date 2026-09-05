@@ -47,6 +47,16 @@ const GALLERY_ITEMS = [
     alt: 'Event Organizer Rindu Tenang 16:9',
   },
   {
+    id: 5,
+    category: 'Events',
+    title: 'Dokumentasi Turnamen HIMTI Games',
+    caption: 'Liputan dokumentasi visual turnamen e-sports dan kompetisi olahraga tahunan Himpunan Mahasiswa TI.',
+    aspectRatio: '9 / 16',
+    ratioLabel: '9:16',
+    src: '/gallery/event himti games (9_16).png',
+    alt: 'Dokumentasi Turnamen HIMTI Games 9:16',
+  },
+  {
     id: 6,
     category: 'Photography',
     title: 'Tim Pubdok PKKMB Vokasi 2025',
@@ -315,7 +325,7 @@ function Lightbox({ item, onClose }) {
   );
 }
 
-export default function Gallery() {
+export default function Gallery({ showAlbumButton = true, id = 'gallery' }) {
   const [activeCategory, setActiveCategory] = useState('All');
   const [selectedItem, setSelectedItem] = useState(null);
   const { playClick } = useSoundContext();
@@ -326,7 +336,7 @@ export default function Gallery() {
     : GALLERY_ITEMS.filter(i => i.category === activeCategory);
 
   return (
-    <section style={{ padding: '48px 0', background: 'var(--bg)' }}>
+    <section id={id} style={{ padding: '48px 0', background: 'var(--bg)' }}>
       <div className="container">
         {/* Header */}
         <motion.div
@@ -422,36 +432,38 @@ export default function Gallery() {
         </div>
 
         {/* Button to navigate to full Album Page */}
-        <div style={{ marginTop: '40px', display: 'flex', justifyContent: 'center' }}>
-          <Link
-            to="/album"
-            onClick={playClick}
-            style={{ textDecoration: 'none' }}
-          >
-            <motion.button
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.96 }}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '10px',
-                padding: '13px 30px',
-                borderRadius: '999px',
-                background: 'var(--surface-2)',
-                border: '1px solid var(--border)',
-                color: 'var(--text)',
-                fontSize: '0.92rem',
-                fontWeight: 600,
-                cursor: 'pointer',
-                boxShadow: '0 8px 24px var(--shadow-color)',
-                transition: 'border-color 0.25s, box-shadow 0.25s',
-              }}
+        {showAlbumButton && (
+          <div style={{ marginTop: '40px', display: 'flex', justifyContent: 'center' }}>
+            <Link
+              to="/album"
+              onClick={playClick}
+              style={{ textDecoration: 'none' }}
             >
-              <span>My Album</span>
-              <ArrowUpRight size={17} style={{ color: 'var(--accent)' }} />
-            </motion.button>
-          </Link>
-        </div>
+              <motion.button
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.96 }}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  padding: '13px 30px',
+                  borderRadius: '999px',
+                  background: 'var(--surface-2)',
+                  border: '1px solid var(--border)',
+                  color: 'var(--text)',
+                  fontSize: '0.92rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  boxShadow: '0 8px 24px var(--shadow-color)',
+                  transition: 'border-color 0.25s, box-shadow 0.25s',
+                }}
+              >
+                <span>My Album</span>
+                <ArrowUpRight size={17} style={{ color: 'var(--accent)' }} />
+              </motion.button>
+            </Link>
+          </div>
+        )}
 
         <style>{`
           @media (max-width: 768px) {
@@ -463,6 +475,9 @@ export default function Gallery() {
             }
             .gallery-card-root {
               border-radius: 10px !important;
+            }
+            .gallery-card-overlay {
+              display: none !important;
             }
             .gallery-card-caption {
               display: none !important;
