@@ -76,8 +76,8 @@ export const profile = {
     },
     {
       company: 'PT. Telkom Akses Indonesia',
-      role: 'Fiber Technician: Certified Internship',
-      period: 'Feb 2022 - Apr 2022',
+      role: 'Fiber Technician — Certified Internship',
+      period: 'Feb 2022 – Apr 2022',
       type: 'internship',
       description:
         'Installed fiber optic infrastructure, performed maintenance and repairs, worked with GPON-related systems, and assisted with technical troubleshooting in field network operations.',
@@ -89,13 +89,13 @@ export const profile = {
       period: '',
       type: 'organization',
       description:
-        'Managed the Creative Media Division, coordinated division members, managed social media content, created visual materials for organizational activities (banners, posters, ID cards, certificates, and Instagram content).',
+        'Managed the Creative Media Division, coordinated division members, managed social media content, created visual materials for organizational activities — banners, posters, ID cards, certificates, and Instagram content.',
       tags: ['Leadership', 'Team Management', 'Figma', 'Content Production', 'Photography'],
     },
   ],
   projects: [
     {
-      title: 'Handspeak: BISINDO Sign Language Translator',
+      title: 'Handspeak — BISINDO Sign Language Translator',
       description:
         'Mobile application for translating BISINDO two-handed sign language into text in real time using machine learning and computer vision.',
       tech: ['Flutter', 'Python', 'TensorFlow', 'Computer Vision', 'Mobile AI'],
@@ -103,7 +103,7 @@ export const profile = {
       ratio: '16:9',
     },
     {
-      title: 'Mahaasyik Resto: Sistem Manajemen & Pemesanan Restoran Berbasis Web',
+      title: 'Mahaasyik Resto — Sistem Manajemen & Pemesanan Restoran Berbasis Web',
       description:
         'Full-stack restaurant management and ordering web platform with React.js SPA, Laravel 11 REST API, and Midtrans Snap payment gateway integration.',
       tech: ['React.js 18', 'Laravel 11', 'TailwindCSS', 'Midtrans Snap', 'MySQL 8'],
@@ -111,7 +111,7 @@ export const profile = {
       ratio: '16:9',
     },
     {
-      title: 'SIGMA BPJSTK: Sistem Informasi & Monitoring Aktivitas MBKM',
+      title: 'SIGMA BPJSTK — Sistem Informasi & Monitoring Aktivitas MBKM',
       description:
         'Integrated monitoring and evaluation system for BPJS Ketenagakerjaan MBKM internship with GPS geotagging attendance, 6 social security modules, grading center, and RBAC.',
       tech: ['React.js', 'Laravel 11', 'TailwindCSS', 'MySQL', 'Geolocation API'],
@@ -131,7 +131,7 @@ export const profile = {
     {
       name: 'Junior Mobile Programmer',
       issuer: 'VSGA Kominfo',
-      period: 'Jun - Jul 2023',
+      period: 'Jun – Jul 2023',
       focus: 'Mobile application programming and development fundamentals',
     },
     {
@@ -143,7 +143,7 @@ export const profile = {
     {
       name: 'Fiber Technician',
       issuer: 'PT Telkom Akses Indonesia',
-      period: 'Feb - Apr 2022',
+      period: 'Feb – Apr 2022',
       focus: 'Certified internship in fiber optic and GPON infrastructure',
     },
   ],
