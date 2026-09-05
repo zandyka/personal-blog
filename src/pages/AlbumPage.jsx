@@ -46,16 +46,6 @@ const ALBUM_ITEMS = [
     src: '/gallery/event organizer rindu tenang 16_9.png',
   },
   {
-    id: 'event-live-stage',
-    title: 'Dokumentasi Live Event Musik',
-    category: 'Events',
-    date: '2023',
-    caption: 'Liputan momen interaktif dan atmosfer panggung pada rangkaian kegiatan acara kampus dalam format vertikal.',
-    aspectRatio: '9 / 16',
-    ratioLabel: '9:16',
-    src: '/gallery/event 9_16.png',
-  },
-  {
     id: 'event-himti-games',
     title: 'Dokumentasi Turnamen HIMTI Games',
     category: 'Events',
@@ -113,6 +103,151 @@ const CATEGORIES = [
   { id: 'Creative', label: 'Design & Visuals', icon: Palette },
   { id: 'Events', label: 'Events & Campus', icon: Users },
 ];
+
+function AlbumPhotoCard({ item, index, onClick }) {
+  const { playHover, playClick } = useSoundContext();
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, scale: 0.94 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.94 }}
+      transition={{ duration: 0.35, delay: index * 0.03 }}
+      onClick={() => {
+        playClick();
+        onClick(item);
+      }}
+      onMouseEnter={() => {
+        playHover();
+        setHovered(true);
+      }}
+      onMouseLeave={() => setHovered(false)}
+      className="album-card-root"
+      style={{
+        position: 'relative',
+        width: '100%',
+        aspectRatio: item.aspectRatio || '1 / 1',
+        borderRadius: '14px',
+        overflow: 'hidden',
+        cursor: 'pointer',
+        border: '1px solid var(--border)',
+        boxShadow: '0 4px 16px var(--shadow-color)',
+      }}
+    >
+      {/* Ratio badge in top-left */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '10px',
+          left: '10px',
+          padding: '2px 8px',
+          borderRadius: '6px',
+          background: 'rgba(0, 0, 0, 0.45)',
+          backdropFilter: 'blur(8px)',
+          fontSize: '9px',
+          fontFamily: "'JetBrains Mono', monospace",
+          fontWeight: 700,
+          color: 'rgba(255, 255, 255, 0.85)',
+          letterSpacing: '1px',
+          zIndex: 2,
+        }}
+      >
+        {item.ratioLabel}
+      </div>
+
+      {/* Real Image artwork with smooth zoom */}
+      <img
+        src={item.src}
+        alt={item.title}
+        loading="lazy"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          transition: 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+          transform: hovered ? 'scale(1.06)' : 'scale(1)',
+        }}
+      />
+
+      {/* Hover / mobile bottom gradient overlay */}
+      <motion.div
+        animate={{ opacity: hovered ? 1 : 0 }}
+        transition={{ duration: 0.22 }}
+        className="album-card-overlay"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background:
+            'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.35) 60%, transparent 100%)',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-end',
+          padding: 'clamp(10px, 2.5vw, 16px)',
+        }}
+      >
+        <span
+          className="album-card-cat"
+          style={{
+            fontSize: 'clamp(0.58rem, 0.75vw, 0.68rem)',
+            fontWeight: 700,
+            color: 'var(--accent)',
+            textTransform: 'uppercase',
+            letterSpacing: '1.2px',
+            marginBottom: '2px',
+          }}
+        >
+          {item.category} {item.date && `• ${item.date}`}
+        </span>
+        <span
+          className="album-card-title"
+          style={{
+            fontSize: 'clamp(0.76rem, 1.05vw, 0.95rem)',
+            fontWeight: 700,
+            color: '#ffffff',
+            lineHeight: 1.25,
+            marginBottom: '4px',
+          }}
+        >
+          {item.title}
+        </span>
+        {item.caption && (
+          <span
+            className="album-card-caption"
+            style={{
+              fontSize: '0.72rem',
+              color: 'rgba(255,255,255,0.7)',
+              lineHeight: 1.35,
+            }}
+          >
+            {item.caption}
+          </span>
+        )}
+        <div
+          className="album-zoom-btn"
+          style={{
+            position: 'absolute',
+            top: '10px',
+            right: '10px',
+            background: 'rgba(255,255,255,0.15)',
+            borderRadius: '8px',
+            width: '28px',
+            height: '28px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backdropFilter: 'blur(8px)',
+          }}
+        >
+          <ZoomIn size={13} color="#fff" />
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
 
 export default function AlbumPage() {
   const { playClick, playHover } = useSoundContext();
@@ -253,7 +388,7 @@ export default function AlbumPage() {
             className="album-masonry-wrapper"
             style={{
               display: 'flex',
-              gap: '16px',
+              gap: '14px',
               alignItems: 'flex-start',
             }}
           >
@@ -267,129 +402,18 @@ export default function AlbumPage() {
                     flex: 1,
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '16px',
+                    gap: '14px',
                     minWidth: 0,
                   }}
                 >
                   <AnimatePresence mode="popLayout">
-                    {colItems.map((item) => (
-                      <motion.div
+                    {colItems.map((item, i) => (
+                      <AlbumPhotoCard
                         key={item.id}
-                        layout
-                        initial={{ opacity: 0, y: 16 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.94 }}
-                        transition={{ duration: 0.35 }}
-                        className="album-card"
-                        onClick={() => {
-                          playClick();
-                          setSelectedPhoto(item);
-                        }}
-                        style={{
-                          position: 'relative',
-                          borderRadius: '16px',
-                          overflow: 'hidden',
-                          background: 'var(--surface)',
-                          border: '1px solid var(--border)',
-                          cursor: 'pointer',
-                          boxShadow: '0 4px 16px var(--shadow-color)',
-                          transition: 'transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease',
-                        }}
-                      >
-                        <div style={{ position: 'relative', width: '100%', overflow: 'hidden' }}>
-                          <img
-                            src={item.src}
-                            alt={item.title}
-                            loading="lazy"
-                            style={{
-                              width: '100%',
-                              height: 'auto',
-                              display: 'block',
-                              transition: 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                            }}
-                          />
-
-                          {/* Hover Zoom & Info Overlay */}
-                          <div
-                            className="album-card-overlay"
-                            style={{
-                              position: 'absolute',
-                              inset: 0,
-                              background:
-                                'linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.82) 100%)',
-                              opacity: 0,
-                              transition: 'opacity 0.28s ease',
-                              display: 'flex',
-                              flexDirection: 'column',
-                              justifyContent: 'flex-end',
-                              padding: '16px',
-                            }}
-                          >
-                            <span
-                              style={{
-                                color: 'var(--accent)',
-                                fontSize: '0.72rem',
-                                fontWeight: 600,
-                                textTransform: 'uppercase',
-                                letterSpacing: '1px',
-                                marginBottom: '4px',
-                              }}
-                            >
-                              {item.category} • {item.date}
-                            </span>
-                            <h4
-                              style={{
-                                color: '#ffffff',
-                                margin: 0,
-                                fontSize: '0.98rem',
-                                fontWeight: 700,
-                                lineHeight: 1.3,
-                              }}
-                            >
-                              {item.title}
-                            </h4>
-                          </div>
-
-                          {/* Zoom Icon Badge */}
-                          <div
-                            style={{
-                              position: 'absolute',
-                              top: '10px',
-                              right: '10px',
-                              width: '28px',
-                              height: '28px',
-                              borderRadius: '50%',
-                              background: 'rgba(0,0,0,0.65)',
-                              backdropFilter: 'blur(6px)',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              color: '#ffffff',
-                              opacity: 0.85,
-                            }}
-                          >
-                            <ZoomIn size={14} />
-                          </div>
-                        </div>
-
-                        {/* Card Footer Details */}
-                        <div style={{ padding: '14px 16px' }}>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                            <span style={{ fontSize: '0.74rem', color: 'var(--accent)', fontWeight: 600 }}>
-                              {item.category}
-                            </span>
-                            <span style={{ fontSize: '0.72rem', color: 'var(--text-dim)', fontFamily: "'JetBrains Mono', monospace" }}>
-                              {item.date}
-                            </span>
-                          </div>
-                          <h4 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 600, color: 'var(--text)', lineHeight: 1.35 }}>
-                            {item.title}
-                          </h4>
-                          <p style={{ margin: '6px 0 0', fontSize: '0.82rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
-                            {item.caption}
-                          </p>
-                        </div>
-                      </motion.div>
+                        item={item}
+                        index={colIndex * 3 + i}
+                        onClick={setSelectedPhoto}
+                      />
                     ))}
                   </AnimatePresence>
                 </div>
@@ -520,23 +544,44 @@ export default function AlbumPage() {
       </AnimatePresence>
 
       <style>{`
-        .album-card:hover {
+        .album-card-root {
+          transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+        }
+        .album-card-root:hover {
           transform: translateY(-4px);
           border-color: var(--accent-border) !important;
-          box-shadow: 0 12px 32px var(--shadow-color) !important;
-        }
-        .album-card:hover .album-card-overlay {
-          opacity: 1 !important;
-        }
-        .album-card:hover img {
-          transform: scale(1.03);
+          box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35) !important;
         }
         @media (max-width: 768px) {
           .album-masonry-wrapper {
-            gap: 10px !important;
+            gap: 8px !important;
           }
           .album-masonry-col {
-            gap: 10px !important;
+            gap: 8px !important;
+          }
+          .album-card-root {
+            border-radius: 10px !important;
+          }
+          .album-card-caption {
+            display: none !important;
+          }
+          .album-zoom-btn {
+            display: none !important;
+          }
+          .album-card-overlay {
+            opacity: 1 !important;
+            background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.25) 60%, transparent 100%) !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .album-masonry-wrapper {
+            gap: 6px !important;
+          }
+          .album-masonry-col {
+            gap: 6px !important;
+          }
+          .album-card-root {
+            border-radius: 8px !important;
           }
         }
       `}</style>

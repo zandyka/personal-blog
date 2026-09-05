@@ -7,6 +7,16 @@ import { useSoundContext } from './ui/SoundProvider';
 
 const GALLERY_ITEMS = [
   {
+    id: 1,
+    category: 'Photography',
+    title: 'Fotografi Komersial Produk Coca-Cola',
+    caption: 'Sesi fotografi produk dengan efek water splash dan pencahayaan dramatis untuk kebutuhan advertising.',
+    aspectRatio: '9 / 16',
+    ratioLabel: '9:16',
+    src: '/gallery/fotografi produk coca cola (9_16).png',
+    alt: 'Fotografi Komersial Produk Coca-Cola 9:16',
+  },
+  {
     id: 2,
     category: 'Creative',
     title: 'Desain X-Banner Produk Inovasi',
@@ -35,16 +45,6 @@ const GALLERY_ITEMS = [
     ratioLabel: '16:9',
     src: '/gallery/event organizer rindu tenang 16_9.png',
     alt: 'Event Organizer Rindu Tenang 16:9',
-  },
-  {
-    id: 5,
-    category: 'Events',
-    title: 'Dokumentasi Live Event',
-    caption: 'Liputan momen interaktif dan atmosfer panggung pada rangkaian kegiatan acara kampus dalam format vertikal.',
-    aspectRatio: '9 / 16',
-    ratioLabel: '9:16',
-    src: '/gallery/event 9_16.png',
-    alt: 'Dokumentasi Live Event 9:16',
   },
   {
     id: 6,

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useSoundContext } from './ui/SoundProvider';
-import { ArrowDown, Check, Copy, Camera, Palette, Users, Grid, Sparkles } from 'lucide-react';
+import { ArrowDown } from 'lucide-react';
 import Cat3DCanvas from './ui/Cat3DCanvas';
 
 // Available 3D Models in 3d/ folder
@@ -55,8 +55,6 @@ function useTypewriter(text, speed = 32, startDelay = 400) {
 
 export default function MainframeHero({ onExploreClick }) {
   const { playClick, playHover } = useSoundContext();
-  const [pillsVisible, setPillsVisible] = useState(false);
-  const [copied, setCopied] = useState(false);
 
   // 3D Model Selection State
   const [selectedModel, setSelectedModel] = useState(MEME_MODELS[0]);
@@ -68,28 +66,6 @@ export default function MainframeHero({ onExploreClick }) {
     28,
     450
   );
-
-  // Trigger pill visibility
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setPillsVisible(true);
-    }, 350);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const handleCopyEmail = (e) => {
-    e.stopPropagation();
-    try {
-      playClick?.();
-    } catch {}
-
-    const email = 'zackyandyka1@gmail.com';
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(email);
-    }
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2400);
-  };
 
   const handleScrollToSection = () => {
     try {
@@ -275,89 +251,8 @@ export default function MainframeHero({ onExploreClick }) {
             )}
           </p>
 
-          {/* Action Pill Buttons tailored to Album categories */}
-          <div
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '8px',
-              opacity: pillsVisible ? 1 : 0,
-              transform: pillsVisible ? 'translateY(0)' : 'translateY(12px)',
-              transition:
-                'opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)',
-            }}
-          >
-            {[
-              { label: 'Semua Galeri', icon: Grid },
-              { label: 'Fotografi Komersial', icon: Camera },
-              { label: 'Desain & Kreatif', icon: Palette },
-              { label: 'Dokumentasi Event', icon: Users },
-            ].map(({ label, icon: Icon }, idx) => (
-              <motion.button
-                key={idx}
-                whileHover={{ scale: 1.04, y: -1 }}
-                whileTap={{ scale: 0.96 }}
-                onClick={handleScrollToSection}
-                onMouseEnter={playHover}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '7px',
-                  justifyContent: 'center',
-                  background: 'var(--surface)',
-                  color: 'var(--text)',
-                  border: '1px solid var(--border)',
-                  borderRadius: '999px',
-                  fontSize: 'clamp(12.5px, 1.8vw, 14px)',
-                  fontWeight: 600,
-                  padding: '7px 18px',
-                  whiteSpace: 'nowrap',
-                  cursor: 'pointer',
-                  boxShadow: '0 4px 14px var(--shadow-color)',
-                  transition: 'background-color 0.2s, color 0.2s, border-color 0.2s',
-                }}
-              >
-                <Icon size={14} style={{ color: 'var(--accent)' }} />
-                <span>{label}</span>
-              </motion.button>
-            ))}
-
-            {/* Email Contact Pill */}
-            <motion.button
-              whileHover={{ scale: 1.04, y: -1 }}
-              whileTap={{ scale: 0.96 }}
-              onClick={handleCopyEmail}
-              onMouseEnter={playHover}
-              title="Klik untuk menyalin email"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                background: copied ? 'var(--accent-dim)' : 'transparent',
-                color: copied ? 'var(--accent)' : 'var(--text)',
-                border: copied ? '1px solid var(--accent-border)' : '1px solid var(--border)',
-                borderRadius: '999px',
-                fontSize: 'clamp(12.5px, 1.8vw, 14px)',
-                fontWeight: 600,
-                padding: '7px 18px',
-                gap: '8px',
-                whiteSpace: 'nowrap',
-                cursor: 'pointer',
-                transition: 'all 0.2s',
-              }}
-            >
-              <span>
-                Hubungi:{' '}
-                <span style={{ textDecoration: 'underline', textUnderlineOffset: '3px' }}>
-                  zackyandyka1@gmail.com
-                </span>
-              </span>
-              {copied ? <Check size={13} style={{ color: 'var(--accent)' }} /> : <Copy size={13} />}
-            </motion.button>
-          </div>
-
           {/* Clean Scroll Down Action */}
-          <div style={{ marginTop: '32px' }}>
+          <div style={{ marginTop: '32px' }} className="hero-scroll-btn-desktop">
             <motion.button
               whileHover={{ x: 4 }}
               onClick={handleScrollToSection}
@@ -508,6 +403,44 @@ export default function MainframeHero({ onExploreClick }) {
               );
             })}
           </div>
+
+          {/* Mobile-only Scroll Down Action below 3D Model */}
+          <div className="hero-scroll-btn-mobile">
+            <motion.button
+              whileTap={{ scale: 0.95 }}
+              onClick={handleScrollToSection}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: 'var(--text-muted)',
+                fontSize: '0.86rem',
+                fontWeight: 600,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '10px',
+                cursor: 'pointer',
+                padding: 0,
+                transition: 'color 0.2s',
+              }}
+            >
+              <div
+                style={{
+                  width: '28px',
+                  height: '28px',
+                  borderRadius: '50%',
+                  background: 'var(--accent-dim)',
+                  border: '1px solid var(--accent-border)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'var(--accent)',
+                }}
+              >
+                <ArrowDown size={14} />
+              </div>
+              <span>Jelajahi galeri visual di bawah</span>
+            </motion.button>
+          </div>
         </div>
       </div>
 
@@ -518,19 +451,31 @@ export default function MainframeHero({ onExploreClick }) {
           50% { opacity: 0; }
         }
 
+        .hero-scroll-btn-mobile {
+          display: none;
+        }
+
         @media (max-width: 960px) {
           .hero-grid-container {
             grid-template-columns: 1fr !important;
-            gap: 36px !important;
-            padding-top: 20px;
+            gap: 28px !important;
+            padding-top: 16px;
           }
           .hero-cat-stage-container {
-            order: -1;
+            margin-top: 10px;
             margin-bottom: 8px;
           }
           .mascot-3d-viewport {
-            width: clamp(250px, 68vw, 340px) !important;
-            height: clamp(250px, 68vw, 340px) !important;
+            width: clamp(260px, 72vw, 340px) !important;
+            height: clamp(260px, 72vw, 340px) !important;
+          }
+          .hero-scroll-btn-desktop {
+            display: none !important;
+          }
+          .hero-scroll-btn-mobile {
+            display: flex !important;
+            margin-top: 24px;
+            justify-content: center;
           }
         }
       `}</style>
