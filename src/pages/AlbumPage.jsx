@@ -1,20 +1,96 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { X, ArrowLeft } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { X, ArrowLeft, ArrowUpRight, Sun, Moon, Maximize2 } from 'lucide-react';
+import { useSoundContext } from '../components/ui/SoundProvider';
+import { useTheme } from '../hooks/useTheme';
 
-// 10 Gallery Images in exact order from prompt
-const GALLERY_IMAGES = [
-  'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260629_104530_521b2f85-c0f3-4d0e-9704-b578315b4cb9.png&w=1920&q=85',
-  'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260629_103711_76ccdb8b-5043-4f47-9c54-4379713393ea.png&w=1920&q=85',
-  'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260629_103728_394f6a1b-85e2-4386-a4f6-408472a0a5b7.png&w=1920&q=85',
-  'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260629_103739_86743e0e-16a7-4bee-bf38-dd67985344dc.png&w=1920&q=85',
-  'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260629_103748_b2215dc8-a3a7-470d-b19a-5b87fa7d0c37.png&w=1920&q=85',
-  'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260629_103758_e919ce72-5c9d-4b87-9be6-d7647b34825c.png&w=1920&q=85',
-  'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260629_103808_013583d0-3386-4547-9832-37c7d8edb3ac.png&w=1920&q=85',
-  'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260629_103937_a0c49d0a-33eb-4ead-aea6-c1baf241acbc.png&w=1920&q=85',
-  'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260629_103956_d18ed8fd-7b6f-4b86-91f9-20010fe38670.png&w=1920&q=85',
-  'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260629_104034_ba5a9963-87ff-4008-a545-6bd686c088b5.png&w=1920&q=85',
+// Real portfolio gallery items from Zacky Andyka
+const GALLERY_ITEMS = [
+  {
+    id: 'coca-cola',
+    title: 'Commercial Product Photography — Coca-Cola',
+    category: 'Photography',
+    year: '2024',
+    src: '/gallery/fotografi produk coca cola (9_16).png',
+  },
+  {
+    id: 'street-photo',
+    title: 'Visual Composition & Street Photography',
+    category: 'Photography',
+    year: '2024',
+    src: '/gallery/fotografi 9_16.png',
+  },
+  {
+    id: 'x-banner',
+    title: 'X-Banner Produk Inovasi Teknologi',
+    category: 'Design',
+    year: '2024',
+    src: '/gallery/x banner produk inovasi 1_1.png',
+  },
+  {
+    id: 'id-card',
+    title: 'Staff Internship Corporate ID Card',
+    category: 'Identity',
+    year: '2024',
+    src: '/gallery/design id card 4_3.png',
+  },
+  {
+    id: 'rindu-tenang',
+    title: 'Event Organizer — Rindu Tenang Stage',
+    category: 'Event',
+    year: '2023',
+    src: '/gallery/event organizer rindu tenang 16_9.png',
+  },
+  {
+    id: 'himti-games',
+    title: 'HIMTI Games Annual Competition Coverage',
+    category: 'Event',
+    year: '2023',
+    src: '/gallery/event himti games (9_16).png',
+  },
+  {
+    id: 'pkkmb-pubdok',
+    title: 'Tim Publikasi & Dokumentasi PKKMB Vokasi 2025',
+    category: 'Event',
+    year: '2025',
+    src: '/gallery/tim publikasi dokumentasi pkkmb vokasi 2025 4_3.png',
+  },
+  {
+    id: 'banner-sidang',
+    title: 'Graduation & Thesis Defense Banner Design',
+    category: 'Design',
+    year: '2025',
+    src: '/gallery/banner sidang 1_1.png',
+  },
+  {
+    id: 'pkbm-bintula',
+    title: 'Computer Literacy Teaching at PKBM Bintula',
+    category: 'Social',
+    year: '2024',
+    src: '/gallery/mengajar komputer di pkbm bintula 16_9.png',
+  },
+  {
+    id: 'magang-bpjs',
+    title: 'BPJS Ketenagakerjaan IT Support & Operations',
+    category: 'Professional',
+    year: '2024',
+    src: '/gallery/magang bpjs 9_16.png',
+  },
+  {
+    id: 'portrait-formal',
+    title: 'Studio Portrait — Formal Look',
+    category: 'Portrait',
+    year: '2025',
+    src: '/gallery/foto diri di about 4_3.png',
+  },
+  {
+    id: 'portrait-front',
+    title: 'Studio Portrait — Softbox Dynamic',
+    category: 'Portrait',
+    year: '2025',
+    src: '/gallery/foto diri di about (depan) 4_3.png',
+  },
 ];
 
 const VIDEO_LEFT_URL =
@@ -22,7 +98,8 @@ const VIDEO_LEFT_URL =
 const VIDEO_RIGHT_URL =
   'https://d8j0ntlcm91z4.cloudfront.net/user_39ca84eAE1ODL9hbR5VhoEj8tBf/hf_20260625_154401_a664f076-b971-4557-8728-40ef9ea4c49b.mp4';
 
-const RANDOM_SYMBOLS = ['8', '$', '^^', '%', '/'];
+// Dynamic symbols on scroll
+const RANDOM_SYMBOLS = ['ZA', '26', 'IT', '✦', 'USU', 'DZ'];
 
 // Scattered grid layout algorithm as defined in specification
 function buildLayout(count, cols) {
@@ -45,10 +122,15 @@ function buildLayout(count, cols) {
 }
 
 export default function AlbumPage() {
+  const navigate = useNavigate();
+  const { playClick, playHover } = useSoundContext();
+  const { theme, toggleTheme } = useTheme();
+
   const [cols, setCols] = useState(4);
   const [menuOpen, setMenuOpen] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const [symbolIndex, setSymbolIndex] = useState(0);
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
 
   // DOM Refs
   const spacerRef = useRef(null);
@@ -66,7 +148,6 @@ export default function AlbumPage() {
 
   // Logic refs
   const activeSideRef = useRef('right');
-  const targetSeekTimeRef = useRef({ left: 0, right: 0 });
   const lastSymbolUpdateRef = useRef(0);
   const loadedVideosRef = useRef({ left: false, right: false });
 
@@ -85,7 +166,7 @@ export default function AlbumPage() {
     return () => window.removeEventListener('resize', updateCols);
   }, [updateCols]);
 
-  const gridLayout = buildLayout(GALLERY_IMAGES.length, cols);
+  const gridLayout = buildLayout(GALLERY_ITEMS.length, cols);
 
   // 1A. Custom Cursor (Desktop Only)
   useEffect(() => {
@@ -365,7 +446,6 @@ export default function AlbumPage() {
         >
           <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
             <circle cx="24" cy="24" r="22.75" stroke="#ffffff" strokeWidth="2.5" />
-            {/* Custom decorative Japanese style glyph */}
             <path
               d="M17 17h14v3H25.5v12H22.5V20H17v-3zm0 9l3 6h-3l-3-6h3zm14 0l3 6h-3l-3-6h3z"
               fill="#ffffff"
@@ -374,38 +454,54 @@ export default function AlbumPage() {
         </div>
       )}
 
-      {/* 1B. Logo (Top Left) */}
+      {/* 1B. Logo (Top Left) — Zacky Andyka Brand Mark */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1], delay: 0 }}
         style={{
           position: 'fixed',
-          pointerEvents: 'none',
+          pointerEvents: 'auto',
           zIndex: 20,
           mixBlendMode: 'exclusion',
+          cursor: 'pointer',
         }}
         className="prmpt-logo-container"
+        onClick={() => {
+          playClick?.();
+          navigate('/');
+        }}
+        title="Kembali ke Beranda Portfolio"
       >
         <svg viewBox="0 0 355 110" fill="none" style={{ width: '100%', height: 'auto', display: 'block' }}>
-          {/* Geometric 'prmpt' wordmark */}
-          {/* p */}
-          <path d="M12 28h18v56H12V28zm18 0c14 0 24 10 24 23s-10 23-24 23H12" stroke="#ffffff" strokeWidth="11" strokeLinejoin="miter" />
-          {/* r */}
-          <path d="M84 44v40m0-22c6-12 16-16 28-14" stroke="#ffffff" strokeWidth="11" strokeLinecap="square" />
-          {/* m */}
-          <path d="M136 44v40m0-22c6-14 18-18 27-8 6-14 18-18 27-8v38" stroke="#ffffff" strokeWidth="11" strokeLinecap="square" />
-          {/* p */}
-          <path d="M214 44h16v40h-16V44zm16 0c12 0 20 8 20 18s-8 18-20 18h-16" stroke="#ffffff" strokeWidth="11" strokeLinejoin="miter" />
-          {/* t */}
-          <path d="M276 30v54c0 4 4 8 10 8m-16-44h26" stroke="#ffffff" strokeWidth="11" strokeLinecap="square" />
-          {/* (R) Circled Mark */}
-          <circle cx="330" cy="40" r="14" stroke="#ffffff" strokeWidth="3" />
-          <text x="330" y="45" fill="#ffffff" fontSize="13" fontWeight="700" textAnchor="middle" fontFamily="'Inter Tight', sans-serif">R</text>
+          {/* Bold geometric 'zandyka' brand mark with circled (R) */}
+          <text
+            x="4"
+            y="74"
+            fill="#ffffff"
+            fontFamily="'Inter Tight', sans-serif"
+            fontSize="72"
+            fontWeight="800"
+            letterSpacing="-0.045em"
+          >
+            zandyka
+          </text>
+          <circle cx="316" cy="44" r="14" stroke="#ffffff" strokeWidth="2.5" />
+          <text
+            x="316"
+            y="49"
+            fill="#ffffff"
+            fontSize="12"
+            fontWeight="700"
+            textAnchor="middle"
+            fontFamily="'Inter Tight', sans-serif"
+          >
+            R
+          </text>
         </svg>
       </motion.div>
 
-      {/* 1C. Caption (Below Logo, Left Side) */}
+      {/* 1C. Caption (Below Logo, Left Side) — Adapted Editorial Statement */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
@@ -418,14 +514,14 @@ export default function AlbumPage() {
           color: '#FFFFFF',
           fontSize: '12px',
           fontWeight: 500,
-          lineHeight: '140%',
+          lineHeight: '145%',
           letterSpacing: '-0.04em',
         }}
         className="prmpt-caption"
       >
-        When switching between videos near the center, do not reset currentTime to 0 abruptly.
-        Add a small dead zone: if cursor is within +/-50px of center, keep both videos at
-        currentTime = 0 and show whichever was last active.
+        Visual &amp; creative archive by Muhammad Daffa Zacky Andyka. Capturing commercial
+        photography, brand identities, and campus events through deliberate perspective
+        and digital craftsmanship. Scroll down to enter the full archive gallery.
       </motion.div>
 
       {/* 1D. Header Navigation (Top Right) */}
@@ -447,7 +543,11 @@ export default function AlbumPage() {
       >
         {/* "ABOUT" Link */}
         <button
-          onClick={() => setMenuOpen(true)}
+          onClick={() => {
+            playClick?.();
+            navigate('/about');
+          }}
+          onMouseEnter={playHover}
           style={{
             background: 'none',
             border: 'none',
@@ -466,9 +566,13 @@ export default function AlbumPage() {
         </button>
 
         <div style={{ display: 'flex', alignItems: 'center' }} className="prmpt-nav-right-items">
-          {/* Hamburger SVG Icon */}
+          {/* Hamburger SVG Icon -> Opens Portfolio Nav Drawer */}
           <button
-            onClick={() => setMenuOpen(true)}
+            onClick={() => {
+              playClick?.();
+              setMenuOpen(true);
+            }}
+            onMouseEnter={playHover}
             aria-label="Toggle Menu"
             style={{
               background: 'none',
@@ -491,9 +595,13 @@ export default function AlbumPage() {
             </svg>
           </button>
 
-          {/* "[ CART ]" */}
+          {/* "[ CONTACT ]" (Adapted from [ CART ]) */}
           <button
-            onClick={() => setMenuOpen(true)}
+            onClick={() => {
+              playClick?.();
+              navigate('/contact');
+            }}
+            onMouseEnter={playHover}
             style={{
               background: 'none',
               border: 'none',
@@ -506,12 +614,12 @@ export default function AlbumPage() {
             }}
             className="prmpt-cart-text"
           >
-            [ CART ]
+            [ CONTACT ]
           </button>
         </div>
       </motion.div>
 
-      {/* 1E. Product Info (Bottom Right) */}
+      {/* 1E. Product Info (Bottom Right) — Adapted to Zacky's Archive */}
       <motion.div
         id="outro-info"
         ref={outroInfoRef}
@@ -545,7 +653,7 @@ export default function AlbumPage() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: '#ffffff',
-                fontWeight: 500,
+                fontWeight: 600,
                 letterSpacing: '-0.04em',
                 textTransform: 'uppercase',
               }}
@@ -569,22 +677,22 @@ export default function AlbumPage() {
           >
             ARCHIVE COLLECTION
             <br />
-            &quot;PROMPT&quot;
+            &quot;ZACKY ANDYKA&quot;
           </div>
         </div>
 
-        {/* Price */}
+        {/* Volume / Issue Label (Adapted from $97,33) */}
         <div
           style={{
             lineHeight: '100%',
             textAlign: 'center',
             letterSpacing: '-0.04em',
             color: '#ffffff',
-            fontWeight: 500,
+            fontWeight: 600,
           }}
           className="prmpt-price-text"
         >
-          $97,33
+          VOL. 26
         </div>
       </motion.div>
 
@@ -609,8 +717,10 @@ export default function AlbumPage() {
         }}
         className="prmpt-view-btn"
         onClick={() => {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          playClick?.();
+          navigate('/contact');
         }}
+        title="Hubungi Zacky Andyka"
       >
         <span
           style={{
@@ -623,7 +733,7 @@ export default function AlbumPage() {
           }}
           className="prmpt-view-btn-text"
         >
-          view
+          contact
         </span>
       </div>
 
@@ -697,7 +807,7 @@ export default function AlbumPage() {
         }}
       />
 
-      {/* 1J. Footer (Bottom Left) */}
+      {/* 1J. Footer (Bottom Left) — Adapted to Zacky Andyka */}
       <div
         id="outro-footer"
         ref={outroFooterRef}
@@ -717,12 +827,12 @@ export default function AlbumPage() {
         }}
         className="prmpt-footer"
       >
-        <span>PRMPT (R) 2026</span>
-        <span>PRIVACY POLICY</span>
+        <span>ZACKY ANDYKA (R) 2026</span>
+        <span>MEDAN, INDONESIA</span>
       </div>
 
       {/* =========================================================================
-          SECTION 2: Black Panel (Gallery Phase)
+          SECTION 2: Black Panel (Gallery Phase with Zacky's Works)
           ========================================================================= */}
       <div
         id="black-panel"
@@ -768,7 +878,6 @@ export default function AlbumPage() {
                 const cardIndex = rIdx * cols + cIdx;
 
                 if (imgIdx === -1) {
-                  // Empty cell spacer
                   return (
                     <div
                       key={`spacer-${rIdx}-${cIdx}`}
@@ -780,15 +889,15 @@ export default function AlbumPage() {
                   );
                 }
 
-                const imgSrc = GALLERY_IMAGES[imgIdx];
+                const item = GALLERY_ITEMS[imgIdx];
 
                 return (
                   <div
-                    key={`card-${imgIdx}`}
+                    key={`card-${item.id}`}
                     ref={(el) => {
                       cardsRef.current[cardIndex] = el;
                     }}
-                    className="bp-card"
+                    className="bp-card group"
                     style={{
                       position: 'relative',
                       aspectRatio: '2 / 3',
@@ -796,21 +905,66 @@ export default function AlbumPage() {
                       transform: 'scale(0)',
                       willChange: 'transform',
                       overflow: 'hidden',
-                      borderRadius: '4px',
+                      borderRadius: '6px',
                       background: '#111111',
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => {
+                      playClick?.();
+                      setSelectedPhoto(item);
                     }}
                   >
                     <img
-                      src={imgSrc}
-                      alt={`Archive Item ${imgIdx + 1}`}
+                      src={item.src}
+                      alt={item.title}
                       loading="lazy"
                       style={{
                         width: '100%',
                         height: '100%',
                         objectFit: 'cover',
                         display: 'block',
+                        transition: 'transform 0.4s ease',
                       }}
                     />
+
+                    {/* Subtle Overlay with Title & Category on Hover */}
+                    <div
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'flex-end',
+                        padding: '16px',
+                        color: '#ffffff',
+                        opacity: 0,
+                        transition: 'opacity 0.25s ease',
+                      }}
+                      className="card-hover-overlay"
+                    >
+                      <span
+                        style={{
+                          fontSize: '10px',
+                          fontWeight: 700,
+                          textTransform: 'uppercase',
+                          letterSpacing: '1.5px',
+                          color: 'var(--accent, #FF3B1D)',
+                          marginBottom: '3px',
+                        }}
+                      >
+                        {item.category} • {item.year}
+                      </span>
+                      <span
+                        style={{
+                          fontSize: '13px',
+                          fontWeight: 600,
+                          lineHeight: 1.25,
+                        }}
+                      >
+                        {item.title}
+                      </span>
+                    </div>
                   </div>
                 );
               })
@@ -819,7 +973,87 @@ export default function AlbumPage() {
         </div>
       </div>
 
-      {/* Navigation Modal Menu (when clicking ABOUT / Hamburger / CART) */}
+      {/* Lightbox Modal when clicking a photo */}
+      <AnimatePresence>
+        {selectedPhoto && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedPhoto(null)}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              zIndex: 150,
+              background: 'rgba(0, 0, 0, 0.92)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 'clamp(20px, 4vw, 48px)',
+              cursor: 'zoom-out',
+            }}
+          >
+            <motion.div
+              initial={{ scale: 0.92, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.92, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                position: 'relative',
+                maxWidth: '90vw',
+                maxHeight: '88vh',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                cursor: 'default',
+              }}
+            >
+              <img
+                src={selectedPhoto.src}
+                alt={selectedPhoto.title}
+                style={{
+                  maxWidth: '100%',
+                  maxHeight: '76vh',
+                  objectFit: 'contain',
+                  borderRadius: '12px',
+                  boxShadow: '0 25px 50px -12px rgba(0,0,0,0.8)',
+                }}
+              />
+              <div
+                style={{
+                  marginTop: '14px',
+                  textAlign: 'center',
+                  color: '#ffffff',
+                }}
+              >
+                <div style={{ fontSize: '15px', fontWeight: 600 }}>{selectedPhoto.title}</div>
+                <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.6)', marginTop: '2px' }}>
+                  {selectedPhoto.category} • {selectedPhoto.year}
+                </div>
+              </div>
+              <button
+                onClick={() => setSelectedPhoto(null)}
+                style={{
+                  position: 'absolute',
+                  top: '-40px',
+                  right: 0,
+                  background: 'none',
+                  border: 'none',
+                  color: '#ffffff',
+                  cursor: 'pointer',
+                  padding: '8px',
+                }}
+              >
+                <X size={24} />
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Navigation Modal Menu (when clicking Hamburger) */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
@@ -829,45 +1063,82 @@ export default function AlbumPage() {
             style={{
               position: 'fixed',
               inset: 0,
-              zIndex: 100,
-              background: 'rgba(0, 0, 0, 0.94)',
+              zIndex: 120,
+              background: 'rgba(0, 0, 0, 0.95)',
               backdropFilter: 'blur(24px)',
               WebkitBackdropFilter: 'blur(24px)',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
-              padding: 'clamp(24px, 5vw, 48px)',
+              padding: 'clamp(24px, 5vw, 56px)',
               color: '#ffffff',
             }}
           >
             {/* Top Bar */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '13px', fontWeight: 600, letterSpacing: '2px', textTransform: 'uppercase' }}>
-                PRMPT NAVIGATION
-              </span>
-              <button
-                onClick={() => setMenuOpen(false)}
+              <span
                 style={{
-                  background: 'none',
-                  border: 'none',
-                  color: '#ffffff',
-                  cursor: 'pointer',
-                  padding: '8px',
+                  fontSize: '13px',
+                  fontWeight: 600,
+                  letterSpacing: '2px',
+                  textTransform: 'uppercase',
+                  color: 'rgba(255, 255, 255, 0.7)',
                 }}
               >
-                <X size={26} />
-              </button>
+                PORTFOLIO NAVIGATION
+              </span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                <button
+                  onClick={() => {
+                    playClick?.();
+                    toggleTheme();
+                  }}
+                  title="Toggle Theme"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    borderRadius: '50%',
+                    width: '38px',
+                    height: '38px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#ffffff',
+                    cursor: 'pointer',
+                  }}
+                >
+                  {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
+                </button>
+                <button
+                  onClick={() => {
+                    playClick?.();
+                    setMenuOpen(false);
+                  }}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: '#ffffff',
+                    cursor: 'pointer',
+                    padding: '8px',
+                  }}
+                >
+                  <X size={28} />
+                </button>
+              </div>
             </div>
 
             {/* Links */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxWidth: '600px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '700px' }}>
               <Link
                 to="/"
-                onClick={() => setMenuOpen(false)}
+                onClick={() => {
+                  playClick?.();
+                  setMenuOpen(false);
+                }}
                 style={{
                   color: '#ffffff',
                   textDecoration: 'none',
-                  fontSize: 'clamp(2rem, 5vw, 3.8rem)',
+                  fontSize: 'clamp(2rem, 5.2vw, 4rem)',
                   fontWeight: 600,
                   letterSpacing: '-0.03em',
                   display: 'inline-flex',
@@ -875,16 +1146,19 @@ export default function AlbumPage() {
                   gap: '16px',
                 }}
               >
-                <ArrowLeft size={32} />
-                <span>Return to Portfolio</span>
+                <ArrowLeft size={36} />
+                <span>Return to Home</span>
               </Link>
               <Link
                 to="/about"
-                onClick={() => setMenuOpen(false)}
+                onClick={() => {
+                  playClick?.();
+                  setMenuOpen(false);
+                }}
                 style={{
-                  color: 'rgba(255, 255, 255, 0.7)',
+                  color: 'rgba(255, 255, 255, 0.75)',
                   textDecoration: 'none',
-                  fontSize: 'clamp(1.5rem, 3.5vw, 2.4rem)',
+                  fontSize: 'clamp(1.5rem, 3.8vw, 2.6rem)',
                   fontWeight: 500,
                   letterSpacing: '-0.02em',
                 }}
@@ -893,11 +1167,14 @@ export default function AlbumPage() {
               </Link>
               <Link
                 to="/experience"
-                onClick={() => setMenuOpen(false)}
+                onClick={() => {
+                  playClick?.();
+                  setMenuOpen(false);
+                }}
                 style={{
-                  color: 'rgba(255, 255, 255, 0.7)',
+                  color: 'rgba(255, 255, 255, 0.75)',
                   textDecoration: 'none',
-                  fontSize: 'clamp(1.5rem, 3.5vw, 2.4rem)',
+                  fontSize: 'clamp(1.5rem, 3.8vw, 2.6rem)',
                   fontWeight: 500,
                   letterSpacing: '-0.02em',
                 }}
@@ -906,11 +1183,14 @@ export default function AlbumPage() {
               </Link>
               <Link
                 to="/projects"
-                onClick={() => setMenuOpen(false)}
+                onClick={() => {
+                  playClick?.();
+                  setMenuOpen(false);
+                }}
                 style={{
-                  color: 'rgba(255, 255, 255, 0.7)',
+                  color: 'rgba(255, 255, 255, 0.75)',
                   textDecoration: 'none',
-                  fontSize: 'clamp(1.5rem, 3.5vw, 2.4rem)',
+                  fontSize: 'clamp(1.5rem, 3.8vw, 2.6rem)',
                   fontWeight: 500,
                   letterSpacing: '-0.02em',
                 }}
@@ -919,11 +1199,14 @@ export default function AlbumPage() {
               </Link>
               <Link
                 to="/contact"
-                onClick={() => setMenuOpen(false)}
+                onClick={() => {
+                  playClick?.();
+                  setMenuOpen(false);
+                }}
                 style={{
-                  color: 'rgba(255, 255, 255, 0.7)',
+                  color: 'rgba(255, 255, 255, 0.75)',
                   textDecoration: 'none',
-                  fontSize: 'clamp(1.5rem, 3.5vw, 2.4rem)',
+                  fontSize: 'clamp(1.5rem, 3.8vw, 2.6rem)',
                   fontWeight: 500,
                   letterSpacing: '-0.02em',
                 }}
@@ -934,7 +1217,7 @@ export default function AlbumPage() {
 
             {/* Bottom Note */}
             <div style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.5)' }}>
-              PRMPT ARCHIVE COLLECTION 2026 • ALL RIGHTS RESERVED
+              MUHAMMAD DAFFA ZACKY ANDYKA • PORTFOLIO &amp; ARCHIVE
             </div>
           </motion.div>
         )}
@@ -942,7 +1225,10 @@ export default function AlbumPage() {
 
       {/* Responsive Stylesheet */}
       <style>{`
-        /* Responsive Breakpoints as defined in prompt */
+        .bp-card:hover .card-hover-overlay {
+          opacity: 1 !important;
+        }
+
         /* Desktop: >= 1024px */
         @media (min-width: 1024px) {
           .prmpt-logo-container {
@@ -994,10 +1280,10 @@ export default function AlbumPage() {
             height: 30px;
           }
           .prmpt-symbol-text {
-            font-size: 15px;
+            font-size: 14px;
           }
           .prmpt-collection-label {
-            font-size: 30px;
+            font-size: 28px;
             margin-top: 14px;
           }
           .prmpt-price-text {
@@ -1010,7 +1296,7 @@ export default function AlbumPage() {
             height: 174px;
           }
           .prmpt-view-btn-text {
-            font-size: 110px;
+            font-size: 92px;
           }
           .prmpt-main-canvas {
             position: fixed;
@@ -1078,10 +1364,10 @@ export default function AlbumPage() {
             height: 24px;
           }
           .prmpt-symbol-text {
-            font-size: 13px;
+            font-size: 12px;
           }
           .prmpt-collection-label {
-            font-size: 24px;
+            font-size: 22px;
             margin-top: 10px;
           }
           .prmpt-price-text {
@@ -1094,7 +1380,7 @@ export default function AlbumPage() {
             height: 140px;
           }
           .prmpt-view-btn-text {
-            font-size: 88px;
+            font-size: 78px;
           }
           .prmpt-main-canvas {
             position: fixed;
@@ -1116,7 +1402,7 @@ export default function AlbumPage() {
           .prmpt-logo-container {
             top: 16px;
             left: 16px;
-            width: 124px;
+            width: 136px;
           }
           .prmpt-caption {
             top: 118px;
@@ -1165,20 +1451,20 @@ export default function AlbumPage() {
             font-size: 10px;
           }
           .prmpt-collection-label {
-            font-size: 20px;
+            font-size: 18px;
             margin-top: 8px;
           }
           .prmpt-price-text {
-            font-size: 60px;
+            font-size: 56px;
           }
           .prmpt-view-btn {
             left: 16px;
             right: 16px;
             bottom: 60px;
-            height: 100px;
+            height: 96px;
           }
           .prmpt-view-btn-text {
-            font-size: 72px;
+            font-size: 64px;
           }
           .prmpt-main-canvas {
             position: fixed;
