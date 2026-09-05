@@ -3,11 +3,41 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
+// Configuration per 3D model for scale, orientation, and floor alignment
+const MODEL_CONFIGS = {
+  '/3d/maxwell_the_cat_with_bones_animation.glb': {
+    targetHeight: 1.7,
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
+    floorY: -0.85,
+    cameraDist: 3.3,
+    cameraY: 0.25,
+  },
+  '/3d/cat_box_meme.glb': {
+    targetHeight: 1.65,
+    rotX: -Math.PI / 2, // Fix OBJ orientation so box sits upright
+    rotY: 0,
+    rotZ: 0,
+    floorY: -0.85,
+    cameraDist: 3.3,
+    cameraY: 0.25,
+  },
+  '/3d/oiiaioooooiai_cat.glb': {
+    targetHeight: 1.55, // Enlarge Oiia cat to match Maxwell's presence
+    rotX: 0,
+    rotY: 0,
+    rotZ: 0,
+    floorY: -0.85,
+    cameraDist: 3.3,
+    cameraY: 0.25,
+  },
+};
+
 const Cat3DCanvas = forwardRef(function Cat3DCanvas(
   {
     modelUrl = '/3d/maxwell_the_cat_with_bones_animation.glb',
-    autoRotate = false,
-    onAngleChange,
+    autoRotate = true,
     onClick,
   },
   ref
@@ -25,23 +55,15 @@ const Cat3DCanvas = forwardRef(function Cat3DCanvas(
   const mixerRef = useRef(null);
   const animIdRef = useRef(null);
   const shadowMeshRef = useRef(null);
-
-  // Target angle animation state
-  const targetAzimuthRef = useRef(null);
+  const modelBaseYRef = useRef(null);
   const spinTrickRef = useRef(null);
 
   useImperativeHandle(ref, () => ({
-    setAngle: (deg) => {
-      if (!controlsRef.current) return;
-      let rad = THREE.MathUtils.degToRad(deg);
-      if (rad > Math.PI) rad -= 2 * Math.PI;
-      targetAzimuthRef.current = rad;
-    },
     triggerSpinTrick: () => {
       if (!controlsRef.current || spinTrickRef.current) return;
       const startAngle = controlsRef.current.getAzimuthalAngle();
       const startTime = performance.now();
-      const duration = 850; // ms
+      const duration = 850;
       spinTrickRef.current = { startAngle, startTime, duration };
     },
   }));
@@ -58,12 +80,12 @@ const Cat3DCanvas = forwardRef(function Cat3DCanvas(
     const scene = new THREE.Scene();
     sceneRef.current = scene;
 
-    // 2. Camera
+    // 2. Camera: Framed closer to the ground so the model is centered and grounded
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-    camera.position.set(0, 0.4, 3.8);
+    camera.position.set(0, 0.3, 3.4);
     cameraRef.current = camera;
 
-    // 3. WebGL Renderer with Alpha (Transparent Background)
+    // 3. WebGL Renderer with Alpha
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
       alpha: true,
@@ -83,51 +105,48 @@ const Cat3DCanvas = forwardRef(function Cat3DCanvas(
     controls.dampingFactor = 0.08;
     controls.enableZoom = false; // Prevent page scroll hijack
     controls.enablePan = false;
+    controls.target.set(0, -0.05, 0);
     controls.minPolarAngle = Math.PI * 0.22;
-    controls.maxPolarAngle = Math.PI * 0.72;
+    controls.maxPolarAngle = Math.PI * 0.68;
     controls.autoRotate = autoRotate;
-    controls.autoRotateSpeed = 2.8;
+    controls.autoRotateSpeed = 2.4;
     controlsRef.current = controls;
 
     // 5. Lighting Setup
-    // Key Light
-    const keyLight = new THREE.DirectionalLight(0xffffff, 2.9);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 3.0);
     keyLight.position.set(3.5, 5, 4);
     scene.add(keyLight);
 
-    // Fill Light (Soft)
     const fillLight = new THREE.DirectionalLight(0xf2efff, 1.8);
     fillLight.position.set(-3.5, 2, 3);
     scene.add(fillLight);
 
-    // Rim/Back Light (Warm Accent)
-    const rimLight = new THREE.DirectionalLight(0xff6633, 2.5);
+    const rimLight = new THREE.DirectionalLight(0xff6633, 2.6);
     rimLight.position.set(0, 3, -4);
     scene.add(rimLight);
 
-    // Top Ambient Light
     const ambientLight = new THREE.AmbientLight(0xffffff, 2.2);
     scene.add(ambientLight);
 
-    // Bottom Bounce Light
-    const bottomLight = new THREE.DirectionalLight(0xffffff, 1.1);
+    const bottomLight = new THREE.DirectionalLight(0xffffff, 1.2);
     bottomLight.position.set(0, -3, 0);
     scene.add(bottomLight);
 
-    // 6. Contact Shadow Disc beneath the cat
+    // 6. Contact Shadow Disc at Floor Level (-0.85)
     const canvas = document.createElement('canvas');
     canvas.width = 128;
     canvas.height = 128;
     const ctx = canvas.getContext('2d');
     const gradient = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
-    gradient.addColorStop(0, 'rgba(0, 0, 0, 0.58)');
-    gradient.addColorStop(0.5, 'rgba(0, 0, 0, 0.22)');
+    gradient.addColorStop(0, 'rgba(0, 0, 0, 0.68)');
+    gradient.addColorStop(0.45, 'rgba(0, 0, 0, 0.32)');
+    gradient.addColorStop(0.8, 'rgba(0, 0, 0, 0.08)');
     gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, 128, 128);
 
     const shadowTexture = new THREE.CanvasTexture(canvas);
-    const shadowGeo = new THREE.PlaneGeometry(2.5, 2.5);
+    const shadowGeo = new THREE.PlaneGeometry(2.8, 2.8);
     const shadowMat = new THREE.MeshBasicMaterial({
       map: shadowTexture,
       transparent: true,
@@ -135,12 +154,11 @@ const Cat3DCanvas = forwardRef(function Cat3DCanvas(
     });
     const shadowMesh = new THREE.Mesh(shadowGeo, shadowMat);
     shadowMesh.rotation.x = -Math.PI / 2;
-    shadowMesh.position.y = -1.15;
+    shadowMesh.position.y = -0.85;
     scene.add(shadowMesh);
     shadowMeshRef.current = shadowMesh;
 
     // 7. Render Animation Loop
-    let lastAngleReported = -999;
     const clock = new THREE.Clock();
 
     const animate = () => {
@@ -154,11 +172,12 @@ const Cat3DCanvas = forwardRef(function Cat3DCanvas(
         mixerRef.current.update(delta);
       }
 
-      // Gentle floating levitation motion on model
-      if (modelRef.current) {
-        modelRef.current.position.y = Math.sin(elapsedTime * 1.8) * 0.05 + 0.05;
+      // Very subtle breathing hover right at floor level (no floating high up)
+      if (modelRef.current && modelBaseYRef.current !== null) {
+        const hoverOffset = Math.sin(elapsedTime * 2.0) * 0.015;
+        modelRef.current.position.y = modelBaseYRef.current + hoverOffset;
         if (shadowMeshRef.current) {
-          shadowMeshRef.current.scale.setScalar(1 - Math.sin(elapsedTime * 1.8) * 0.04);
+          shadowMeshRef.current.scale.setScalar(1 - hoverOffset * 0.5);
         }
       }
 
@@ -179,38 +198,8 @@ const Cat3DCanvas = forwardRef(function Cat3DCanvas(
         if (progress >= 1) {
           spinTrickRef.current = null;
         }
-      }
-      // Handle Target Azimuth smooth interpolation
-      else if (targetAzimuthRef.current !== null) {
-        const curAzimuth = controls.getAzimuthalAngle();
-        let diff = targetAzimuthRef.current - curAzimuth;
-        diff = Math.atan2(Math.sin(diff), Math.cos(diff));
-
-        if (Math.abs(diff) > 0.01) {
-          const step = diff * 0.12;
-          const newAzimuth = curAzimuth + step;
-          const dist = camera.position.distanceTo(controls.target);
-          const pol = controls.getPolarAngle();
-          camera.position.x = controls.target.x + dist * Math.sin(pol) * Math.sin(newAzimuth);
-          camera.position.z = controls.target.z + dist * Math.sin(pol) * Math.cos(newAzimuth);
-          camera.lookAt(controls.target);
-        } else {
-          targetAzimuthRef.current = null;
-        }
       } else {
         controls.update();
-      }
-
-      // Report current angle in degrees
-      if (controlsRef.current && onAngleChange) {
-        const rad = controlsRef.current.getAzimuthalAngle();
-        let deg = THREE.MathUtils.radToDeg(rad);
-        deg = ((deg % 360) + 360) % 360;
-        const rounded = Math.round(deg);
-        if (Math.abs(rounded - lastAngleReported) >= 1) {
-          lastAngleReported = rounded;
-          onAngleChange(rounded);
-        }
       }
 
       renderer.render(scene, camera);
@@ -269,11 +258,20 @@ const Cat3DCanvas = forwardRef(function Cat3DCanvas(
         }
       });
       modelRef.current = null;
+      modelBaseYRef.current = null;
     }
     if (mixerRef.current) {
       mixerRef.current.stopAllAction();
       mixerRef.current = null;
     }
+
+    const config = MODEL_CONFIGS[modelUrl] || {
+      targetHeight: 1.65,
+      rotX: 0,
+      rotY: 0,
+      rotZ: 0,
+      floorY: -0.85,
+    };
 
     const loader = new GLTFLoader();
     loader.load(
@@ -281,23 +279,39 @@ const Cat3DCanvas = forwardRef(function Cat3DCanvas(
       (gltf) => {
         const model = gltf.scene;
 
-        // Auto-center model at origin (0, 0, 0)
-        const box = new THREE.Box3().setFromObject(model);
-        const center = new THREE.Vector3();
-        box.getCenter(center);
-        model.position.sub(center);
+        // 1. Apply orientation correction FIRST (e.g. for cat in box Z-up fix)
+        model.rotation.x = config.rotX || 0;
+        model.rotation.y = config.rotY || 0;
+        model.rotation.z = config.rotZ || 0;
+        model.updateMatrixWorld(true);
 
-        // Auto-normalize bounding scale
-        const size = new THREE.Vector3();
-        box.getSize(size);
-        const maxDim = Math.max(size.x, size.y, size.z);
-        if (maxDim > 0) {
-          const targetScale = 2.4 / maxDim;
-          model.scale.setScalar(targetScale);
-        }
+        // 2. Measure dimensions
+        const rawBox = new THREE.Box3().setFromObject(model);
+        const rawSize = new THREE.Vector3();
+        rawBox.getSize(rawSize);
 
-        // Slightly adjust Y so paws sit directly above the shadow
-        model.position.y += 0.05;
+        // 3. Compute scale by target height
+        const currentHeight = rawSize.y > 0 ? rawSize.y : Math.max(rawSize.x, rawSize.z);
+        const scale = config.targetHeight / currentHeight;
+        model.scale.setScalar(scale);
+        model.updateMatrixWorld(true);
+
+        // 4. Measure scaled bounding box
+        const scaledBox = new THREE.Box3().setFromObject(model);
+        const scaledCenter = new THREE.Vector3();
+        scaledBox.getCenter(scaledCenter);
+
+        // 5. Center horizontally at origin (0, 0)
+        model.position.x = -scaledCenter.x;
+        model.position.z = -scaledCenter.z;
+
+        // 6. EXACT FLOOR ALIGNMENT:
+        // Position lowest vertex of the model right on the floor level (-0.85)
+        const targetFloorY = config.floorY;
+        model.position.y = targetFloorY - scaledBox.min.y;
+
+        // Save base Y position for subtle floating
+        modelBaseYRef.current = model.position.y;
 
         // Material optimization
         model.traverse((child) => {

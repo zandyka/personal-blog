@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useSoundContext } from './ui/SoundProvider';
-import { ArrowDown, Check, Copy, RotateCw, Box, Sparkles } from 'lucide-react';
+import { ArrowDown, Check, Copy, Camera, Palette, Users, Grid } from 'lucide-react';
 import Cat3DCanvas from './ui/Cat3DCanvas';
 
 // Available 3D Models in 3d/ folder
@@ -10,24 +10,21 @@ const MEME_MODELS = [
     id: 'maxwell',
     name: 'Maxwell Cat',
     url: '/3d/maxwell_the_cat_with_bones_animation.glb',
-    badge: 'ANIMATED',
   },
   {
     id: 'cat_box',
     name: 'Cat in Box',
     url: '/3d/cat_box_meme.glb',
-    badge: 'MEME',
   },
   {
     id: 'oiia',
     name: 'Oiia Cat',
     url: '/3d/oiiaioooooiai_cat.glb',
-    badge: 'SPINNING',
   },
 ];
 
-// Custom useTypewriter Hook as specified in prompt
-function useTypewriter(text, speed = 38, startDelay = 600) {
+// Custom useTypewriter Hook
+function useTypewriter(text, speed = 36, startDelay = 500) {
   const [displayed, setDisplayed] = useState('');
   const [done, setDone] = useState(false);
 
@@ -61,20 +58,18 @@ export default function MainframeHero({ onExploreClick }) {
   const [pillsVisible, setPillsVisible] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  // 3D Model Selection & Control State
-  const [selectedModel, setSelectedModel] = useState(MEME_MODELS[0]); // Default: Maxwell
-  const [currentAngle, setCurrentAngle] = useState(0);
-  const [autoRotate, setAutoRotate] = useState(true); // Default auto-rotate for 3D model
+  // 3D Model Selection State
+  const [selectedModel, setSelectedModel] = useState(MEME_MODELS[0]);
   const catCanvasRef = useRef(null);
 
-  // Typewriter text
+  // Typewriter text adapted to the Album & Visual Gallery
   const { displayed, done } = useTypewriter(
-    'Glad you stopped in. Good taste tends to find us. Now, what are we building?',
-    38,
-    600
+    'Selamat datang di galeri visual. Dokumentasi karya fotografi komersial, perancangan desain kreatif, hingga rekam jejak event berkesan.',
+    34,
+    500
   );
 
-  // Trigger pill visibility at 400ms independent of typewriter
+  // Trigger pill visibility at 400ms
   useEffect(() => {
     const timer = setTimeout(() => {
       setPillsVisible(true);
@@ -88,7 +83,7 @@ export default function MainframeHero({ onExploreClick }) {
       playClick?.();
     } catch {}
 
-    const email = 'hello@mainframe.co';
+    const email = 'zackyandyka1@gmail.com';
     if (navigator.clipboard) {
       navigator.clipboard.writeText(email);
     }
@@ -96,7 +91,7 @@ export default function MainframeHero({ onExploreClick }) {
     setTimeout(() => setCopied(false), 2400);
   };
 
-  const handlePillClick = (label) => {
+  const handleScrollToSection = () => {
     try {
       playClick?.();
     } catch {}
@@ -107,16 +102,6 @@ export default function MainframeHero({ onExploreClick }) {
       if (albumSection) {
         albumSection.scrollIntoView({ behavior: 'smooth' });
       }
-    }
-  };
-
-  const setAnglePreset = (targetDeg) => {
-    try {
-      playClick?.();
-    } catch {}
-    setAutoRotate(false);
-    if (catCanvasRef.current) {
-      catCanvasRef.current.setAngle(targetDeg);
     }
   };
 
@@ -135,17 +120,6 @@ export default function MainframeHero({ onExploreClick }) {
     } catch {}
     setSelectedModel(model);
   };
-
-  // Direction label
-  const getDirectionLabel = (deg) => {
-    const norm = ((deg % 360) + 360) % 360;
-    if (norm >= 315 || norm < 45) return 'Depan';
-    if (norm >= 45 && norm < 135) return 'Kanan';
-    if (norm >= 135 && norm < 225) return 'Belakang';
-    return 'Kiri';
-  };
-
-  const directionName = getDirectionLabel(currentAngle);
 
   return (
     <section
@@ -167,7 +141,7 @@ export default function MainframeHero({ onExploreClick }) {
           position: 'absolute',
           inset: 0,
           background:
-            'radial-gradient(circle at 75% 45%, var(--accent-glow) 0%, transparent 60%), radial-gradient(circle at 20% 20%, var(--accent-2-dim) 0%, transparent 50%)',
+            'radial-gradient(circle at 75% 55%, var(--accent-glow) 0%, transparent 60%), radial-gradient(circle at 20% 25%, var(--accent-2-dim) 0%, transparent 50%)',
           opacity: 0.85,
           zIndex: 0,
           pointerEvents: 'none',
@@ -198,13 +172,13 @@ export default function MainframeHero({ onExploreClick }) {
           maxWidth: '1400px',
           margin: '0 auto',
           display: 'grid',
-          gridTemplateColumns: 'minmax(0, 1.12fr) minmax(0, 0.98fr)',
+          gridTemplateColumns: 'minmax(0, 1.15fr) minmax(0, 0.95fr)',
           alignItems: 'center',
           gap: 'clamp(24px, 4vw, 60px)',
         }}
         className="hero-grid-container"
       >
-        {/* LEFT COLUMN: Mainframe Text & Actions */}
+        {/* LEFT COLUMN: Adapted Album Text & Actions */}
         <div style={{ maxWidth: '640px', zIndex: 12 }}>
           {/* Blurred Intro Label */}
           <div
@@ -221,9 +195,9 @@ export default function MainframeHero({ onExploreClick }) {
               letterSpacing: '-0.01em',
             }}
           >
-            Hey there, meet A.R.I.A,
+            Visual Album &amp; Creative Works,
             <br />
-            Mainframe&apos;s Adaptive Response Interface Agent
+            Dokumentasi Fotografi, Desain Grafis &amp; Event Kampus
           </div>
 
           {/* Typewriter Text */}
@@ -231,10 +205,10 @@ export default function MainframeHero({ onExploreClick }) {
             style={{
               color: 'var(--text)',
               marginBottom: '28px',
-              fontSize: 'clamp(18px, 4vw, 27px)',
-              lineHeight: 1.35,
+              fontSize: 'clamp(18px, 3.8vw, 26px)',
+              lineHeight: 1.4,
               fontWeight: 500,
-              minHeight: '62px',
+              minHeight: '68px',
               letterSpacing: '-0.015em',
             }}
           >
@@ -254,7 +228,7 @@ export default function MainframeHero({ onExploreClick }) {
             )}
           </p>
 
-          {/* Action Pill Buttons (Slide-up & Fade-in at 400ms) */}
+          {/* Action Pill Buttons tailored to Album categories */}
           <div
             style={{
               display: 'flex',
@@ -266,37 +240,42 @@ export default function MainframeHero({ onExploreClick }) {
                 'opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)',
             }}
           >
-            {['Pitch us an idea', 'Come work here', 'Send a brief hello', 'See how we operate'].map(
-              (label, idx) => (
-                <motion.button
-                  key={idx}
-                  whileHover={{ scale: 1.04, y: -1 }}
-                  whileTap={{ scale: 0.96 }}
-                  onClick={() => handlePillClick(label)}
-                  onMouseEnter={playHover}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    background: 'var(--surface)',
-                    color: 'var(--text)',
-                    border: '1px solid var(--border)',
-                    borderRadius: '999px',
-                    fontSize: 'clamp(13px, 2vw, 15px)',
-                    fontWeight: 500,
-                    padding: '6px 18px',
-                    whiteSpace: 'nowrap',
-                    cursor: 'pointer',
-                    boxShadow: '0 4px 14px var(--shadow-color)',
-                    transition: 'background-color 0.2s, color 0.2s, border-color 0.2s',
-                  }}
-                >
-                  {label}
-                </motion.button>
-              )
-            )}
+            {[
+              { label: 'Semua Galeri', icon: Grid },
+              { label: 'Fotografi Komersial', icon: Camera },
+              { label: 'Desain & Kreatif', icon: Palette },
+              { label: 'Dokumentasi Event', icon: Users },
+            ].map(({ label, icon: Icon }, idx) => (
+              <motion.button
+                key={idx}
+                whileHover={{ scale: 1.04, y: -1 }}
+                whileTap={{ scale: 0.96 }}
+                onClick={handleScrollToSection}
+                onMouseEnter={playHover}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '7px',
+                  justifyContent: 'center',
+                  background: 'var(--surface)',
+                  color: 'var(--text)',
+                  border: '1px solid var(--border)',
+                  borderRadius: '999px',
+                  fontSize: 'clamp(13px, 2vw, 14.5px)',
+                  fontWeight: 500,
+                  padding: '7px 18px',
+                  whiteSpace: 'nowrap',
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 14px var(--shadow-color)',
+                  transition: 'background-color 0.2s, color 0.2s, border-color 0.2s',
+                }}
+              >
+                <Icon size={14} style={{ color: 'var(--accent)' }} />
+                <span>{label}</span>
+              </motion.button>
+            ))}
 
-            {/* Outline Pill Button: Reach us: hello@mainframe.co */}
+            {/* Email Contact Pill */}
             <motion.button
               whileHover={{ scale: 1.04, y: -1 }}
               whileTap={{ scale: 0.96 }}
@@ -311,67 +290,55 @@ export default function MainframeHero({ onExploreClick }) {
                 color: copied ? 'var(--accent)' : 'var(--text)',
                 border: copied ? '1px solid var(--accent-border)' : '1px solid var(--border)',
                 borderRadius: '999px',
-                fontSize: 'clamp(13px, 2vw, 15px)',
+                fontSize: 'clamp(13px, 2vw, 14.5px)',
                 fontWeight: 500,
-                padding: '6px 18px',
-                gap: '10px',
+                padding: '7px 18px',
+                gap: '8px',
                 whiteSpace: 'nowrap',
                 cursor: 'pointer',
                 transition: 'all 0.2s',
               }}
             >
               <span>
-                Reach us:{' '}
+                Hubungi:{' '}
                 <span style={{ textDecoration: 'underline', textUnderlineOffset: '3px' }}>
-                  hello@mainframe.co
+                  zackyandyka1@gmail.com
                 </span>
               </span>
               {copied ? <Check size={13} style={{ color: 'var(--accent)' }} /> : <Copy size={13} />}
             </motion.button>
           </div>
 
-          {/* Scroll Down Call to Action */}
-          <div
-            style={{
-              marginTop: '34px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '10px',
-            }}
-          >
+          {/* Clean Scroll Down Action without drag/orbit instruction text */}
+          <div style={{ marginTop: '36px' }}>
             <button
-              onClick={() => {
-                playClick?.();
-                const albumSection = document.getElementById('album-gallery-section');
-                if (albumSection) {
-                  albumSection.scrollIntoView({ behavior: 'smooth' });
-                }
-              }}
+              onClick={handleScrollToSection}
               style={{
                 background: 'none',
                 border: 'none',
                 color: 'var(--text-muted)',
-                fontSize: '0.85rem',
-                fontWeight: 500,
+                fontSize: '0.86rem',
+                fontWeight: 600,
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '8px',
                 cursor: 'pointer',
                 padding: 0,
+                transition: 'color 0.2s',
               }}
             >
               <motion.span
                 animate={{ y: [0, 4, 0] }}
                 transition={{ repeat: Infinity, duration: 1.6, ease: 'easeInOut' }}
               >
-                <ArrowDown size={14} style={{ color: 'var(--accent)' }} />
+                <ArrowDown size={15} style={{ color: 'var(--accent)' }} />
               </motion.span>
-              <span>Drag / orbit model 3D 360° • Gulir ke bawah untuk lihat galeri</span>
+              <span>Lihat Galeri Foto &amp; Dokumentasi</span>
             </button>
           </div>
         </div>
 
-        {/* RIGHT COLUMN: Interactive 3D Cat Stage */}
+        {/* RIGHT COLUMN: Interactive 3D Cat Stage (Directly touching the floor) */}
         <div
           style={{
             position: 'relative',
@@ -383,12 +350,12 @@ export default function MainframeHero({ onExploreClick }) {
           }}
           className="hero-cat-stage-container"
         >
-          {/* Luminous Aura Behind Mascot */}
+          {/* Luminous Ambient Aura Behind Mascot */}
           <div
             aria-hidden="true"
             style={{
               position: 'absolute',
-              top: '50%',
+              top: '52%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
               width: 'min(440px, 85vw)',
@@ -401,16 +368,16 @@ export default function MainframeHero({ onExploreClick }) {
             }}
           />
 
-          {/* Hologram Stage Pedestal Ring */}
+          {/* Hologram Stage Pedestal Ring (Positioned right under the model at floor level) */}
           <div
             aria-hidden="true"
             style={{
               position: 'absolute',
-              bottom: '96px',
+              bottom: '58px',
               left: '50%',
               transform: 'translateX(-50%)',
-              width: 'min(360px, 75vw)',
-              height: '70px',
+              width: 'min(380px, 80vw)',
+              height: '64px',
               borderRadius: '50%',
               border: '1px solid var(--accent-border)',
               background: 'radial-gradient(ellipse at center, var(--accent-dim) 0%, transparent 75%)',
@@ -424,8 +391,8 @@ export default function MainframeHero({ onExploreClick }) {
           <div
             style={{
               position: 'relative',
-              width: 'clamp(280px, 34vw, 480px)',
-              height: 'clamp(280px, 34vw, 480px)',
+              width: 'clamp(300px, 35vw, 490px)',
+              height: 'clamp(300px, 35vw, 490px)',
               zIndex: 5,
               userSelect: 'none',
             }}
@@ -434,173 +401,64 @@ export default function MainframeHero({ onExploreClick }) {
             <Cat3DCanvas
               ref={catCanvasRef}
               modelUrl={selectedModel.url}
-              autoRotate={autoRotate}
-              onAngleChange={setCurrentAngle}
+              autoRotate={true}
               onClick={handleMascotClick}
             />
           </div>
 
-          {/* 3D HUD Controls & Model Switcher */}
+          {/* Model Switcher Chips (Clean & Minimalist - No Depan/Kanan/Belakang text) */}
           <div
             style={{
               position: 'relative',
               zIndex: 10,
-              marginTop: '8px',
+              marginTop: '4px',
               display: 'flex',
-              flexDirection: 'column',
               alignItems: 'center',
-              gap: '8px',
+              gap: '6px',
+              background: 'var(--glass-bg)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              border: '1px solid var(--border)',
+              padding: '4px 6px',
+              borderRadius: '999px',
+              boxShadow: '0 4px 20px var(--shadow-color)',
             }}
           >
-            {/* Model Switcher Chips (Maxwell, Cat in Box, Oiia Cat) */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                background: 'var(--glass-bg)',
-                backdropFilter: 'blur(16px)',
-                WebkitBackdropFilter: 'blur(16px)',
-                border: '1px solid var(--border)',
-                padding: '4px 6px',
-                borderRadius: '999px',
-                boxShadow: '0 4px 20px var(--shadow-color)',
-              }}
-            >
-              {MEME_MODELS.map((m) => {
-                const isActive = selectedModel.id === m.id;
-                return (
-                  <button
-                    key={m.id}
-                    onClick={() => handleModelChange(m)}
-                    onMouseEnter={playHover}
-                    style={{
-                      padding: '5px 12px',
-                      borderRadius: '999px',
-                      border: 'none',
-                      background: isActive ? 'var(--accent)' : 'transparent',
-                      color: isActive ? '#ffffff' : 'var(--text-muted)',
-                      fontSize: '11px',
-                      fontWeight: 700,
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '4px',
-                      transition: 'all 0.18s ease',
-                    }}
-                  >
-                    <span>{m.name}</span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Quick Angle Presets & Auto-Spin Toggle */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                background: 'var(--surface-2)',
-                padding: '4px 8px',
-                borderRadius: '999px',
-                border: '1px solid var(--border)',
-              }}
-            >
-              {/* Direction Indicator */}
-              <span
-                style={{
-                  fontSize: '11px',
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontWeight: 600,
-                  color: 'var(--text-muted)',
-                  paddingRight: '4px',
-                }}
-              >
-                {currentAngle}°
-              </span>
-
-              {[
-                { label: 'Depan', deg: 0 },
-                { label: 'Kanan', deg: 90 },
-                { label: 'Belakang', deg: 180 },
-                { label: 'Kiri', deg: 270 },
-              ].map((item) => (
+            {MEME_MODELS.map((m) => {
+              const isActive = selectedModel.id === m.id;
+              return (
                 <button
-                  key={item.label}
-                  onClick={() => setAnglePreset(item.deg)}
+                  key={m.id}
+                  onClick={() => handleModelChange(m)}
                   onMouseEnter={playHover}
                   style={{
-                    padding: '3px 8px',
+                    padding: '6px 14px',
                     borderRadius: '999px',
                     border: 'none',
-                    background: directionName === item.label ? 'var(--accent)' : 'transparent',
-                    color: directionName === item.label ? '#ffffff' : 'var(--text-muted)',
-                    fontSize: '11px',
-                    fontWeight: 600,
+                    background: isActive ? 'var(--accent)' : 'transparent',
+                    color: isActive ? '#ffffff' : 'var(--text-muted)',
+                    fontSize: '12px',
+                    fontWeight: 700,
                     cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
                     transition: 'all 0.18s ease',
                   }}
                 >
-                  {item.label}
+                  <span>{m.name}</span>
                 </button>
-              ))}
-
-              <div
-                style={{
-                  width: '1px',
-                  height: '14px',
-                  background: 'var(--border)',
-                  margin: '0 2px',
-                }}
-              />
-
-              {/* Auto Spin Toggle */}
-              <button
-                onClick={() => {
-                  try {
-                    playClick?.();
-                  } catch {}
-                  setAutoRotate((p) => !p);
-                }}
-                title={autoRotate ? 'Hentikan Putaran Otomatis' : 'Putar 360° Otomatis'}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '4px',
-                  padding: '3px 8px',
-                  borderRadius: '999px',
-                  border: 'none',
-                  background: autoRotate ? 'var(--accent-dim)' : 'transparent',
-                  color: autoRotate ? 'var(--accent)' : 'var(--text-muted)',
-                  fontSize: '11px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  transition: 'all 0.18s ease',
-                }}
-              >
-                <RotateCw
-                  size={11}
-                  style={{
-                    animation: autoRotate ? 'spin 3s linear infinite' : 'none',
-                  }}
-                />
-                <span>Auto</span>
-              </button>
-            </div>
+              );
+            })}
           </div>
         </div>
       </div>
 
-      {/* Embedded CSS for Blink & Spin & Responsiveness */}
+      {/* Embedded CSS for Blink & Responsiveness */}
       <style>{`
         @keyframes blink {
           0%, 100% { opacity: 1; }
           50% { opacity: 0; }
-        }
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
         }
 
         @media (max-width: 960px) {
@@ -614,8 +472,8 @@ export default function MainframeHero({ onExploreClick }) {
             margin-bottom: 8px;
           }
           .mascot-3d-viewport {
-            width: clamp(230px, 60vw, 320px) !important;
-            height: clamp(230px, 60vw, 320px) !important;
+            width: clamp(250px, 68vw, 340px) !important;
+            height: clamp(250px, 68vw, 340px) !important;
           }
         }
       `}</style>
