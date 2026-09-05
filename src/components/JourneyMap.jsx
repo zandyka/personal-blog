@@ -12,7 +12,6 @@ import {
   Calendar,
   CheckCircle2,
   Navigation,
-  ArrowRight,
   ChevronRight,
   Briefcase,
   Sparkles,
@@ -25,19 +24,19 @@ const LOCATIONS = [
     order: '01',
     name: 'Universitas Sumatera Utara (USU)',
     shortName: 'Kampus USU',
-    role: 'Mahasiswa D3 TI (Cum Laude) & Kadiv Media HIMTI',
-    period: '2021 - 2025',
+    role: 'Teknik Informatika & Kadiv Media HIMTI',
+    period: '2023 - 2026',
     category: 'education',
     categoryLabel: 'Pendidikan & Organisasi',
     icon: GraduationCap,
     accent: '#818cf8',
     address: 'Jl. Dr. T. Mansur No. 9, Padang Bulan, Medan',
     summary:
-      'Pusat kegiatan perkuliahan akademik, riset skripsi aplikasi AI Handspeak BISINDO Translator, serta kepemimpinan Divisi Media Kreatif HIMTI USU untuk publikasi dan visual branding.',
+      'Studi akademik Teknik Informatika, riset Tugas Akhir HandSpeak BISINDO Translator AI, serta kepemimpinan Divisi Media Kreatif HIMTI USU.',
     highlights: [
-      'Lulus predikat Cum Laude (IPK 3.84 / 4.00)',
-      'Memimpin Divisi Media Kreatif HIMTI USU',
-      'Riset & publikasi aplikasi AI Handspeak BISINDO Translator',
+      'Lulus Predikat Cum Laude (IPK 3.84 / 4.00)',
+      'Kepala Divisi Media Kreatif HIMTI USU',
+      'Riset Inovasi AI HandSpeak BISINDO Translator',
     ],
   },
   {
@@ -53,11 +52,11 @@ const LOCATIONS = [
     accent: '#ef4444',
     address: 'Regional Area Medan, Sumatera Utara',
     summary:
-      'Praktik lapangan pemeliharaan jaringan telekomunikasi kabel fiber optik, penyambungan fusion splicing kabel distribusi GPON, dan uji redaman OPM/OTDR.',
+      'Praktik lapangan pemeliharaan transmisi kabel fiber optik, penyambungan fusion splicing, dan pengujian kualitas redaman GPON.',
     highlights: [
-      'Penyambungan kabel fiber optik presisi tinggi (Fusion Splicing)',
-      'Pengujian redaman jaringan transmisi OPM & OTDR',
-      'Pemeliharaan infrastruktur jaringan lapangan FTTH / GPON',
+      'Fusion Splicing kabel serat optik presisi',
+      'Pengujian transmisi jaringan OPM & OTDR',
+      'Maintenance infrastruktur lapangan FTTH / GPON',
     ],
   },
   {
@@ -71,13 +70,13 @@ const LOCATIONS = [
     categoryLabel: 'Aksi Sosial & Literasi',
     icon: BookOpen,
     accent: '#f59e0b',
-    address: 'Kota Medan, Sumatera Utara',
+    address: 'Jl. Kemuning VIII Perumnas No.166 Blok 19, Helvetia, Kota Medan',
     summary:
-      'Aksi sosial pengabdian masyarakat mengajarkan keterampilan literasi digital dan aplikasi perkantoran (Word, Excel, PowerPoint) untuk peserta Paket A, B, dan C.',
+      'Pengabdian masyarakat mengajarkan literasi digital aplikatif dan Microsoft Office untuk peserta didik kesetaraan Paket A, B, dan C.',
     highlights: [
-      'Pelatihan literasi digital dan komputer aplikatif bagi masyarakat',
-      'Pendampingan intensif Microsoft Office (Word, Excel, PowerPoint)',
-      'Edukasi inklusif bagi peserta kesetaraan Paket A, B, dan C',
+      'Pelatihan literasi komputer aplikatif masyarakat',
+      'Pendampingan intensif Word, Excel & PowerPoint',
+      'Edukasi inklusif kesetaraan Paket A, B, dan C',
     ],
   },
   {
@@ -91,12 +90,12 @@ const LOCATIONS = [
     categoryLabel: 'Perbankan Syariah',
     icon: Landmark,
     accent: '#00a39d',
-    address: 'Kantor Cabang Medan, Sumatera Utara',
+    address: 'Kantor Cabang Medan Area, Kota Medan',
     summary:
-      'Bertanggung jawab atas verifikasi keabsahan data perbankan nasabah, standarisasi administrasi dokumen pembiayaan, dan kearsipan berbasis kepatuhan perbankan ketat.',
+      'Verifikasi keabsahan data operasional perbankan nasabah, standarisasi kepatuhan dokumen pembiayaan, dan kearsipan berbasis SOP ketat.',
     highlights: [
       'Verifikasi keabsahan data operasional perbankan',
-      'Standarisasi arsip & kepatuhan dokumen pembiayaan nasabah',
+      'Standarisasi kepatuhan dokumen pembiayaan',
       'Sertifikasi Magang MBKM BSI Terverifikasi',
     ],
   },
@@ -113,40 +112,40 @@ const LOCATIONS = [
     accent: '#0284c7',
     address: 'Jl. Imam Bonjol No. 18, Petisah Tengah, Medan',
     summary:
-      'Mendukung operasional perbankan harian, pemrosesan transaksi teller & customer service, serta analisis data kliring dan rekapitulasi volume perbankan.',
+      'Operasional perbankan harian, pemrosesan transaksi teller & customer service, serta perancangan dashboard analitik volume transaksi.',
     highlights: [
-      'Pemrosesan transaksi operasional sesuai standar SOP ketat',
-      'Membangun dashboard analitik visual volume transaksi Bank Sumut',
-      'Rekonsiliasi harian dan audit data kliring perbankan',
+      'Pemrosesan transaksi operasional sesuai SOP',
+      'Dashboard analitik visual volume transaksi',
+      'Rekonsiliasi harian data kliring perbankan',
     ],
   },
   {
     id: 'bpjs',
     order: '06',
-    name: 'BPJS Ketenagakerjaan',
-    shortName: 'BPJSTK Medan',
+    name: 'BPJS Ketenagakerjaan Medan Kota',
+    shortName: 'BPJSTK Medan Kota',
     role: 'IT / Admin Support Intern',
     period: 'September 2025 - Desember 2025',
     category: 'it',
     categoryLabel: 'IT & Jaminan Sosial',
     icon: Server,
     accent: '#10b981',
-    address: 'Jl. Pattimura No. 334, Medan',
+    address: 'BPJS Ketenagakerjaan Kantor Cabang Medan Kota, Jl. Pattimura No. 334, Medan',
     summary:
-      'Mengembangkan platform sistem informasi SIGMA BPJSTK, analitik dataset peserta magang, serta penanganan troubleshooting teknis aplikasi mobile JMO.',
+      'Pengembangan platform SIGMA BPJSTK, analitik dataset peserta magang, serta penanganan troubleshooting teknis aplikasi mobile JMO.',
     highlights: [
-      'Membangun sistem informasi SIGMA BPJSTK berbasis React & Laravel',
-      'Troubleshooting teknis dan pendampingan aplikasi mobile JMO',
-      'Monitoring dan visualisasi analitik dataset 198 peserta magang',
+      'Membangun sistem informasi SIGMA BPJSTK',
+      'Troubleshooting teknis aplikasi mobile JMO',
+      'Monitoring analitik dataset 198 peserta magang',
     ],
   },
 ];
 
 const CATEGORIES = [
-  { id: 'all', label: 'Semua Perjalanan' },
-  { id: 'banking', label: 'Perbankan' },
-  { id: 'it', label: 'IT & Jaringan' },
-  { id: 'education', label: 'Kampus & Sosial' },
+  { id: 'all', label: 'SEMUA PERJALANAN' },
+  { id: 'banking', label: 'PERBANKAN' },
+  { id: 'it', label: 'IT & JARINGAN' },
+  { id: 'education', label: 'KAMPUS & SOSIAL' },
 ];
 
 export default function JourneyMap() {
@@ -172,7 +171,7 @@ export default function JourneyMap() {
       }}
     >
       <div style={{ maxWidth: '1140px', margin: '0 auto' }}>
-        {/* Section Header */}
+        {/* Section Header with Bold Typography */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -184,42 +183,47 @@ export default function JourneyMap() {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '8px',
-              padding: '5px 14px',
+              padding: '4px 14px',
               borderRadius: '999px',
               background: 'rgba(2, 132, 199, 0.1)',
               border: '1px solid rgba(2, 132, 199, 0.25)',
               color: '#38bdf8',
-              fontSize: '0.78rem',
-              fontWeight: 700,
+              fontSize: '0.74rem',
+              fontWeight: 800,
               textTransform: 'uppercase',
               letterSpacing: '2px',
               marginBottom: '12px',
+              fontFamily: "'JetBrains Mono', monospace",
             }}
           >
             <Navigation size={13} />
-            <span>Mobility &amp; Field Milestones</span>
+            <span>MOBILITY &amp; FIELD MILESTONES</span>
           </div>
+
           <h2
             style={{
-              fontSize: 'clamp(1.9rem, 3.8vw, 2.7rem)',
-              fontWeight: 700,
+              fontSize: 'clamp(2rem, 4.5vw, 3.4rem)',
+              fontWeight: 900,
               color: 'var(--text)',
-              letterSpacing: '-0.02em',
-              margin: '0 0 12px',
+              letterSpacing: '-0.03em',
+              margin: '0 0 10px',
+              textTransform: 'uppercase',
             }}
           >
-            My Journey Map &bull; Rekam Jejak Lapangan
+            MY JOURNEY MAP
           </h2>
+
           <p
             style={{
               color: 'var(--text-muted)',
-              fontSize: '0.96rem',
-              maxWidth: '680px',
+              fontSize: '0.92rem',
+              maxWidth: '650px',
               margin: '0 auto',
-              lineHeight: 1.65,
+              lineHeight: 1.5,
+              fontFamily: "'JetBrains Mono', monospace",
             }}
           >
-            Peta rute terarah menelusuri mobilitas pengalaman di dunia perbankan, BUMN infrastruktur telekomunikasi, almamater kampus, dan pengabdian sosial di Kota Medan.
+            Rekam jejak mobilitas lapangan di Kota Medan • Perbankan, BUMN, Almamater &amp; Aksi Sosial
           </p>
 
           {/* Category Filter Tabs */}
@@ -229,7 +233,7 @@ export default function JourneyMap() {
               justifyContent: 'center',
               gap: '8px',
               flexWrap: 'wrap',
-              marginTop: '24px',
+              marginTop: '22px',
             }}
           >
             {CATEGORIES.map((c) => {
@@ -240,7 +244,6 @@ export default function JourneyMap() {
                   onClick={() => {
                     playClick();
                     setActiveCategory(c.id);
-                    // If current selection is not in filtered list, select first available
                     const newFiltered =
                       c.id === 'all'
                         ? LOCATIONS
@@ -251,10 +254,11 @@ export default function JourneyMap() {
                   }}
                   onMouseEnter={playHover}
                   style={{
-                    padding: '7px 16px',
-                    borderRadius: '999px',
-                    fontSize: '0.82rem',
-                    fontWeight: active ? 700 : 500,
+                    padding: '6px 14px',
+                    borderRadius: '8px',
+                    fontSize: '0.74rem',
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontWeight: active ? 800 : 600,
                     cursor: 'pointer',
                     background: active ? 'var(--accent)' : 'var(--surface)',
                     color: active ? '#ffffff' : 'var(--text-muted)',
@@ -275,12 +279,12 @@ export default function JourneyMap() {
           style={{
             display: 'grid',
             gridTemplateColumns: 'minmax(0, 1.15fr) minmax(0, 1.25fr)',
-            gap: '28px',
+            gap: '24px',
             alignItems: 'start',
           }}
           className="journey-roadmap-container"
         >
-          {/* LEFT: Structured Route Stepper / Stations Tracker */}
+          {/* LEFT: Structured Route Stepper */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
@@ -288,9 +292,9 @@ export default function JourneyMap() {
             style={{
               background: 'var(--surface)',
               border: '1px solid var(--border)',
-              borderRadius: '24px',
-              padding: '24px',
-              boxShadow: '0 10px 30px var(--shadow-color)',
+              borderRadius: '20px',
+              padding: '20px',
+              boxShadow: '0 8px 24px var(--shadow-color)',
             }}
           >
             {/* Header Track Indicator */}
@@ -299,50 +303,51 @@ export default function JourneyMap() {
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                marginBottom: '20px',
-                paddingBottom: '14px',
+                marginBottom: '16px',
+                paddingBottom: '12px',
                 borderBottom: '1px solid var(--border)',
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Briefcase size={16} style={{ color: 'var(--accent)' }} />
+                <Briefcase size={15} style={{ color: 'var(--accent)' }} />
                 <span
                   style={{
-                    fontSize: '0.82rem',
-                    fontWeight: 700,
+                    fontSize: '0.78rem',
+                    fontWeight: 800,
                     textTransform: 'uppercase',
                     letterSpacing: '1px',
                     color: 'var(--text)',
+                    fontFamily: "'JetBrains Mono', monospace",
                   }}
                 >
-                  Rute Destinasi Pengalaman
+                  RUTE DESTINASI
                 </span>
               </div>
               <span
                 style={{
-                  fontSize: '11px',
+                  fontSize: '10.5px',
                   fontFamily: "'JetBrains Mono', monospace",
                   color: 'var(--accent)',
                   background: 'var(--accent-dim)',
-                  padding: '3px 10px',
-                  borderRadius: '999px',
+                  padding: '2px 8px',
+                  borderRadius: '6px',
                   border: '1px solid var(--accent-border)',
-                  fontWeight: 700,
+                  fontWeight: 800,
                 }}
               >
-                {filteredLocations.length} Destinasi
+                {filteredLocations.length} TITIK
               </span>
             </div>
 
             {/* Stepper Timeline List */}
-            <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {/* Connected Track Vertical Line */}
               <div
                 style={{
                   position: 'absolute',
-                  left: '21px',
-                  top: '18px',
-                  bottom: '18px',
+                  left: '19px',
+                  top: '16px',
+                  bottom: '16px',
                   width: '2px',
                   background: 'var(--border)',
                   zIndex: 1,
@@ -366,45 +371,45 @@ export default function JourneyMap() {
                       zIndex: 2,
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '14px',
-                      padding: '12px 14px',
-                      borderRadius: '16px',
+                      gap: '12px',
+                      padding: '10px 12px',
+                      borderRadius: '12px',
                       cursor: 'pointer',
                       background: isSelected ? 'var(--surface-2)' : 'transparent',
                       border: isSelected ? `1.5px solid ${loc.accent}` : '1px solid transparent',
-                      boxShadow: isSelected ? `0 4px 18px ${loc.accent}20` : 'none',
-                      transition: 'all 0.22s cubic-bezier(0.22, 1, 0.36, 1)',
+                      boxShadow: isSelected ? `0 4px 14px ${loc.accent}20` : 'none',
+                      transition: 'all 0.2s cubic-bezier(0.22, 1, 0.36, 1)',
                     }}
                   >
                     {/* Station Number Node */}
                     <div
                       style={{
-                        width: '42px',
-                        height: '42px',
-                        borderRadius: '14px',
+                        width: '38px',
+                        height: '38px',
+                        borderRadius: '10px',
                         background: isSelected ? loc.accent : 'var(--surface)',
                         border: isSelected ? `2px solid #ffffff` : `1.5px solid var(--border)`,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         color: isSelected ? '#ffffff' : loc.accent,
-                        boxShadow: isSelected ? `0 0 16px ${loc.accent}70` : '0 2px 6px rgba(0,0,0,0.08)',
+                        boxShadow: isSelected ? `0 0 14px ${loc.accent}60` : 'none',
                         flexShrink: 0,
-                        transition: 'all 0.22s ease',
+                        transition: 'all 0.2s ease',
                       }}
                     >
-                      <Icon size={18} />
+                      <Icon size={16} />
                     </div>
 
                     {/* Milestone Info */}
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '2px' }}>
                         <span
                           style={{
-                            fontSize: '10px',
+                            fontSize: '9.5px',
                             fontFamily: "'JetBrains Mono', monospace",
-                            fontWeight: 700,
-                            padding: '2px 6px',
+                            fontWeight: 800,
+                            padding: '1px 5px',
                             borderRadius: '4px',
                             background: isSelected ? `${loc.accent}25` : 'var(--surface-2)',
                             color: isSelected ? loc.accent : 'var(--text-dim)',
@@ -415,7 +420,7 @@ export default function JourneyMap() {
                         </span>
                         <span
                           style={{
-                            fontSize: '10.5px',
+                            fontSize: '10px',
                             color: 'var(--text-dim)',
                             fontWeight: 600,
                           }}
@@ -426,9 +431,9 @@ export default function JourneyMap() {
                       <h4
                         style={{
                           margin: 0,
-                          fontSize: '0.94rem',
+                          fontSize: '0.88rem',
                           fontWeight: 700,
-                          color: isSelected ? 'var(--text)' : 'var(--text)',
+                          color: 'var(--text)',
                           whiteSpace: 'nowrap',
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
@@ -439,7 +444,7 @@ export default function JourneyMap() {
                       <p
                         style={{
                           margin: 0,
-                          fontSize: '0.78rem',
+                          fontSize: '0.75rem',
                           color: isSelected ? loc.accent : 'var(--text-muted)',
                           whiteSpace: 'nowrap',
                           overflow: 'hidden',
@@ -450,7 +455,7 @@ export default function JourneyMap() {
                       </p>
                     </div>
 
-                    {/* Active Arrow Indicator */}
+                    {/* Chevron Indicator */}
                     <div
                       style={{
                         color: isSelected ? loc.accent : 'transparent',
@@ -459,15 +464,11 @@ export default function JourneyMap() {
                         alignItems: 'center',
                       }}
                     >
-                      <ChevronRight size={18} />
+                      <ChevronRight size={16} />
                     </div>
                   </div>
                 );
               })}
-            </div>
-
-            <div style={{ marginTop: '16px', textAlign: 'center', fontSize: '11px', color: 'var(--text-dim)' }}>
-              Pilih salah satu destinasi untuk melihat rincian capaian kerja
             </div>
           </motion.div>
 
@@ -480,19 +481,19 @@ export default function JourneyMap() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={selectedLocation.id}
-                initial={{ opacity: 0, y: 12 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -12 }}
-                transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
                 style={{
                   background: 'var(--surface)',
                   border: '1px solid var(--border)',
-                  borderRadius: '24px',
-                  padding: 'clamp(22px, 3.5vw, 30px)',
+                  borderRadius: '20px',
+                  padding: 'clamp(20px, 3vw, 26px)',
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '20px',
-                  boxShadow: '0 10px 30px var(--shadow-color)',
+                  gap: '16px',
+                  boxShadow: '0 8px 24px var(--shadow-color)',
                   position: 'relative',
                   overflow: 'hidden',
                 }}
@@ -501,15 +502,16 @@ export default function JourneyMap() {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
                   <span
                     style={{
-                      fontSize: '11px',
-                      fontWeight: 700,
+                      fontSize: '10.5px',
+                      fontWeight: 800,
                       textTransform: 'uppercase',
                       letterSpacing: '1px',
-                      padding: '4px 12px',
-                      borderRadius: '999px',
+                      padding: '3px 10px',
+                      borderRadius: '6px',
                       background: `${selectedLocation.accent}15`,
                       color: selectedLocation.accent,
                       border: `1px solid ${selectedLocation.accent}35`,
+                      fontFamily: "'JetBrains Mono', monospace",
                     }}
                   >
                     {selectedLocation.categoryLabel}
@@ -532,34 +534,34 @@ export default function JourneyMap() {
 
                 {/* Institution Title & Role Header */}
                 <div>
-                  <h3 style={{ margin: '0 0 6px', fontSize: '1.35rem', fontWeight: 700, color: 'var(--text)' }}>
+                  <h3 style={{ margin: '0 0 4px', fontSize: '1.25rem', fontWeight: 800, color: 'var(--text)', letterSpacing: '-0.01em' }}>
                     {selectedLocation.name}
                   </h3>
-                  <span style={{ fontSize: '0.92rem', color: selectedLocation.accent, fontWeight: 600 }}>
+                  <span style={{ fontSize: '0.88rem', color: selectedLocation.accent, fontWeight: 700, fontFamily: "'JetBrains Mono', monospace" }}>
                     {selectedLocation.role}
                   </span>
                 </div>
 
-                {/* Clean Address Line (No raw coords/radar grid) */}
+                {/* Clean Address Line */}
                 <div
                   style={{
                     display: 'flex',
                     alignItems: 'center',
                     gap: '10px',
-                    padding: '10px 14px',
-                    borderRadius: '12px',
+                    padding: '8px 12px',
+                    borderRadius: '10px',
                     background: 'var(--surface-2)',
                     border: '1px solid var(--border)',
                   }}
                 >
-                  <MapPin size={16} style={{ color: selectedLocation.accent, flexShrink: 0 }} />
-                  <span style={{ fontSize: '0.85rem', color: 'var(--text)', fontWeight: 500 }}>
+                  <MapPin size={15} style={{ color: selectedLocation.accent, flexShrink: 0 }} />
+                  <span style={{ fontSize: '0.82rem', color: 'var(--text)', fontWeight: 500 }}>
                     {selectedLocation.address}
                   </span>
                 </div>
 
-                {/* Narrative Summary */}
-                <p style={{ margin: 0, fontSize: '0.88rem', color: 'var(--text-muted)', lineHeight: 1.65 }}>
+                {/* Narrative Summary (Crisp 1-2 lines) */}
+                <p style={{ margin: 0, fontSize: '0.86rem', color: 'var(--text-muted)', lineHeight: 1.55 }}>
                   {selectedLocation.summary}
                 </p>
 
@@ -568,52 +570,52 @@ export default function JourneyMap() {
                   <span
                     style={{
                       display: 'block',
-                      fontSize: '0.74rem',
-                      fontWeight: 700,
+                      fontSize: '0.7rem',
+                      fontWeight: 800,
                       textTransform: 'uppercase',
                       letterSpacing: '1px',
                       color: 'var(--text-dim)',
-                      marginBottom: '10px',
+                      marginBottom: '8px',
+                      fontFamily: "'JetBrains Mono', monospace",
                     }}
                   >
-                    Fokus Kontribusi &amp; Capaian Nyata:
+                    CAPAIAN &amp; KONTRIBUSI:
                   </span>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                     {selectedLocation.highlights.map((h, idx) => (
                       <div
                         key={idx}
                         style={{
                           display: 'flex',
-                          alignItems: 'flex-start',
-                          gap: '10px',
-                          fontSize: '0.83rem',
+                          alignItems: 'center',
+                          gap: '8px',
+                          fontSize: '0.82rem',
                           color: 'var(--text)',
-                          lineHeight: 1.45,
                         }}
                       >
-                        <CheckCircle2 size={15} style={{ color: selectedLocation.accent, flexShrink: 0, marginTop: '2px' }} />
+                        <CheckCircle2 size={14} style={{ color: selectedLocation.accent, flexShrink: 0 }} />
                         <span>{h}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                {/* Visual Bottom Callout */}
+                {/* Bottom Callout */}
                 <div
                   style={{
                     marginTop: 'auto',
-                    padding: '12px 14px',
-                    borderRadius: '12px',
+                    padding: '10px 12px',
+                    borderRadius: '10px',
                     background: `${selectedLocation.accent}10`,
                     border: `1px solid ${selectedLocation.accent}25`,
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '10px',
+                    gap: '8px',
                   }}
                 >
-                  <Sparkles size={16} style={{ color: selectedLocation.accent, flexShrink: 0 }} />
-                  <span style={{ fontSize: '0.8rem', color: 'var(--text)' }}>
-                    Pengalaman lapangan di Kota Medan yang memperkuat kompetensi teknis, adaptabilitas profesional, dan kepekaan sosial.
+                  <Sparkles size={14} style={{ color: selectedLocation.accent, flexShrink: 0 }} />
+                  <span style={{ fontSize: '0.78rem', color: 'var(--text)', fontFamily: "'JetBrains Mono', monospace" }}>
+                    Dedicated field experience in Kota Medan.
                   </span>
                 </div>
               </motion.div>
@@ -626,7 +628,7 @@ export default function JourneyMap() {
         @media (max-width: 880px) {
           .journey-roadmap-container {
             grid-template-columns: 1fr !important;
-            gap: 24px !important;
+            gap: 20px !important;
           }
         }
       `}</style>

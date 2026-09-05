@@ -2,49 +2,45 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import {
-  GraduationCap,
   Sparkles,
   Cpu,
-  Layers,
-  Smartphone,
-  CheckCircle2,
-  BrainCircuit,
   Zap,
-  BookOpen,
   Gamepad2,
   Activity,
   ArrowRight,
   ShieldCheck,
-  Eye,
+  BrainCircuit,
+  Layers,
+  Camera,
 } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
 
 const KEY_METRICS = [
   {
-    label: 'Best Validation Accuracy',
+    label: 'VALIDATION ACCURACY',
     value: '94.71%',
     sub: '80 Epoch Pelatihan Model',
     icon: Sparkles,
     color: '#34d399',
   },
   {
-    label: 'Macro F1-Score',
+    label: 'MACRO F1-SCORE',
     value: '0.95',
-    sub: '26 Kelas Huruf A–Z (BISINDO)',
+    sub: '26 Kelas Huruf A–Z BISINDO',
     icon: BrainCircuit,
     color: '#818cf8',
   },
   {
-    label: 'On-Device Processing',
+    label: 'ON-DEVICE INFERENCE',
     value: '100%',
     sub: 'Zero Cloud & Tanpa Internet',
     icon: Cpu,
     color: '#38bdf8',
   },
   {
-    label: 'Pengujian Fungsional',
+    label: 'FUNCTIONAL TESTS',
     value: '14 / 14',
-    sub: '100% Skenario Passed',
+    sub: '100% Skenario Terverifikasi',
     icon: ShieldCheck,
     color: '#f59e0b',
   },
@@ -53,59 +49,56 @@ const KEY_METRICS = [
 const PILLARS = [
   {
     id: 'pipeline',
+    tab: '01 / PIPELINE ML',
     title: 'Pipeline ML On-Device',
-    subtitle: 'MediaPipe 3D Landmarks & Dense Neural Network',
+    tag: 'MEDIAPIPE & DENSE NEURAL NETWORK',
     icon: Cpu,
     color: '#818cf8',
-    description:
-      'Arsitektur pemrosesan on-device yang mengekstraksi 21 koordinat 3D sendi tangan secara instan, dinormalisasi menjadi vektor fitur 176 dimensi yang kebal terhadap skala maupun pergeseran posisi tangan.',
-    details: [
-      'MediaPipe Hand Landmarker mengekstraksi 21 titik koordinat 3D dari frame kamera',
-      'HandFeatureExtractor mengonversi data menjadi 176D scale-invariant feature vector',
-      'Dense Neural Network (176D → 768 → 384 → 192 → 26) dengan ReLU, L2 Regularization, dan Dropout',
-      'Dikonversi ke format TensorFlow Lite (.tflite) terkuantisasi untuk eksekusi ultra-ringan di Android',
+    specs: [
+      { label: 'Ekstraksi Landmark', val: '21 Titik Koordinat 3D (MediaPipe)' },
+      { label: 'Vektor Fitur', val: '176 Dimensi Scale-Invariant' },
+      { label: 'Arsitektur Model', val: 'Dense NN (176D → 768 → 384 → 192 → 26)' },
+      { label: 'Runtime Deployment', val: 'TensorFlow Lite (.tflite) di Android' },
     ],
   },
   {
     id: 'detection',
+    tab: '02 / DETEKSI REAL-TIME',
     title: 'Deteksi Real-Time Cerdas',
-    subtitle: 'Dual-Threshold, Frame Skipping & Anti-Duplikat',
+    tag: 'DUAL-THRESHOLD & ANTI-DUPLIKAT',
     icon: Zap,
     color: '#38bdf8',
-    description:
-      'Sistem inferensi kamera responsif yang dioptimalkan untuk perangkat keras smartphone tanpa menguras daya baterai ataupun menyebabkan frame drop pada layar kamera.',
-    details: [
-      'Memproses ~9 frame per detik menggunakan mekanisme frame skipping selektif (interval min. 110ms)',
-      'Dual-threshold filtering: Live preview display (skor ≥ 0.55) & Commit karakter kata (skor ≥ 0.65)',
-      'Mekanisme cooldown anti-duplikasi 650ms dan konsistensi frame (minimal 2 dari 5 frame)',
-      'Koreksi otomatis rotasi kamera depan (mirror flip) untuk kenyamanan pengguna kidal maupun kanan',
+    specs: [
+      { label: 'Frame Rate', val: '~9 FPS (Seleksi Frame Skipping 110ms)' },
+      { label: 'Dual-Threshold', val: 'Live Preview (≥0.55) & Commit Kata (≥0.65)' },
+      { label: 'Anti-Duplikat', val: 'Cooldown 650ms & Konsistensi Frame' },
+      { label: 'Kamera Depan', val: 'Koreksi Otomatis Mirror-Flip' },
     ],
   },
   {
     id: 'ecosystem',
-    title: 'Ekosistem Belajar & Gamifikasi',
-    subtitle: 'Kamus A–Z, 4 Mode Quiz & Progress Tracker',
+    tab: '03 / EKOSISTEM APP',
+    title: 'Ekosistem Belajar & Kuis',
+    tag: 'KAMUS A–Z, 4 KUIS & GAMIFIKASI',
     icon: Gamepad2,
     color: '#34d399',
-    description:
-      'Mengintegrasikan antarmuka penerjemahan bahasa isyarat dengan modul edukasi komprehensif agar pengguna awam dapat mempelajari BISINDO secara menyenangkan dan terukur.',
-    details: [
-      'Kamus visual interaktif huruf A–Z dilengkapi panduan postur gestur tangan',
-      '4 Mode Quiz interaktif: Tebak Huruf, Tebak Kosakata, Peragakan Gestur (Kamera AI), dan Susun Kata',
-      'Sistem gamifikasi berbasis XP points, level progression, daily streaks, dan achievement badge',
-      'Progress analytics: rekap statistik belajar, mistake tracker cerdas, dan grafik perkembangan',
+    specs: [
+      { label: 'Kamus Visual', val: 'Katalog Postur Gestur Huruf A–Z' },
+      { label: 'Mode Kuis', val: '4 Mode: Tebak, Peragakan, & Susun Kata' },
+      { label: 'Gamifikasi', val: 'XP Points, Level, Daily Streaks & Badges' },
+      { label: 'Tracking Progres', val: 'Mistake Tracker & Statistik Belajar' },
     ],
   },
 ];
 
-const PIPELINE_STEPS = [
-  { step: '01', title: 'Camera Stream', desc: 'Frame YUV420 Kamera HP' },
-  { step: '02', title: 'Frame Selector', desc: '~9 FPS (Frame Skipping)' },
-  { step: '03', title: 'MediaPipe 3D', desc: '21 Titik Landmark Tangan' },
-  { step: '04', title: 'Feature Vector', desc: '176D Scale-Invariant' },
-  { step: '05', title: 'TFLite Classifier', desc: 'DNN 768-384-192-26' },
-  { step: '06', title: 'Dual-Threshold', desc: 'Live (≥0.55) & Commit (≥0.65)' },
-  { step: '07', title: 'Real-Time Output', desc: 'Teks & Suara (TTS)' },
+const PIPELINE_FLOW = [
+  { no: '01', title: 'CAMERA', sub: 'YUV420 Stream' },
+  { no: '02', title: 'FRAME SELECT', sub: '~9 FPS Skipping' },
+  { no: '03', title: 'MEDIAPIPE', sub: '21 3D Landmarks' },
+  { no: '04', title: 'FEATURE 176D', sub: 'Scale-Invariant' },
+  { no: '05', title: 'TFLITE DNN', sub: 'Classification' },
+  { no: '06', title: 'THRESHOLD', sub: '0.55 / 0.65 Commit' },
+  { no: '07', title: 'OUTPUT', sub: 'Text & TTS Audio' },
 ];
 
 export default function AcademicHighlights() {
@@ -125,58 +118,69 @@ export default function AcademicHighlights() {
       }}
     >
       <div style={{ maxWidth: '1140px', margin: '0 auto' }}>
-        {/* Section Header */}
+        {/* Typographic Hero Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
-          style={{ textAlign: 'center', marginBottom: '40px' }}
+          style={{ textAlign: 'center', marginBottom: '36px' }}
         >
           <div
             style={{
               display: 'inline-flex',
               alignItems: 'center',
               gap: '8px',
-              padding: '5px 14px',
+              padding: '4px 14px',
               borderRadius: '999px',
               background: 'rgba(129, 140, 248, 0.1)',
               border: '1px solid rgba(129, 140, 248, 0.25)',
               color: 'var(--accent)',
-              fontSize: '0.78rem',
-              fontWeight: 700,
+              fontSize: '0.74rem',
+              fontWeight: 800,
               textTransform: 'uppercase',
               letterSpacing: '2px',
-              marginBottom: '12px',
+              marginBottom: '14px',
+              fontFamily: "'JetBrains Mono', monospace",
             }}
           >
-            <GraduationCap size={14} />
-            <span>Tugas Akhir • Applied AI Research</span>
+            <span>TUGAS AKHIR • APPLIED AI RESEARCH</span>
           </div>
+
           <h2
             style={{
-              fontSize: 'clamp(1.9rem, 3.8vw, 2.7rem)',
-              fontWeight: 700,
+              fontSize: 'clamp(2.2rem, 5vw, 3.8rem)',
+              fontWeight: 900,
               color: 'var(--text)',
-              letterSpacing: '-0.02em',
-              margin: '0 0 12px',
+              letterSpacing: '-0.03em',
+              margin: '0 0 8px',
+              lineHeight: 1.05,
+              textTransform: 'uppercase',
             }}
           >
-            HandSpeak: Penerjemah BISINDO Real-Time
+            HANDSPEAK
           </h2>
-          <p
+
+          <div
             style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '12px',
+              flexWrap: 'wrap',
+              fontSize: '0.92rem',
               color: 'var(--text-muted)',
-              fontSize: '0.96rem',
-              maxWidth: '720px',
-              margin: '0 auto',
-              lineHeight: 1.65,
+              fontFamily: "'JetBrains Mono', monospace",
             }}
           >
-            Aplikasi mobile Android berbasis AI Computer Vision &amp; Deep Learning on-device untuk menerjemahkan huruf Bahasa Isyarat Indonesia (BISINDO) secara langsung tanpa internet. Proyek Tugas Akhir D3 Teknik Informatika USU Vokasi 2026 berpredikat <strong>Cumlaude</strong>.
-          </p>
+            <span>Real-Time BISINDO Sign Language Translator</span>
+            <span style={{ color: 'var(--border)' }}>•</span>
+            <span style={{ color: 'var(--accent)', fontWeight: 700 }}>Teknik Informatika USU</span>
+            <span style={{ color: 'var(--border)' }}>•</span>
+            <span style={{ color: '#34d399', fontWeight: 700 }}>Predikat Cumlaude</span>
+          </div>
         </motion.div>
 
-        {/* 1. Key Performance Metrics Bar */}
+        {/* 1. Key Performance Metrics Bar (Bold Typography & Stats) */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -184,8 +188,8 @@ export default function AcademicHighlights() {
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-            gap: '16px',
-            marginBottom: '36px',
+            gap: '14px',
+            marginBottom: '32px',
           }}
         >
           {KEY_METRICS.map((metric, idx) => {
@@ -196,8 +200,8 @@ export default function AcademicHighlights() {
                 style={{
                   background: 'var(--surface)',
                   border: '1px solid var(--border)',
-                  borderRadius: '18px',
-                  padding: '18px 20px',
+                  borderRadius: '16px',
+                  padding: '16px 18px',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '14px',
@@ -216,9 +220,9 @@ export default function AcademicHighlights() {
               >
                 <div
                   style={{
-                    width: '44px',
-                    height: '44px',
-                    borderRadius: '12px',
+                    width: '42px',
+                    height: '42px',
+                    borderRadius: '10px',
                     background: `${metric.color}15`,
                     border: `1px solid ${metric.color}35`,
                     display: 'flex',
@@ -228,24 +232,35 @@ export default function AcademicHighlights() {
                     flexShrink: 0,
                   }}
                 >
-                  <Icon size={22} />
+                  <Icon size={20} />
                 </div>
                 <div>
                   <div
                     style={{
-                      fontSize: '1.45rem',
-                      fontWeight: 800,
+                      fontSize: '1.5rem',
+                      fontWeight: 900,
                       fontFamily: "'JetBrains Mono', monospace",
                       color: 'var(--text)',
-                      lineHeight: 1.15,
+                      lineHeight: 1.1,
+                      letterSpacing: '-0.02em',
                     }}
                   >
                     {metric.value}
                   </div>
-                  <div style={{ fontSize: '0.8rem', fontWeight: 700, color: metric.color, marginTop: '2px' }}>
+                  <div
+                    style={{
+                      fontSize: '0.72rem',
+                      fontWeight: 800,
+                      color: metric.color,
+                      letterSpacing: '0.5px',
+                      textTransform: 'uppercase',
+                      marginTop: '2px',
+                      fontFamily: "'JetBrains Mono', monospace",
+                    }}
+                  >
                     {metric.label}
                   </div>
-                  <div style={{ fontSize: '0.72rem', color: 'var(--text-dim)', marginTop: '1px' }}>
+                  <div style={{ fontSize: '0.7rem', color: 'var(--text-dim)', marginTop: '1px' }}>
                     {metric.sub}
                   </div>
                 </div>
@@ -254,18 +269,18 @@ export default function AcademicHighlights() {
           })}
         </motion.div>
 
-        {/* 2. Main Two-Column Showcase: Visual Context & Interactive Pillars */}
+        {/* 2. Bento Grid: Visual Showcase & Technical Spec Sheet */}
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'minmax(0, 1.15fr) minmax(0, 1.25fr)',
-            gap: '28px',
+            gridTemplateColumns: 'minmax(0, 1.1fr) minmax(0, 1.25fr)',
+            gap: '24px',
             alignItems: 'stretch',
-            marginBottom: '36px',
+            marginBottom: '28px',
           }}
           className="ta-showcase-grid"
         >
-          {/* Left Column: Visual Research Preview & Core Narrative */}
+          {/* Left Column: Visual Showcase & Quick Tech Badges */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
@@ -273,134 +288,128 @@ export default function AcademicHighlights() {
             style={{
               background: 'var(--surface)',
               border: '1px solid var(--border)',
-              borderRadius: '24px',
+              borderRadius: '20px',
               overflow: 'hidden',
               display: 'flex',
               flexDirection: 'column',
-              boxShadow: '0 10px 30px var(--shadow-color)',
+              boxShadow: '0 8px 24px var(--shadow-color)',
             }}
           >
-            {/* App Preview Banner */}
+            {/* App Preview Image Banner */}
             <div
               style={{
                 position: 'relative',
                 width: '100%',
-                height: '220px',
+                height: '240px',
                 overflow: 'hidden',
                 background: '#0a0a0f',
               }}
             >
               <img
                 src="/projects/handspeak.webp"
-                alt="HandSpeak BISINDO Real-Time Android App"
+                alt="HandSpeak App"
                 style={{
                   width: '100%',
                   height: '100%',
                   objectFit: 'cover',
-                  opacity: 0.9,
+                  opacity: 0.92,
                 }}
               />
               <div
                 style={{
                   position: 'absolute',
                   inset: 0,
-                  background: 'linear-gradient(to top, var(--surface) 0%, rgba(10,10,15,0.4) 60%, transparent 100%)',
+                  background: 'linear-gradient(to top, var(--surface) 0%, rgba(10,10,15,0.2) 60%, transparent 100%)',
                 }}
               />
               <div
                 style={{
                   position: 'absolute',
-                  top: '16px',
-                  left: '16px',
+                  top: '14px',
+                  left: '14px',
                   display: 'flex',
-                  gap: '8px',
+                  gap: '6px',
                 }}
               >
                 <span
                   style={{
-                    padding: '4px 10px',
-                    borderRadius: '8px',
+                    padding: '3px 8px',
+                    borderRadius: '6px',
                     background: 'rgba(129, 140, 248, 0.9)',
                     color: '#ffffff',
-                    fontSize: '11px',
-                    fontWeight: 700,
+                    fontSize: '10px',
+                    fontWeight: 800,
                     letterSpacing: '1px',
                     textTransform: 'uppercase',
+                    fontFamily: "'JetBrains Mono', monospace",
                   }}
                 >
-                  Proyek Tugas Akhir
+                  REAL-TIME AI
                 </span>
                 <span
                   style={{
-                    padding: '4px 10px',
-                    borderRadius: '8px',
+                    padding: '3px 8px',
+                    borderRadius: '6px',
                     background: 'rgba(52, 211, 153, 0.9)',
                     color: '#0a0a0f',
-                    fontSize: '11px',
-                    fontWeight: 700,
+                    fontSize: '10px',
+                    fontWeight: 800,
                     letterSpacing: '0.5px',
+                    fontFamily: "'JetBrains Mono', monospace",
                   }}
                 >
-                  Cumlaude 2026
+                  ZERO CLOUD
                 </span>
               </div>
             </div>
 
-            {/* Content & Problem Narrative */}
-            <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px', flex: 1 }}>
+            {/* Concise Typography Specs */}
+            <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '14px', flex: 1 }}>
               <div>
-                <h3 style={{ margin: '0 0 6px', fontSize: '1.3rem', fontWeight: 700, color: 'var(--text)' }}>
-                  Urgensi &amp; Latar Belakang Riset
-                </h3>
-                <p style={{ margin: 0, fontSize: '0.88rem', color: 'var(--text-muted)', lineHeight: 1.65 }}>
-                  Penyandang tunarungu di Indonesia mengandalkan BISINDO sebagai sarana komunikasi utama. Namun, minimnya pemahaman masyarakat umum memicu kesenjangan komunikasi yang nyata. Kebanyakan AI penerjemah bahasa isyarat di dunia ditujukan untuk ASL (American Sign Language) atau SIBI, serta bergantung pada server cloud yang lambat dan memerlukan internet aktif.
+                <span
+                  style={{
+                    fontSize: '0.7rem',
+                    fontWeight: 800,
+                    color: 'var(--accent)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '1px',
+                    fontFamily: "'JetBrains Mono', monospace",
+                    display: 'block',
+                    marginBottom: '4px',
+                  }}
+                >
+                  MOBILE COMPUTER VISION
+                </span>
+                <p style={{ margin: 0, fontSize: '0.88rem', color: 'var(--text)', lineHeight: 1.5, fontWeight: 500 }}>
+                  Penerjemah Bahasa Isyarat Indonesia (BISINDO) langsung di perangkat smartphone Android tanpa ketergantungan server internet.
                 </p>
               </div>
 
-              <div
-                style={{
-                  padding: '12px 16px',
-                  borderRadius: '12px',
-                  background: 'rgba(129, 140, 248, 0.08)',
-                  border: '1px solid rgba(129, 140, 248, 0.2)',
-                  fontSize: '0.84rem',
-                  color: 'var(--text)',
-                  lineHeight: 1.55,
-                }}
-              >
-                <strong style={{ color: 'var(--accent)' }}>Inovasi Kunci:</strong> HandSpeak memproses inferensi AI secara 100% <em>on-device</em> pada perangkat smartphone Android dengan latensi rendah, menjaga privasi data pengguna, dan dapat digunakan di area tanpa koneksi internet.
-              </div>
-
-              {/* Tech Stack Pills */}
+              {/* Quick Tech Badges */}
               <div style={{ marginTop: 'auto' }}>
                 <span
                   style={{
                     display: 'block',
-                    fontSize: '0.72rem',
-                    fontWeight: 700,
+                    fontSize: '0.68rem',
+                    fontWeight: 800,
                     textTransform: 'uppercase',
                     letterSpacing: '1px',
                     color: 'var(--text-dim)',
                     marginBottom: '8px',
+                    fontFamily: "'JetBrains Mono', monospace",
                   }}
                 >
-                  Teknologi &amp; Metodologi Pengembangan
+                  TECH STACK &amp; METODOLOGI
                 </span>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                  {[
-                    'Flutter & Dart',
-                    'TensorFlow Lite',
-                    'MediaPipe Hand Landmarker',
-                    'Python & Keras',
-                    'Agile / Scrum (4 Sprint)',
-                    'Dataset Mendeley (Sanjaya, 2024)',
-                  ].map((tech, idx) => (
+                  {['Flutter (Dart)', 'TensorFlow Lite', 'MediaPipe 3D', 'Python / Keras', 'Agile Scrum', 'Dataset Mendeley'].map((tech, idx) => (
                     <span
                       key={idx}
                       style={{
                         fontSize: '11px',
+                        fontFamily: "'JetBrains Mono', monospace",
                         fontWeight: 600,
-                        padding: '4px 9px',
+                        padding: '3px 8px',
                         borderRadius: '6px',
                         background: 'var(--surface-2)',
                         border: '1px solid var(--border)',
@@ -415,7 +424,7 @@ export default function AcademicHighlights() {
             </div>
           </motion.div>
 
-          {/* Right Column: Three Core Solution Pillars (Interactive Explorer) */}
+          {/* Right Column: Spec Sheet Explorer (Clean, Typographic, Zero Walls of Text) */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
@@ -423,37 +432,17 @@ export default function AcademicHighlights() {
             style={{
               background: 'var(--surface)',
               border: '1px solid var(--border)',
-              borderRadius: '24px',
-              padding: '24px',
+              borderRadius: '20px',
+              padding: '20px',
               display: 'flex',
               flexDirection: 'column',
-              boxShadow: '0 10px 30px var(--shadow-color)',
+              boxShadow: '0 8px 24px var(--shadow-color)',
             }}
           >
-            <div style={{ marginBottom: '16px' }}>
-              <span
-                style={{
-                  fontSize: '0.74rem',
-                  fontWeight: 700,
-                  color: 'var(--accent)',
-                  textTransform: 'uppercase',
-                  letterSpacing: '1px',
-                  display: 'block',
-                  marginBottom: '4px',
-                }}
-              >
-                Tiga Solusi Utama yang Dibangun
-              </span>
-              <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 700, color: 'var(--text)' }}>
-                Arsitektur &amp; Fitur HandSpeak
-              </h3>
-            </div>
-
-            {/* Pillar Selector Tabs */}
-            <div style={{ display: 'flex', gap: '8px', marginBottom: '18px', flexWrap: 'wrap' }}>
+            {/* Header Tabs */}
+            <div style={{ display: 'flex', gap: '6px', marginBottom: '16px', flexWrap: 'wrap' }}>
               {PILLARS.map((p) => {
                 const isSelected = activePillar.id === p.id;
-                const Icon = p.icon;
                 return (
                   <button
                     key={p.id}
@@ -463,105 +452,126 @@ export default function AcademicHighlights() {
                     }}
                     onMouseEnter={playHover}
                     style={{
-                      flex: '1 1 120px',
-                      padding: '10px 14px',
-                      borderRadius: '12px',
+                      flex: '1 1 110px',
+                      padding: '8px 10px',
+                      borderRadius: '8px',
                       background: isSelected ? `${p.color}15` : 'var(--surface-2)',
                       border: isSelected ? `1.5px solid ${p.color}` : '1px solid var(--border)',
                       cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '8px',
                       transition: 'all 0.2s ease',
-                      textAlign: 'left',
+                      textAlign: 'center',
                     }}
                   >
-                    <Icon size={16} style={{ color: isSelected ? p.color : 'var(--text-muted)', flexShrink: 0 }} />
-                    <div>
-                      <div
-                        style={{
-                          fontSize: '0.8rem',
-                          fontWeight: isSelected ? 700 : 600,
-                          color: isSelected ? 'var(--text)' : 'var(--text-muted)',
-                        }}
-                      >
-                        {p.title}
-                      </div>
+                    <div
+                      style={{
+                        fontSize: '0.72rem',
+                        fontWeight: 800,
+                        fontFamily: "'JetBrains Mono', monospace",
+                        color: isSelected ? p.color : 'var(--text-muted)',
+                      }}
+                    >
+                      {p.tab}
                     </div>
                   </button>
                 );
               })}
             </div>
 
-            {/* Active Pillar Details Card */}
+            {/* Active Spec Sheet */}
             <AnimatePresence mode="wait">
               <motion.div
                 key={activePillar.id}
-                initial={{ opacity: 0, y: 8 }}
+                initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.2 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.18 }}
                 style={{
                   background: 'var(--surface-2)',
                   border: '1px solid var(--border)',
-                  borderRadius: '16px',
-                  padding: '20px',
+                  borderRadius: '14px',
+                  padding: '18px',
                   flex: 1,
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '14px',
+                  gap: '12px',
                 }}
               >
                 <div>
-                  <div style={{ fontSize: '0.75rem', fontWeight: 700, color: activePillar.color, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                    {activePillar.subtitle}
-                  </div>
-                  <h4 style={{ margin: '4px 0 8px', fontSize: '1.1rem', fontWeight: 700, color: 'var(--text)' }}>
-                    {activePillar.title}
-                  </h4>
-                  <p style={{ margin: 0, fontSize: '0.86rem', color: 'var(--text-muted)', lineHeight: 1.6 }}>
-                    {activePillar.description}
-                  </p>
-                </div>
-
-                <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   <span
                     style={{
-                      fontSize: '0.72rem',
-                      fontWeight: 700,
+                      fontSize: '0.68rem',
+                      fontWeight: 800,
+                      color: activePillar.color,
                       textTransform: 'uppercase',
                       letterSpacing: '1px',
-                      color: 'var(--text-dim)',
+                      fontFamily: "'JetBrains Mono', monospace",
                     }}
                   >
-                    Rincian Implementasi:
+                    {activePillar.tag}
                   </span>
-                  {activePillar.details.map((detail, idx) => (
+                  <h3
+                    style={{
+                      margin: '2px 0 0',
+                      fontSize: '1.15rem',
+                      fontWeight: 800,
+                      color: 'var(--text)',
+                      letterSpacing: '-0.01em',
+                    }}
+                  >
+                    {activePillar.title}
+                  </h3>
+                </div>
+
+                {/* Structured Spec Rows */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '6px' }}>
+                  {activePillar.specs.map((spec, idx) => (
                     <div
                       key={idx}
                       style={{
                         display: 'flex',
-                        alignItems: 'flex-start',
-                        gap: '8px',
-                        fontSize: '0.82rem',
-                        color: 'var(--text)',
-                        lineHeight: 1.45,
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        gap: '12px',
+                        padding: '8px 12px',
+                        borderRadius: '8px',
+                        background: 'var(--surface)',
+                        border: '1px solid var(--border)',
                       }}
                     >
-                      <CheckCircle2 size={14} style={{ color: activePillar.color, flexShrink: 0, marginTop: '2px' }} />
-                      <span>{detail}</span>
+                      <span
+                        style={{
+                          fontSize: '0.74rem',
+                          fontWeight: 700,
+                          color: 'var(--text-muted)',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.5px',
+                        }}
+                      >
+                        {spec.label}
+                      </span>
+                      <span
+                        style={{
+                          fontSize: '0.8rem',
+                          fontWeight: 700,
+                          color: 'var(--text)',
+                          fontFamily: "'JetBrains Mono', monospace",
+                          textAlign: 'right',
+                        }}
+                      >
+                        {spec.val}
+                      </span>
                     </div>
                   ))}
                 </div>
               </motion.div>
             </AnimatePresence>
 
-            {/* Benchmark Insight Callout */}
+            {/* Bottom Insight Callout */}
             <div
               style={{
-                marginTop: '16px',
-                padding: '10px 14px',
-                borderRadius: '12px',
+                marginTop: '14px',
+                padding: '8px 12px',
+                borderRadius: '8px',
                 background: 'rgba(52, 211, 153, 0.08)',
                 border: '1px solid rgba(52, 211, 153, 0.2)',
                 display: 'flex',
@@ -569,22 +579,23 @@ export default function AcademicHighlights() {
                 justifyContent: 'space-between',
                 flexWrap: 'wrap',
                 gap: '8px',
+                fontFamily: "'JetBrains Mono', monospace",
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Activity size={15} style={{ color: '#34d399', flexShrink: 0 }} />
-                <span style={{ fontSize: '0.78rem', color: 'var(--text)' }}>
-                  Performa Sempurna (F1 = 1.00): <strong>Huruf G, R, Z</strong>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Activity size={14} style={{ color: '#34d399' }} />
+                <span style={{ fontSize: '0.74rem', fontWeight: 700, color: 'var(--text)' }}>
+                  F1 = 1.00 Sempurna: G, R, Z
                 </span>
               </div>
-              <span style={{ fontSize: '0.74rem', color: 'var(--text-dim)' }}>
-                Target Optimasi: Kemiripan gestur M &amp; N
+              <span style={{ fontSize: '0.7rem', color: 'var(--text-dim)' }}>
+                Target: M &amp; N Gesture Similarity
               </span>
             </div>
           </motion.div>
         </div>
 
-        {/* 3. Pipeline Flow Visualizer Banner */}
+        {/* 3. Typographic Pipeline Flow Bar */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -592,68 +603,91 @@ export default function AcademicHighlights() {
           style={{
             background: 'var(--surface)',
             border: '1px solid var(--border)',
-            borderRadius: '24px',
-            padding: '24px',
-            boxShadow: '0 8px 24px var(--shadow-color)',
+            borderRadius: '16px',
+            padding: '16px 20px',
+            boxShadow: '0 4px 16px var(--shadow-color)',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
-            <BrainCircuit size={16} style={{ color: 'var(--accent)' }} />
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginBottom: '12px',
+            }}
+          >
             <span
               style={{
-                fontSize: '0.76rem',
-                fontWeight: 700,
+                fontSize: '0.7rem',
+                fontWeight: 800,
                 textTransform: 'uppercase',
                 letterSpacing: '1px',
                 color: 'var(--accent)',
+                fontFamily: "'JetBrains Mono', monospace",
               }}
             >
-              End-to-End Real-Time Detection Pipeline
+              END-TO-END PIPELINE ARCHITECTURE
+            </span>
+            <span
+              style={{
+                fontSize: '10px',
+                fontFamily: "'JetBrains Mono', monospace",
+                color: 'var(--text-dim)',
+              }}
+            >
+              LATENCY ~110MS / FRAME
             </span>
           </div>
 
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
-              gap: '10px',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(115px, 1fr))',
+              gap: '8px',
             }}
           >
-            {PIPELINE_STEPS.map((step, idx) => (
+            {PIPELINE_FLOW.map((flow, idx) => (
               <div
                 key={idx}
                 style={{
                   background: 'var(--surface-2)',
                   border: '1px solid var(--border)',
-                  borderRadius: '12px',
-                  padding: '12px 10px',
+                  borderRadius: '8px',
+                  padding: '8px 10px',
                   position: 'relative',
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '4px',
-                  transition: 'border-color 0.2s ease',
+                  gap: '2px',
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span
                     style={{
-                      fontSize: '0.68rem',
+                      fontSize: '0.65rem',
                       fontWeight: 800,
                       color: 'var(--accent)',
                       fontFamily: "'JetBrains Mono', monospace",
                     }}
                   >
-                    {step.step}
+                    {flow.no}
                   </span>
-                  {idx < PIPELINE_STEPS.length - 1 && (
-                    <ArrowRight size={11} style={{ color: 'var(--text-dim)' }} />
+                  {idx < PIPELINE_FLOW.length - 1 && (
+                    <ArrowRight size={10} style={{ color: 'var(--text-dim)' }} />
                   )}
                 </div>
-                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text)', marginTop: '2px' }}>
-                  {step.title}
+                <div
+                  style={{
+                    fontSize: '0.76rem',
+                    fontWeight: 800,
+                    color: 'var(--text)',
+                    fontFamily: "'JetBrains Mono', monospace",
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  {flow.title}
                 </div>
-                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
-                  {step.desc}
+                <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>
+                  {flow.sub}
                 </div>
               </div>
             ))}
@@ -665,7 +699,7 @@ export default function AcademicHighlights() {
         @media (max-width: 900px) {
           .ta-showcase-grid {
             grid-template-columns: 1fr !important;
-            gap: 24px !important;
+            gap: 20px !important;
           }
         }
       `}</style>
