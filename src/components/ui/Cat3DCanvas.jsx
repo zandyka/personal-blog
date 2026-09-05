@@ -3,10 +3,14 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
-// Configuration per 3D model for scale, orientation, and floor alignment
+// Configuration per 3D model:
+// 1. maxwell: kecilkan (targetHeight: 1.22)
+// 2. cat_box: kecilkan (targetHeight: 1.28) & default pose BERDIRI TEGAK (rotX: 0, rotY: 0, rotZ: 0)
+// 3. oiia: besarkan sedikit (targetHeight: 1.88)
+// All models: lowest vertex touches floor at floorY (-0.85)
 const MODEL_CONFIGS = {
   '/3d/maxwell_the_cat_with_bones_animation.glb': {
-    targetHeight: 1.7,
+    targetHeight: 1.22, // Dikecilkan sesuai permintaan
     rotX: 0,
     rotY: 0,
     rotZ: 0,
@@ -15,8 +19,8 @@ const MODEL_CONFIGS = {
     cameraY: 0.25,
   },
   '/3d/cat_box_meme.glb': {
-    targetHeight: 1.65,
-    rotX: -Math.PI / 2, // Fix OBJ orientation so box sits upright
+    targetHeight: 1.28, // Dikecilkan sesuai permintaan
+    rotX: 0, // Default pose BERDIRI TEGAK (Node 0 matrix di GLTF sudah Y-up!)
     rotY: 0,
     rotZ: 0,
     floorY: -0.85,
@@ -24,7 +28,7 @@ const MODEL_CONFIGS = {
     cameraY: 0.25,
   },
   '/3d/oiiaioooooiai_cat.glb': {
-    targetHeight: 1.55, // Enlarge Oiia cat to match Maxwell's presence
+    targetHeight: 1.88, // Dibesarkan sedikit sesuai permintaan
     rotX: 0,
     rotY: 0,
     rotZ: 0,
@@ -80,9 +84,9 @@ const Cat3DCanvas = forwardRef(function Cat3DCanvas(
     const scene = new THREE.Scene();
     sceneRef.current = scene;
 
-    // 2. Camera: Framed closer to the ground so the model is centered and grounded
+    // 2. Camera
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-    camera.position.set(0, 0.3, 3.4);
+    camera.position.set(0, 0.28, 3.4);
     cameraRef.current = camera;
 
     // 3. WebGL Renderer with Alpha
@@ -138,8 +142,8 @@ const Cat3DCanvas = forwardRef(function Cat3DCanvas(
     canvas.height = 128;
     const ctx = canvas.getContext('2d');
     const gradient = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
-    gradient.addColorStop(0, 'rgba(0, 0, 0, 0.68)');
-    gradient.addColorStop(0.45, 'rgba(0, 0, 0, 0.32)');
+    gradient.addColorStop(0, 'rgba(0, 0, 0, 0.72)');
+    gradient.addColorStop(0.45, 'rgba(0, 0, 0, 0.35)');
     gradient.addColorStop(0.8, 'rgba(0, 0, 0, 0.08)');
     gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
     ctx.fillStyle = gradient;
@@ -172,12 +176,12 @@ const Cat3DCanvas = forwardRef(function Cat3DCanvas(
         mixerRef.current.update(delta);
       }
 
-      // Very subtle breathing hover right at floor level (no floating high up)
+      // Very subtle breathing hover right at floor level (stays resting on floor)
       if (modelRef.current && modelBaseYRef.current !== null) {
-        const hoverOffset = Math.sin(elapsedTime * 2.0) * 0.015;
+        const hoverOffset = Math.sin(elapsedTime * 2.0) * 0.008;
         modelRef.current.position.y = modelBaseYRef.current + hoverOffset;
         if (shadowMeshRef.current) {
-          shadowMeshRef.current.scale.setScalar(1 - hoverOffset * 0.5);
+          shadowMeshRef.current.scale.setScalar(1 - hoverOffset * 0.4);
         }
       }
 
@@ -266,7 +270,7 @@ const Cat3DCanvas = forwardRef(function Cat3DCanvas(
     }
 
     const config = MODEL_CONFIGS[modelUrl] || {
-      targetHeight: 1.65,
+      targetHeight: 1.3,
       rotX: 0,
       rotY: 0,
       rotZ: 0,
@@ -279,18 +283,18 @@ const Cat3DCanvas = forwardRef(function Cat3DCanvas(
       (gltf) => {
         const model = gltf.scene;
 
-        // 1. Apply orientation correction FIRST (e.g. for cat in box Z-up fix)
+        // 1. Apply orientation correction (rotX: 0 keeps cat in box standing upright!)
         model.rotation.x = config.rotX || 0;
         model.rotation.y = config.rotY || 0;
         model.rotation.z = config.rotZ || 0;
         model.updateMatrixWorld(true);
 
-        // 2. Measure dimensions
+        // 2. Measure raw dimensions
         const rawBox = new THREE.Box3().setFromObject(model);
         const rawSize = new THREE.Vector3();
         rawBox.getSize(rawSize);
 
-        // 3. Compute scale by target height
+        // 3. Scale by target height
         const currentHeight = rawSize.y > 0 ? rawSize.y : Math.max(rawSize.x, rawSize.z);
         const scale = config.targetHeight / currentHeight;
         model.scale.setScalar(scale);
@@ -306,11 +310,11 @@ const Cat3DCanvas = forwardRef(function Cat3DCanvas(
         model.position.z = -scaledCenter.z;
 
         // 6. EXACT FLOOR ALIGNMENT:
-        // Position lowest vertex of the model right on the floor level (-0.85)
+        // Position lowest vertex of model right on floor level (-0.85)
         const targetFloorY = config.floorY;
         model.position.y = targetFloorY - scaledBox.min.y;
 
-        // Save base Y position for subtle floating
+        // Save base Y position for subtle hovering
         modelBaseYRef.current = model.position.y;
 
         // Material optimization

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useSoundContext } from './ui/SoundProvider';
-import { ArrowDown, Check, Copy, Camera, Palette, Users, Grid } from 'lucide-react';
+import { ArrowDown, Check, Copy, Camera, Palette, Users, Grid, Sparkles } from 'lucide-react';
 import Cat3DCanvas from './ui/Cat3DCanvas';
 
 // Available 3D Models in 3d/ folder
@@ -24,7 +24,7 @@ const MEME_MODELS = [
 ];
 
 // Custom useTypewriter Hook
-function useTypewriter(text, speed = 36, startDelay = 500) {
+function useTypewriter(text, speed = 32, startDelay = 400) {
   const [displayed, setDisplayed] = useState('');
   const [done, setDone] = useState(false);
 
@@ -62,18 +62,18 @@ export default function MainframeHero({ onExploreClick }) {
   const [selectedModel, setSelectedModel] = useState(MEME_MODELS[0]);
   const catCanvasRef = useRef(null);
 
-  // Typewriter text adapted to the Album & Visual Gallery
+  // Redesigned punchy typewriter description
   const { displayed, done } = useTypewriter(
-    'Selamat datang di galeri visual. Dokumentasi karya fotografi komersial, perancangan desain kreatif, hingga rekam jejak event berkesan.',
-    34,
-    500
+    'Eksplorasi karya fotografi komersial, perancangan identitas visual, hingga dokumentasi momen berkesan di berbagai kegiatan kampus dan organisasi.',
+    28,
+    450
   );
 
-  // Trigger pill visibility at 400ms
+  // Trigger pill visibility
   useEffect(() => {
     const timer = setTimeout(() => {
       setPillsVisible(true);
-    }, 400);
+    }, 350);
     return () => clearTimeout(timer);
   }, []);
 
@@ -131,7 +131,7 @@ export default function MainframeHero({ onExploreClick }) {
         display: 'flex',
         alignItems: 'center',
         background: 'var(--bg)',
-        padding: '80px clamp(20px, 5vw, 64px) 40px',
+        padding: '90px clamp(20px, 5vw, 64px) 50px',
       }}
     >
       {/* 1. Ambient Dynamic Studio Backdrop */}
@@ -172,44 +172,91 @@ export default function MainframeHero({ onExploreClick }) {
           maxWidth: '1400px',
           margin: '0 auto',
           display: 'grid',
-          gridTemplateColumns: 'minmax(0, 1.15fr) minmax(0, 0.95fr)',
+          gridTemplateColumns: 'minmax(0, 1.18fr) minmax(0, 0.92fr)',
           alignItems: 'center',
-          gap: 'clamp(24px, 4vw, 60px)',
+          gap: 'clamp(28px, 4vw, 64px)',
         }}
         className="hero-grid-container"
       >
-        {/* LEFT COLUMN: Adapted Album Text & Actions */}
+        {/* LEFT COLUMN: Revamped High-End Typography & Actions */}
         <div style={{ maxWidth: '640px', zIndex: 12 }}>
-          {/* Blurred Intro Label */}
-          <div
-            aria-hidden="true"
+          {/* Crisp Eyebrow Badge (No heavy blur bug) */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45 }}
             style={{
-              pointerEvents: 'none',
-              userSelect: 'none',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '6px 14px',
+              borderRadius: '999px',
+              background: 'var(--surface-2)',
+              border: '1px solid var(--border)',
               marginBottom: '20px',
-              fontSize: 'clamp(18px, 3.8vw, 25px)',
-              lineHeight: 1.3,
-              fontWeight: 500,
-              color: 'var(--text)',
-              filter: 'blur(3.5px)',
-              letterSpacing: '-0.01em',
             }}
           >
-            Visual Album &amp; Creative Works,
-            <br />
-            Dokumentasi Fotografi, Desain Grafis &amp; Event Kampus
-          </div>
+            <span
+              style={{
+                width: '7px',
+                height: '7px',
+                borderRadius: '50%',
+                background: 'var(--accent)',
+                boxShadow: '0 0 10px var(--accent)',
+                display: 'inline-block',
+              }}
+            />
+            <span
+              style={{
+                fontSize: '11px',
+                fontFamily: "'JetBrains Mono', monospace",
+                fontWeight: 700,
+                letterSpacing: '2px',
+                textTransform: 'uppercase',
+                color: 'var(--text)',
+              }}
+            >
+              VISUAL ARCHIVE &bull; PORTFOLIO ALBUM
+            </span>
+          </motion.div>
 
-          {/* Typewriter Text */}
+          {/* Bold, Expressive Headline */}
+          <motion.h1
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            style={{
+              fontSize: 'clamp(2.1rem, 3.8vw, 3.3rem)',
+              fontWeight: 800,
+              lineHeight: 1.18,
+              letterSpacing: '-0.03em',
+              color: 'var(--text)',
+              marginBottom: '16px',
+            }}
+          >
+            Koleksi Karya Visual &amp;{' '}
+            <span
+              style={{
+                background: 'linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
+              Dokumentasi Kreatif.
+            </span>
+          </motion.h1>
+
+          {/* Typewriter Subtitle Description */}
           <p
             style={{
-              color: 'var(--text)',
+              color: 'var(--text-muted)',
               marginBottom: '28px',
-              fontSize: 'clamp(18px, 3.8vw, 26px)',
-              lineHeight: 1.4,
-              fontWeight: 500,
-              minHeight: '68px',
-              letterSpacing: '-0.015em',
+              fontSize: 'clamp(0.95rem, 1.25vw, 1.08rem)',
+              lineHeight: 1.65,
+              fontWeight: 400,
+              minHeight: '56px',
+              letterSpacing: '-0.01em',
+              maxWidth: '560px',
             }}
           >
             {displayed}
@@ -261,8 +308,8 @@ export default function MainframeHero({ onExploreClick }) {
                   color: 'var(--text)',
                   border: '1px solid var(--border)',
                   borderRadius: '999px',
-                  fontSize: 'clamp(13px, 2vw, 14.5px)',
-                  fontWeight: 500,
+                  fontSize: 'clamp(12.5px, 1.8vw, 14px)',
+                  fontWeight: 600,
                   padding: '7px 18px',
                   whiteSpace: 'nowrap',
                   cursor: 'pointer',
@@ -290,8 +337,8 @@ export default function MainframeHero({ onExploreClick }) {
                 color: copied ? 'var(--accent)' : 'var(--text)',
                 border: copied ? '1px solid var(--accent-border)' : '1px solid var(--border)',
                 borderRadius: '999px',
-                fontSize: 'clamp(13px, 2vw, 14.5px)',
-                fontWeight: 500,
+                fontSize: 'clamp(12.5px, 1.8vw, 14px)',
+                fontWeight: 600,
                 padding: '7px 18px',
                 gap: '8px',
                 whiteSpace: 'nowrap',
@@ -309,9 +356,10 @@ export default function MainframeHero({ onExploreClick }) {
             </motion.button>
           </div>
 
-          {/* Clean Scroll Down Action without drag/orbit instruction text */}
-          <div style={{ marginTop: '36px' }}>
-            <button
+          {/* Clean Scroll Down Action */}
+          <div style={{ marginTop: '32px' }}>
+            <motion.button
+              whileHover={{ x: 4 }}
               onClick={handleScrollToSection}
               style={{
                 background: 'none',
@@ -321,24 +369,33 @@ export default function MainframeHero({ onExploreClick }) {
                 fontWeight: 600,
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '8px',
+                gap: '10px',
                 cursor: 'pointer',
                 padding: 0,
                 transition: 'color 0.2s',
               }}
             >
-              <motion.span
-                animate={{ y: [0, 4, 0] }}
-                transition={{ repeat: Infinity, duration: 1.6, ease: 'easeInOut' }}
+              <div
+                style={{
+                  width: '28px',
+                  height: '28px',
+                  borderRadius: '50%',
+                  background: 'var(--accent-dim)',
+                  border: '1px solid var(--accent-border)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'var(--accent)',
+                }}
               >
-                <ArrowDown size={15} style={{ color: 'var(--accent)' }} />
-              </motion.span>
-              <span>Lihat Galeri Foto &amp; Dokumentasi</span>
-            </button>
+                <ArrowDown size={14} />
+              </div>
+              <span>Jelajahi galeri visual di bawah</span>
+            </motion.button>
           </div>
         </div>
 
-        {/* RIGHT COLUMN: Interactive 3D Cat Stage (Directly touching the floor) */}
+        {/* RIGHT COLUMN: Interactive 3D Cat Stage (Touching the floor) */}
         <div
           style={{
             position: 'relative',
@@ -368,7 +425,7 @@ export default function MainframeHero({ onExploreClick }) {
             }}
           />
 
-          {/* Hologram Stage Pedestal Ring (Positioned right under the model at floor level) */}
+          {/* Hologram Stage Pedestal Ring (Positioned directly under the floor level) */}
           <div
             aria-hidden="true"
             style={{
@@ -406,7 +463,7 @@ export default function MainframeHero({ onExploreClick }) {
             />
           </div>
 
-          {/* Model Switcher Chips (Clean & Minimalist - No Depan/Kanan/Belakang text) */}
+          {/* Model Switcher Chips (Clean & Minimalist) */}
           <div
             style={{
               position: 'relative',
