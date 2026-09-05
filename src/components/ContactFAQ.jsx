@@ -218,7 +218,6 @@ export default function ContactFAQ() {
                   <span
                     style={{
                       fontSize: '11px',
-                      fontFamily: "'JetBrains Mono', monospace",
                       fontWeight: 700,
                       color: isExpanded ? 'var(--accent)' : 'var(--text-dim)',
                       padding: '2px 8px',

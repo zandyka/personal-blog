@@ -7,7 +7,7 @@ import SpotlightOverlay from './ui/SpotlightOverlay';
 
 const GREETING_FONTS = [
   { name: 'Playfair Italic', font: "'Playfair Display', 'Georgia', serif", style: 'italic', weight: 600 },
-  { name: 'JetBrains Mono', font: "'JetBrains Mono', monospace", style: 'normal', weight: 600 },
+  { name: 'Plus Jakarta Sans', font: "'Plus Jakarta Sans', sans-serif", style: 'normal', weight: 700 },
   { name: 'Caveat Script', font: "'Caveat', cursive", style: 'normal', weight: 700, sizeAdjust: true },
   { name: 'Cinzel Roman', font: "'Cinzel', 'Times New Roman', serif", style: 'normal', weight: 700, letterSpacing: '0.06em' },
   { name: 'Space Grotesk', font: "'Space Grotesk', sans-serif", style: 'normal', weight: 700 },

@@ -153,10 +153,10 @@ export default function ContactFormGlass() {
         >
           <div
             style={{
-              fontFamily: "'JetBrains Mono', monospace",
               fontSize: '11px',
               letterSpacing: '2.5px',
               textTransform: 'uppercase',
+              fontWeight: 700,
               color: 'var(--accent)',
               marginBottom: '6px',
               display: 'flex',
@@ -483,8 +483,7 @@ export default function ContactFormGlass() {
               </label>
               <span
                 style={{
-                  fontSize: '10.5px',
-                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: '11px',
                   color: 'var(--text-dim)',
                 }}
               >

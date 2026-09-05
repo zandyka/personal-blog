@@ -268,10 +268,9 @@ const SocialCard = ({ item }) => {
       >
         <span
           style={{
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: '10.5px',
+            fontSize: '11px',
             fontWeight: 700,
-            letterSpacing: '2px',
+            letterSpacing: '1.5px',
             textTransform: 'uppercase',
             color: 'var(--text-muted)',
             transition: 'color 0.2s ease',

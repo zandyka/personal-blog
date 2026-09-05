@@ -142,10 +142,10 @@ const LOCATIONS = [
 ];
 
 const CATEGORIES = [
-  { id: 'all', label: 'SEMUA PERJALANAN' },
-  { id: 'banking', label: 'PERBANKAN' },
-  { id: 'it', label: 'IT & JARINGAN' },
-  { id: 'education', label: 'KAMPUS & SOSIAL' },
+  { id: 'all', label: 'Semua Perjalanan' },
+  { id: 'banking', label: 'Perbankan' },
+  { id: 'it', label: 'IT & Jaringan' },
+  { id: 'education', label: 'Kampus & Sosial' },
 ];
 
 export default function JourneyMap() {
@@ -163,7 +163,7 @@ export default function JourneyMap() {
     <section
       ref={ref}
       style={{
-        padding: '72px 20px',
+        padding: '76px 20px',
         background: 'var(--bg)',
         borderTop: '1px solid var(--border)',
         position: 'relative',
@@ -171,7 +171,7 @@ export default function JourneyMap() {
       }}
     >
       <div style={{ maxWidth: '1140px', margin: '0 auto' }}>
-        {/* Section Header with Bold Typography */}
+        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -183,47 +183,44 @@ export default function JourneyMap() {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '8px',
-              padding: '4px 14px',
+              padding: '6px 16px',
               borderRadius: '999px',
               background: 'rgba(2, 132, 199, 0.1)',
               border: '1px solid rgba(2, 132, 199, 0.25)',
               color: '#38bdf8',
-              fontSize: '0.74rem',
-              fontWeight: 800,
+              fontSize: '0.78rem',
+              fontWeight: 700,
               textTransform: 'uppercase',
-              letterSpacing: '2px',
-              marginBottom: '12px',
-              fontFamily: "'JetBrains Mono', monospace",
+              letterSpacing: '1.5px',
+              marginBottom: '14px',
             }}
           >
-            <Navigation size={13} />
-            <span>MOBILITY &amp; FIELD MILESTONES</span>
+            <Navigation size={14} />
+            <span>Mobility &amp; Field Milestones</span>
           </div>
 
           <h2
             style={{
-              fontSize: 'clamp(2rem, 4.5vw, 3.4rem)',
-              fontWeight: 900,
+              fontSize: 'clamp(2rem, 4.5vw, 3.2rem)',
+              fontWeight: 800,
               color: 'var(--text)',
               letterSpacing: '-0.03em',
               margin: '0 0 10px',
-              textTransform: 'uppercase',
             }}
           >
-            MY JOURNEY MAP
+            My Journey Map
           </h2>
 
           <p
             style={{
               color: 'var(--text-muted)',
-              fontSize: '0.92rem',
+              fontSize: '0.94rem',
               maxWidth: '650px',
               margin: '0 auto',
-              lineHeight: 1.5,
-              fontFamily: "'JetBrains Mono', monospace",
+              lineHeight: 1.6,
             }}
           >
-            Rekam jejak mobilitas lapangan di Kota Medan • Perbankan, BUMN, Almamater &amp; Aksi Sosial
+            Rekam jejak mobilitas lapangan di Kota Medan &bull; Perbankan, BUMN, Almamater &amp; Aksi Sosial
           </p>
 
           {/* Category Filter Tabs */}
@@ -254,11 +251,10 @@ export default function JourneyMap() {
                   }}
                   onMouseEnter={playHover}
                   style={{
-                    padding: '6px 14px',
-                    borderRadius: '8px',
-                    fontSize: '0.74rem',
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontWeight: active ? 800 : 600,
+                    padding: '7px 18px',
+                    borderRadius: '999px',
+                    fontSize: '0.82rem',
+                    fontWeight: active ? 700 : 500,
                     cursor: 'pointer',
                     background: active ? 'var(--accent)' : 'var(--surface)',
                     color: active ? '#ffffff' : 'var(--text-muted)',
@@ -292,8 +288,8 @@ export default function JourneyMap() {
             style={{
               background: 'var(--surface)',
               border: '1px solid var(--border)',
-              borderRadius: '20px',
-              padding: '20px',
+              borderRadius: '24px',
+              padding: '22px',
               boxShadow: '0 8px 24px var(--shadow-color)',
             }}
           >
@@ -303,39 +299,37 @@ export default function JourneyMap() {
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                marginBottom: '16px',
-                paddingBottom: '12px',
+                marginBottom: '18px',
+                paddingBottom: '14px',
                 borderBottom: '1px solid var(--border)',
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Briefcase size={15} style={{ color: 'var(--accent)' }} />
+                <Briefcase size={16} style={{ color: 'var(--accent)' }} />
                 <span
                   style={{
-                    fontSize: '0.78rem',
-                    fontWeight: 800,
+                    fontSize: '0.82rem',
+                    fontWeight: 700,
                     textTransform: 'uppercase',
                     letterSpacing: '1px',
                     color: 'var(--text)',
-                    fontFamily: "'JetBrains Mono', monospace",
                   }}
                 >
-                  RUTE DESTINASI
+                  Rute Destinasi
                 </span>
               </div>
               <span
                 style={{
-                  fontSize: '10.5px',
-                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: '11px',
                   color: 'var(--accent)',
                   background: 'var(--accent-dim)',
-                  padding: '2px 8px',
-                  borderRadius: '6px',
+                  padding: '3px 10px',
+                  borderRadius: '999px',
                   border: '1px solid var(--accent-border)',
-                  fontWeight: 800,
+                  fontWeight: 700,
                 }}
               >
-                {filteredLocations.length} TITIK
+                {filteredLocations.length} Titik Terdata
               </span>
             </div>
 
@@ -345,9 +339,9 @@ export default function JourneyMap() {
               <div
                 style={{
                   position: 'absolute',
-                  left: '19px',
-                  top: '16px',
-                  bottom: '16px',
+                  left: '20px',
+                  top: '18px',
+                  bottom: '18px',
                   width: '2px',
                   background: 'var(--border)',
                   zIndex: 1,
@@ -371,9 +365,9 @@ export default function JourneyMap() {
                       zIndex: 2,
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '12px',
-                      padding: '10px 12px',
-                      borderRadius: '12px',
+                      gap: '14px',
+                      padding: '12px 14px',
+                      borderRadius: '14px',
                       cursor: 'pointer',
                       background: isSelected ? 'var(--surface-2)' : 'transparent',
                       border: isSelected ? `1.5px solid ${loc.accent}` : '1px solid transparent',
@@ -384,9 +378,9 @@ export default function JourneyMap() {
                     {/* Station Number Node */}
                     <div
                       style={{
-                        width: '38px',
-                        height: '38px',
-                        borderRadius: '10px',
+                        width: '40px',
+                        height: '40px',
+                        borderRadius: '12px',
                         background: isSelected ? loc.accent : 'var(--surface)',
                         border: isSelected ? `2px solid #ffffff` : `1.5px solid var(--border)`,
                         display: 'flex',
@@ -398,19 +392,18 @@ export default function JourneyMap() {
                         transition: 'all 0.2s ease',
                       }}
                     >
-                      <Icon size={16} />
+                      <Icon size={18} />
                     </div>
 
                     {/* Milestone Info */}
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '2px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3px' }}>
                         <span
                           style={{
-                            fontSize: '9.5px',
-                            fontFamily: "'JetBrains Mono', monospace",
-                            fontWeight: 800,
-                            padding: '1px 5px',
-                            borderRadius: '4px',
+                            fontSize: '11px',
+                            fontWeight: 700,
+                            padding: '2px 7px',
+                            borderRadius: '6px',
                             background: isSelected ? `${loc.accent}25` : 'var(--surface-2)',
                             color: isSelected ? loc.accent : 'var(--text-dim)',
                             border: `1px solid ${isSelected ? `${loc.accent}50` : 'var(--border)'}`,
@@ -420,7 +413,7 @@ export default function JourneyMap() {
                         </span>
                         <span
                           style={{
-                            fontSize: '10px',
+                            fontSize: '11px',
                             color: 'var(--text-dim)',
                             fontWeight: 600,
                           }}
@@ -431,7 +424,7 @@ export default function JourneyMap() {
                       <h4
                         style={{
                           margin: 0,
-                          fontSize: '0.88rem',
+                          fontSize: '0.92rem',
                           fontWeight: 700,
                           color: 'var(--text)',
                           whiteSpace: 'nowrap',
@@ -444,7 +437,7 @@ export default function JourneyMap() {
                       <p
                         style={{
                           margin: 0,
-                          fontSize: '0.75rem',
+                          fontSize: '0.78rem',
                           color: isSelected ? loc.accent : 'var(--text-muted)',
                           whiteSpace: 'nowrap',
                           overflow: 'hidden',
@@ -464,7 +457,7 @@ export default function JourneyMap() {
                         alignItems: 'center',
                       }}
                     >
-                      <ChevronRight size={16} />
+                      <ChevronRight size={18} />
                     </div>
                   </div>
                 );
@@ -488,11 +481,11 @@ export default function JourneyMap() {
                 style={{
                   background: 'var(--surface)',
                   border: '1px solid var(--border)',
-                  borderRadius: '20px',
-                  padding: 'clamp(20px, 3vw, 26px)',
+                  borderRadius: '24px',
+                  padding: 'clamp(22px, 3vw, 28px)',
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '16px',
+                  gap: '18px',
                   boxShadow: '0 8px 24px var(--shadow-color)',
                   position: 'relative',
                   overflow: 'hidden',
@@ -502,16 +495,15 @@ export default function JourneyMap() {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
                   <span
                     style={{
-                      fontSize: '10.5px',
-                      fontWeight: 800,
+                      fontSize: '11px',
+                      fontWeight: 700,
                       textTransform: 'uppercase',
                       letterSpacing: '1px',
-                      padding: '3px 10px',
-                      borderRadius: '6px',
+                      padding: '4px 12px',
+                      borderRadius: '999px',
                       background: `${selectedLocation.accent}15`,
                       color: selectedLocation.accent,
                       border: `1px solid ${selectedLocation.accent}35`,
-                      fontFamily: "'JetBrains Mono', monospace",
                     }}
                   >
                     {selectedLocation.categoryLabel}
@@ -522,22 +514,22 @@ export default function JourneyMap() {
                       display: 'flex',
                       alignItems: 'center',
                       gap: '6px',
-                      fontSize: '11px',
+                      fontSize: '12px',
                       color: 'var(--text-dim)',
-                      fontFamily: "'JetBrains Mono', monospace",
+                      fontWeight: 600,
                     }}
                   >
-                    <Calendar size={13} />
+                    <Calendar size={14} />
                     <span>{selectedLocation.period}</span>
                   </div>
                 </div>
 
                 {/* Institution Title & Role Header */}
                 <div>
-                  <h3 style={{ margin: '0 0 4px', fontSize: '1.25rem', fontWeight: 800, color: 'var(--text)', letterSpacing: '-0.01em' }}>
+                  <h3 style={{ margin: '0 0 5px', fontSize: '1.3rem', fontWeight: 800, color: 'var(--text)', letterSpacing: '-0.01em' }}>
                     {selectedLocation.name}
                   </h3>
-                  <span style={{ fontSize: '0.88rem', color: selectedLocation.accent, fontWeight: 700, fontFamily: "'JetBrains Mono', monospace" }}>
+                  <span style={{ fontSize: '0.92rem', color: selectedLocation.accent, fontWeight: 700 }}>
                     {selectedLocation.role}
                   </span>
                 </div>
@@ -548,20 +540,20 @@ export default function JourneyMap() {
                     display: 'flex',
                     alignItems: 'center',
                     gap: '10px',
-                    padding: '8px 12px',
-                    borderRadius: '10px',
+                    padding: '10px 14px',
+                    borderRadius: '12px',
                     background: 'var(--surface-2)',
                     border: '1px solid var(--border)',
                   }}
                 >
-                  <MapPin size={15} style={{ color: selectedLocation.accent, flexShrink: 0 }} />
-                  <span style={{ fontSize: '0.82rem', color: 'var(--text)', fontWeight: 500 }}>
+                  <MapPin size={16} style={{ color: selectedLocation.accent, flexShrink: 0 }} />
+                  <span style={{ fontSize: '0.86rem', color: 'var(--text)', fontWeight: 500 }}>
                     {selectedLocation.address}
                   </span>
                 </div>
 
-                {/* Narrative Summary (Crisp 1-2 lines) */}
-                <p style={{ margin: 0, fontSize: '0.86rem', color: 'var(--text-muted)', lineHeight: 1.55 }}>
+                {/* Narrative Summary */}
+                <p style={{ margin: 0, fontSize: '0.88rem', color: 'var(--text-muted)', lineHeight: 1.6 }}>
                   {selectedLocation.summary}
                 </p>
 
@@ -570,30 +562,29 @@ export default function JourneyMap() {
                   <span
                     style={{
                       display: 'block',
-                      fontSize: '0.7rem',
-                      fontWeight: 800,
+                      fontSize: '0.74rem',
+                      fontWeight: 700,
                       textTransform: 'uppercase',
                       letterSpacing: '1px',
                       color: 'var(--text-dim)',
-                      marginBottom: '8px',
-                      fontFamily: "'JetBrains Mono', monospace",
+                      marginBottom: '10px',
                     }}
                   >
-                    CAPAIAN &amp; KONTRIBUSI:
+                    Capaian &amp; Kontribusi:
                   </span>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     {selectedLocation.highlights.map((h, idx) => (
                       <div
                         key={idx}
                         style={{
                           display: 'flex',
                           alignItems: 'center',
-                          gap: '8px',
-                          fontSize: '0.82rem',
+                          gap: '10px',
+                          fontSize: '0.85rem',
                           color: 'var(--text)',
                         }}
                       >
-                        <CheckCircle2 size={14} style={{ color: selectedLocation.accent, flexShrink: 0 }} />
+                        <CheckCircle2 size={15} style={{ color: selectedLocation.accent, flexShrink: 0 }} />
                         <span>{h}</span>
                       </div>
                     ))}
@@ -604,18 +595,18 @@ export default function JourneyMap() {
                 <div
                   style={{
                     marginTop: 'auto',
-                    padding: '10px 12px',
-                    borderRadius: '10px',
+                    padding: '12px 14px',
+                    borderRadius: '12px',
                     background: `${selectedLocation.accent}10`,
                     border: `1px solid ${selectedLocation.accent}25`,
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '8px',
+                    gap: '10px',
                   }}
                 >
-                  <Sparkles size={14} style={{ color: selectedLocation.accent, flexShrink: 0 }} />
-                  <span style={{ fontSize: '0.78rem', color: 'var(--text)', fontFamily: "'JetBrains Mono', monospace" }}>
-                    Dedicated field experience in Kota Medan.
+                  <Sparkles size={16} style={{ color: selectedLocation.accent, flexShrink: 0 }} />
+                  <span style={{ fontSize: '0.82rem', color: 'var(--text)', fontWeight: 500 }}>
+                    Dedikasi mobilitas dan kontribusi profesional di Kota Medan.
                   </span>
                 </div>
               </motion.div>

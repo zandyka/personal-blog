@@ -11,34 +11,34 @@ import {
   ShieldCheck,
   BrainCircuit,
   Layers,
-  Camera,
+  GraduationCap,
 } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
 
 const KEY_METRICS = [
   {
-    label: 'VALIDATION ACCURACY',
+    label: 'Akurasi Validasi',
     value: '94.71%',
     sub: '80 Epoch Pelatihan Model',
     icon: Sparkles,
     color: '#34d399',
   },
   {
-    label: 'MACRO F1-SCORE',
+    label: 'Macro F1-Score',
     value: '0.95',
-    sub: '26 Kelas Huruf A–Z BISINDO',
+    sub: '26 Kelas Huruf A–Z (BISINDO)',
     icon: BrainCircuit,
     color: '#818cf8',
   },
   {
-    label: 'ON-DEVICE INFERENCE',
+    label: 'On-Device Processing',
     value: '100%',
     sub: 'Zero Cloud & Tanpa Internet',
     icon: Cpu,
     color: '#38bdf8',
   },
   {
-    label: 'FUNCTIONAL TESTS',
+    label: 'Pengujian Fungsional',
     value: '14 / 14',
     sub: '100% Skenario Terverifikasi',
     icon: ShieldCheck,
@@ -49,9 +49,9 @@ const KEY_METRICS = [
 const PILLARS = [
   {
     id: 'pipeline',
-    tab: '01 / PIPELINE ML',
+    tab: 'Pipeline ML On-Device',
     title: 'Pipeline ML On-Device',
-    tag: 'MEDIAPIPE & DENSE NEURAL NETWORK',
+    tag: 'MediaPipe & Dense Neural Network',
     icon: Cpu,
     color: '#818cf8',
     specs: [
@@ -63,28 +63,28 @@ const PILLARS = [
   },
   {
     id: 'detection',
-    tab: '02 / DETEKSI REAL-TIME',
+    tab: 'Deteksi Real-Time',
     title: 'Deteksi Real-Time Cerdas',
-    tag: 'DUAL-THRESHOLD & ANTI-DUPLIKAT',
+    tag: 'Dual-Threshold & Anti-Duplikat',
     icon: Zap,
     color: '#38bdf8',
     specs: [
-      { label: 'Frame Rate', val: '~9 FPS (Seleksi Frame Skipping 110ms)' },
-      { label: 'Dual-Threshold', val: 'Live Preview (≥0.55) & Commit Kata (≥0.65)' },
+      { label: 'Frame Rate', val: '~9 FPS (Frame Skipping Selektif 110ms)' },
+      { label: 'Dual-Threshold', val: 'Live Display (≥0.55) & Commit Kata (≥0.65)' },
       { label: 'Anti-Duplikat', val: 'Cooldown 650ms & Konsistensi Frame' },
       { label: 'Kamera Depan', val: 'Koreksi Otomatis Mirror-Flip' },
     ],
   },
   {
     id: 'ecosystem',
-    tab: '03 / EKOSISTEM APP',
+    tab: 'Ekosistem Belajar',
     title: 'Ekosistem Belajar & Kuis',
-    tag: 'KAMUS A–Z, 4 KUIS & GAMIFIKASI',
+    tag: 'Kamus A–Z, 4 Mode Kuis & Gamifikasi',
     icon: Gamepad2,
     color: '#34d399',
     specs: [
       { label: 'Kamus Visual', val: 'Katalog Postur Gestur Huruf A–Z' },
-      { label: 'Mode Kuis', val: '4 Mode: Tebak, Peragakan, & Susun Kata' },
+      { label: 'Mode Kuis', val: '4 Mode: Tebak, Peragakan & Susun Kata' },
       { label: 'Gamifikasi', val: 'XP Points, Level, Daily Streaks & Badges' },
       { label: 'Tracking Progres', val: 'Mistake Tracker & Statistik Belajar' },
     ],
@@ -92,13 +92,13 @@ const PILLARS = [
 ];
 
 const PIPELINE_FLOW = [
-  { no: '01', title: 'CAMERA', sub: 'YUV420 Stream' },
-  { no: '02', title: 'FRAME SELECT', sub: '~9 FPS Skipping' },
-  { no: '03', title: 'MEDIAPIPE', sub: '21 3D Landmarks' },
-  { no: '04', title: 'FEATURE 176D', sub: 'Scale-Invariant' },
-  { no: '05', title: 'TFLITE DNN', sub: 'Classification' },
-  { no: '06', title: 'THRESHOLD', sub: '0.55 / 0.65 Commit' },
-  { no: '07', title: 'OUTPUT', sub: 'Text & TTS Audio' },
+  { no: '01', title: 'Kamera HP', sub: 'YUV420 Stream' },
+  { no: '02', title: 'Frame Select', sub: '~9 FPS Skipping' },
+  { no: '03', title: 'MediaPipe', sub: '21 Landmark 3D' },
+  { no: '04', title: 'Vektor Fitur', sub: '176D Invariant' },
+  { no: '05', title: 'TFLite Model', sub: 'Dense Classifier' },
+  { no: '06', title: 'Threshold', sub: '0.55 / 0.65 Commit' },
+  { no: '07', title: 'Output Kata', sub: 'Teks & Suara (TTS)' },
 ];
 
 export default function AcademicHighlights() {
@@ -110,7 +110,7 @@ export default function AcademicHighlights() {
     <section
       ref={ref}
       style={{
-        padding: '72px 20px',
+        padding: '76px 20px',
         background: 'var(--bg)',
         borderTop: '1px solid var(--border)',
         position: 'relative',
@@ -123,41 +123,53 @@ export default function AcademicHighlights() {
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
-          style={{ textAlign: 'center', marginBottom: '36px' }}
+          style={{ textAlign: 'center', marginBottom: '40px' }}
         >
           <div
             style={{
               display: 'inline-flex',
               alignItems: 'center',
               gap: '8px',
-              padding: '4px 14px',
+              padding: '6px 16px',
               borderRadius: '999px',
               background: 'rgba(129, 140, 248, 0.1)',
               border: '1px solid rgba(129, 140, 248, 0.25)',
               color: 'var(--accent)',
-              fontSize: '0.74rem',
-              fontWeight: 800,
+              fontSize: '0.78rem',
+              fontWeight: 700,
               textTransform: 'uppercase',
-              letterSpacing: '2px',
-              marginBottom: '14px',
-              fontFamily: "'JetBrains Mono', monospace",
+              letterSpacing: '1.5px',
+              marginBottom: '16px',
             }}
           >
-            <span>TUGAS AKHIR • APPLIED AI RESEARCH</span>
+            <GraduationCap size={15} />
+            <span>Tugas Akhir • Applied AI Research</span>
           </div>
 
           <h2
             style={{
-              fontSize: 'clamp(2.2rem, 5vw, 3.8rem)',
+              fontSize: 'clamp(2.6rem, 6vw, 4.4rem)',
               fontWeight: 900,
-              color: 'var(--text)',
-              letterSpacing: '-0.03em',
-              margin: '0 0 8px',
-              lineHeight: 1.05,
-              textTransform: 'uppercase',
+              letterSpacing: '-0.04em',
+              lineHeight: 1,
+              margin: '0 0 14px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '2px',
             }}
           >
-            HANDSPEAK
+            <span style={{ color: 'var(--text)' }}>Hand</span>
+            <span
+              style={{
+                background: 'linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
+              Speak
+            </span>
+            <span style={{ color: 'var(--accent)' }}>.</span>
           </h2>
 
           <div
@@ -165,22 +177,22 @@ export default function AcademicHighlights() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '12px',
+              gap: '10px',
               flexWrap: 'wrap',
-              fontSize: '0.92rem',
+              fontSize: '0.95rem',
               color: 'var(--text-muted)',
-              fontFamily: "'JetBrains Mono', monospace",
+              fontWeight: 500,
             }}
           >
-            <span>Real-Time BISINDO Sign Language Translator</span>
+            <span>Real-Time On-Device BISINDO Sign Language Translator</span>
             <span style={{ color: 'var(--border)' }}>•</span>
-            <span style={{ color: 'var(--accent)', fontWeight: 700 }}>Teknik Informatika USU</span>
+            <span style={{ color: 'var(--text)', fontWeight: 600 }}>Teknik Informatika USU</span>
             <span style={{ color: 'var(--border)' }}>•</span>
             <span style={{ color: '#34d399', fontWeight: 700 }}>Predikat Cumlaude</span>
           </div>
         </motion.div>
 
-        {/* 1. Key Performance Metrics Bar (Bold Typography & Stats) */}
+        {/* 1. Key Performance Metrics Bar */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -188,7 +200,7 @@ export default function AcademicHighlights() {
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-            gap: '14px',
+            gap: '16px',
             marginBottom: '32px',
           }}
         >
@@ -200,8 +212,8 @@ export default function AcademicHighlights() {
                 style={{
                   background: 'var(--surface)',
                   border: '1px solid var(--border)',
-                  borderRadius: '16px',
-                  padding: '16px 18px',
+                  borderRadius: '18px',
+                  padding: '18px 20px',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '14px',
@@ -220,9 +232,9 @@ export default function AcademicHighlights() {
               >
                 <div
                   style={{
-                    width: '42px',
-                    height: '42px',
-                    borderRadius: '10px',
+                    width: '46px',
+                    height: '46px',
+                    borderRadius: '14px',
                     background: `${metric.color}15`,
                     border: `1px solid ${metric.color}35`,
                     display: 'flex',
@@ -232,14 +244,13 @@ export default function AcademicHighlights() {
                     flexShrink: 0,
                   }}
                 >
-                  <Icon size={20} />
+                  <Icon size={22} />
                 </div>
                 <div>
                   <div
                     style={{
-                      fontSize: '1.5rem',
-                      fontWeight: 900,
-                      fontFamily: "'JetBrains Mono', monospace",
+                      fontSize: '1.65rem',
+                      fontWeight: 800,
                       color: 'var(--text)',
                       lineHeight: 1.1,
                       letterSpacing: '-0.02em',
@@ -249,18 +260,15 @@ export default function AcademicHighlights() {
                   </div>
                   <div
                     style={{
-                      fontSize: '0.72rem',
-                      fontWeight: 800,
+                      fontSize: '0.78rem',
+                      fontWeight: 700,
                       color: metric.color,
-                      letterSpacing: '0.5px',
-                      textTransform: 'uppercase',
                       marginTop: '2px',
-                      fontFamily: "'JetBrains Mono', monospace",
                     }}
                   >
                     {metric.label}
                   </div>
-                  <div style={{ fontSize: '0.7rem', color: 'var(--text-dim)', marginTop: '1px' }}>
+                  <div style={{ fontSize: '0.72rem', color: 'var(--text-dim)', marginTop: '1px' }}>
                     {metric.sub}
                   </div>
                 </div>
@@ -288,7 +296,7 @@ export default function AcademicHighlights() {
             style={{
               background: 'var(--surface)',
               border: '1px solid var(--border)',
-              borderRadius: '20px',
+              borderRadius: '24px',
               overflow: 'hidden',
               display: 'flex',
               flexDirection: 'column',
@@ -325,62 +333,58 @@ export default function AcademicHighlights() {
               <div
                 style={{
                   position: 'absolute',
-                  top: '14px',
-                  left: '14px',
+                  top: '16px',
+                  left: '16px',
                   display: 'flex',
-                  gap: '6px',
+                  gap: '8px',
                 }}
               >
                 <span
                   style={{
-                    padding: '3px 8px',
-                    borderRadius: '6px',
+                    padding: '4px 10px',
+                    borderRadius: '8px',
                     background: 'rgba(129, 140, 248, 0.9)',
                     color: '#ffffff',
-                    fontSize: '10px',
-                    fontWeight: 800,
-                    letterSpacing: '1px',
-                    textTransform: 'uppercase',
-                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    letterSpacing: '0.5px',
                   }}
                 >
-                  REAL-TIME AI
+                  Real-Time AI
                 </span>
                 <span
                   style={{
-                    padding: '3px 8px',
-                    borderRadius: '6px',
+                    padding: '4px 10px',
+                    borderRadius: '8px',
                     background: 'rgba(52, 211, 153, 0.9)',
                     color: '#0a0a0f',
-                    fontSize: '10px',
-                    fontWeight: 800,
+                    fontSize: '11px',
+                    fontWeight: 700,
                     letterSpacing: '0.5px',
-                    fontFamily: "'JetBrains Mono', monospace",
                   }}
                 >
-                  ZERO CLOUD
+                  100% On-Device
                 </span>
               </div>
             </div>
 
             {/* Concise Typography Specs */}
-            <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '14px', flex: 1 }}>
+            <div style={{ padding: '22px', display: 'flex', flexDirection: 'column', gap: '14px', flex: 1 }}>
               <div>
                 <span
                   style={{
-                    fontSize: '0.7rem',
-                    fontWeight: 800,
+                    fontSize: '0.74rem',
+                    fontWeight: 700,
                     color: 'var(--accent)',
                     textTransform: 'uppercase',
                     letterSpacing: '1px',
-                    fontFamily: "'JetBrains Mono', monospace",
                     display: 'block',
-                    marginBottom: '4px',
+                    marginBottom: '6px',
                   }}
                 >
-                  MOBILE COMPUTER VISION
+                  Mobile Computer Vision &bull; AI On-Device
                 </span>
-                <p style={{ margin: 0, fontSize: '0.88rem', color: 'var(--text)', lineHeight: 1.5, fontWeight: 500 }}>
+                <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text)', lineHeight: 1.55, fontWeight: 500 }}>
                   Penerjemah Bahasa Isyarat Indonesia (BISINDO) langsung di perangkat smartphone Android tanpa ketergantungan server internet.
                 </p>
               </div>
@@ -390,27 +394,25 @@ export default function AcademicHighlights() {
                 <span
                   style={{
                     display: 'block',
-                    fontSize: '0.68rem',
-                    fontWeight: 800,
+                    fontSize: '0.72rem',
+                    fontWeight: 700,
                     textTransform: 'uppercase',
                     letterSpacing: '1px',
                     color: 'var(--text-dim)',
                     marginBottom: '8px',
-                    fontFamily: "'JetBrains Mono', monospace",
                   }}
                 >
-                  TECH STACK &amp; METODOLOGI
+                  Tech Stack &amp; Metodologi
                 </span>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                  {['Flutter (Dart)', 'TensorFlow Lite', 'MediaPipe 3D', 'Python / Keras', 'Agile Scrum', 'Dataset Mendeley'].map((tech, idx) => (
+                  {['Flutter', 'Dart', 'TensorFlow Lite', 'MediaPipe 3D', 'Python / Keras', 'Agile Scrum', 'Dataset Mendeley'].map((tech, idx) => (
                     <span
                       key={idx}
                       style={{
-                        fontSize: '11px',
-                        fontFamily: "'JetBrains Mono', monospace",
+                        fontSize: '11.5px',
                         fontWeight: 600,
-                        padding: '3px 8px',
-                        borderRadius: '6px',
+                        padding: '4px 10px',
+                        borderRadius: '8px',
                         background: 'var(--surface-2)',
                         border: '1px solid var(--border)',
                         color: 'var(--text)',
@@ -424,7 +426,7 @@ export default function AcademicHighlights() {
             </div>
           </motion.div>
 
-          {/* Right Column: Spec Sheet Explorer (Clean, Typographic, Zero Walls of Text) */}
+          {/* Right Column: Spec Sheet Explorer */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
@@ -432,15 +434,15 @@ export default function AcademicHighlights() {
             style={{
               background: 'var(--surface)',
               border: '1px solid var(--border)',
-              borderRadius: '20px',
-              padding: '20px',
+              borderRadius: '24px',
+              padding: '22px',
               display: 'flex',
               flexDirection: 'column',
               boxShadow: '0 8px 24px var(--shadow-color)',
             }}
           >
             {/* Header Tabs */}
-            <div style={{ display: 'flex', gap: '6px', marginBottom: '16px', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' }}>
               {PILLARS.map((p) => {
                 const isSelected = activePillar.id === p.id;
                 return (
@@ -452,9 +454,9 @@ export default function AcademicHighlights() {
                     }}
                     onMouseEnter={playHover}
                     style={{
-                      flex: '1 1 110px',
-                      padding: '8px 10px',
-                      borderRadius: '8px',
+                      flex: '1 1 120px',
+                      padding: '10px 14px',
+                      borderRadius: '12px',
                       background: isSelected ? `${p.color}15` : 'var(--surface-2)',
                       border: isSelected ? `1.5px solid ${p.color}` : '1px solid var(--border)',
                       cursor: 'pointer',
@@ -464,9 +466,8 @@ export default function AcademicHighlights() {
                   >
                     <div
                       style={{
-                        fontSize: '0.72rem',
-                        fontWeight: 800,
-                        fontFamily: "'JetBrains Mono', monospace",
+                        fontSize: '0.78rem',
+                        fontWeight: isSelected ? 700 : 600,
                         color: isSelected ? p.color : 'var(--text-muted)',
                       }}
                     >
@@ -488,8 +489,8 @@ export default function AcademicHighlights() {
                 style={{
                   background: 'var(--surface-2)',
                   border: '1px solid var(--border)',
-                  borderRadius: '14px',
-                  padding: '18px',
+                  borderRadius: '16px',
+                  padding: '20px',
                   flex: 1,
                   display: 'flex',
                   flexDirection: 'column',
@@ -499,20 +500,19 @@ export default function AcademicHighlights() {
                 <div>
                   <span
                     style={{
-                      fontSize: '0.68rem',
-                      fontWeight: 800,
+                      fontSize: '0.72rem',
+                      fontWeight: 700,
                       color: activePillar.color,
                       textTransform: 'uppercase',
-                      letterSpacing: '1px',
-                      fontFamily: "'JetBrains Mono', monospace",
+                      letterSpacing: '0.8px',
                     }}
                   >
                     {activePillar.tag}
                   </span>
                   <h3
                     style={{
-                      margin: '2px 0 0',
-                      fontSize: '1.15rem',
+                      margin: '3px 0 0',
+                      fontSize: '1.2rem',
                       fontWeight: 800,
                       color: 'var(--text)',
                       letterSpacing: '-0.01em',
@@ -532,29 +532,26 @@ export default function AcademicHighlights() {
                         alignItems: 'center',
                         justifyContent: 'space-between',
                         gap: '12px',
-                        padding: '8px 12px',
-                        borderRadius: '8px',
+                        padding: '10px 14px',
+                        borderRadius: '10px',
                         background: 'var(--surface)',
                         border: '1px solid var(--border)',
                       }}
                     >
                       <span
                         style={{
-                          fontSize: '0.74rem',
-                          fontWeight: 700,
+                          fontSize: '0.78rem',
+                          fontWeight: 600,
                           color: 'var(--text-muted)',
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.5px',
                         }}
                       >
                         {spec.label}
                       </span>
                       <span
                         style={{
-                          fontSize: '0.8rem',
+                          fontSize: '0.84rem',
                           fontWeight: 700,
                           color: 'var(--text)',
-                          fontFamily: "'JetBrains Mono', monospace",
                           textAlign: 'right',
                         }}
                       >
@@ -569,9 +566,9 @@ export default function AcademicHighlights() {
             {/* Bottom Insight Callout */}
             <div
               style={{
-                marginTop: '14px',
-                padding: '8px 12px',
-                borderRadius: '8px',
+                marginTop: '16px',
+                padding: '10px 14px',
+                borderRadius: '12px',
                 background: 'rgba(52, 211, 153, 0.08)',
                 border: '1px solid rgba(52, 211, 153, 0.2)',
                 display: 'flex',
@@ -579,17 +576,16 @@ export default function AcademicHighlights() {
                 justifyContent: 'space-between',
                 flexWrap: 'wrap',
                 gap: '8px',
-                fontFamily: "'JetBrains Mono', monospace",
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Activity size={14} style={{ color: '#34d399' }} />
-                <span style={{ fontSize: '0.74rem', fontWeight: 700, color: 'var(--text)' }}>
-                  F1 = 1.00 Sempurna: G, R, Z
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Activity size={15} style={{ color: '#34d399' }} />
+                <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text)' }}>
+                  Performa Sempurna (F1 = 1.00): <strong>Huruf G, R, Z</strong>
                 </span>
               </div>
-              <span style={{ fontSize: '0.7rem', color: 'var(--text-dim)' }}>
-                Target: M &amp; N Gesture Similarity
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>
+                Target Optimasi: Kemiripan Gestur M &amp; N
               </span>
             </div>
           </motion.div>
@@ -603,8 +599,8 @@ export default function AcademicHighlights() {
           style={{
             background: 'var(--surface)',
             border: '1px solid var(--border)',
-            borderRadius: '16px',
-            padding: '16px 20px',
+            borderRadius: '20px',
+            padding: '20px 24px',
             boxShadow: '0 4px 16px var(--shadow-color)',
           }}
         >
@@ -613,37 +609,36 @@ export default function AcademicHighlights() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              marginBottom: '12px',
+              marginBottom: '14px',
             }}
           >
             <span
               style={{
-                fontSize: '0.7rem',
-                fontWeight: 800,
+                fontSize: '0.74rem',
+                fontWeight: 700,
                 textTransform: 'uppercase',
                 letterSpacing: '1px',
                 color: 'var(--accent)',
-                fontFamily: "'JetBrains Mono', monospace",
               }}
             >
-              END-TO-END PIPELINE ARCHITECTURE
+              Arsitektur Pipeline Deteksi Real-Time
             </span>
             <span
               style={{
-                fontSize: '10px',
-                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: '11px',
                 color: 'var(--text-dim)',
+                fontWeight: 600,
               }}
             >
-              LATENCY ~110MS / FRAME
+              Latensi: ~110ms / Frame
             </span>
           </div>
 
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(115px, 1fr))',
-              gap: '8px',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(125px, 1fr))',
+              gap: '10px',
             }}
           >
             {PIPELINE_FLOW.map((flow, idx) => (
@@ -652,41 +647,38 @@ export default function AcademicHighlights() {
                 style={{
                   background: 'var(--surface-2)',
                   border: '1px solid var(--border)',
-                  borderRadius: '8px',
-                  padding: '8px 10px',
+                  borderRadius: '12px',
+                  padding: '10px 12px',
                   position: 'relative',
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '2px',
+                  gap: '3px',
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span
                     style={{
-                      fontSize: '0.65rem',
+                      fontSize: '0.72rem',
                       fontWeight: 800,
                       color: 'var(--accent)',
-                      fontFamily: "'JetBrains Mono', monospace",
                     }}
                   >
                     {flow.no}
                   </span>
                   {idx < PIPELINE_FLOW.length - 1 && (
-                    <ArrowRight size={10} style={{ color: 'var(--text-dim)' }} />
+                    <ArrowRight size={12} style={{ color: 'var(--text-dim)' }} />
                   )}
                 </div>
                 <div
                   style={{
-                    fontSize: '0.76rem',
-                    fontWeight: 800,
+                    fontSize: '0.82rem',
+                    fontWeight: 700,
                     color: 'var(--text)',
-                    fontFamily: "'JetBrains Mono', monospace",
-                    textTransform: 'uppercase',
                   }}
                 >
                   {flow.title}
                 </div>
-                <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>
+                <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
                   {flow.sub}
                 </div>
               </div>

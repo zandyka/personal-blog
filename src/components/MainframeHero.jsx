@@ -185,7 +185,6 @@ export default function MainframeHero({ onExploreClick }) {
             <span
               style={{
                 fontSize: '11px',
-                fontFamily: "'JetBrains Mono', monospace",
                 fontWeight: 700,
                 letterSpacing: '2px',
                 textTransform: 'uppercase',

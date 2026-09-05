@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useSoundContext } from './ui/SoundProvider';
 import { useTheme } from '../hooks/useTheme';
@@ -139,9 +139,9 @@ export default function SplashScreen({ onComplete }) {
         >
           <span
             style={{
-              fontFamily: "'JetBrains Mono', monospace",
+              fontFamily: "'Space Grotesk', sans-serif",
               fontSize: 'clamp(2.4rem, 7vw, 5.2rem)',
-              fontWeight: 700,
+              fontWeight: 800,
               color: isLight ? '#19181A' : '#ffffff',
               letterSpacing: '-0.02em',
               display: 'inline-flex',

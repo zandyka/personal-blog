@@ -129,7 +129,7 @@ export default function InteractiveLanyard() {
     strapCtx.stroke();
 
     strapCtx.fillStyle = '#ffffff';
-    strapCtx.font = 'bold 24px "JetBrains Mono", monospace';
+    strapCtx.font = 'bold 24px "Space Grotesk", sans-serif';
     strapCtx.textAlign = 'center';
     for (let y = 80; y < 1024; y += 160) {
       strapCtx.save();

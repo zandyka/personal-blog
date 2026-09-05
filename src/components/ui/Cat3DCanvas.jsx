@@ -382,8 +382,8 @@ const Cat3DCanvas = forwardRef(function Cat3DCanvas(
             justifyContent: 'center',
             gap: '12px',
             color: 'var(--text-muted)',
-            fontSize: '12px',
-            fontFamily: "'JetBrains Mono', monospace",
+            fontSize: '13px',
+            fontWeight: 500,
             zIndex: 10,
           }}
         >
@@ -410,8 +410,8 @@ const Cat3DCanvas = forwardRef(function Cat3DCanvas(
             alignItems: 'center',
             justifyContent: 'center',
             color: 'var(--danger, #ef4444)',
-            fontSize: '12px',
-            fontFamily: "'JetBrains Mono', monospace",
+            fontSize: '13px',
+            fontWeight: 500,
             zIndex: 10,
           }}
         >

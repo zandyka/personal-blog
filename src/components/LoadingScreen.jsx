@@ -231,12 +231,12 @@ export default function LoadingScreen({ onComplete }) {
                 />
               </div>
 
-              {/* Percentage in JetBrains Mono */}
+              {/* Percentage in Space Grotesk */}
               <span
                 style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: '0.75rem',
-                  fontWeight: 500,
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontSize: '0.8rem',
+                  fontWeight: 600,
                   letterSpacing: '0.05em',
                   color: 'var(--text-muted)',
                   marginTop: '12px',

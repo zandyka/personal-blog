@@ -326,8 +326,7 @@ export default function ProfileAIChatbox() {
                   {isBot && msg.badge && (
                     <div
                       style={{
-                        fontSize: '10.5px',
-                        fontFamily: "'JetBrains Mono', monospace",
+                        fontSize: '11px',
                         color: 'var(--accent)',
                         fontWeight: 700,
                         textTransform: 'uppercase',

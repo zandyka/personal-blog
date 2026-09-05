@@ -158,10 +158,10 @@ export default function Navbar() {
         >
           <span
             style={{
-              fontFamily: "'JetBrains Mono', monospace",
+              fontFamily: "'Space Grotesk', sans-serif",
               fontSize: 'clamp(1rem, 1.3vw, 1.25rem)',
               fontWeight: 700,
-              letterSpacing: '3px',
+              letterSpacing: '2px',
               color: 'var(--text)',
               userSelect: 'none',
             }}
@@ -431,10 +431,10 @@ export default function Navbar() {
         {/* Live Clock on Mobile Top */}
         <span
           style={{
-            fontFamily: "'JetBrains Mono', monospace",
+            fontFamily: "'Space Grotesk', sans-serif",
             fontSize: '12px',
             fontWeight: 700,
-            letterSpacing: '2px',
+            letterSpacing: '1px',
             color: 'var(--text-muted)',
           }}
         >
