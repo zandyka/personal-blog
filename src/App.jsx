@@ -20,6 +20,7 @@ import AboutPage from './pages/AboutPage';
 import ExperiencePage from './pages/ExperiencePage';
 import ProjectsPage from './pages/ProjectsPage';
 import ContactPage from './pages/ContactPage';
+import AlbumPage from './pages/AlbumPage';
 
 function AppInner() {
   useTheme();
@@ -59,6 +60,7 @@ function AppInner() {
           <Route path="/experience" element={<ExperiencePage />} />
           <Route path="/projects" element={<ProjectsPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/album" element={<AlbumPage />} />
         </Routes>
       </AnimatePresence>
       <Footer />

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ZoomIn, Camera, Palette, Users, Grid } from 'lucide-react';
+import { X, ZoomIn, Camera, Palette, Users, Grid, ArrowUpRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import { useSoundContext } from './ui/SoundProvider';
 
@@ -94,6 +95,36 @@ const GALLERY_ITEMS = [
     ratioLabel: '9:16',
     src: '/gallery/magang bpjs 9_16.png',
     alt: 'Aktivitas Magang BPJS Ketenagakerjaan 9:16',
+  },
+  {
+    id: 10,
+    category: 'Photography',
+    title: 'Portrait Studio — Formal Look',
+    caption: 'Sesi pemotretan profesional studio formal untuk profil personal branding.',
+    aspectRatio: '4 / 3',
+    ratioLabel: '4:3',
+    src: '/gallery/foto diri di about 4_3.png',
+    alt: 'Portrait Studio Formal',
+  },
+  {
+    id: 11,
+    category: 'Photography',
+    title: 'Portrait Studio — Front Perspective',
+    caption: 'Dokumentasi fotografi studio perspektif depan dengan pencahayaan softbox.',
+    aspectRatio: '4 / 3',
+    ratioLabel: '4:3',
+    src: '/gallery/foto diri di about (depan) 4_3.png',
+    alt: 'Portrait Studio Front',
+  },
+  {
+    id: 12,
+    category: 'Photography',
+    title: 'Portrait Studio — Dynamic Angle',
+    caption: 'Eksplorasi pose dan pencahayaan aksen studio modern.',
+    aspectRatio: '4 / 3',
+    ratioLabel: '4:3',
+    src: '/gallery/foto diri di about (belakang) 4_3.png',
+    alt: 'Portrait Studio Dynamic Angle',
   },
 ];
 
@@ -428,6 +459,38 @@ export default function Gallery() {
               </div>
             );
           })}
+        </div>
+
+        {/* Button to navigate to full Album Page */}
+        <div style={{ marginTop: '40px', display: 'flex', justifyContent: 'center' }}>
+          <Link
+            to="/album"
+            onClick={playClick}
+            style={{ textDecoration: 'none' }}
+          >
+            <motion.button
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.96 }}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '10px',
+                padding: '13px 30px',
+                borderRadius: '999px',
+                background: 'var(--surface-2)',
+                border: '1px solid var(--border)',
+                color: 'var(--text)',
+                fontSize: '0.92rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                boxShadow: '0 8px 24px var(--shadow-color)',
+                transition: 'border-color 0.25s, box-shadow 0.25s',
+              }}
+            >
+              <span>My Album</span>
+              <ArrowUpRight size={17} style={{ color: 'var(--accent)' }} />
+            </motion.button>
+          </Link>
         </div>
 
         <style>{`

@@ -13,6 +13,7 @@ import {
   ChevronDown,
   Cat,
   PawPrint,
+  Image,
 } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
 import ThemeToggle from './ui/ThemeToggle';
@@ -23,6 +24,7 @@ const ABOUT_DROPDOWN = [
   { label: 'About Me', path: '/about', icon: User },
   { label: 'Experience', path: '/experience', icon: Briefcase },
   { label: 'Projects', path: '/projects', icon: FolderGit2 },
+  { label: 'Album Gallery', path: '/album', icon: Image },
 ];
 
 const DockButton = ({ to, icon: Icon, label, isActive, onClick, onHover }) => {
@@ -121,7 +123,7 @@ export default function Navbar() {
 
   const isHome = location.pathname === '/';
   const isContact = location.pathname === '/contact';
-  const isAboutActive = ['/about', '/experience', '/projects'].some((p) =>
+  const isAboutActive = ['/about', '/experience', '/projects', '/album'].some((p) =>
     location.pathname.startsWith(p)
   );
 
