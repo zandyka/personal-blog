@@ -80,8 +80,6 @@ export default async function handler(req, res) {
     // 1. Prioritize Google Gemini API
     if (geminiApiKey) {
       try {
-        const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`;
-
         // Format history for Gemini API
         const contents = [];
         if (Array.isArray(history) && history.length > 0) {
@@ -95,37 +93,56 @@ export default async function handler(req, res) {
         }
         contents.push({ role: 'user', parts: [{ text: userMessage }] });
 
-        const geminiRes = await fetch(geminiUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents,
-            systemInstruction: {
-              parts: [{ text: SYSTEM_PROMPT }],
-            },
-            generationConfig: {
-              temperature: 0.65,
-              topK: 40,
-              topP: 0.95,
-              maxOutputTokens: 800,
-            },
-          }),
-        });
+        // Models to try in order of capability & availability
+        const modelsToTry = ['gemini-2.5-flash', 'gemini-flash-latest', 'gemini-1.5-flash'];
+        let replyText = '';
+        let usedModel = 'Gemini 2.5 Flash';
 
-        if (geminiRes.ok) {
-          const data = await geminiRes.json();
-          const replyText =
-            data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+        for (const model of modelsToTry) {
+          try {
+            const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${geminiApiKey}`;
 
-          if (replyText) {
-            const contextMeta = extractContextMeta(userMessage, replyText);
-            return res.status(200).json({
-              text: replyText,
-              badge: contextMeta.badge,
-              actions: contextMeta.actions,
-              provider: 'Gemini 1.5 Flash',
+            const geminiRes = await fetch(geminiUrl, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                contents,
+                systemInstruction: {
+                  parts: [{ text: SYSTEM_PROMPT }],
+                },
+                generationConfig: {
+                  temperature: 0.65,
+                  topK: 40,
+                  topP: 0.95,
+                  maxOutputTokens: 800,
+                },
+              }),
             });
+
+            if (geminiRes.ok) {
+              const data = await geminiRes.json();
+              replyText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+              if (replyText) {
+                usedModel = model;
+                break;
+              }
+            } else {
+              const errData = await geminiRes.json().catch(() => ({}));
+              console.warn(`Model ${model} failed, status:`, geminiRes.status, errData?.error?.message);
+            }
+          } catch (modelErr) {
+            console.warn(`Error trying model ${model}:`, modelErr);
           }
+        }
+
+        if (replyText) {
+          const contextMeta = extractContextMeta(userMessage, replyText);
+          return res.status(200).json({
+            text: replyText,
+            badge: contextMeta.badge,
+            actions: contextMeta.actions,
+            provider: usedModel,
+          });
         }
       } catch (geminiErr) {
         console.error('Gemini API error, attempting fallback:', geminiErr);
