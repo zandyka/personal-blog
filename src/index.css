@@ -315,18 +315,3 @@ html[data-theme-transition="crossfade"]::view-transition-new(root) {
 .no-transitions *::after {
   transition: none !important;
 }
-
-/* PRMPT Archive Landing Page Styles */
-.font-inter-tight {
-  font-family: 'Inter Tight', -apple-system, BlinkMacSystemFont, sans-serif;
-}
-
-.bp-card {
-  will-change: transform;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .bp-card {
-    will-change: auto;
-  }
-}
