@@ -36,6 +36,8 @@ function AppInner() {
     prevPathRef.current = location.pathname;
   }, [location.pathname]);
 
+  const isAlbum = location.pathname === '/album';
+
   return (
     <>
       <AnimatePresence>
@@ -47,12 +49,12 @@ function AppInner() {
         )}
       </AnimatePresence>
       <ScrollToTop />
-      <CustomCursor />
-      <ScrollProgress />
-      <ClickSpark />
-      <AvailableSidebar />
-      <FloatingPet />
-      <Navbar />
+      {!isAlbum && <CustomCursor />}
+      {!isAlbum && <ScrollProgress />}
+      {!isAlbum && <ClickSpark />}
+      {!isAlbum && <AvailableSidebar />}
+      {!isAlbum && <FloatingPet />}
+      {!isAlbum && <Navbar />}
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<HomePage />} />
@@ -63,8 +65,8 @@ function AppInner() {
           <Route path="/album" element={<AlbumPage />} />
         </Routes>
       </AnimatePresence>
-      <Footer />
-      <BackToTop />
+      {!isAlbum && <Footer />}
+      {!isAlbum && <BackToTop />}
       <Analytics />
     </>
   );
