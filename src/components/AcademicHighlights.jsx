@@ -3,68 +3,115 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import {
   GraduationCap,
-  Award,
-  BookOpen,
-  Cpu,
-  CheckCircle2,
-  ExternalLink,
   Sparkles,
+  Cpu,
   Layers,
-  ArrowUpRight,
+  Smartphone,
+  CheckCircle2,
+  BrainCircuit,
+  Zap,
+  BookOpen,
+  Gamepad2,
+  Activity,
+  ArrowRight,
   ShieldCheck,
-  FileCode2,
+  Eye,
 } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
 
-const ACADEMIC_COURSES = [
+const KEY_METRICS = [
   {
-    code: 'TI-301',
-    name: 'Rekayasa Perangkat Lunak',
-    grade: 'A',
-    description: 'Penerapan SDLC, pemodelan sistem UML, arsitektur microservice vs monolith, dan pengujian software terstruktur.',
-    topics: ['Agile / Scrum', 'UML Architecture', 'Design Patterns', 'Software Testing'],
+    label: 'Best Validation Accuracy',
+    value: '94.71%',
+    sub: '80 Epoch Pelatihan Model',
+    icon: Sparkles,
+    color: '#34d399',
   },
   {
-    code: 'TI-204',
-    name: 'Sistem Basis Data & SQL',
-    grade: 'A',
-    description: 'Desain skema database relasional ternormalisasi (3NF), integritas data ACID, indexing, dan optimasi query kompleks.',
-    topics: ['MySQL 8', 'Normalisasi 3NF', 'Query Optimization', 'Relational Schema'],
+    label: 'Macro F1-Score',
+    value: '0.95',
+    sub: '26 Kelas Huruf A–Z (BISINDO)',
+    icon: BrainCircuit,
+    color: '#818cf8',
   },
   {
-    code: 'TI-308',
-    name: 'Pemrograman Web & REST API',
-    grade: 'A',
-    description: 'Arsitektur web modern decoupled dengan React.js SPA, perancangan RESTful API aman, autentikasi token, dan database.',
-    topics: ['React.js', 'RESTful API', 'Backend Architecture', 'State Management'],
+    label: 'On-Device Processing',
+    value: '100%',
+    sub: 'Zero Cloud & Tanpa Internet',
+    icon: Cpu,
+    color: '#38bdf8',
   },
   {
-    code: 'TI-312',
-    name: 'Pemrograman Mobile Terapan',
-    grade: 'A',
-    description: 'Pengembangan aplikasi mobile berbasis Flutter & Android SDK sesuai standar SKKNI BNSP dari Digitalent Kominfo RI.',
-    topics: ['Flutter', 'Android SDK', 'UI Components', 'Stateful Lifecycles'],
+    label: 'Pengujian Fungsional',
+    value: '14 / 14',
+    sub: '100% Skenario Passed',
+    icon: ShieldCheck,
+    color: '#f59e0b',
+  },
+];
+
+const PILLARS = [
+  {
+    id: 'pipeline',
+    title: 'Pipeline ML On-Device',
+    subtitle: 'MediaPipe 3D Landmarks & Dense Neural Network',
+    icon: Cpu,
+    color: '#818cf8',
+    description:
+      'Arsitektur pemrosesan on-device yang mengekstraksi 21 koordinat 3D sendi tangan secara instan, dinormalisasi menjadi vektor fitur 176 dimensi yang kebal terhadap skala maupun pergeseran posisi tangan.',
+    details: [
+      'MediaPipe Hand Landmarker mengekstraksi 21 titik koordinat 3D dari frame kamera',
+      'HandFeatureExtractor mengonversi data menjadi 176D scale-invariant feature vector',
+      'Dense Neural Network (176D → 768 → 384 → 192 → 26) dengan ReLU, L2 Regularization, dan Dropout',
+      'Dikonversi ke format TensorFlow Lite (.tflite) terkuantisasi untuk eksekusi ultra-ringan di Android',
+    ],
   },
   {
-    code: 'TI-202',
-    name: 'Komunikasi Data & Jaringan',
-    grade: 'A',
-    description: 'Protokol model OSI & TCP/IP, pengalamatan subnetting IPv4, routing & switching, serta media transmisi kabel fiber optik.',
-    topics: ['TCP/IP Model', 'Fiber Optics', 'Routing & Switching', 'Network Security'],
+    id: 'detection',
+    title: 'Deteksi Real-Time Cerdas',
+    subtitle: 'Dual-Threshold, Frame Skipping & Anti-Duplikat',
+    icon: Zap,
+    color: '#38bdf8',
+    description:
+      'Sistem inferensi kamera responsif yang dioptimalkan untuk perangkat keras smartphone tanpa menguras daya baterai ataupun menyebabkan frame drop pada layar kamera.',
+    details: [
+      'Memproses ~9 frame per detik menggunakan mekanisme frame skipping selektif (interval min. 110ms)',
+      'Dual-threshold filtering: Live preview display (skor ≥ 0.55) & Commit karakter kata (skor ≥ 0.65)',
+      'Mekanisme cooldown anti-duplikasi 650ms dan konsistensi frame (minimal 2 dari 5 frame)',
+      'Koreksi otomatis rotasi kamera depan (mirror flip) untuk kenyamanan pengguna kidal maupun kanan',
+    ],
   },
   {
-    code: 'TI-315',
-    name: 'Kecerdasan Buatan & Visi Komputer',
-    grade: 'A',
-    description: 'Konsep deep learning, klasifikasi citra, pengenalan gestur tangan real-time, dan deployment model on-device AI.',
-    topics: ['Computer Vision', 'TensorFlow', 'Convolutional Models', 'On-Device AI'],
+    id: 'ecosystem',
+    title: 'Ekosistem Belajar & Gamifikasi',
+    subtitle: 'Kamus A–Z, 4 Mode Quiz & Progress Tracker',
+    icon: Gamepad2,
+    color: '#34d399',
+    description:
+      'Mengintegrasikan antarmuka penerjemahan bahasa isyarat dengan modul edukasi komprehensif agar pengguna awam dapat mempelajari BISINDO secara menyenangkan dan terukur.',
+    details: [
+      'Kamus visual interaktif huruf A–Z dilengkapi panduan postur gestur tangan',
+      '4 Mode Quiz interaktif: Tebak Huruf, Tebak Kosakata, Peragakan Gestur (Kamera AI), dan Susun Kata',
+      'Sistem gamifikasi berbasis XP points, level progression, daily streaks, dan achievement badge',
+      'Progress analytics: rekap statistik belajar, mistake tracker cerdas, dan grafik perkembangan',
+    ],
   },
+];
+
+const PIPELINE_STEPS = [
+  { step: '01', title: 'Camera Stream', desc: 'Frame YUV420 Kamera HP' },
+  { step: '02', title: 'Frame Selector', desc: '~9 FPS (Frame Skipping)' },
+  { step: '03', title: 'MediaPipe 3D', desc: '21 Titik Landmark Tangan' },
+  { step: '04', title: 'Feature Vector', desc: '176D Scale-Invariant' },
+  { step: '05', title: 'TFLite Classifier', desc: 'DNN 768-384-192-26' },
+  { step: '06', title: 'Dual-Threshold', desc: 'Live (≥0.55) & Commit (≥0.65)' },
+  { step: '07', title: 'Real-Time Output', desc: 'Teks & Suara (TTS)' },
 ];
 
 export default function AcademicHighlights() {
   const { playHover, playClick } = useSoundContext();
   const { ref, inView } = useInView({ threshold: 0.15, triggerOnce: true });
-  const [activeCourse, setActiveCourse] = useState(ACADEMIC_COURSES[0]);
+  const [activePillar, setActivePillar] = useState(PILLARS[0]);
 
   return (
     <section
@@ -92,9 +139,9 @@ export default function AcademicHighlights() {
               gap: '8px',
               padding: '5px 14px',
               borderRadius: '999px',
-              background: 'rgba(52, 211, 153, 0.1)',
-              border: '1px solid rgba(52, 211, 153, 0.25)',
-              color: '#34d399',
+              background: 'rgba(129, 140, 248, 0.1)',
+              border: '1px solid rgba(129, 140, 248, 0.25)',
+              color: 'var(--accent)',
               fontSize: '0.78rem',
               fontWeight: 700,
               textTransform: 'uppercase',
@@ -103,7 +150,7 @@ export default function AcademicHighlights() {
             }}
           >
             <GraduationCap size={14} />
-            <span>Academic Foundation &amp; Applied Research</span>
+            <span>Tugas Akhir • Applied AI Research</span>
           </div>
           <h2
             style={{
@@ -114,168 +161,115 @@ export default function AcademicHighlights() {
               margin: '0 0 12px',
             }}
           >
-            Pendidikan &amp; Keunggulan Akademis
+            HandSpeak: Penerjemah BISINDO Real-Time
           </h2>
           <p
             style={{
               color: 'var(--text-muted)',
               fontSize: '0.96rem',
-              maxWidth: '650px',
+              maxWidth: '720px',
               margin: '0 auto',
               lineHeight: 1.65,
             }}
           >
-            Lulusan berpredikat <strong>Cum Laude (IPK 3.84 / 4.00)</strong> dari Universitas Sumatera Utara, membuktikan integritas akademis tinggi, penguasaan teori komputasi, dan riset inovasi AI terapan.
+            Aplikasi mobile Android berbasis AI Computer Vision &amp; Deep Learning on-device untuk menerjemahkan huruf Bahasa Isyarat Indonesia (BISINDO) secara langsung tanpa internet. Proyek Tugas Akhir D3 Teknik Informatika USU Vokasi 2026 berpredikat <strong>Cumlaude</strong>.
           </p>
         </motion.div>
 
-        {/* 1. Academic Honors & Degree Credential Banner */}
+        {/* 1. Key Performance Metrics Bar */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.55, delay: 0.1 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
           style={{
-            background: 'var(--surface)',
-            border: '1px solid var(--border)',
-            borderRadius: '24px',
-            padding: 'clamp(20px, 3.5vw, 32px)',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+            gap: '16px',
             marginBottom: '36px',
-            boxShadow: '0 10px 30px var(--shadow-color)',
-            position: 'relative',
-            overflow: 'hidden',
           }}
         >
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-              gap: '24px',
-              alignItems: 'center',
-            }}
-          >
-            {/* Left: Institution & Degree */}
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+          {KEY_METRICS.map((metric, idx) => {
+            const Icon = metric.icon;
+            return (
               <div
+                key={idx}
                 style={{
-                  width: '54px',
-                  height: '54px',
-                  borderRadius: '16px',
-                  background: 'var(--accent-dim)',
-                  border: '1px solid var(--accent-border)',
+                  background: 'var(--surface)',
+                  border: '1px solid var(--border)',
+                  borderRadius: '18px',
+                  padding: '18px 20px',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'var(--accent)',
-                  flexShrink: 0,
+                  gap: '14px',
+                  boxShadow: '0 4px 16px var(--shadow-color)',
+                  transition: 'transform 0.2s ease, border-color 0.2s ease',
+                }}
+                onMouseEnter={(e) => {
+                  playHover();
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.borderColor = metric.color;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.borderColor = 'var(--border)';
                 }}
               >
-                <GraduationCap size={28} />
-              </div>
-              <div>
-                <span
+                <div
                   style={{
-                    fontSize: '0.74rem',
-                    fontWeight: 700,
-                    color: 'var(--accent)',
-                    textTransform: 'uppercase',
-                    letterSpacing: '1px',
-                    display: 'block',
-                    marginBottom: '4px',
+                    width: '44px',
+                    height: '44px',
+                    borderRadius: '12px',
+                    background: `${metric.color}15`,
+                    border: `1px solid ${metric.color}35`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: metric.color,
+                    flexShrink: 0,
                   }}
                 >
-                  Universitas Sumatera Utara (USU)
-                </span>
-                <h3 style={{ margin: '0 0 6px', fontSize: '1.28rem', fontWeight: 700, color: 'var(--text)' }}>
-                  Teknik Informatika
-                </h3>
-                <p style={{ margin: 0, fontSize: '0.86rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
-                  Fakultas Vokasi &bull; Terakreditasi Nasional &bull; Kota Medan
-                </p>
-              </div>
-            </div>
-
-            {/* Middle: Cum Laude Badge */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '16px',
-                padding: '14px 20px',
-                borderRadius: '16px',
-                background: 'var(--surface-2)',
-                border: '1px solid var(--border)',
-              }}
-            >
-              <div
-                style={{
-                  width: '46px',
-                  height: '46px',
-                  borderRadius: '50%',
-                  background: 'rgba(251, 191, 36, 0.15)',
-                  border: '1px solid rgba(251, 191, 36, 0.35)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#fbbf24',
-                  flexShrink: 0,
-                }}
-              >
-                <Award size={24} />
-              </div>
-              <div>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
-                  <span
+                  <Icon size={22} />
+                </div>
+                <div>
+                  <div
                     style={{
-                      fontSize: '1.75rem',
+                      fontSize: '1.45rem',
                       fontWeight: 800,
-                      color: '#fbbf24',
                       fontFamily: "'JetBrains Mono', monospace",
+                      color: 'var(--text)',
+                      lineHeight: 1.15,
                     }}
                   >
-                    3.84
-                  </span>
-                  <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: 600 }}>/ 4.00</span>
+                    {metric.value}
+                  </div>
+                  <div style={{ fontSize: '0.8rem', fontWeight: 700, color: metric.color, marginTop: '2px' }}>
+                    {metric.label}
+                  </div>
+                  <div style={{ fontSize: '0.72rem', color: 'var(--text-dim)', marginTop: '1px' }}>
+                    {metric.sub}
+                  </div>
                 </div>
-                <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                  Predikat Cum Laude (Dengan Pujian)
-                </span>
               </div>
-            </div>
-
-            {/* Right: Certified Standard Badges */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: 'var(--text)' }}>
-                <ShieldCheck size={16} style={{ color: 'var(--accent)' }} />
-                <span>Standar Kompetensi Kerja Nasional (SKKNI BNSP)</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: 'var(--text)' }}>
-                <ShieldCheck size={16} style={{ color: 'var(--accent-2)' }} />
-                <span>Google Gemini Certified &amp; Huawei ICT Academy</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: 'var(--text)' }}>
-                <ShieldCheck size={16} style={{ color: '#34d399' }} />
-                <span>Dicoding Indonesia &amp; Microsoft Fabric Certified</span>
-              </div>
-            </div>
-          </div>
+            );
+          })}
         </motion.div>
 
-        {/* 2. Featured AI Capstone & Innovation Spotlight */}
+        {/* 2. Main Two-Column Showcase: Visual Context & Interactive Pillars */}
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'minmax(0, 1.25fr) minmax(0, 1fr)',
-            gap: '32px',
+            gridTemplateColumns: 'minmax(0, 1.15fr) minmax(0, 1.25fr)',
+            gap: '28px',
             alignItems: 'stretch',
-            marginBottom: '40px',
+            marginBottom: '36px',
           }}
-          className="academic-split-container"
+          className="ta-showcase-grid"
         >
-          {/* Spotlight Card: Handspeak AI */}
+          {/* Left Column: Visual Research Preview & Core Narrative */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.55, delay: 0.2 }}
+            transition={{ duration: 0.55, delay: 0.15 }}
             style={{
               background: 'var(--surface)',
               border: '1px solid var(--border)',
@@ -286,24 +280,24 @@ export default function AcademicHighlights() {
               boxShadow: '0 10px 30px var(--shadow-color)',
             }}
           >
-            {/* Spotlight Header Banner */}
+            {/* App Preview Banner */}
             <div
               style={{
                 position: 'relative',
                 width: '100%',
-                height: '210px',
+                height: '220px',
                 overflow: 'hidden',
                 background: '#0a0a0f',
               }}
             >
               <img
                 src="/projects/handspeak.webp"
-                alt="Handspeak BISINDO Sign Language Translator AI"
+                alt="HandSpeak BISINDO Real-Time Android App"
                 style={{
                   width: '100%',
                   height: '100%',
                   objectFit: 'cover',
-                  opacity: 0.85,
+                  opacity: 0.9,
                 }}
               />
               <div
@@ -326,7 +320,7 @@ export default function AcademicHighlights() {
                   style={{
                     padding: '4px 10px',
                     borderRadius: '8px',
-                    background: 'rgba(255, 59, 29, 0.9)',
+                    background: 'rgba(129, 140, 248, 0.9)',
                     color: '#ffffff',
                     fontSize: '11px',
                     fontWeight: 700,
@@ -334,72 +328,98 @@ export default function AcademicHighlights() {
                     textTransform: 'uppercase',
                   }}
                 >
-                  Featured Research &amp; Capstone
+                  Proyek Tugas Akhir
+                </span>
+                <span
+                  style={{
+                    padding: '4px 10px',
+                    borderRadius: '8px',
+                    background: 'rgba(52, 211, 153, 0.9)',
+                    color: '#0a0a0f',
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    letterSpacing: '0.5px',
+                  }}
+                >
+                  Cumlaude 2026
                 </span>
               </div>
             </div>
 
-            {/* Spotlight Body */}
+            {/* Content & Problem Narrative */}
             <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px', flex: 1 }}>
               <div>
                 <h3 style={{ margin: '0 0 6px', fontSize: '1.3rem', fontWeight: 700, color: 'var(--text)' }}>
-                  Handspeak — BISINDO Sign Language Translator
+                  Urgensi &amp; Latar Belakang Riset
                 </h3>
-                <span style={{ fontSize: '0.8rem', color: 'var(--accent)', fontWeight: 600 }}>
-                  Aplikasi Mobile AI Berbasis Computer Vision &amp; Deep Learning
-                </span>
+                <p style={{ margin: 0, fontSize: '0.88rem', color: 'var(--text-muted)', lineHeight: 1.65 }}>
+                  Penyandang tunarungu di Indonesia mengandalkan BISINDO sebagai sarana komunikasi utama. Namun, minimnya pemahaman masyarakat umum memicu kesenjangan komunikasi yang nyata. Kebanyakan AI penerjemah bahasa isyarat di dunia ditujukan untuk ASL (American Sign Language) atau SIBI, serta bergantung pada server cloud yang lambat dan memerlukan internet aktif.
+                </p>
               </div>
 
-              <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: 1.65 }}>
-                Proyek inovasi yang memecahkan kendala komunikasi inklusif bagi komunitas <strong>Teman Tuli</strong> di Indonesia. Mengintegrasikan algoritma Computer Vision dan model deep learning TensorFlow untuk mendeteksi landmark gestur tangan secara real-time melalui kamera ponsel cerdas dan menerjemahkannya ke dalam teks dan ucapan.
-              </p>
-
-              {/* Tech Stack Chips */}
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                {['Flutter Mobile', 'Python', 'TensorFlow Lite', 'Computer Vision', 'MediaPipe', 'Real-Time Inference'].map((tag, idx) => (
-                  <span
-                    key={idx}
-                    style={{
-                      fontSize: '11px',
-                      fontWeight: 600,
-                      padding: '4px 9px',
-                      borderRadius: '6px',
-                      background: 'var(--surface-2)',
-                      border: '1px solid var(--border)',
-                      color: 'var(--text)',
-                    }}
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-
-              {/* Impact Callout */}
               <div
                 style={{
-                  marginTop: 'auto',
-                  padding: '12px 14px',
+                  padding: '12px 16px',
                   borderRadius: '12px',
                   background: 'rgba(129, 140, 248, 0.08)',
                   border: '1px solid rgba(129, 140, 248, 0.2)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '10px',
+                  fontSize: '0.84rem',
+                  color: 'var(--text)',
+                  lineHeight: 1.55,
                 }}
               >
-                <Sparkles size={16} style={{ color: 'var(--accent)', flexShrink: 0 }} />
-                <span style={{ fontSize: '0.82rem', color: 'var(--text)' }}>
-                  Mendemonstrasikan kemampuan merancang solusi AI aplikatif yang berdampak sosial nyata bagi masyarakat.
+                <strong style={{ color: 'var(--accent)' }}>Inovasi Kunci:</strong> HandSpeak memproses inferensi AI secara 100% <em>on-device</em> pada perangkat smartphone Android dengan latensi rendah, menjaga privasi data pengguna, dan dapat digunakan di area tanpa koneksi internet.
+              </div>
+
+              {/* Tech Stack Pills */}
+              <div style={{ marginTop: 'auto' }}>
+                <span
+                  style={{
+                    display: 'block',
+                    fontSize: '0.72rem',
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '1px',
+                    color: 'var(--text-dim)',
+                    marginBottom: '8px',
+                  }}
+                >
+                  Teknologi &amp; Metodologi Pengembangan
                 </span>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                  {[
+                    'Flutter & Dart',
+                    'TensorFlow Lite',
+                    'MediaPipe Hand Landmarker',
+                    'Python & Keras',
+                    'Agile / Scrum (4 Sprint)',
+                    'Dataset Mendeley (Sanjaya, 2024)',
+                  ].map((tech, idx) => (
+                    <span
+                      key={idx}
+                      style={{
+                        fontSize: '11px',
+                        fontWeight: 600,
+                        padding: '4px 9px',
+                        borderRadius: '6px',
+                        background: 'var(--surface-2)',
+                        border: '1px solid var(--border)',
+                        color: 'var(--text)',
+                      }}
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           </motion.div>
 
-          {/* Right: Core Coursework Mastery */}
+          {/* Right Column: Three Core Solution Pillars (Interactive Explorer) */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.55, delay: 0.25 }}
+            transition={{ duration: 0.55, delay: 0.2 }}
             style={{
               background: 'var(--surface)',
               border: '1px solid var(--border)',
@@ -407,135 +427,243 @@ export default function AcademicHighlights() {
               padding: '24px',
               display: 'flex',
               flexDirection: 'column',
-              gap: '16px',
               boxShadow: '0 10px 30px var(--shadow-color)',
             }}
           >
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                <BookOpen size={16} style={{ color: 'var(--accent)' }} />
-                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                  Core Curriculum
-                </span>
-              </div>
-              <h3 style={{ margin: '0 0 6px', fontSize: '1.25rem', fontWeight: 700, color: 'var(--text)' }}>
-                Mata Kuliah Inti Unggulan
+            <div style={{ marginBottom: '16px' }}>
+              <span
+                style={{
+                  fontSize: '0.74rem',
+                  fontWeight: 700,
+                  color: 'var(--accent)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '1px',
+                  display: 'block',
+                  marginBottom: '4px',
+                }}
+              >
+                Tiga Solusi Utama yang Dibangun
+              </span>
+              <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 700, color: 'var(--text)' }}>
+                Arsitektur &amp; Fitur HandSpeak
               </h3>
-              <p style={{ margin: 0, fontSize: '0.84rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
-                Pilihan mata kuliah fondasi teknologi yang diselesaikan dengan predikat nilai sempurna (Grade A):
-              </p>
             </div>
 
-            {/* List of Courses */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
-              {ACADEMIC_COURSES.map((course) => {
-                const isSelected = activeCourse.code === course.code;
+            {/* Pillar Selector Tabs */}
+            <div style={{ display: 'flex', gap: '8px', marginBottom: '18px', flexWrap: 'wrap' }}>
+              {PILLARS.map((p) => {
+                const isSelected = activePillar.id === p.id;
+                const Icon = p.icon;
                 return (
-                  <div
-                    key={course.code}
+                  <button
+                    key={p.id}
                     onClick={() => {
                       playClick();
-                      setActiveCourse(course);
+                      setActivePillar(p);
                     }}
-                    onMouseEnter={() => {
-                      playHover();
-                      setActiveCourse(course);
-                    }}
+                    onMouseEnter={playHover}
                     style={{
+                      flex: '1 1 120px',
                       padding: '10px 14px',
                       borderRadius: '12px',
-                      background: isSelected ? 'var(--surface-2)' : 'transparent',
-                      border: isSelected ? '1px solid var(--accent)' : '1px solid var(--border)',
+                      background: isSelected ? `${p.color}15` : 'var(--surface-2)',
+                      border: isSelected ? `1.5px solid ${p.color}` : '1px solid var(--border)',
                       cursor: 'pointer',
                       display: 'flex',
                       alignItems: 'center',
-                      justifyContent: 'space-between',
-                      gap: '10px',
+                      gap: '8px',
                       transition: 'all 0.2s ease',
+                      textAlign: 'left',
                     }}
                   >
+                    <Icon size={16} style={{ color: isSelected ? p.color : 'var(--text-muted)', flexShrink: 0 }} />
                     <div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span style={{ fontSize: '0.72rem', fontFamily: "'JetBrains Mono', monospace", color: 'var(--text-dim)' }}>
-                          {course.code}
-                        </span>
-                        <strong style={{ fontSize: '0.88rem', color: isSelected ? 'var(--accent)' : 'var(--text)' }}>
-                          {course.name}
-                        </strong>
+                      <div
+                        style={{
+                          fontSize: '0.8rem',
+                          fontWeight: isSelected ? 700 : 600,
+                          color: isSelected ? 'var(--text)' : 'var(--text-muted)',
+                        }}
+                      >
+                        {p.title}
                       </div>
-                      <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                        {course.topics.slice(0, 2).join(' &bull; ')}
-                      </span>
                     </div>
-
-                    <div
-                      style={{
-                        width: '28px',
-                        height: '28px',
-                        borderRadius: '8px',
-                        background: 'rgba(52, 211, 153, 0.15)',
-                        color: '#34d399',
-                        fontWeight: 800,
-                        fontSize: '13px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontFamily: "'JetBrains Mono', monospace",
-                        flexShrink: 0,
-                      }}
-                    >
-                      {course.grade}
-                    </div>
-                  </div>
+                  </button>
                 );
               })}
             </div>
 
-            {/* Selected Course Quick Focus Box */}
+            {/* Active Pillar Details Card */}
             <AnimatePresence mode="wait">
               <motion.div
-                key={activeCourse.code}
-                initial={{ opacity: 0, y: 6 }}
+                key={activePillar.id}
+                initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.18 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.2 }}
                 style={{
-                  padding: '12px 14px',
-                  borderRadius: '12px',
                   background: 'var(--surface-2)',
                   border: '1px solid var(--border)',
+                  borderRadius: '16px',
+                  padding: '20px',
+                  flex: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '14px',
                 }}
               >
-                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: 1.45, marginBottom: '6px' }}>
-                  {activeCourse.description}
+                <div>
+                  <div style={{ fontSize: '0.75rem', fontWeight: 700, color: activePillar.color, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                    {activePillar.subtitle}
+                  </div>
+                  <h4 style={{ margin: '4px 0 8px', fontSize: '1.1rem', fontWeight: 700, color: 'var(--text)' }}>
+                    {activePillar.title}
+                  </h4>
+                  <p style={{ margin: 0, fontSize: '0.86rem', color: 'var(--text-muted)', lineHeight: 1.6 }}>
+                    {activePillar.description}
+                  </p>
                 </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
-                  {activeCourse.topics.map((t, idx) => (
-                    <span
+
+                <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <span
+                    style={{
+                      fontSize: '0.72rem',
+                      fontWeight: 700,
+                      textTransform: 'uppercase',
+                      letterSpacing: '1px',
+                      color: 'var(--text-dim)',
+                    }}
+                  >
+                    Rincian Implementasi:
+                  </span>
+                  {activePillar.details.map((detail, idx) => (
+                    <div
                       key={idx}
                       style={{
-                        fontSize: '10px',
-                        fontWeight: 600,
-                        padding: '2px 7px',
-                        borderRadius: '4px',
-                        background: 'var(--surface)',
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        gap: '8px',
+                        fontSize: '0.82rem',
                         color: 'var(--text)',
-                        border: '1px solid var(--border)',
+                        lineHeight: 1.45,
                       }}
                     >
-                      {t}
-                    </span>
+                      <CheckCircle2 size={14} style={{ color: activePillar.color, flexShrink: 0, marginTop: '2px' }} />
+                      <span>{detail}</span>
+                    </div>
                   ))}
                 </div>
               </motion.div>
             </AnimatePresence>
+
+            {/* Benchmark Insight Callout */}
+            <div
+              style={{
+                marginTop: '16px',
+                padding: '10px 14px',
+                borderRadius: '12px',
+                background: 'rgba(52, 211, 153, 0.08)',
+                border: '1px solid rgba(52, 211, 153, 0.2)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                gap: '8px',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Activity size={15} style={{ color: '#34d399', flexShrink: 0 }} />
+                <span style={{ fontSize: '0.78rem', color: 'var(--text)' }}>
+                  Performa Sempurna (F1 = 1.00): <strong>Huruf G, R, Z</strong>
+                </span>
+              </div>
+              <span style={{ fontSize: '0.74rem', color: 'var(--text-dim)' }}>
+                Target Optimasi: Kemiripan gestur M &amp; N
+              </span>
+            </div>
           </motion.div>
         </div>
+
+        {/* 3. Pipeline Flow Visualizer Banner */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 0.25 }}
+          style={{
+            background: 'var(--surface)',
+            border: '1px solid var(--border)',
+            borderRadius: '24px',
+            padding: '24px',
+            boxShadow: '0 8px 24px var(--shadow-color)',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+            <BrainCircuit size={16} style={{ color: 'var(--accent)' }} />
+            <span
+              style={{
+                fontSize: '0.76rem',
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '1px',
+                color: 'var(--accent)',
+              }}
+            >
+              End-to-End Real-Time Detection Pipeline
+            </span>
+          </div>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
+              gap: '10px',
+            }}
+          >
+            {PIPELINE_STEPS.map((step, idx) => (
+              <div
+                key={idx}
+                style={{
+                  background: 'var(--surface-2)',
+                  border: '1px solid var(--border)',
+                  borderRadius: '12px',
+                  padding: '12px 10px',
+                  position: 'relative',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '4px',
+                  transition: 'border-color 0.2s ease',
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span
+                    style={{
+                      fontSize: '0.68rem',
+                      fontWeight: 800,
+                      color: 'var(--accent)',
+                      fontFamily: "'JetBrains Mono', monospace",
+                    }}
+                  >
+                    {step.step}
+                  </span>
+                  {idx < PIPELINE_STEPS.length - 1 && (
+                    <ArrowRight size={11} style={{ color: 'var(--text-dim)' }} />
+                  )}
+                </div>
+                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text)', marginTop: '2px' }}>
+                  {step.title}
+                </div>
+                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+                  {step.desc}
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
       </div>
 
       <style>{`
         @media (max-width: 900px) {
-          .academic-split-container {
+          .ta-showcase-grid {
             grid-template-columns: 1fr !important;
             gap: 24px !important;
           }
