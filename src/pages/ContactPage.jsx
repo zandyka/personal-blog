@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import SocialMarquee from '../components/ui/SocialMarquee';
 import ContactFormGlass from '../components/ContactFormGlass';
+import ContactFAQ from '../components/ContactFAQ';
+import ProfileAIChatbox from '../components/ProfileAIChatbox';
 
 export default function ContactPage() {
   return (
@@ -81,16 +83,26 @@ export default function ContactPage() {
               maxWidth: '600px',
             }}
           >
-            Punya proyek menarik, peluang karir, atau ingin berkolaborasi? Pilih channel favorit Anda di bawah atau kirim transmisi pesan langsung.
+            Punya proyek menarik, peluang karir, atau ingin berkolaborasi? Pilih channel favorit Anda di bawah, tanyakan apa saja ke asisten AI, atau kirim pesan langsung.
           </p>
         </div>
 
-        {/* Section 1: Animated Moving Social Marquee (Dual-row cards matching screenshot) */}
+        {/* Section 1: Animated Moving Social Marquee */}
         <SocialMarquee />
 
         {/* Section 2: Glassmorphic Direct Transmission Form */}
         <div style={{ marginTop: '16px' }}>
           <ContactFormGlass />
+        </div>
+
+        {/* Section 3: Interactive Ask Zacky AI Profile Chatbox */}
+        <div style={{ marginTop: '24px', borderTop: '1px solid var(--border)' }}>
+          <ProfileAIChatbox />
+        </div>
+
+        {/* Section 4: Interactive Frequently Asked Questions */}
+        <div style={{ borderTop: '1px solid var(--border)' }}>
+          <ContactFAQ />
         </div>
       </motion.div>
 
