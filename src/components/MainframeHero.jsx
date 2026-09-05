@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import { useSoundContext } from './ui/SoundProvider';
-import { ArrowDown, Check, Copy, RotateCw, Sparkles, Compass, Eye } from 'lucide-react';
+import { ArrowDown, Check, Copy, RotateCw, Compass, Box } from 'lucide-react';
+import Cat3DCanvas from './ui/Cat3DCanvas';
 
 // Custom useTypewriter Hook as specified in prompt
 function useTypewriter(text, speed = 38, startDelay = 600) {
@@ -33,38 +34,15 @@ function useTypewriter(text, speed = 38, startDelay = 600) {
   return { displayed, done };
 }
 
-// 4 Angle Sprites from @[3d] assets
-const CAT_SPRITES = {
-  front: '/3d/cat-front.png',
-  right: '/3d/cat-right.png',
-  back: '/3d/cat-back.png',
-  left: '/3d/cat-left.png',
-};
-
 export default function MainframeHero({ onExploreClick }) {
   const { playClick, playHover } = useSoundContext();
   const [pillsVisible, setPillsVisible] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  // 3D Mascot State
-  const [angle, setAngle] = useState(0); // 0 to 360 degrees
-  const [isDragging, setIsDragging] = useState(false);
+  // 3D Model State
+  const [currentAngle, setCurrentAngle] = useState(0);
   const [autoRotate, setAutoRotate] = useState(false);
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
-  const [isSpinningTrick, setIsSpinningTrick] = useState(false);
-
-  const stageRef = useRef(null);
-  const lastPointerX = useRef(0);
-  const velocityX = useRef(0);
-  const animFrameRef = useRef(null);
-
-  // Preload all 4 sprites immediately so angle transitions have 0 latency
-  useEffect(() => {
-    Object.values(CAT_SPRITES).forEach((src) => {
-      const img = new Image();
-      img.src = src;
-    });
-  }, []);
+  const catCanvasRef = useRef(null);
 
   // Typewriter text
   const { displayed, done } = useTypewriter(
@@ -80,151 +58,6 @@ export default function MainframeHero({ onExploreClick }) {
     }, 400);
     return () => clearTimeout(timer);
   }, []);
-
-  // Auto-rotation loop if enabled
-  useEffect(() => {
-    if (!autoRotate || isDragging || isSpinningTrick) return;
-    const interval = setInterval(() => {
-      setAngle((prev) => (prev + 1.2) % 360);
-    }, 24);
-    return () => clearInterval(interval);
-  }, [autoRotate, isDragging, isSpinningTrick]);
-
-  // Window mouse move: subtle tilt & cursor tracking
-  useEffect(() => {
-    const handleGlobalMouseMove = (e) => {
-      if (isDragging) return;
-      const xPercent = (e.clientX / window.innerWidth - 0.5) * 2; // -1 to 1
-      const yPercent = (e.clientY / window.innerHeight - 0.5) * 2;
-      setTilt({
-        x: -yPercent * 10,
-        y: xPercent * 14,
-      });
-
-      // If not dragging and not auto-rotating, moving cursor horizontally
-      // gently shifts the mascot perspective between left, front, and right
-      if (!autoRotate) {
-        // Map cursor X: left (< -0.3) -> 270 (left), center -> 0 (front), right (> 0.3) -> 90 (right)
-        const targetDeg = xPercent * 90;
-        const normalized = (targetDeg + 360) % 360;
-        setAngle((prev) => {
-          // Smooth interpolation towards cursor
-          const diff = ((normalized - prev + 540) % 360) - 180;
-          return (prev + diff * 0.08 + 360) % 360;
-        });
-      }
-    };
-
-    window.addEventListener('mousemove', handleGlobalMouseMove, { passive: true });
-    return () => window.removeEventListener('mousemove', handleGlobalMouseMove);
-  }, [isDragging, autoRotate]);
-
-  // Direct Drag Handler (Mouse & Touch on 3D Stage)
-  const handlePointerDown = (e) => {
-    setIsDragging(true);
-    setAutoRotate(false);
-    lastPointerX.current = e.clientX || (e.touches && e.touches[0].clientX) || 0;
-    velocityX.current = 0;
-  };
-
-  const handlePointerMove = useCallback(
-    (e) => {
-      if (!isDragging) return;
-      const clientX = e.clientX !== undefined ? e.clientX : (e.touches && e.touches[0].clientX) || 0;
-      const deltaX = clientX - lastPointerX.current;
-      lastPointerX.current = clientX;
-      velocityX.current = deltaX;
-
-      setAngle((prev) => {
-        const next = prev + deltaX * 0.9;
-        return (next % 360 + 360) % 360;
-      });
-    },
-    [isDragging]
-  );
-
-  const handlePointerUp = useCallback(() => {
-    if (!isDragging) return;
-    setIsDragging(false);
-
-    // Momentum / inertia coasting
-    let curVel = velocityX.current * 0.8;
-    const coast = () => {
-      if (Math.abs(curVel) > 0.1) {
-        setAngle((prev) => (prev + curVel + 360) % 360);
-        curVel *= 0.92;
-        animFrameRef.current = requestAnimationFrame(coast);
-      }
-    };
-    animFrameRef.current = requestAnimationFrame(coast);
-  }, [isDragging]);
-
-  useEffect(() => {
-    if (isDragging) {
-      window.addEventListener('mousemove', handlePointerMove);
-      window.addEventListener('mouseup', handlePointerUp);
-      window.addEventListener('touchmove', handlePointerMove, { passive: false });
-      window.addEventListener('touchend', handlePointerUp);
-    }
-    return () => {
-      window.removeEventListener('mousemove', handlePointerMove);
-      window.removeEventListener('mouseup', handlePointerUp);
-      window.removeEventListener('touchmove', handlePointerMove);
-      window.removeEventListener('touchend', handlePointerUp);
-      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
-    };
-  }, [isDragging, handlePointerMove, handlePointerUp]);
-
-  // Playful click spin trick
-  const handleMascotClick = () => {
-    if (isSpinningTrick) return;
-    try {
-      playClick?.();
-    } catch {}
-    setIsSpinningTrick(true);
-    const startAngle = angle;
-    const targetAngle = startAngle + 360;
-    const duration = 750;
-    const startTime = performance.now();
-
-    const spinStep = (now) => {
-      const elapsed = now - startTime;
-      const progress = Math.min(1, elapsed / duration);
-      // Ease out cubic
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setAngle((startAngle + eased * 360) % 360);
-
-      if (progress < 1) {
-        requestAnimationFrame(spinStep);
-      } else {
-        setIsSpinningTrick(false);
-      }
-    };
-    requestAnimationFrame(spinStep);
-  };
-
-  // Determine which sprite to display based on current normalized angle
-  const normalizedAngle = ((angle % 360) + 360) % 360;
-  let currentSprite = 'front';
-  let subAngle = 0;
-
-  if (normalizedAngle >= 315 || normalizedAngle < 45) {
-    currentSprite = 'front';
-    subAngle = normalizedAngle >= 315 ? normalizedAngle - 360 : normalizedAngle;
-  } else if (normalizedAngle >= 45 && normalizedAngle < 135) {
-    currentSprite = 'right';
-    subAngle = normalizedAngle - 90;
-  } else if (normalizedAngle >= 135 && normalizedAngle < 225) {
-    currentSprite = 'back';
-    subAngle = normalizedAngle - 180;
-  } else {
-    currentSprite = 'left';
-    subAngle = normalizedAngle - 270;
-  }
-
-  // Perspective 3D rotation transform values
-  const currentRotateY = subAngle * 0.35 + tilt.y * 0.6;
-  const currentRotateX = tilt.x * 0.7;
 
   const handleCopyEmail = (e) => {
     e.stopPropagation();
@@ -258,8 +91,31 @@ export default function MainframeHero({ onExploreClick }) {
     try {
       playClick?.();
     } catch {}
-    setAngle(targetDeg);
+    setAutoRotate(false);
+    if (catCanvasRef.current) {
+      catCanvasRef.current.setAngle(targetDeg);
+    }
   };
+
+  const handleMascotClick = () => {
+    try {
+      playClick?.();
+    } catch {}
+    if (catCanvasRef.current) {
+      catCanvasRef.current.triggerSpinTrick();
+    }
+  };
+
+  // Direction label
+  const getDirectionLabel = (deg) => {
+    const norm = ((deg % 360) + 360) % 360;
+    if (norm >= 315 || norm < 45) return 'Depan';
+    if (norm >= 45 && norm < 135) return 'Kanan';
+    if (norm >= 135 && norm < 225) return 'Belakang';
+    return 'Kiri';
+  };
+
+  const directionName = getDirectionLabel(currentAngle);
 
   return (
     <section
@@ -312,7 +168,7 @@ export default function MainframeHero({ onExploreClick }) {
           maxWidth: '1400px',
           margin: '0 auto',
           display: 'grid',
-          gridTemplateColumns: 'minmax(0, 1.15fr) minmax(0, 0.95fr)',
+          gridTemplateColumns: 'minmax(0, 1.12fr) minmax(0, 0.98fr)',
           alignItems: 'center',
           gap: 'clamp(24px, 4vw, 60px)',
         }}
@@ -480,14 +336,13 @@ export default function MainframeHero({ onExploreClick }) {
               >
                 <ArrowDown size={14} style={{ color: 'var(--accent)' }} />
               </motion.span>
-              <span>Putar / drag maskot 3D 360° • Gulir untuk lihat galeri</span>
+              <span>Putar / drag maskot 3D GLB • Gulir untuk lihat galeri</span>
             </button>
           </div>
         </div>
 
-        {/* RIGHT COLUMN: Interactive 3D Cat Mascot Stage */}
+        {/* RIGHT COLUMN: Interactive 3D Cat Mascot Stage (Three.js GLB) */}
         <div
-          ref={stageRef}
           style={{
             position: 'relative',
             display: 'flex',
@@ -521,7 +376,7 @@ export default function MainframeHero({ onExploreClick }) {
             aria-hidden="true"
             style={{
               position: 'absolute',
-              bottom: '50px',
+              bottom: '56px',
               left: '50%',
               transform: 'translateX(-50%)',
               width: 'min(360px, 75vw)',
@@ -535,127 +390,32 @@ export default function MainframeHero({ onExploreClick }) {
             }}
           />
 
-          {/* 3D Cat Interactive Viewport & Floating Motion */}
-          <motion.div
-            animate={{
-              y: isDragging ? 0 : [-6, 6, -6],
-            }}
-            transition={{
-              repeat: Infinity,
-              duration: 3.8,
-              ease: 'easeInOut',
-            }}
-            onMouseDown={handlePointerDown}
-            onTouchStart={handlePointerDown}
-            onClick={handleMascotClick}
-            title="Klik untuk melompat/berputar, drag untuk memutar 360°"
+          {/* 3D Cat Canvas Viewport */}
+          <div
             style={{
               position: 'relative',
-              width: 'clamp(280px, 32vw, 460px)',
-              aspectRatio: '1 / 1',
-              cursor: isDragging ? 'grabbing' : 'grab',
-              userSelect: 'none',
-              touchAction: 'none',
+              width: 'clamp(280px, 34vw, 480px)',
+              height: 'clamp(280px, 34vw, 480px)',
               zIndex: 5,
-              perspective: '1000px',
+              userSelect: 'none',
             }}
             className="mascot-3d-viewport"
           >
-            {/* The 3D Container with Perspective Transform */}
-            <div
-              style={{
-                position: 'relative',
-                width: '100%',
-                height: '100%',
-                transform: `perspective(1000px) rotateY(${currentRotateY}deg) rotateX(${currentRotateX}deg)`,
-                transition: isDragging ? 'none' : 'transform 0.22s ease-out',
-                transformStyle: 'preserve-3d',
-              }}
-            >
-              {/* FRONT VIEW (0°) */}
-              <img
-                src={CAT_SPRITES.front}
-                alt="Maskot Kucing USU - Depan"
-                draggable={false}
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'contain',
-                  opacity: currentSprite === 'front' ? 1 : 0,
-                  transition: 'opacity 0.12s ease-out',
-                  filter: 'drop-shadow(0 16px 28px rgba(0,0,0,0.45))',
-                  pointerEvents: 'none',
-                  willChange: 'opacity, transform',
-                }}
-              />
-
-              {/* RIGHT VIEW (90°) */}
-              <img
-                src={CAT_SPRITES.right}
-                alt="Maskot Kucing USU - Kanan"
-                draggable={false}
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'contain',
-                  opacity: currentSprite === 'right' ? 1 : 0,
-                  transition: 'opacity 0.12s ease-out',
-                  filter: 'drop-shadow(0 16px 28px rgba(0,0,0,0.45))',
-                  pointerEvents: 'none',
-                  willChange: 'opacity, transform',
-                }}
-              />
-
-              {/* BACK VIEW (180°) */}
-              <img
-                src={CAT_SPRITES.back}
-                alt="Maskot Kucing USU - Belakang"
-                draggable={false}
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'contain',
-                  opacity: currentSprite === 'back' ? 1 : 0,
-                  transition: 'opacity 0.12s ease-out',
-                  filter: 'drop-shadow(0 16px 28px rgba(0,0,0,0.45))',
-                  pointerEvents: 'none',
-                  willChange: 'opacity, transform',
-                }}
-              />
-
-              {/* LEFT VIEW (270°) */}
-              <img
-                src={CAT_SPRITES.left}
-                alt="Maskot Kucing USU - Kiri"
-                draggable={false}
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'contain',
-                  opacity: currentSprite === 'left' ? 1 : 0,
-                  transition: 'opacity 0.12s ease-out',
-                  filter: 'drop-shadow(0 16px 28px rgba(0,0,0,0.45))',
-                  pointerEvents: 'none',
-                  willChange: 'opacity, transform',
-                }}
-              />
-            </div>
-          </motion.div>
+            <Cat3DCanvas
+              ref={catCanvasRef}
+              modelUrl="/3d/kucing_usu_3d.glb"
+              autoRotate={autoRotate}
+              onAngleChange={setCurrentAngle}
+              onClick={handleMascotClick}
+            />
+          </div>
 
           {/* 3D HUD Controls & Presets */}
           <div
             style={{
               position: 'relative',
               zIndex: 10,
-              marginTop: '16px',
+              marginTop: '12px',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
@@ -683,9 +443,9 @@ export default function MainframeHero({ onExploreClick }) {
                 textTransform: 'uppercase',
               }}
             >
-              <Compass size={12} style={{ color: 'var(--accent)' }} />
+              <Box size={12} style={{ color: 'var(--accent)' }} />
               <span>
-                360° MASCOT • {Math.round(normalizedAngle)}° [{currentSprite}]
+                3D GLB • {currentAngle}° [{directionName}]
               </span>
             </div>
 
@@ -702,21 +462,21 @@ export default function MainframeHero({ onExploreClick }) {
               }}
             >
               {[
-                { label: 'Depan', deg: 0, key: 'front' },
-                { label: 'Kanan', deg: 90, key: 'right' },
-                { label: 'Belakang', deg: 180, key: 'back' },
-                { label: 'Kiri', deg: 270, key: 'left' },
+                { label: 'Depan', deg: 0 },
+                { label: 'Kanan', deg: 90 },
+                { label: 'Belakang', deg: 180 },
+                { label: 'Kiri', deg: 270 },
               ].map((item) => (
                 <button
-                  key={item.key}
+                  key={item.label}
                   onClick={() => setAnglePreset(item.deg)}
                   onMouseEnter={playHover}
                   style={{
                     padding: '4px 10px',
                     borderRadius: '999px',
                     border: 'none',
-                    background: currentSprite === item.key ? 'var(--accent)' : 'transparent',
-                    color: currentSprite === item.key ? '#ffffff' : 'var(--text-muted)',
+                    background: directionName === item.label ? 'var(--accent)' : 'transparent',
+                    color: directionName === item.label ? '#ffffff' : 'var(--text-muted)',
                     fontSize: '11px',
                     fontWeight: 600,
                     cursor: 'pointer',
@@ -796,6 +556,7 @@ export default function MainframeHero({ onExploreClick }) {
           }
           .mascot-3d-viewport {
             width: clamp(230px, 60vw, 320px) !important;
+            height: clamp(230px, 60vw, 320px) !important;
           }
         }
       `}</style>
