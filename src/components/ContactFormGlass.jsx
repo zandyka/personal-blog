@@ -14,13 +14,6 @@ import {
 } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
 
-const SUBJECT_TOPICS = [
-  { label: '💼 Tawaran Kerja', subject: 'Tawaran Kerja / Rekrutmen' },
-  { label: '🚀 Kolaborasi Proyek', subject: 'Kolaborasi Proyek Software/Web' },
-  { label: '☕ Diskusi Santai', subject: 'Diskusi & Networking' },
-  { label: '🎨 Jasa Desain Grafis', subject: 'Inquiry Desain Grafis & Brand' },
-];
-
 export default function ContactFormGlass() {
   const { playClick, playHover, playSuccess } = useSoundContext();
   const [form, setForm] = useState({
@@ -34,11 +27,6 @@ export default function ContactFormGlass() {
 
   const handleChange = (e) => {
     setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
-  };
-
-  const selectTopic = (subj) => {
-    playClick();
-    setForm((p) => ({ ...p, subject: subj }));
   };
 
   const handleSubmit = async (e) => {
@@ -184,48 +172,6 @@ export default function ContactFormGlass() {
           >
             Kirim Pesan Langsung
           </h2>
-        </div>
-
-        {/* Topic Pills */}
-        <div className="glass-topic-wrapper" style={{ marginBottom: '22px' }}>
-          <div
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '8px',
-            }}
-          >
-            {SUBJECT_TOPICS.map((t) => {
-              const isSelected = form.subject === t.subject;
-              return (
-                <button
-                  key={t.label}
-                  type="button"
-                  onClick={() => selectTopic(t.subject)}
-                  onMouseEnter={playHover}
-                  className="glass-topic-btn"
-                  style={{
-                    padding: '7px 14px',
-                    borderRadius: '999px',
-                    fontSize: '12px',
-                    fontWeight: 600,
-                    border: isSelected
-                      ? '1px solid var(--accent)'
-                      : '1px solid var(--border)',
-                    background: isSelected
-                      ? 'var(--accent-dim)'
-                      : 'var(--surface-2)',
-                    color: isSelected ? 'var(--accent)' : 'var(--text-muted)',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s ease',
-                    boxShadow: isSelected ? '0 0 16px var(--accent-glow)' : 'none',
-                  }}
-                >
-                  {t.label}
-                </button>
-              );
-            })}
-          </div>
         </div>
 
         {/* The Form Fields */}

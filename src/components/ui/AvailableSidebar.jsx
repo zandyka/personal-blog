@@ -84,34 +84,7 @@ export default function AvailableSidebar({
         }
         @media (max-width: 859px) {
           .available-sidebar-root {
-            display: flex !important;
-            padding: 12px 6px !important;
-            border-radius: 0 10px 10px 0 !important;
-            top: 38% !important;
-            z-index: 950 !important;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25) !important;
-          }
-          .available-text-desktop {
             display: none !important;
-          }
-          .available-text-mobile {
-            display: block !important;
-            writing-mode: vertical-rl !important;
-            font-size: 7.5px !important;
-            font-weight: 800 !important;
-            letter-spacing: 2px !important;
-            text-transform: uppercase !important;
-            color: #0a0a0f !important;
-            line-height: 1 !important;
-          }
-          .available-dot-box {
-            margin-bottom: 8px !important;
-            width: 6px !important;
-            height: 6px !important;
-          }
-          .available-dot-core {
-            width: 5px !important;
-            height: 5px !important;
           }
         }
       `}</style>
