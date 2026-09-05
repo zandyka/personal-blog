@@ -7,16 +7,6 @@ import { useSoundContext } from './ui/SoundProvider';
 
 const GALLERY_ITEMS = [
   {
-    id: 1,
-    category: 'Photography',
-    title: 'Karya Fotografi & Komposisi',
-    caption: 'Eksplorasi komposisi fotografi vertikal dengan pencahayaan alami dan perspektif dinamis.',
-    aspectRatio: '9 / 16',
-    ratioLabel: '9:16',
-    src: '/gallery/fotografi 9_16.png',
-    alt: 'Karya Fotografi 9:16',
-  },
-  {
     id: 2,
     category: 'Creative',
     title: 'Desain X-Banner Produk Inovasi',
@@ -95,36 +85,6 @@ const GALLERY_ITEMS = [
     ratioLabel: '9:16',
     src: '/gallery/magang bpjs 9_16.png',
     alt: 'Aktivitas Magang BPJS Ketenagakerjaan 9:16',
-  },
-  {
-    id: 10,
-    category: 'Photography',
-    title: 'Portrait Studio — Formal Look',
-    caption: 'Sesi pemotretan profesional studio formal untuk profil personal branding.',
-    aspectRatio: '4 / 3',
-    ratioLabel: '4:3',
-    src: '/gallery/foto diri di about 4_3.png',
-    alt: 'Portrait Studio Formal',
-  },
-  {
-    id: 11,
-    category: 'Photography',
-    title: 'Portrait Studio — Front Perspective',
-    caption: 'Dokumentasi fotografi studio perspektif depan dengan pencahayaan softbox.',
-    aspectRatio: '4 / 3',
-    ratioLabel: '4:3',
-    src: '/gallery/foto diri di about (depan) 4_3.png',
-    alt: 'Portrait Studio Front',
-  },
-  {
-    id: 12,
-    category: 'Photography',
-    title: 'Portrait Studio — Dynamic Angle',
-    caption: 'Eksplorasi pose dan pencahayaan aksen studio modern.',
-    aspectRatio: '4 / 3',
-    ratioLabel: '4:3',
-    src: '/gallery/foto diri di about (belakang) 4_3.png',
-    alt: 'Portrait Studio Dynamic Angle',
   },
 ];
 

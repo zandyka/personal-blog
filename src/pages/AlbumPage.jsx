@@ -6,16 +6,6 @@ import MainframeHero from '../components/MainframeHero';
 
 const ALBUM_ITEMS = [
   {
-    id: 'photo-1',
-    title: 'Karya Fotografi & Komposisi',
-    category: 'Photography',
-    date: '2024',
-    caption: 'Eksplorasi komposisi fotografi vertikal dengan pencahayaan alami dan perspektif dinamis.',
-    aspectRatio: '9 / 16',
-    ratioLabel: '9:16',
-    src: '/gallery/fotografi 9_16.png',
-  },
-  {
     id: 'photo-coca-cola',
     title: 'Fotografi Komersial Produk Coca-Cola',
     category: 'Photography',
@@ -114,36 +104,6 @@ const ALBUM_ITEMS = [
     aspectRatio: '9 / 16',
     ratioLabel: '9:16',
     src: '/gallery/magang bpjs 9_16.png',
-  },
-  {
-    id: 'portrait-formal',
-    title: 'Portrait Studio — Formal Look',
-    category: 'Photography',
-    date: '2025',
-    caption: 'Sesi pemotretan studio profesional dengan busana formal untuk profil personal branding.',
-    aspectRatio: '4 / 3',
-    ratioLabel: '4:3',
-    src: '/gallery/foto diri di about 4_3.png',
-  },
-  {
-    id: 'portrait-front',
-    title: 'Portrait Studio — Front Perspective',
-    category: 'Photography',
-    date: '2025',
-    caption: 'Dokumentasi fotografi studio perspektif depan dengan pencahayaan softbox seimbang.',
-    aspectRatio: '4 / 3',
-    ratioLabel: '4:3',
-    src: '/gallery/foto diri di about (depan) 4_3.png',
-  },
-  {
-    id: 'portrait-dynamic',
-    title: 'Portrait Studio — Creative Perspective',
-    category: 'Photography',
-    date: '2025',
-    caption: 'Eksplorasi pose dan pencahayaan studio modern dengan aksen bayangan dinamis.',
-    aspectRatio: '4 / 3',
-    ratioLabel: '4:3',
-    src: '/gallery/foto diri di about (belakang) 4_3.png',
   },
 ];
 
