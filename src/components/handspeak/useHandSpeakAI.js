@@ -69,170 +69,7 @@ export function useHandSpeakAI(videoRef, canvasRef) {
   const lastCommittedPredictionRef = useRef(null);
   const showSkeletonRef = useRef(true);
 
-  // 1. Inisialisasi Model MediaPipe Tasks Vision & Kedua Model TFLite
-  useEffect(() => {
-    let isMounted = true;
-
-    async function initModels() {
-      try {
-        setState((s) => ({
-          ...s,
-          isModelLoading: true,
-          error: null,
-          feedback: 'Memuat MediaPipe & Dual AI Model (Huruf + Kosakata)...',
-        }));
-
-        // Inisialisasi MediaPipe Tasks Vision
-        const vision = await FilesetResolver.forVisionTasks(
-          'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm'
-        );
-
-        const landmarker = await HandLandmarker.createFromOptions(vision, {
-          baseOptions: {
-            modelAssetPath: '/models/hand_landmarker.task',
-            delegate: 'GPU',
-          },
-          runningMode: 'VIDEO',
-          numHands: 2,
-          minHandDetectionConfidence: 0.35,
-          minHandPresenceConfidence: 0.35,
-          minTrackingConfidence: 0.35,
-        });
-
-        // Set local WASM path untuk TFLite WebAssembly runner
-        try {
-          tflite.setWasmPath('/wasm/');
-        } catch (e) {
-          console.warn('tflite.setWasmPath notice:', e);
-        }
-
-        // Inisialisasi TensorFlow.js backend
-        await tf.ready();
-
-        // Unduh buffer binary model secara paralel dengan validasi integritas FlatBuffer
-        const [letterBuf, wordBuf] = await Promise.all([
-          fetchModelBuffer('/models/bisindo_az_2hands_aug.tflite'),
-          fetchModelBuffer('/models/bisindo_words_v2.tflite'),
-        ]);
-
-        // Load TFLite models dengan opsi { numThreads: 1 } untuk stabilitas cross-browser
-        const [letterModel, wordModel] = await Promise.all([
-          tflite.loadTFLiteModel(letterBuf, { numThreads: 1 }),
-          tflite.loadTFLiteModel(wordBuf, { numThreads: 1 }),
-        ]);
-
-        if (isMounted) {
-          handLandmarkerRef.current = landmarker;
-          letterModelRef.current = letterModel;
-          wordModelRef.current = wordModel;
-          setState((s) => ({
-            ...s,
-            isModelLoading: false,
-            isModelReady: true,
-            feedback: 'Model Huruf & Kosakata siap! Tekan "Buka Kamera" untuk mulai.',
-          }));
-        }
-      } catch (err) {
-        console.error('Failed to initialize models:', err);
-        if (isMounted) {
-          setState((s) => ({
-            ...s,
-            isModelLoading: false,
-            error: err.message || 'Gagal memuat model AI HandSpeak.',
-            feedback: 'Error saat inisialisasi model: ' + (err.message || 'Unknown error'),
-          }));
-        }
-      }
-    }
-
-    initModels();
-
-    return () => {
-      isMounted = false;
-      stopCamera();
-    };
-  }, []);
-
-  // 2. Switch Mode (Huruf vs Kosakata)
-  const switchMode = useCallback((newMode) => {
-    setMode(newMode);
-    modeRef.current = newMode;
-    recentPredictionsRef.current = [];
-    lastCommittedPredictionRef.current = null;
-    setState((s) => ({
-      ...s,
-      mode: newMode,
-      currentLetter: '-',
-      currentPrediction: '-',
-      confidence: 0,
-      stableLetter: '-',
-      stablePrediction: '-',
-      feedback:
-        newMode === 'letters'
-          ? 'Beralih ke Mode Huruf (A–Z)'
-          : 'Beralih ke Mode Kosakata (38 Kata)',
-    }));
-  }, []);
-
-  // 2. Start Camera
-  const startCamera = useCallback(async () => {
-    if (!videoRef.current) return;
-
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      setState((s) => ({
-        ...s,
-        error: 'Browser Anda tidak mendukung akses kamera (MediaDevices API). Pastikan menggunakan browser modern (Chrome, Edge, Firefox, Safari) dengan protokol HTTPS.',
-        feedback: 'Kamera tidak didukung browser.',
-      }));
-      return;
-    }
-
-    try {
-      setState((s) => ({
-        ...s,
-        error: null,
-        feedback: 'Menunggu izin akses kamera dari browser...',
-      }));
-
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          width: { ideal: 640 },
-          height: { ideal: 480 },
-          facingMode: 'user', // front camera
-        },
-        audio: false,
-      });
-
-      videoRef.current.srcObject = stream;
-      await videoRef.current.play();
-
-      setState((s) => ({
-        ...s,
-        isCameraActive: true,
-        error: null,
-        feedback: s.isModelReady ? 'Kamera aktif & deteksi gesture berjalan.' : 'Kamera aktif. Menyiapkan model AI...',
-      }));
-      startLoop();
-    } catch (err) {
-      console.error('Camera access error:', err);
-      let errorMsg = 'Tidak dapat mengakses kamera. Pastikan izin kamera telah diberikan pada browser.';
-      if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
-        errorMsg = 'Izin kamera ditolak. Silakan klik ikon gembok/setelan di sebelah kiri URL browser Anda, pilih "Izinkan" untuk kamera, lalu tekan Buka Kamera lagi.';
-      } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
-        errorMsg = 'Kamera tidak ditemukan pada perangkat Anda. Pastikan webcam terpasang.';
-      } else if (err.name === 'NotReadableError' || err.name === 'TrackStartError') {
-        errorMsg = 'Kamera sedang digunakan oleh aplikasi lain (seperti Zoom, Google Meet, dll). Tutup aplikasi tersebut dan coba lagi.';
-      }
-      setState((s) => ({
-        ...s,
-        isCameraActive: false,
-        error: errorMsg,
-        feedback: 'Akses kamera gagal.',
-      }));
-    }
-  }, [startLoop]);
-
-  // 3. Stop Camera
+  // Stop Camera
   const stopCamera = useCallback(() => {
     if (animFrameIdRef.current) {
       cancelAnimationFrame(animFrameIdRef.current);
@@ -260,7 +97,7 @@ export function useHandSpeakAI(videoRef, canvasRef) {
     }));
   }, []);
 
-  // 4. Draw Landmarks Canvas
+  // Draw Landmarks Canvas
   const drawLandmarks = (landmarksList) => {
     if (!canvasRef || !canvasRef.current || !videoRef.current) return;
     const canvas = canvasRef.current;
@@ -312,7 +149,7 @@ export function useHandSpeakAI(videoRef, canvasRef) {
     });
   };
 
-  // 5. Inference Processing Loop
+  // Inference Processing Loop
   const startLoop = useCallback(() => {
     const processFrame = () => {
       const video = videoRef.current;
@@ -453,6 +290,169 @@ export function useHandSpeakAI(videoRef, canvasRef) {
 
     animFrameIdRef.current = requestAnimationFrame(processFrame);
   }, []);
+
+  // Start Camera
+  const startCamera = useCallback(async () => {
+    if (!videoRef.current) return;
+
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      setState((s) => ({
+        ...s,
+        error: 'Browser Anda tidak mendukung akses kamera (MediaDevices API). Pastikan menggunakan browser modern (Chrome, Edge, Firefox, Safari) dengan protokol HTTPS.',
+        feedback: 'Kamera tidak didukung browser.',
+      }));
+      return;
+    }
+
+    try {
+      setState((s) => ({
+        ...s,
+        error: null,
+        feedback: 'Menunggu izin akses kamera dari browser...',
+      }));
+
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          width: { ideal: 640 },
+          height: { ideal: 480 },
+          facingMode: 'user', // front camera
+        },
+        audio: false,
+      });
+
+      videoRef.current.srcObject = stream;
+      await videoRef.current.play();
+
+      setState((s) => ({
+        ...s,
+        isCameraActive: true,
+        error: null,
+        feedback: s.isModelReady ? 'Kamera aktif & deteksi gesture berjalan.' : 'Kamera aktif. Menyiapkan model AI...',
+      }));
+      startLoop();
+    } catch (err) {
+      console.error('Camera access error:', err);
+      let errorMsg = 'Tidak dapat mengakses kamera. Pastikan izin kamera telah diberikan pada browser.';
+      if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+        errorMsg = 'Izin kamera ditolak. Silakan klik ikon gembok/setelan di sebelah kiri URL browser Anda, pilih "Izinkan" untuk kamera, lalu tekan Buka Kamera lagi.';
+      } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+        errorMsg = 'Kamera tidak ditemukan pada perangkat Anda. Pastikan webcam terpasang.';
+      } else if (err.name === 'NotReadableError' || err.name === 'TrackStartError') {
+        errorMsg = 'Kamera sedang digunakan oleh aplikasi lain (seperti Zoom, Google Meet, dll). Tutup aplikasi tersebut dan coba lagi.';
+      }
+      setState((s) => ({
+        ...s,
+        isCameraActive: false,
+        error: errorMsg,
+        feedback: 'Akses kamera gagal.',
+      }));
+    }
+  }, [startLoop]);
+
+  // Switch Mode (Huruf vs Kosakata)
+  const switchMode = useCallback((newMode) => {
+    setMode(newMode);
+    modeRef.current = newMode;
+    recentPredictionsRef.current = [];
+    lastCommittedPredictionRef.current = null;
+    setState((s) => ({
+      ...s,
+      mode: newMode,
+      currentLetter: '-',
+      currentPrediction: '-',
+      confidence: 0,
+      stableLetter: '-',
+      stablePrediction: '-',
+      feedback:
+        newMode === 'letters'
+          ? 'Beralih ke Mode Huruf (A–Z)'
+          : 'Beralih ke Mode Kosakata (38 Kata)',
+    }));
+  }, []);
+
+  // Inisialisasi Model MediaPipe Tasks Vision & Kedua Model TFLite
+  useEffect(() => {
+    let isMounted = true;
+
+    async function initModels() {
+      try {
+        setState((s) => ({
+          ...s,
+          isModelLoading: true,
+          error: null,
+          feedback: 'Memuat MediaPipe & Dual AI Model (Huruf + Kosakata)...',
+        }));
+
+        // Inisialisasi MediaPipe Tasks Vision
+        const vision = await FilesetResolver.forVisionTasks(
+          'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm'
+        );
+
+        const landmarker = await HandLandmarker.createFromOptions(vision, {
+          baseOptions: {
+            modelAssetPath: '/models/hand_landmarker.task',
+            delegate: 'GPU',
+          },
+          runningMode: 'VIDEO',
+          numHands: 2,
+          minHandDetectionConfidence: 0.35,
+          minHandPresenceConfidence: 0.35,
+          minTrackingConfidence: 0.35,
+        });
+
+        // Set local WASM path untuk TFLite WebAssembly runner
+        try {
+          tflite.setWasmPath('/wasm/');
+        } catch (e) {
+          console.warn('tflite.setWasmPath notice:', e);
+        }
+
+        // Inisialisasi TensorFlow.js backend
+        await tf.ready();
+
+        // Unduh buffer binary model secara paralel dengan validasi integritas FlatBuffer
+        const [letterBuf, wordBuf] = await Promise.all([
+          fetchModelBuffer('/models/bisindo_az_2hands_aug.tflite'),
+          fetchModelBuffer('/models/bisindo_words_v2.tflite'),
+        ]);
+
+        // Load TFLite models dengan opsi { numThreads: 1 } untuk stabilitas cross-browser
+        const [letterModel, wordModel] = await Promise.all([
+          tflite.loadTFLiteModel(letterBuf, { numThreads: 1 }),
+          tflite.loadTFLiteModel(wordBuf, { numThreads: 1 }),
+        ]);
+
+        if (isMounted) {
+          handLandmarkerRef.current = landmarker;
+          letterModelRef.current = letterModel;
+          wordModelRef.current = wordModel;
+          setState((s) => ({
+            ...s,
+            isModelLoading: false,
+            isModelReady: true,
+            feedback: 'Model Huruf & Kosakata siap! Tekan "Buka Kamera" untuk mulai.',
+          }));
+        }
+      } catch (err) {
+        console.error('Failed to initialize models:', err);
+        if (isMounted) {
+          setState((s) => ({
+            ...s,
+            isModelLoading: false,
+            error: err.message || 'Gagal memuat model AI HandSpeak.',
+            feedback: 'Error saat inisialisasi model: ' + (err.message || 'Unknown error'),
+          }));
+        }
+      }
+    }
+
+    initModels();
+
+    return () => {
+      isMounted = false;
+      stopCamera();
+    };
+  }, [stopCamera]);
 
   const toggleSkeleton = useCallback(() => {
     showSkeletonRef.current = !showSkeletonRef.current;

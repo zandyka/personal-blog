@@ -55,7 +55,7 @@ function AppInner() {
       <AvailableSidebar />
       <FloatingPet />
       <Navbar />
-      <ErrorBoundary>
+      <ErrorBoundary locationKey={location.pathname}>
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<HomePage />} />
