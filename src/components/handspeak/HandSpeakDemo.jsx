@@ -14,8 +14,6 @@ import {
   HelpCircle,
   BookOpen,
   AlertTriangle,
-  Maximize2,
-  Minimize2,
 } from 'lucide-react';
 import { useHandSpeakAI } from './useHandSpeakAI';
 import { BISINDO_WORD_LABELS_38 } from './labels';
@@ -41,7 +39,6 @@ export default function HandSpeakDemo() {
   const [showGuide, setShowGuide] = useState(false);
   const [showKamus, setShowKamus] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [cameraFit, setCameraFit] = useState('contain'); // 'contain' prevents cropping/zooming on mobile front cameras
 
   const {
     mode,
@@ -258,25 +255,20 @@ export default function HandSpeakDemo() {
       <div
         style={{
           display: 'flex',
-          alignItems: 'flex-start',
-          gap: '12px',
-          padding: '12px 16px',
-          borderRadius: '16px',
+          alignItems: 'center',
+          gap: '10px',
+          padding: '10px 14px',
+          borderRadius: '14px',
           background: 'rgba(245, 158, 11, 0.08)',
-          border: '1px solid rgba(245, 158, 11, 0.25)',
-          marginTop: '16px',
+          border: '1px solid rgba(245, 158, 11, 0.22)',
+          marginTop: '14px',
         }}
         className="handspeak-shuttering-note"
       >
-        <AlertTriangle size={18} style={{ color: '#f59e0b', flexShrink: 0, marginTop: '2px' }} />
-        <div style={{ fontSize: '0.8rem', lineHeight: 1.55 }}>
-          <strong style={{ color: '#fbbf24', display: 'inline' }}>
-            Catatan Penggunaan di HP:{' '}
-          </strong>
-          <span style={{ color: 'var(--text-muted)' }}>
-            Seluruh deteksi sendi tangan dan inferensi AI berjalan 100% lokal (*on-device*) di browser. Penggunaan pada perangkat HP dapat mengalami performa <strong style={{ color: '#fbbf24' }}>patah-patah / shuttering</strong> karena keterbatasan daya komputasi prosesor smartphone. Untuk pengalaman responsif dan mulus di 60 FPS, sangat disarankan menggunakan laptop atau PC.
-          </span>
-        </div>
+        <AlertTriangle size={16} style={{ color: '#f59e0b', flexShrink: 0 }} />
+        <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', lineHeight: 1.45 }}>
+          <strong style={{ color: '#fbbf24' }}>Catatan:</strong> Penggunaan di HP dapat terasa patah-patah/shuttering karena AI diproses 100% lokal on-device. Disarankan menggunakan laptop/PC untuk performa 60 FPS yang lebih mulus.
+        </span>
       </div>
 
       {/* Collapsible Gesture Quick Tips Guide & Vocabulary Words */}
@@ -477,7 +469,7 @@ export default function HandSpeakDemo() {
                 inset: 0,
                 width: '100%',
                 height: '100%',
-                objectFit: cameraFit,
+                objectFit: 'contain',
                 transform: 'scaleX(-1)', // Front-camera mirror
                 display: isCameraActive ? 'block' : 'none',
               }}
@@ -491,7 +483,7 @@ export default function HandSpeakDemo() {
                 inset: 0,
                 width: '100%',
                 height: '100%',
-                objectFit: cameraFit,
+                objectFit: 'contain',
                 transform: 'scaleX(-1)', // Match video mirror
                 pointerEvents: 'none',
                 display: isCameraActive ? 'block' : 'none',
@@ -855,34 +847,6 @@ export default function HandSpeakDemo() {
               </button>
             )}
 
-            {/* Camera Zoom FOV Toggle */}
-            {isCameraActive && (
-              <button
-                onClick={() => {
-                  playClick();
-                  setCameraFit(cameraFit === 'contain' ? 'cover' : 'contain');
-                }}
-                onMouseEnter={playHover}
-                title={cameraFit === 'contain' ? 'Ubah ke Mode Penuh (Zoom)' : 'Ubah ke Mode Normal (Tidak Zoom)'}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  padding: '9px 13px',
-                  borderRadius: '12px',
-                  background: cameraFit === 'contain' ? 'var(--accent-dim)' : 'var(--surface-2)',
-                  border: `1px solid ${cameraFit === 'contain' ? 'var(--accent-border)' : 'var(--border)'}`,
-                  color: cameraFit === 'contain' ? 'var(--accent)' : 'var(--text-muted)',
-                  fontSize: '0.78rem',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                }}
-              >
-                {cameraFit === 'contain' ? <Minimize2 size={13} /> : <Maximize2 size={13} />}
-                <span>{cameraFit === 'contain' ? 'Zoom: Normal (Fit)' : 'Zoom: Penuh'}</span>
-              </button>
-            )}
 
             {/* Status Feedback Text */}
             <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginLeft: 'auto' }}>
