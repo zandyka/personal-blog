@@ -54,8 +54,13 @@ export default function HomeShowcase() {
     triggerOnce: true,
   });
 
-  // Take 6 featured photos for the compact 2-column gallery on the left
-  const galleryItems = FEATURED_GALLERY_ITEMS.slice(0, 6);
+  // Exclude the circled photo (id: 5 - HIMTI Games 9:16) so both columns align evenly and finish 'sebaris'
+  const HOMEPAGE_GALLERY_COL_0 = FEATURED_GALLERY_ITEMS.filter(
+    (item) => item.id === 1 || item.id === 3
+  );
+  const HOMEPAGE_GALLERY_COL_1 = FEATURED_GALLERY_ITEMS.filter(
+    (item) => item.id === 2 || item.id === 4 || item.id === 6
+  );
 
   return (
     <section
@@ -144,7 +149,7 @@ export default function HomeShowcase() {
             }}
           >
             {[0, 1].map((colIndex) => {
-              const colItems = galleryItems.filter((_, idx) => idx % 2 === colIndex);
+              const colItems = colIndex === 0 ? HOMEPAGE_GALLERY_COL_0 : HOMEPAGE_GALLERY_COL_1;
               return (
                 <div
                   key={colIndex}
@@ -344,6 +349,7 @@ export default function HomeShowcase() {
 
                     {/* Category Pill */}
                     <div
+                      className="home-project-cat-badge"
                       style={{
                         position: 'absolute',
                         top: '10px',
@@ -362,11 +368,12 @@ export default function HomeShowcase() {
                       }}
                     >
                       <TypeIcon size={12} style={{ color: project.accent }} />
-                      <span>{project.category}</span>
+                      <span className="home-project-cat-text">{project.category}</span>
                     </div>
 
                     {/* Zoom Icon */}
                     <div
+                      className="home-project-zoom-btn"
                       style={{
                         position: 'absolute',
                         bottom: '8px',
@@ -399,6 +406,7 @@ export default function HomeShowcase() {
                   >
                     <div>
                       <h3
+                        className="home-project-title"
                         style={{
                           margin: '0 0 6px',
                           fontSize: '1.05rem',
@@ -428,6 +436,7 @@ export default function HomeShowcase() {
 
                       {/* Tech Stack Tags */}
                       <div
+                        className="home-project-tags"
                         style={{
                           display: 'flex',
                           flexWrap: 'wrap',
@@ -455,6 +464,7 @@ export default function HomeShowcase() {
 
                     {/* Footer Actions */}
                     <div
+                      className="home-project-footer"
                       style={{
                         display: 'flex',
                         alignItems: 'center',
@@ -471,6 +481,7 @@ export default function HomeShowcase() {
                             playClick();
                           }}
                           onMouseEnter={playHover}
+                          className="home-project-ai-btn"
                           style={{
                             display: 'inline-flex',
                             alignItems: 'center',
@@ -491,7 +502,7 @@ export default function HomeShowcase() {
                           <span>Preview AI</span>
                         </Link>
                       ) : (
-                        <div />
+                        <div className="home-project-empty-spacer" />
                       )}
 
                       <button
@@ -501,6 +512,7 @@ export default function HomeShowcase() {
                           setSelectedProject(project);
                         }}
                         onMouseEnter={playHover}
+                        className="home-project-detail-btn"
                         style={{
                           background: 'transparent',
                           border: 'none',
@@ -796,6 +808,74 @@ export default function HomeShowcase() {
           }
         }
 
+        /* Mobile View (HP): 2 Boxes in 1 Row for Projects Section */
+        @media (max-width: 860px) {
+          .home-projects-stack {
+            display: grid !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 10px !important;
+          }
+          .home-project-card {
+            border-radius: 12px !important;
+          }
+          .home-project-banner {
+            aspect-ratio: 16 / 9 !important;
+          }
+          .home-project-cat-badge {
+            padding: 3px 6px !important;
+            top: 6px !important;
+            right: 6px !important;
+          }
+          .home-project-cat-text {
+            display: none !important;
+          }
+          .home-project-zoom-btn {
+            display: none !important;
+          }
+          .home-project-content {
+            padding: 10px 10px 12px !important;
+          }
+          .home-project-title {
+            font-size: 0.8rem !important;
+            line-height: 1.25 !important;
+            margin-bottom: 6px !important;
+            display: -webkit-box !important;
+            -webkit-line-clamp: 2 !important;
+            -webkit-box-orient: vertical !important;
+            overflow: hidden !important;
+            min-height: 32px !important;
+          }
+          .home-project-desc {
+            display: none !important;
+          }
+          .home-project-tags {
+            display: none !important;
+          }
+          .home-project-footer {
+            padding-top: 8px !important;
+            margin-top: auto !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 4px !important;
+          }
+          .home-project-empty-spacer {
+            display: none !important;
+          }
+          .home-project-ai-btn {
+            width: 100% !important;
+            justify-content: center !important;
+            padding: 5px 8px !important;
+            font-size: 0.7rem !important;
+          }
+          .home-project-detail-btn {
+            width: 100% !important;
+            justify-content: center !important;
+            padding: 4px 6px !important;
+            font-size: 0.72rem !important;
+            text-align: center !important;
+          }
+        }
+
         @media (max-width: 640px) {
           .home-showcase-split-grid {
             padding: 0 12px !important;
@@ -805,7 +885,7 @@ export default function HomeShowcase() {
             gap: 8px !important;
           }
           .home-projects-stack {
-            gap: 14px !important;
+            gap: 10px !important;
           }
         }
       `}</style>
