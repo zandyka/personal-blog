@@ -74,6 +74,7 @@ export default function HandSpeakDemo() {
 
   return (
     <div
+      className="handspeak-card-container"
       style={{
         width: '100%',
         maxWidth: '1040px',
@@ -87,200 +88,167 @@ export default function HandSpeakDemo() {
         overflow: 'hidden',
       }}
     >
-      {/* Top Header & Badges */}
+      {/* Top Header: Clean, modern agency-grade bar */}
       <div
         style={{
           display: 'flex',
           flexDirection: 'column',
           gap: '14px',
-          paddingBottom: '22px',
+          paddingBottom: '18px',
           borderBottom: '1px solid var(--border)',
         }}
+        className="handspeak-header"
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
-            <div
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '5px 14px',
-                borderRadius: '999px',
-                background: 'var(--accent-dim)',
-                border: '1px solid var(--accent-border)',
-                color: 'var(--accent)',
-                fontSize: '0.78rem',
-                fontWeight: 700,
-                letterSpacing: '1px',
-                textTransform: 'uppercase',
-              }}
-            >
-              <Sparkles size={14} />
-              <span>Live In-Browser AI Demo</span>
-            </div>
-
-            <div
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '5px 12px',
-                borderRadius: '999px',
-                background: 'rgba(52, 211, 153, 0.12)',
-                border: '1px solid rgba(52, 211, 153, 0.25)',
-                color: '#34d399',
-                fontSize: '0.76rem',
-                fontWeight: 700,
-              }}
-            >
-              <ShieldCheck size={13} />
-              <span>{mode === 'letters' ? '94.71% Akurasi Validasi (Huruf)' : '38 Kosakata BISINDO (~89.5% Akurasi)'}</span>
-            </div>
-          </div>
-
-          {/* Kamus Floating Modal Toggle (Mode Huruf) & Quick Guide Toggle (Mode Kosakata) */}
-          {mode === 'letters' ? (
-            <button
-              onClick={() => {
-                playClick();
-                setShowKamus(!showKamus);
-              }}
-              onMouseEnter={playHover}
-              title="Buka Kamus Gestur Alfabet BISINDO A–Z"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '6px 14px',
-                borderRadius: '999px',
-                background: showKamus ? 'var(--accent)' : 'var(--surface-2)',
-                border: `1px solid ${showKamus ? 'var(--accent)' : 'var(--border)'}`,
-                color: showKamus ? '#ffffff' : 'var(--text-muted)',
-                fontSize: '0.78rem',
-                fontWeight: 600,
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                boxShadow: showKamus ? '0 2px 10px var(--accent-glow)' : 'none',
-              }}
-            >
-              <BookOpen size={14} />
-              <span>{showKamus ? 'Tutup Kamus' : 'Kamus BISINDO (A–Z)'}</span>
-            </button>
-          ) : (
-            <button
-              onClick={() => {
-                playClick();
-                setShowGuide(!showGuide);
-              }}
-              onMouseEnter={playHover}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '6px 14px',
-                borderRadius: '999px',
-                background: showGuide ? 'var(--accent)' : 'var(--surface-2)',
-                border: `1px solid ${showGuide ? 'var(--accent)' : 'var(--border)'}`,
-                color: showGuide ? '#ffffff' : 'var(--text-muted)',
-                fontSize: '0.78rem',
-                fontWeight: 600,
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-              }}
-            >
-              <HelpCircle size={14} />
-              <span>{showGuide ? 'Tutup Daftar' : 'Daftar 38 Kosakata'}</span>
-            </button>
-          )}
-        </div>
-
-        <div>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '12px',
+          }}
+        >
           <h2
             style={{
-              fontSize: 'clamp(1.6rem, 3.5vw, 2.2rem)',
+              fontSize: 'clamp(1.35rem, 3.2vw, 1.85rem)',
               fontWeight: 800,
               color: 'var(--text)',
               letterSpacing: '-0.02em',
-              margin: '0 0 6px',
+              margin: 0,
             }}
           >
-            HandSpeak — Real-Time BISINDO Translator
+            HandSpeak — Real-Time BISINDO
           </h2>
-          <p
-            style={{
-              fontSize: '0.9rem',
-              color: 'var(--text-muted)',
-              lineHeight: 1.55,
-              margin: '0 0 14px',
-              maxWidth: '780px',
-            }}
-          >
-            Ekstraksi 176 fitur landmark tangan dan inferensi model Dense Neural Network (Huruf A–Z &amp; Kosakata 38 Kata) dieksekusi 100% lokal di browser via WebAssembly tanpa mengirim rekaman video ke server.
-          </p>
 
-          {/* Dual-Mode Selector Tabs (Huruf vs Kosakata) */}
+          {/* Controls: Mode Switcher & Kamus / Kosakata Toggle */}
           <div
             style={{
-              display: 'inline-flex',
+              display: 'flex',
               alignItems: 'center',
-              gap: '6px',
-              padding: '4px',
-              background: 'var(--surface-2)',
-              borderRadius: '14px',
-              border: '1px solid var(--border)',
+              gap: '8px',
+              flexWrap: 'wrap',
             }}
+            className="handspeak-header-controls"
           >
-            <button
-              onClick={() => {
-                playClick();
-                switchMode('letters');
-              }}
-              onMouseEnter={playHover}
+            {/* Dual-Mode Selector Tabs (Huruf vs Kosakata) */}
+            <div
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '8px',
-                padding: '7px 16px',
-                borderRadius: '10px',
-                fontSize: '0.82rem',
-                fontWeight: 700,
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                background: mode === 'letters' ? 'var(--accent)' : 'transparent',
-                color: mode === 'letters' ? '#ffffff' : 'var(--text-muted)',
-                border: 'none',
-                boxShadow: mode === 'letters' ? '0 2px 10px var(--accent-glow)' : 'none',
+                gap: '4px',
+                padding: '3px',
+                background: 'var(--surface-2)',
+                borderRadius: '12px',
+                border: '1px solid var(--border)',
               }}
             >
-              <span>🔤</span>
-              <span>Mode Huruf (A–Z)</span>
-            </button>
+              <button
+                onClick={() => {
+                  playClick();
+                  switchMode('letters');
+                }}
+                onMouseEnter={playHover}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '6px 14px',
+                  borderRadius: '9px',
+                  fontSize: '0.8rem',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  background: mode === 'letters' ? 'var(--accent)' : 'transparent',
+                  color: mode === 'letters' ? '#ffffff' : 'var(--text-muted)',
+                  border: 'none',
+                  boxShadow: mode === 'letters' ? '0 2px 10px var(--accent-glow)' : 'none',
+                }}
+              >
+                <span>🔤</span>
+                <span>Huruf</span>
+              </button>
 
-            <button
-              onClick={() => {
-                playClick();
-                switchMode('words');
-              }}
-              onMouseEnter={playHover}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '7px 16px',
-                borderRadius: '10px',
-                fontSize: '0.82rem',
-                fontWeight: 700,
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                background: mode === 'words' ? 'var(--accent)' : 'transparent',
-                color: mode === 'words' ? '#ffffff' : 'var(--text-muted)',
-                border: 'none',
-                boxShadow: mode === 'words' ? '0 2px 10px var(--accent-glow)' : 'none',
-              }}
-            >
-              <span>💬</span>
-              <span>Mode Kosakata (38 Kata)</span>
-            </button>
+              <button
+                onClick={() => {
+                  playClick();
+                  switchMode('words');
+                }}
+                onMouseEnter={playHover}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '6px 14px',
+                  borderRadius: '9px',
+                  fontSize: '0.8rem',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  background: mode === 'words' ? 'var(--accent)' : 'transparent',
+                  color: mode === 'words' ? '#ffffff' : 'var(--text-muted)',
+                  border: 'none',
+                  boxShadow: mode === 'words' ? '0 2px 10px var(--accent-glow)' : 'none',
+                }}
+              >
+                <span>💬</span>
+                <span>Kosakata</span>
+              </button>
+            </div>
+
+            {/* Kamus Floating Modal Toggle (Mode Huruf) & Quick Guide Toggle (Mode Kosakata) */}
+            {mode === 'letters' ? (
+              <button
+                onClick={() => {
+                  playClick();
+                  setShowKamus(!showKamus);
+                }}
+                onMouseEnter={playHover}
+                title="Buka Kamus Gestur Alfabet BISINDO A–Z"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '8px 14px',
+                  borderRadius: '12px',
+                  background: showKamus ? 'var(--accent)' : 'var(--surface-2)',
+                  border: `1px solid ${showKamus ? 'var(--accent)' : 'var(--border)'}`,
+                  color: showKamus ? '#ffffff' : 'var(--text-muted)',
+                  fontSize: '0.8rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  boxShadow: showKamus ? '0 2px 10px var(--accent-glow)' : 'none',
+                }}
+              >
+                <BookOpen size={14} />
+                <span>{showKamus ? 'Tutup Kamus' : 'Kamus BISINDO (A–Z)'}</span>
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  playClick();
+                  setShowGuide(!showGuide);
+                }}
+                onMouseEnter={playHover}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '8px 14px',
+                  borderRadius: '12px',
+                  background: showGuide ? 'var(--accent)' : 'var(--surface-2)',
+                  border: `1px solid ${showGuide ? 'var(--accent)' : 'var(--border)'}`,
+                  color: showGuide ? '#ffffff' : 'var(--text-muted)',
+                  fontSize: '0.8rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                <HelpCircle size={14} />
+                <span>{showGuide ? 'Tutup Daftar' : 'Daftar 38 Kosakata'}</span>
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -459,15 +427,15 @@ export default function HandSpeakDemo() {
         {/* Left Column: Camera Viewport */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           <div
+            className="handspeak-camera-viewport"
             style={{
               position: 'relative',
               width: '100%',
-              aspectRatio: '4 / 3',
               background: '#070709',
               borderRadius: '20px',
               overflow: 'hidden',
               border: '1.5px solid var(--border)',
-              boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.5)',
+              boxShadow: 'inset 0 2px 10px rgba(0,0,0,0.6)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -529,9 +497,9 @@ export default function HandSpeakDemo() {
               >
                 <div
                   style={{
-                    width: '68px',
-                    height: '68px',
-                    borderRadius: '20px',
+                    width: '64px',
+                    height: '64px',
+                    borderRadius: '18px',
                     background: 'var(--surface-2)',
                     border: '1.5px solid var(--accent-border)',
                     display: 'flex',
@@ -542,14 +510,14 @@ export default function HandSpeakDemo() {
                     transition: 'transform 0.2s ease',
                   }}
                 >
-                  <Camera size={32} />
+                  <Camera size={30} />
                 </div>
                 <div>
                   <h4 style={{ margin: '0 0 6px', color: 'var(--text)', fontSize: '1.05rem', fontWeight: 800 }}>
                     Kamera Belum Aktif
                   </h4>
-                  <p style={{ margin: 0, fontSize: '0.84rem', color: 'var(--text-muted)', maxWidth: '300px', lineHeight: 1.5 }}>
-                    Klik di sini untuk meminta izin kamera browser dan mulai deteksi isyarat BISINDO secara langsung.
+                  <p style={{ margin: 0, fontSize: '0.84rem', color: 'var(--text-muted)', maxWidth: '280px', lineHeight: 1.5 }}>
+                    Tekan tombol untuk mengizinkan kamera browser dan deteksi gestur BISINDO secara real-time.
                   </p>
                 </div>
                 <div
@@ -557,23 +525,23 @@ export default function HandSpeakDemo() {
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '8px',
-                    padding: '8px 20px',
+                    padding: '9px 22px',
                     borderRadius: '999px',
                     background: 'var(--accent)',
                     color: '#ffffff',
-                    fontSize: '0.82rem',
+                    fontSize: '0.84rem',
                     fontWeight: 700,
                     boxShadow: '0 4px 14px var(--accent-glow)',
                     marginTop: '4px',
                   }}
                 >
                   <Camera size={15} />
-                  <span>Izinkan &amp; Buka Kamera</span>
+                  <span>Buka Kamera</span>
                 </div>
               </div>
             )}
 
-            {/* Live Indicator Badges */}
+            {/* Live Indicator Badges (Top-Left) */}
             {isCameraActive && (
               <div
                 style={{
@@ -588,9 +556,10 @@ export default function HandSpeakDemo() {
               >
                 <div
                   style={{
-                    background: 'rgba(0, 0, 0, 0.65)',
-                    backdropFilter: 'blur(8px)',
-                    padding: '4px 10px',
+                    background: 'rgba(7, 7, 11, 0.72)',
+                    backdropFilter: 'blur(16px)',
+                    WebkitBackdropFilter: 'blur(16px)',
+                    padding: '5px 12px',
                     borderRadius: '999px',
                     fontSize: '11px',
                     fontWeight: 700,
@@ -599,36 +568,142 @@ export default function HandSpeakDemo() {
                     alignItems: 'center',
                     gap: '6px',
                     border: '1px solid rgba(255, 255, 255, 0.15)',
+                    boxShadow: '0 4px 16px rgba(0,0,0,0.4)',
                   }}
                 >
                   <span
                     style={{
-                      width: '8px',
-                      height: '8px',
+                      width: '7px',
+                      height: '7px',
                       borderRadius: '50%',
                       background: '#34d399',
-                      boxShadow: '0 0 10px #34d399',
+                      boxShadow: '0 0 8px #34d399',
                     }}
                   />
-                  <span>LIVE ({mode === 'letters' ? 'HURUF A–Z' : '38 KOSAKATA'})</span>
+                  <span>LIVE</span>
                 </div>
 
                 {detectedHandsCount > 0 && (
                   <div
                     style={{
-                      background: 'rgba(0, 0, 0, 0.65)',
-                      backdropFilter: 'blur(8px)',
-                      padding: '4px 10px',
+                      background: 'rgba(7, 7, 11, 0.72)',
+                      backdropFilter: 'blur(16px)',
+                      WebkitBackdropFilter: 'blur(16px)',
+                      padding: '5px 11px',
                       borderRadius: '999px',
                       fontSize: '11px',
                       fontWeight: 600,
                       color: 'rgba(255, 255, 255, 0.9)',
                       border: '1px solid rgba(255, 255, 255, 0.15)',
+                      boxShadow: '0 4px 16px rgba(0,0,0,0.4)',
                     }}
                   >
-                    {detectedHandsCount} Tangan Terdeteksi
+                    {detectedHandsCount} Tangan
                   </div>
                 )}
+              </div>
+            )}
+
+            {/* In-Camera Top-Right Transparent HUD Overlay for Real-Time Prediction & Confidence */}
+            {isCameraActive && (
+              <div
+                className="handspeak-hud-overlay"
+                style={{
+                  position: 'absolute',
+                  top: '12px',
+                  right: '12px',
+                  zIndex: 10,
+                  background: 'rgba(7, 7, 11, 0.72)',
+                  backdropFilter: 'blur(16px)',
+                  WebkitBackdropFilter: 'blur(16px)',
+                  border: '1px solid rgba(255, 255, 255, 0.16)',
+                  borderRadius: '16px',
+                  padding: '8px 14px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-end',
+                  gap: '2px',
+                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)',
+                  pointerEvents: 'none',
+                  minWidth: '84px',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <span
+                    style={{
+                      fontSize: '0.62rem',
+                      fontWeight: 800,
+                      color: 'var(--text-dim)',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.8px',
+                    }}
+                  >
+                    {mode === 'letters' ? 'Huruf' : 'Kata'}
+                  </span>
+                  {confidence >= 0.7 && (
+                    <span
+                      style={{
+                        width: '6px',
+                        height: '6px',
+                        borderRadius: '50%',
+                        background: '#34d399',
+                        boxShadow: '0 0 8px #34d399',
+                      }}
+                    />
+                  )}
+                </div>
+
+                <div
+                  style={{
+                    fontSize: (currentPrediction || currentLetter || '-').length > 8
+                      ? '1.2rem'
+                      : (currentPrediction || currentLetter || '-').length > 4
+                      ? '1.65rem'
+                      : '2.5rem',
+                    fontWeight: 900,
+                    fontFamily: "'JetBrains Mono', monospace",
+                    color: confidence >= 0.75 ? '#34d399' : 'var(--accent)',
+                    lineHeight: 1.05,
+                    textAlign: 'right',
+                    transition: 'color 0.2s ease',
+                  }}
+                >
+                  {currentPrediction || currentLetter || '-'}
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '2px', width: '100%' }}>
+                  <div
+                    style={{
+                      flex: 1,
+                      height: '4px',
+                      background: 'rgba(255, 255, 255, 0.12)',
+                      borderRadius: '999px',
+                      overflow: 'hidden',
+                      minWidth: '38px',
+                    }}
+                  >
+                    <div
+                      style={{
+                        height: '100%',
+                        width: `${Math.min(confidence * 100, 100)}%`,
+                        background: confidence >= 0.75 ? '#34d399' : 'var(--accent)',
+                        borderRadius: '999px',
+                        transition: 'width 0.15s ease, background 0.2s ease',
+                      }}
+                    />
+                  </div>
+                  <span
+                    style={{
+                      fontSize: '0.68rem',
+                      fontWeight: 700,
+                      fontFamily: "'JetBrains Mono', monospace",
+                      color: confidence >= 0.75 ? '#34d399' : 'var(--text-muted)',
+                      lineHeight: 1,
+                    }}
+                  >
+                    {(confidence * 100).toFixed(0)}%
+                  </span>
+                </div>
               </div>
             )}
           </div>
@@ -656,12 +731,12 @@ export default function HandSpeakDemo() {
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '8px',
-                    padding: '11px 24px',
+                    padding: '11px 22px',
                     borderRadius: '14px',
                     background: 'var(--accent)',
                     color: '#ffffff',
                     border: 'none',
-                    fontSize: '0.88rem',
+                    fontSize: '0.86rem',
                     fontWeight: 700,
                     cursor: 'pointer',
                     boxShadow: '0 4px 16px var(--accent-glow)',
@@ -761,92 +836,9 @@ export default function HandSpeakDemo() {
           </div>
         </div>
 
-        {/* Right Column: Prediction Box & Spelled Words */}
+        {/* Right Column: Spelled Words & Actions */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          {/* Card 1: Real-Time Predicted Letter */}
-          <div
-            style={{
-              background: 'var(--surface-2)',
-              border: '1px solid var(--border)',
-              borderRadius: '20px',
-              padding: '20px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}
-          >
-            <div>
-              <span
-                style={{
-                  fontSize: '0.74rem',
-                  fontWeight: 700,
-                  color: 'var(--text-dim)',
-                  textTransform: 'uppercase',
-                  letterSpacing: '1px',
-                }}
-              >
-                {mode === 'letters' ? 'Prediksi Huruf' : 'Prediksi Kata'}
-              </span>
-              <div
-                style={{
-                  fontSize: (currentPrediction || currentLetter || '-').length > 7
-                    ? 'clamp(1.5rem, 3.5vw, 2.2rem)'
-                    : (currentPrediction || currentLetter || '-').length > 3
-                    ? 'clamp(2rem, 5vw, 2.8rem)'
-                    : '4.2rem',
-                  fontWeight: 900,
-                  fontFamily: "'JetBrains Mono', monospace",
-                  color: 'var(--accent)',
-                  lineHeight: 1.1,
-                  marginTop: '6px',
-                  wordBreak: 'break-word',
-                }}
-              >
-                {currentPrediction || currentLetter || '-'}
-              </div>
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', minWidth: '130px' }}>
-              <span style={{ fontSize: '0.74rem', fontWeight: 600, color: 'var(--text-muted)' }}>
-                Confidence Score
-              </span>
-              <span
-                style={{
-                  fontSize: '1.8rem',
-                  fontWeight: 800,
-                  color: 'var(--text)',
-                  fontFamily: "'JetBrains Mono', monospace",
-                  marginTop: '2px',
-                }}
-              >
-                {(confidence * 100).toFixed(1)}%
-              </span>
-
-              {/* Progress meter bar */}
-              <div
-                style={{
-                  width: '100%',
-                  height: '8px',
-                  borderRadius: '999px',
-                  background: 'var(--border)',
-                  overflow: 'hidden',
-                  marginTop: '8px',
-                }}
-              >
-                <div
-                  style={{
-                    height: '100%',
-                    width: `${Math.min(confidence * 100, 100)}%`,
-                    background: confidence >= 0.75 ? '#34d399' : 'var(--accent)',
-                    borderRadius: '999px',
-                    transition: 'width 0.15s ease, background 0.2s ease',
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Card 2: Accumulated Spelled Words Output */}
+          {/* Accumulated Spelled Words Output */}
           <div
             style={{
               background: 'var(--surface-2)',
@@ -858,7 +850,7 @@ export default function HandSpeakDemo() {
               gap: '12px',
             }}
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
               <span
                 style={{
                   fontSize: '0.74rem',
@@ -881,7 +873,7 @@ export default function HandSpeakDemo() {
                   onMouseEnter={playHover}
                   title="Tambah Spasi"
                   style={{
-                    padding: '5px 10px',
+                    padding: '6px 12px',
                     borderRadius: '8px',
                     background: 'var(--surface)',
                     border: '1px solid var(--border)',
@@ -889,6 +881,7 @@ export default function HandSpeakDemo() {
                     fontSize: '0.76rem',
                     fontWeight: 600,
                     cursor: 'pointer',
+                    transition: 'background 0.15s ease',
                   }}
                 >
                   Spasi
@@ -901,7 +894,7 @@ export default function HandSpeakDemo() {
                   onMouseEnter={playHover}
                   title="Hapus Satu Huruf"
                   style={{
-                    padding: '5px 10px',
+                    padding: '6px 10px',
                     borderRadius: '8px',
                     background: 'var(--surface)',
                     border: '1px solid var(--border)',
@@ -909,6 +902,7 @@ export default function HandSpeakDemo() {
                     fontSize: '0.76rem',
                     fontWeight: 600,
                     cursor: 'pointer',
+                    transition: 'background 0.15s ease',
                   }}
                 >
                   <Delete size={13} style={{ verticalAlign: 'middle' }} />
@@ -921,7 +915,7 @@ export default function HandSpeakDemo() {
                   onMouseEnter={playHover}
                   title="Bersihkan Seluruh Teks"
                   style={{
-                    padding: '5px 10px',
+                    padding: '6px 10px',
                     borderRadius: '8px',
                     background: 'rgba(239, 68, 68, 0.1)',
                     border: '1px solid rgba(239, 68, 68, 0.25)',
@@ -929,6 +923,7 @@ export default function HandSpeakDemo() {
                     fontSize: '0.76rem',
                     fontWeight: 600,
                     cursor: 'pointer',
+                    transition: 'background 0.15s ease',
                   }}
                 >
                   <RotateCcw size={13} style={{ verticalAlign: 'middle' }} />
@@ -939,8 +934,8 @@ export default function HandSpeakDemo() {
             {/* Word Display Box */}
             <div
               style={{
-                minHeight: '76px',
-                padding: '14px 16px',
+                minHeight: '84px',
+                padding: '16px 18px',
                 borderRadius: '14px',
                 background: 'var(--surface)',
                 border: '1px solid var(--border)',
@@ -964,8 +959,8 @@ export default function HandSpeakDemo() {
                 {accumulatedText || (
                   <span style={{ fontSize: '0.82rem', color: 'var(--text-dim)', fontWeight: 400, fontFamily: 'inherit' }}>
                     {mode === 'letters'
-                      ? 'Tahan gestur huruf selama ~0.9 detik untuk memasukkan huruf ke sini...'
-                      : 'Tahan gestur kata selama ~0.9 detik untuk memasukkan kata ke sini...'}
+                      ? 'Tahan gestur huruf selama ~0.9 detik untuk menyusun kata...'
+                      : 'Tahan gestur kata selama ~0.9 detik untuk menyusun kalimat...'}
                   </span>
                 )}
               </div>
@@ -975,13 +970,14 @@ export default function HandSpeakDemo() {
                   onClick={handleCopy}
                   title="Salin Teks"
                   style={{
-                    padding: '7px',
+                    padding: '8px',
                     borderRadius: '8px',
                     background: copied ? 'rgba(52, 211, 153, 0.15)' : 'var(--surface-2)',
                     border: `1px solid ${copied ? 'rgba(52, 211, 153, 0.3)' : 'var(--border)'}`,
                     color: copied ? '#34d399' : 'var(--text-muted)',
                     cursor: 'pointer',
                     flexShrink: 0,
+                    transition: 'all 0.15s ease',
                   }}
                 >
                   {copied ? <Check size={15} /> : <Copy size={15} />}
@@ -990,27 +986,26 @@ export default function HandSpeakDemo() {
             </div>
           </div>
 
-          {/* Card 3: Technical Footnote Badge */}
+          {/* Helpful Mini Guide Note */}
           <div
             style={{
-              padding: '14px 16px',
-              borderRadius: '16px',
-              background: 'var(--accent-dim)',
-              border: '1px solid var(--accent-border)',
-              fontSize: '0.78rem',
-              color: 'var(--text)',
+              padding: '12px 16px',
+              borderRadius: '14px',
+              background: 'var(--surface-2)',
+              border: '1px solid var(--border)',
               display: 'flex',
-              flexDirection: 'column',
-              gap: '6px',
+              alignItems: 'center',
+              gap: '10px',
+              fontSize: '0.8rem',
+              color: 'var(--text-muted)',
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--accent)', fontWeight: 700 }}>
-              <Cpu size={14} />
-              <span>Pipeline Ekstraksi 176 Dimensi Scale-Invariant (Dual Mode AI)</span>
-            </div>
-            <p style={{ margin: 0, color: 'var(--text-muted)', lineHeight: 1.45 }}>
-              Deteksi 21 titik sendi 3D (MediaPipe) diproses menjadi vektor 176D (fitur spasial + 25 jarak geometris). Dua model TFLite (26 Huruf &amp; 38 Kosakata) dijalankan on-device dengan akselerasi WebAssembly 100% aman dan bebas biaya server.
-            </p>
+            <Sparkles size={16} style={{ color: 'var(--accent)', flexShrink: 0 }} />
+            <span>
+              {mode === 'letters'
+                ? 'Posisikan satu tangan di depan kamera. Prediksi real-time dan akurasi tampil langsung di pojok kanan atas kamera.'
+                : 'Peragakan salah satu dari 38 kosakata BISINDO. Model AI membaca sendi tangan 100% lokal on-device.'}
+            </span>
           </div>
         </div>
       </div>
@@ -1023,10 +1018,31 @@ export default function HandSpeakDemo() {
           from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }
         }
-        @media (max-width: 860px) {
+        .handspeak-camera-viewport {
+          aspect-ratio: 4 / 3;
+        }
+        @media (max-width: 768px) {
+          .handspeak-card-container {
+            padding: 14px 12px !important;
+            border-radius: 22px !important;
+          }
           .handspeak-main-grid {
             grid-template-columns: 1fr !important;
-            gap: 20px !important;
+            gap: 16px !important;
+          }
+          .handspeak-camera-viewport {
+            aspect-ratio: 3 / 4 !important;
+            width: 100% !important;
+            max-height: 68vh !important;
+            border-radius: 20px !important;
+          }
+          .handspeak-header {
+            gap: 12px !important;
+            padding-bottom: 14px !important;
+          }
+          .handspeak-header-controls {
+            width: 100% !important;
+            justify-content: space-between !important;
           }
         }
       `}</style>

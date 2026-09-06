@@ -48,6 +48,15 @@ export function useHandSpeakAI(videoRef, canvasRef) {
   const lastCommittedPredictionRef = useRef(null);
   const showSkeletonRef = useRef(true);
 
+  const isProcessingRef = useRef(false);
+  const lastStateRef = useRef({
+    letter: '-',
+    confidence: 0,
+    handsCount: 0,
+    feedback: '',
+    lastUpdate: 0,
+  });
+
   // Stop Camera
   const stopCamera = useCallback(() => {
     if (animFrameIdRef.current) {
@@ -66,26 +75,38 @@ export function useHandSpeakAI(videoRef, canvasRef) {
       if (ctx) ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
     }
 
+    lastStateRef.current = {
+      letter: '-',
+      confidence: 0,
+      handsCount: 0,
+      feedback: 'Kamera dinonaktifkan.',
+      lastUpdate: performance.now(),
+    };
+
     setState((s) => ({
       ...s,
       isCameraActive: false,
       currentLetter: '-',
+      currentPrediction: '-',
       confidence: 0,
       detectedHandsCount: 0,
       feedback: 'Kamera dinonaktifkan.',
     }));
-  }, []);
+  }, [canvasRef, videoRef]);
 
-  // Draw Landmarks Canvas
+  // Draw Landmarks Canvas (optimized for 60 FPS)
   const drawLandmarks = (landmarksList) => {
     if (!canvasRef || !canvasRef.current || !videoRef.current) return;
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    if (canvas.width !== videoRef.current.videoWidth || canvas.height !== videoRef.current.videoHeight) {
-      canvas.width = videoRef.current.videoWidth || 640;
-      canvas.height = videoRef.current.videoHeight || 480;
+    const vWidth = videoRef.current.videoWidth || 640;
+    const vHeight = videoRef.current.videoHeight || 480;
+
+    if (canvas.width !== vWidth || canvas.height !== vHeight) {
+      canvas.width = vWidth;
+      canvas.height = vHeight;
     }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -96,7 +117,7 @@ export function useHandSpeakAI(videoRef, canvasRef) {
     const h = canvas.height;
 
     landmarksList.forEach((landmarks) => {
-      // Gambar tulang / connections
+      // Gambar koneksi sendi
       ctx.lineWidth = 3;
       ctx.strokeStyle = '#818cf8';
       ctx.lineCap = 'round';
@@ -128,7 +149,7 @@ export function useHandSpeakAI(videoRef, canvasRef) {
     });
   };
 
-  // Inference Processing Loop
+  // Inference Processing Loop (Optimized for Mobile 60 FPS)
   const startLoop = useCallback(() => {
     const processFrame = () => {
       const video = videoRef.current;
@@ -142,10 +163,17 @@ export function useHandSpeakAI(videoRef, canvasRef) {
         return;
       }
 
+      // Guard against overlapping frames on mobile CPUs
+      if (isProcessingRef.current) {
+        animFrameIdRef.current = requestAnimationFrame(processFrame);
+        return;
+      }
+
       const now = performance.now();
-      // Throttling: eksekusi setiap ~100ms agar browser tetap stabil di 60 FPS
-      if (now - lastProcessTimeRef.current >= 100) {
+      // Smooth cadence: ~70ms (~14 FPS AI inference) leaves ample CPU for 60 FPS video & canvas rendering
+      if (now - lastProcessTimeRef.current >= 70) {
         lastProcessTimeRef.current = now;
+        isProcessingRef.current = true;
 
         try {
           const results = landmarker.detectForVideo(video, now);
@@ -157,16 +185,25 @@ export function useHandSpeakAI(videoRef, canvasRef) {
               if (ctx) ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
             }
 
-            setState((s) => ({
-              ...s,
-              currentLetter: '-',
-              currentPrediction: '-',
-              confidence: 0,
-              detectedHandsCount: 0,
-              feedback: 'Tangan tidak terdeteksi. Posisikan tangan di depan kamera.',
-            }));
+            // Only update state if we previously had hands detected (avoids continuous re-renders)
+            if (lastStateRef.current.handsCount > 0 || lastStateRef.current.letter !== '-') {
+              lastStateRef.current.letter = '-';
+              lastStateRef.current.confidence = 0;
+              lastStateRef.current.handsCount = 0;
+              lastStateRef.current.feedback = 'Tangan tidak terdeteksi. Posisikan tangan di depan kamera.';
+              lastStateRef.current.lastUpdate = now;
+
+              setState((s) => ({
+                ...s,
+                currentLetter: '-',
+                currentPrediction: '-',
+                confidence: 0,
+                detectedHandsCount: 0,
+                feedback: 'Tangan tidak terdeteksi. Posisikan tangan di depan kamera.',
+              }));
+            }
           } else {
-            // Render landmarks pada canvas
+            // Render landmarks pada canvas (hardware accelerated 2D context)
             drawLandmarks(results.landmarks);
 
             // Format data tangan
@@ -180,12 +217,9 @@ export function useHandSpeakAI(videoRef, canvasRef) {
             let features = HandFeatureExtractor.buildFeature176(orderedHands);
             features = HandFeatureExtractor.correctFrontCameraFeatures(features);
 
-            // Inferensi Model TFLite
-            const inputTensor = tf.tensor2d([features], [1, 176], 'float32');
-            const outputTensor = activeModel.predict(inputTensor);
-            const probabilities = Array.from(outputTensor.dataSync());
-            inputTensor.dispose();
-            outputTensor.dispose();
+            // Direct Native Inference: NO TFJS tensor allocation or WebGL stall
+            const output = activeModel.predict(features);
+            const probabilities = output.dataSync();
 
             // Cari probabilitas tertinggi
             let bestIdx = 0;
@@ -239,28 +273,47 @@ export function useHandSpeakAI(videoRef, canvasRef) {
                 }
               }
 
-              setState((s) => ({
-                ...s,
-                currentLetter: predictedLabel,
-                currentPrediction: predictedLabel,
-                confidence: score,
-                stableLetter: stableCandidate,
-                stablePrediction: stableCandidate,
-                detectedHandsCount: results.landmarks.length,
-                accumulatedText: textUpdate
-                  ? (s.accumulatedText + textUpdate).trimStart()
-                  : s.accumulatedText,
-                feedback:
+              // Throttle React state updates to prevent mobile UI re-render lag
+              const shouldUpdateState =
+                textUpdate !== null ||
+                predictedLabel !== lastStateRef.current.letter ||
+                Math.abs(score - lastStateRef.current.confidence) >= 0.06 ||
+                results.landmarks.length !== lastStateRef.current.handsCount ||
+                now - lastStateRef.current.lastUpdate >= 200;
+
+              if (shouldUpdateState) {
+                lastStateRef.current.letter = predictedLabel;
+                lastStateRef.current.confidence = score;
+                lastStateRef.current.handsCount = results.landmarks.length;
+                lastStateRef.current.lastUpdate = now;
+
+                const feedbackText =
                   score >= 0.85
                     ? (currentMode === 'letters' ? '🎯 Huruf Sangat Jelas!' : '🎯 Kosakata Terdeteksi Mantap!')
                     : score >= 0.70
                     ? '👍 Bagus, tahan posisinya'
-                    : '✋ Coba perjelas arah gestur',
-              }));
+                    : '✋ Coba perjelas arah gestur';
+
+                setState((s) => ({
+                  ...s,
+                  currentLetter: predictedLabel,
+                  currentPrediction: predictedLabel,
+                  confidence: score,
+                  stableLetter: stableCandidate,
+                  stablePrediction: stableCandidate,
+                  detectedHandsCount: results.landmarks.length,
+                  accumulatedText: textUpdate
+                    ? (s.accumulatedText + textUpdate).trimStart()
+                    : s.accumulatedText,
+                  feedback: feedbackText,
+                }));
+              }
             }
           }
         } catch (e) {
           console.error('Frame inference error:', e);
+        } finally {
+          isProcessingRef.current = false;
         }
       }
 
@@ -268,7 +321,7 @@ export function useHandSpeakAI(videoRef, canvasRef) {
     };
 
     animFrameIdRef.current = requestAnimationFrame(processFrame);
-  }, []);
+  }, [canvasRef, videoRef]);
 
   // Start Camera
   const startCamera = useCallback(async () => {
@@ -290,11 +343,12 @@ export function useHandSpeakAI(videoRef, canvasRef) {
         feedback: 'Menunggu izin akses kamera dari browser...',
       }));
 
+      const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {
-          width: { ideal: 640 },
-          height: { ideal: 480 },
           facingMode: 'user', // front camera
+          width: { ideal: isMobile ? 720 : 640 },
+          height: { ideal: isMobile ? 960 : 480 },
         },
         audio: false,
       });
