@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { FilesetResolver, HandLandmarker } from '@mediapipe/tasks-vision';
-import * as tflite from '@tensorflow/tfjs-tflite';
 import * as tf from '@tensorflow/tfjs';
+import { loadDenseModelFromBin } from './bisindoModelLoader';
 import { HandFeatureExtractor } from './handFeatureExtractor';
 import {
   BISINDO_LETTER_LABELS,
@@ -17,27 +17,6 @@ const HAND_CONNECTIONS = [
   [0, 17], [17, 18], [18, 19], [19, 20],// Pinky
   [5, 9], [9, 13], [13, 17],            // Palm base
 ];
-
-// Helper aman mengunduh model binary TFLite & verifikasi magic bytes
-async function fetchModelBuffer(url) {
-  const res = await fetch(url);
-  if (!res.ok) {
-    throw new Error(`Gagal mengunduh file model dari ${url} (HTTP ${res.status}: ${res.statusText})`);
-  }
-  const buf = await res.arrayBuffer();
-  const bytes = new Uint8Array(buf);
-  // Verifikasi TFLite magic identifier ('TFL3' pada offset byte 4-7)
-  if (
-    bytes.length < 8 ||
-    bytes[4] !== 84 || // 'T'
-    bytes[5] !== 70 || // 'F'
-    bytes[6] !== 76 || // 'L'
-    bytes[7] !== 51    // '3'
-  ) {
-    throw new Error(`File dari ${url} bukan binary FlatBuffer TFLite yang valid.`);
-  }
-  return buf;
-}
 
 export function useHandSpeakAI(videoRef, canvasRef) {
   const [mode, setMode] = useState('letters');
@@ -370,7 +349,7 @@ export function useHandSpeakAI(videoRef, canvasRef) {
     }));
   }, []);
 
-  // Inisialisasi Model MediaPipe Tasks Vision & Kedua Model TFLite
+  // Inisialisasi Model MediaPipe Tasks Vision & Kedua Model Dense BISINDO
   useEffect(() => {
     let isMounted = true;
 
@@ -380,46 +359,62 @@ export function useHandSpeakAI(videoRef, canvasRef) {
           ...s,
           isModelLoading: true,
           error: null,
-          feedback: 'Memuat MediaPipe & Dual AI Model (Huruf + Kosakata)...',
+          feedback: 'Memuat MediaPipe Hand Landmarker...',
         }));
 
-        // Inisialisasi MediaPipe Tasks Vision
-        const vision = await FilesetResolver.forVisionTasks(
-          'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm'
-        );
-
-        const landmarker = await HandLandmarker.createFromOptions(vision, {
-          baseOptions: {
-            modelAssetPath: '/models/hand_landmarker.task',
-            delegate: 'GPU',
-          },
-          runningMode: 'VIDEO',
-          numHands: 2,
-          minHandDetectionConfidence: 0.35,
-          minHandPresenceConfidence: 0.35,
-          minTrackingConfidence: 0.35,
-        });
-
-        // Set local WASM path untuk TFLite WebAssembly runner
+        // Inisialisasi MediaPipe Tasks Vision (Prioritas local WASM, fallback ke CDN)
+        let vision;
         try {
-          tflite.setWasmPath('/wasm/');
-        } catch (e) {
-          console.warn('tflite.setWasmPath notice:', e);
+          vision = await FilesetResolver.forVisionTasks('/wasm/mediapipe');
+        } catch {
+          vision = await FilesetResolver.forVisionTasks(
+            'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm'
+          );
         }
+
+        // Inisialisasi HandLandmarker (GPU dengan fallback otomatis ke CPU)
+        let landmarker;
+        try {
+          landmarker = await HandLandmarker.createFromOptions(vision, {
+            baseOptions: {
+              modelAssetPath: '/models/hand_landmarker.task',
+              delegate: 'GPU',
+            },
+            runningMode: 'VIDEO',
+            numHands: 2,
+            minHandDetectionConfidence: 0.35,
+            minHandPresenceConfidence: 0.35,
+            minTrackingConfidence: 0.35,
+          });
+        } catch (gpuErr) {
+          console.warn('GPU delegate gagal, menggunakan fallback CPU:', gpuErr);
+          landmarker = await HandLandmarker.createFromOptions(vision, {
+            baseOptions: {
+              modelAssetPath: '/models/hand_landmarker.task',
+              delegate: 'CPU',
+            },
+            runningMode: 'VIDEO',
+            numHands: 2,
+            minHandDetectionConfidence: 0.35,
+            minHandPresenceConfidence: 0.35,
+            minTrackingConfidence: 0.35,
+          });
+        }
+
+        if (!isMounted) return;
+
+        setState((s) => ({
+          ...s,
+          feedback: 'Memuat Neural Network BISINDO (Huruf + Kosakata)...',
+        }));
 
         // Inisialisasi TensorFlow.js backend
         await tf.ready();
 
-        // Unduh buffer binary model secara paralel dengan validasi integritas FlatBuffer
-        const [letterBuf, wordBuf] = await Promise.all([
-          fetchModelBuffer('/models/bisindo_az_2hands_aug.tflite'),
-          fetchModelBuffer('/models/bisindo_words_v2.tflite'),
-        ]);
-
-        // Load TFLite models dengan opsi { numThreads: 1 } untuk stabilitas cross-browser
+        // Unduh dan inisialisasi kedua model Dense Neural Network secara native
         const [letterModel, wordModel] = await Promise.all([
-          tflite.loadTFLiteModel(letterBuf, { numThreads: 1 }),
-          tflite.loadTFLiteModel(wordBuf, { numThreads: 1 }),
+          loadDenseModelFromBin('/models/bisindo_az_weights.bin'),
+          loadDenseModelFromBin('/models/bisindo_words_weights.bin'),
         ]);
 
         if (isMounted) {
@@ -430,7 +425,9 @@ export function useHandSpeakAI(videoRef, canvasRef) {
             ...s,
             isModelLoading: false,
             isModelReady: true,
-            feedback: 'Model Huruf & Kosakata siap! Tekan "Buka Kamera" untuk mulai.',
+            feedback: s.isCameraActive
+              ? 'Model siap & deteksi gesture berjalan.'
+              : 'Model Huruf & Kosakata siap! Tekan "Buka Kamera" untuk mulai.',
           }));
         }
       } catch (err) {
@@ -451,6 +448,8 @@ export function useHandSpeakAI(videoRef, canvasRef) {
     return () => {
       isMounted = false;
       stopCamera();
+      letterModelRef.current?.dispose?.();
+      wordModelRef.current?.dispose?.();
     };
   }, [stopCamera]);
 
