@@ -15,6 +15,7 @@ import {
   PawPrint,
   Image,
   Gamepad2,
+  Layers,
 } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
 import ThemeToggle from './ui/ThemeToggle';
@@ -26,7 +27,6 @@ const ABOUT_DROPDOWN = [
   { label: 'Experience', path: '/experience', icon: Briefcase },
   { label: 'Projects', path: '/projects', icon: FolderGit2 },
   { label: 'Album Gallery', path: '/album', icon: Image },
-  { label: 'Playground', path: '/playground', icon: Gamepad2 },
 ];
 
 const DockButton = ({ to, icon: Icon, label, isActive, onClick, onHover }) => {
@@ -129,6 +129,82 @@ export default function Navbar() {
   const isAboutActive = ['/about', '/experience', '/projects', '/album'].some((p) =>
     location.pathname.startsWith(p)
   );
+
+  // Mobile Dock: Collapsible Middle Section (Experience, Projects, Album, Playground)
+  const [isMiddleExpanded, setIsMiddleExpanded] = useState(false);
+  const collapseTimeoutRef = useRef(null);
+  const mobileDockRef = useRef(null);
+
+  const resetCollapseTimer = () => {
+    if (collapseTimeoutRef.current) {
+      clearTimeout(collapseTimeoutRef.current);
+    }
+    collapseTimeoutRef.current = setTimeout(() => {
+      setIsMiddleExpanded(false);
+    }, 4000);
+  };
+
+  const handleExpandMiddle = (e) => {
+    if (e) e.stopPropagation();
+    playClick();
+    setIsMiddleExpanded((prev) => {
+      const next = !prev;
+      if (next) resetCollapseTimer();
+      else if (collapseTimeoutRef.current) clearTimeout(collapseTimeoutRef.current);
+      return next;
+    });
+  };
+
+  // Close middle section when clicking/tapping outside or when inactive
+  useEffect(() => {
+    if (!isMiddleExpanded) {
+      if (collapseTimeoutRef.current) clearTimeout(collapseTimeoutRef.current);
+      return;
+    }
+
+    resetCollapseTimer();
+
+    const handleClickOutside = (e) => {
+      if (mobileDockRef.current && !mobileDockRef.current.contains(e.target)) {
+        setIsMiddleExpanded(false);
+      }
+    };
+
+    document.addEventListener('touchstart', handleClickOutside, { passive: true });
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      if (collapseTimeoutRef.current) clearTimeout(collapseTimeoutRef.current);
+      document.removeEventListener('touchstart', handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMiddleExpanded]);
+
+  // Collapse on route change
+  useEffect(() => {
+    setIsMiddleExpanded(false);
+  }, [location.pathname]);
+
+  const isExpActive = location.pathname.startsWith('/experience');
+  const isProjActive = location.pathname.startsWith('/projects');
+  const isAlbumActive = location.pathname.startsWith('/album');
+  const isPlayActive = location.pathname.startsWith('/playground');
+  const isMiddleActive = isExpActive || isProjActive || isAlbumActive || isPlayActive;
+
+  let MiddleIcon = Layers;
+  let middleLabel = 'Menu Proyek & Lab';
+  if (isExpActive) {
+    MiddleIcon = Briefcase;
+    middleLabel = 'Experience';
+  } else if (isProjActive) {
+    MiddleIcon = FolderGit2;
+    middleLabel = 'Projects';
+  } else if (isAlbumActive) {
+    MiddleIcon = Image;
+    middleLabel = 'Album';
+  } else if (isPlayActive) {
+    MiddleIcon = Gamepad2;
+    middleLabel = 'Playground';
+  }
 
   return (
     <>
@@ -550,76 +626,200 @@ export default function Navbar() {
       {/* =========================================================================
           MOBILE BOTTOM FLOATING DOCK NAVBAR
           ========================================================================= */}
-      <nav className="mobile-dock-nav" role="navigation" aria-label="Mobile Navigation">
-        <DockButton
-          to="/"
-          icon={Home}
-          label="Home"
-          isActive={location.pathname === '/'}
-          onClick={playClick}
-          onHover={playHover}
-        />
-        <DockButton
-          to="/about"
-          icon={User}
-          label="About"
-          isActive={location.pathname.startsWith('/about')}
-          onClick={playClick}
-          onHover={playHover}
-        />
-        <div className="dock-divider" />
-        <DockButton
-          to="/experience"
-          icon={Briefcase}
-          label="Experience"
-          isActive={location.pathname.startsWith('/experience')}
-          onClick={playClick}
-          onHover={playHover}
-        />
-        <DockButton
-          to="/projects"
-          icon={FolderGit2}
-          label="Projects"
-          isActive={location.pathname.startsWith('/projects')}
-          onClick={playClick}
-          onHover={playHover}
-        />
-        <DockButton
-          to="/album"
-          icon={Image}
-          label="Album"
-          isActive={location.pathname.startsWith('/album')}
-          onClick={playClick}
-          onHover={playHover}
-        />
-        <DockButton
-          to="/playground"
-          icon={Gamepad2}
-          label="Play"
-          isActive={location.pathname.startsWith('/playground')}
-          onClick={playClick}
-          onHover={playHover}
-        />
-        <div className="dock-divider" />
-        <DockButton
-          to="/contact"
-          icon={Mail}
-          label="Contact"
-          isActive={location.pathname === '/contact'}
-          onClick={playClick}
-          onHover={playHover}
-        />
-        <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center' }}>
-          <ThemeToggle />
-        </div>
-      </nav>
+      <div className="mobile-dock-wrapper">
+        <motion.nav
+          ref={mobileDockRef}
+          layout
+          transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+          className="mobile-dock-nav"
+          role="navigation"
+          aria-label="Mobile Navigation"
+        >
+          {/* 1. Left Section: Home & About */}
+          <DockButton
+            to="/"
+            icon={Home}
+            label="Home"
+            isActive={isHome}
+            onClick={() => {
+              playClick();
+              setIsMiddleExpanded(false);
+            }}
+            onHover={playHover}
+          />
+          <DockButton
+            to="/about"
+            icon={User}
+            label="About"
+            isActive={location.pathname.startsWith('/about')}
+            onClick={() => {
+              playClick();
+              setIsMiddleExpanded(false);
+            }}
+            onHover={playHover}
+          />
+
+          <div className="dock-divider" />
+
+          {/* 2. Middle Section: Dynamic Collapsible Accordion */}
+          <motion.div
+            layout
+            transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+            style={{ display: 'flex', alignItems: 'center' }}
+            onTouchStart={isMiddleExpanded ? resetCollapseTimer : undefined}
+            onClick={isMiddleExpanded ? resetCollapseTimer : undefined}
+          >
+            <AnimatePresence mode="popLayout" initial={false}>
+              {!isMiddleExpanded ? (
+                <motion.div
+                  key="middle-collapsed"
+                  layout
+                  initial={{ opacity: 0, scale: 0.7 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.7 }}
+                  transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                  style={{ display: 'flex', alignItems: 'center' }}
+                >
+                  <motion.button
+                    whileHover={{ scale: 1.12 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={handleExpandMiddle}
+                    title={`${middleLabel} (Ketuk untuk membuka menu)`}
+                    aria-label={`${middleLabel} (Ketuk untuk membuka menu)`}
+                    className="dock-circle-btn"
+                    style={{
+                      width: '36px',
+                      height: '36px',
+                      borderRadius: '50%',
+                      border: isMiddleActive ? '1px solid var(--accent)' : '1px solid var(--border)',
+                      background: isMiddleActive ? 'var(--accent-dim)' : 'var(--surface-2)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: isMiddleActive ? 'var(--accent)' : 'var(--text-muted)',
+                      position: 'relative',
+                      cursor: 'pointer',
+                      padding: 0,
+                      transition: 'border-color 0.2s, background 0.2s, color 0.2s',
+                    }}
+                  >
+                    <MiddleIcon size={17} />
+                    {isMiddleActive ? (
+                      <span
+                        style={{
+                          position: 'absolute',
+                          top: '2px',
+                          right: '2px',
+                          width: '6px',
+                          height: '6px',
+                          borderRadius: '50%',
+                          background: 'var(--accent)',
+                          boxShadow: '0 0 8px var(--accent)',
+                        }}
+                      />
+                    ) : (
+                      <span
+                        style={{
+                          position: 'absolute',
+                          bottom: '3px',
+                          width: '8px',
+                          height: '2px',
+                          borderRadius: '999px',
+                          background: 'var(--text-dim)',
+                          opacity: 0.6,
+                        }}
+                      />
+                    )}
+                  </motion.button>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="middle-expanded"
+                  layout
+                  initial={{ opacity: 0, scale: 0.85 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.85 }}
+                  transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                  style={{ display: 'flex', alignItems: 'center', gap: '4px' }}
+                >
+                  <DockButton
+                    to="/experience"
+                    icon={Briefcase}
+                    label="Experience"
+                    isActive={isExpActive}
+                    onClick={() => {
+                      playClick();
+                      setIsMiddleExpanded(false);
+                    }}
+                    onHover={playHover}
+                  />
+                  <DockButton
+                    to="/projects"
+                    icon={FolderGit2}
+                    label="Projects"
+                    isActive={isProjActive}
+                    onClick={() => {
+                      playClick();
+                      setIsMiddleExpanded(false);
+                    }}
+                    onHover={playHover}
+                  />
+                  <DockButton
+                    to="/album"
+                    icon={Image}
+                    label="Album"
+                    isActive={isAlbumActive}
+                    onClick={() => {
+                      playClick();
+                      setIsMiddleExpanded(false);
+                    }}
+                    onHover={playHover}
+                  />
+                  <DockButton
+                    to="/playground"
+                    icon={Gamepad2}
+                    label="Play"
+                    isActive={isPlayActive}
+                    onClick={() => {
+                      playClick();
+                      setIsMiddleExpanded(false);
+                    }}
+                    onHover={playHover}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+
+          <div className="dock-divider" />
+
+          {/* 3. Right Section: Contact & Theme */}
+          <DockButton
+            to="/contact"
+            icon={Mail}
+            label="Contact"
+            isActive={isContact}
+            onClick={() => {
+              playClick();
+              setIsMiddleExpanded(false);
+            }}
+            onHover={playHover}
+          />
+          <div
+            style={{ flexShrink: 0, display: 'flex', alignItems: 'center' }}
+            onClick={() => setIsMiddleExpanded(false)}
+          >
+            <ThemeToggle />
+          </div>
+        </motion.nav>
+      </div>
 
       {/* Responsive Visibility Controls */}
       <style>{`
         @media (min-width: 860px) {
           .desktop-top-header { display: flex !important; }
           .mobile-top-bar { display: none !important; }
-          .mobile-dock-nav { display: none !important; }
+          .mobile-dock-wrapper { display: none !important; }
         }
         @media (max-width: 859px) {
           .desktop-top-header { display: none !important; }
@@ -639,13 +839,21 @@ export default function Navbar() {
             border-bottom: 1px solid var(--border) !important;
             z-index: 1000 !important;
           }
-          .mobile-dock-nav {
+          .mobile-dock-wrapper {
             display: flex !important;
             position: fixed !important;
             bottom: 16px !important;
-            left: 50% !important;
-            transform: translateX(-50%) !important;
+            left: 0 !important;
+            right: 0 !important;
+            justify-content: center !important;
+            align-items: center !important;
             z-index: 9999 !important;
+            pointer-events: none !important;
+          }
+          .mobile-dock-nav {
+            pointer-events: auto !important;
+            position: relative !important;
+            display: flex !important;
             align-items: center !important;
             justify-content: center !important;
             gap: 4px !important;
@@ -657,18 +865,13 @@ export default function Navbar() {
             border-radius: 9999px !important;
             box-shadow: 0 12px 36px var(--shadow-color) !important;
             max-width: calc(100vw - 24px) !important;
-            overflow-x: auto !important;
-            scrollbar-width: none !important;
-            -ms-overflow-style: none !important;
-          }
-          .mobile-dock-nav::-webkit-scrollbar {
-            display: none !important;
+            will-change: transform, width;
           }
           .dock-divider {
             width: 1px !important;
             height: 18px !important;
             background: rgba(255, 255, 255, 0.15) !important;
-            margin: 0 1px !important;
+            margin: 0 2px !important;
             flex-shrink: 0 !important;
           }
           .dock-circle-btn {
