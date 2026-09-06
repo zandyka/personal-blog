@@ -343,12 +343,11 @@ export function useHandSpeakAI(videoRef, canvasRef) {
         feedback: 'Menunggu izin akses kamera dari browser...',
       }));
 
-      const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode: 'user', // front camera
-          width: { ideal: isMobile ? 720 : 640 },
-          height: { ideal: isMobile ? 960 : 480 },
+          width: { ideal: 640, max: 1280 },
+          height: { ideal: 480, max: 720 },
         },
         audio: false,
       });
