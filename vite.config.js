@@ -13,12 +13,6 @@ export default defineConfig(({ mode }) => {
         '@tensorflow/tfjs-tflite': '@tensorflow/tfjs-tflite/dist/tf-tflite.fesm.js',
       },
     },
-    server: {
-      headers: {
-        'Cross-Origin-Opener-Policy': 'same-origin',
-        'Cross-Origin-Embedder-Policy': 'credentialless',
-      },
-    },
     plugins: [
       react(),
       {

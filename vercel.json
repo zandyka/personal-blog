@@ -1,20 +1,16 @@
 {
   "headers": [
     {
-      "source": "/(.*)",
+      "source": "/models/(.*)",
       "headers": [
         {
-          "key": "Cross-Origin-Opener-Policy",
-          "value": "same-origin"
-        },
-        {
-          "key": "Cross-Origin-Embedder-Policy",
-          "value": "credentialless"
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
         }
       ]
     },
     {
-      "source": "/models/(.*)",
+      "source": "/wasm/(.*)",
       "headers": [
         {
           "key": "Cache-Control",

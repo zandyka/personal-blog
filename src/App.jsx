@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, lazy, Suspense } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { SoundProvider } from './components/ui/SoundProvider';
@@ -14,6 +14,7 @@ import AvailableSidebar from './components/ui/AvailableSidebar';
 import FloatingPet from './components/ui/FloatingPet';
 import ScrollToTop from './components/ui/ScrollToTop';
 import { Analytics } from '@vercel/analytics/react';
+import ErrorBoundary from './components/ErrorBoundary';
 
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
@@ -21,8 +22,7 @@ import ExperiencePage from './pages/ExperiencePage';
 import ProjectsPage from './pages/ProjectsPage';
 import ContactPage from './pages/ContactPage';
 import AlbumPage from './pages/AlbumPage';
-
-const PlaygroundPage = lazy(() => import('./pages/PlaygroundPage'));
+import PlaygroundPage from './pages/PlaygroundPage';
 
 function AppInner() {
   useTheme();
@@ -55,39 +55,19 @@ function AppInner() {
       <AvailableSidebar />
       <FloatingPet />
       <Navbar />
-      <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/experience" element={<ExperiencePage />} />
-          <Route path="/projects" element={<ProjectsPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/album" element={<AlbumPage />} />
-          <Route
-            path="/playground"
-            element={
-              <Suspense
-                fallback={
-                  <div
-                    style={{
-                      minHeight: '80vh',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: 'var(--text-muted)',
-                      fontFamily: "'Space Grotesk', monospace",
-                    }}
-                  >
-                    Memuat Playground...
-                  </div>
-                }
-              >
-                <PlaygroundPage />
-              </Suspense>
-            }
-          />
-        </Routes>
-      </AnimatePresence>
+      <ErrorBoundary>
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/experience" element={<ExperiencePage />} />
+            <Route path="/projects" element={<ProjectsPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/album" element={<AlbumPage />} />
+            <Route path="/playground" element={<PlaygroundPage />} />
+          </Routes>
+        </AnimatePresence>
+      </ErrorBoundary>
       <Footer />
       <BackToTop />
       <Analytics />
