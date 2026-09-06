@@ -200,14 +200,14 @@ export function useHandSpeakAI(videoRef, canvasRef) {
             const predictedLabel = activeLabels[bestIdx] || '-';
             const score = maxScore;
 
-            // Voting filter untuk stabilitas
+            // Voting filter untuk stabilitas (0.9s hold duration untuk menyusun huruf/kosakata)
             const liveThreshold = currentMode === 'letters' ? 0.55 : 0.50;
             const commitThreshold = currentMode === 'letters' ? 0.65 : 0.60;
-            const cooldown = currentMode === 'letters' ? 650 : 1200;
+            const cooldown = currentMode === 'letters' ? 900 : 1400;
 
             if (score >= liveThreshold) {
               recentPredictionsRef.current.push(predictedLabel);
-              if (recentPredictionsRef.current.length > 5) {
+              if (recentPredictionsRef.current.length > 7) {
                 recentPredictionsRef.current.shift();
               }
 
@@ -225,9 +225,9 @@ export function useHandSpeakAI(videoRef, canvasRef) {
                 }
               });
 
-              // Commit text logic
+              // Commit text logic (tahan posisi gestur stabil ~0.9 detik)
               let textUpdate = null;
-              if (score >= commitThreshold && bestCount >= 2) {
+              if (score >= commitThreshold && bestCount >= 3) {
                 const canCommit =
                   lastCommittedPredictionRef.current !== stableCandidate ||
                   now - lastCommittedTimeRef.current >= cooldown;

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { Link } from 'react-router-dom';
 import {
   Smartphone,
   Globe,
@@ -31,6 +32,7 @@ const SOFTWARE_PROJECTS = [
       'Aplikasi penerjemah bahasa isyarat Indonesia (BISINDO) secara real-time berbasis kecerdasan buatan (Computer Vision & Machine Learning) untuk menjembatani komunikasi inklusif bagi teman tuli.',
     techStack: ['Flutter', 'Python', 'TensorFlow', 'Computer Vision', 'Mobile AI'],
     image: '/projects/handspeak.webp',
+    previewUrl: '/playground#handspeak',
   },
   {
     id: 'mahaasyik',
@@ -518,20 +520,53 @@ const Projects = () => {
                     style={{
                       display: 'flex',
                       alignItems: 'center',
-                      justifyContent: 'flex-end',
+                      justifyContent: 'space-between',
                       paddingTop: '12px',
                       borderTop: '1px solid var(--border)',
                     }}
                   >
+                    {project.id === 'handspeak' ? (
+                      <Link
+                        to="/playground#handspeak"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          playClick();
+                        }}
+                        onMouseEnter={playHover}
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          padding: '6px 14px',
+                          borderRadius: '999px',
+                          background: 'rgba(255, 59, 29, 0.12)',
+                          border: '1px solid rgba(255, 59, 29, 0.35)',
+                          color: '#FF3B1D',
+                          fontSize: '0.8rem',
+                          fontWeight: 700,
+                          textDecoration: 'none',
+                          transition: 'all 0.2s ease',
+                          boxShadow: '0 2px 8px rgba(255, 59, 29, 0.15)',
+                        }}
+                      >
+                        <Sparkles size={13} />
+                        <span>Preview AI</span>
+                      </Link>
+                    ) : (
+                      <div />
+                    )}
+
                     <button
                       onClick={() => {
                         playClick();
                         setActiveModal({
+                          id: project.id,
                           title: project.title,
                           category: project.category,
                           image: project.image,
                           description: project.description,
                           tags: project.techStack,
+                          previewUrl: project.previewUrl,
                         });
                       }}
                       onMouseEnter={playHover}
@@ -1203,6 +1238,37 @@ const Projects = () => {
                           {t}
                         </span>
                       ))}
+                    </div>
+                  )}
+
+                  {activeModal.id === 'handspeak' && (
+                    <div style={{ marginTop: '18px', paddingTop: '16px', borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
+                      <Link
+                        to="/playground#handspeak"
+                        onClick={() => {
+                          playClick();
+                          setActiveModal(null);
+                        }}
+                        onMouseEnter={playHover}
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          padding: '10px 22px',
+                          borderRadius: '10px',
+                          background: 'linear-gradient(135deg, #FF3B1D, #ff6444)',
+                          color: '#ffffff',
+                          fontSize: '0.86rem',
+                          fontWeight: 700,
+                          textDecoration: 'none',
+                          boxShadow: '0 4px 18px rgba(255, 59, 29, 0.35)',
+                          transition: 'all 0.2s ease',
+                        }}
+                      >
+                        <Sparkles size={16} />
+                        <span>Buka Live AI Demo di Playground</span>
+                        <ArrowUpRight size={15} />
+                      </Link>
                     </div>
                   )}
 

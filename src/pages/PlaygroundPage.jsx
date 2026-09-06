@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Gamepad2, Sparkles, Blocks, Ghost, ArrowRight, Terminal } from 'lucide-react';
 import HandSpeakDemo from '../components/handspeak/HandSpeakDemo';
@@ -42,6 +42,17 @@ const ARCADE_EXPERIMENTS = [
 
 export default function PlaygroundPage() {
   const { playHover } = useSoundContext();
+
+  useEffect(() => {
+    if (window.location.hash === '#handspeak') {
+      const el = document.getElementById('handspeak');
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 150);
+      }
+    }
+  }, []);
 
   return (
     <div className="page-container" style={{ paddingBottom: '90px' }}>
@@ -116,7 +127,7 @@ export default function PlaygroundPage() {
         </section>
 
         {/* Section 2: Featured Interactive Experience — HandSpeak AI */}
-        <section style={{ padding: '0 20px 64px' }}>
+        <section id="handspeak" style={{ padding: '0 20px 64px' }}>
           <HandSpeakDemo />
         </section>
 

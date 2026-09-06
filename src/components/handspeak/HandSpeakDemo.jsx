@@ -15,10 +15,12 @@ import {
   ShieldCheck,
   Cpu,
   Layers,
+  BookOpen,
 } from 'lucide-react';
 import { useHandSpeakAI } from './useHandSpeakAI';
 import { BISINDO_WORD_LABELS_38 } from './labels';
 import { useSoundContext } from '../ui/SoundProvider';
+import KamusFloatingModal from './KamusFloatingModal';
 
 const BISINDO_QUICK_TIPS = [
   { letter: 'A', desc: 'Kepalkan tangan, ibu jari tegak di samping jari telunjuk.' },
@@ -37,6 +39,7 @@ export default function HandSpeakDemo() {
   const canvasRef = useRef(null);
   const { playClick, playHover } = useSoundContext();
   const [showGuide, setShowGuide] = useState(false);
+  const [showKamus, setShowKamus] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const {
@@ -135,31 +138,60 @@ export default function HandSpeakDemo() {
             </div>
           </div>
 
-          {/* Quick Guide Toggle */}
-          <button
-            onClick={() => {
-              playClick();
-              setShowGuide(!showGuide);
-            }}
-            onMouseEnter={playHover}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '6px 14px',
-              borderRadius: '999px',
-              background: showGuide ? 'var(--accent)' : 'var(--surface-2)',
-              border: `1px solid ${showGuide ? 'var(--accent)' : 'var(--border)'}`,
-              color: showGuide ? '#ffffff' : 'var(--text-muted)',
-              fontSize: '0.78rem',
-              fontWeight: 600,
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-            }}
-          >
-            <HelpCircle size={14} />
-            <span>{showGuide ? 'Tutup Panduan' : (mode === 'letters' ? 'Panduan Gestur Huruf' : 'Daftar 38 Kosakata')}</span>
-          </button>
+          {/* Kamus Floating Modal Toggle (Mode Huruf) & Quick Guide Toggle (Mode Kosakata) */}
+          {mode === 'letters' ? (
+            <button
+              onClick={() => {
+                playClick();
+                setShowKamus(!showKamus);
+              }}
+              onMouseEnter={playHover}
+              title="Buka Kamus Gestur Alfabet BISINDO A–Z"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '6px 14px',
+                borderRadius: '999px',
+                background: showKamus ? 'var(--accent)' : 'var(--surface-2)',
+                border: `1px solid ${showKamus ? 'var(--accent)' : 'var(--border)'}`,
+                color: showKamus ? '#ffffff' : 'var(--text-muted)',
+                fontSize: '0.78rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                boxShadow: showKamus ? '0 2px 10px var(--accent-glow)' : 'none',
+              }}
+            >
+              <BookOpen size={14} />
+              <span>{showKamus ? 'Tutup Kamus' : 'Kamus BISINDO (A–Z)'}</span>
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                playClick();
+                setShowGuide(!showGuide);
+              }}
+              onMouseEnter={playHover}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '6px 14px',
+                borderRadius: '999px',
+                background: showGuide ? 'var(--accent)' : 'var(--surface-2)',
+                border: `1px solid ${showGuide ? 'var(--accent)' : 'var(--border)'}`,
+                color: showGuide ? '#ffffff' : 'var(--text-muted)',
+                fontSize: '0.78rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              <HelpCircle size={14} />
+              <span>{showGuide ? 'Tutup Daftar' : 'Daftar 38 Kosakata'}</span>
+            </button>
+          )}
         </div>
 
         <div>
@@ -932,8 +964,8 @@ export default function HandSpeakDemo() {
                 {accumulatedText || (
                   <span style={{ fontSize: '0.82rem', color: 'var(--text-dim)', fontWeight: 400, fontFamily: 'inherit' }}>
                     {mode === 'letters'
-                      ? 'Tahan gestur huruf selama ~0.6 detik untuk memasukkan huruf ke sini...'
-                      : 'Tahan gestur kata selama ~1.2 detik untuk memasukkan kata ke sini...'}
+                      ? 'Tahan gestur huruf selama ~0.9 detik untuk memasukkan huruf ke sini...'
+                      : 'Tahan gestur kata selama ~0.9 detik untuk memasukkan kata ke sini...'}
                   </span>
                 )}
               </div>
@@ -982,6 +1014,9 @@ export default function HandSpeakDemo() {
           </div>
         </div>
       </div>
+
+      {/* Floating Interactive Kamus BISINDO Modal */}
+      <KamusFloatingModal isOpen={showKamus} onClose={() => setShowKamus(false)} />
 
       <style>{`
         @keyframes spin {
