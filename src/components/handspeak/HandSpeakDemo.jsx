@@ -267,7 +267,7 @@ export default function HandSpeakDemo() {
       >
         <AlertTriangle size={16} style={{ color: '#f59e0b', flexShrink: 0 }} />
         <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', lineHeight: 1.45 }}>
-          <strong style={{ color: '#fbbf24' }}>Catatan:</strong> Penggunaan di HP dapat terasa patah-patah/shuttering karena AI diproses 100% lokal on-device. Disarankan menggunakan laptop/PC untuk performa 60 FPS yang lebih mulus.
+          Penggunaan pada perangkat HP dapat mengalami performa patah-patah / shuttering. Untuk pengalaman responsif dan mulus disarankan menggunakan laptop atau PC.
         </span>
       </div>
 
