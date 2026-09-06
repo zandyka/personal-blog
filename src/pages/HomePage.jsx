@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import Hero from '../components/Hero';
 import SkillsTypography from '../components/SkillsTypography';
-import Gallery from '../components/Gallery';
+import HomeShowcase from '../components/HomeShowcase';
 import InfiniteMarquee from '../components/ui/InfiniteMarquee';
 
 const TECH_ITEMS = [
@@ -28,8 +28,8 @@ const HomePage = () => {
       {/* Skills typography section */}
       <SkillsTypography />
 
-      {/* Gallery */}
-      <Gallery />
+      {/* Split Section: Visual Gallery & Featured Projects */}
+      <HomeShowcase />
     </motion.div>
   );
 };

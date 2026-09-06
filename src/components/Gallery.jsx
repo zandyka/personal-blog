@@ -6,7 +6,7 @@ import { useInView } from 'react-intersection-observer';
 import { useSoundContext } from './ui/SoundProvider';
 
 // Featured 9 items displayed on Homepage & About preview
-const FEATURED_GALLERY_ITEMS = [
+export const FEATURED_GALLERY_ITEMS = [
   {
     id: 1,
     category: 'Photography',
@@ -100,7 +100,7 @@ const FEATURED_GALLERY_ITEMS = [
 ];
 
 // Complete 21 items displayed exclusively on the Visual Album Page (/album)
-const ALL_GALLERY_ITEMS = [
+export const ALL_GALLERY_ITEMS = [
   ...FEATURED_GALLERY_ITEMS,
   {
     id: 10,
@@ -237,7 +237,7 @@ const CATEGORY_ICON_MAP = {
   Events: Users,
 };
 
-function GalleryCard({ item, index, onClick }) {
+export function GalleryCard({ item, index, onClick }) {
   const { playHover, playClick } = useSoundContext();
   const [hovered, setHovered] = useState(false);
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
@@ -378,7 +378,7 @@ function GalleryCard({ item, index, onClick }) {
   );
 }
 
-function Lightbox({ item, onClose }) {
+export function Lightbox({ item, onClose }) {
   const { playClick } = useSoundContext();
   return (
     <motion.div
