@@ -3,7 +3,11 @@ import { FilesetResolver, HandLandmarker } from '@mediapipe/tasks-vision';
 import * as tflite from '@tensorflow/tfjs-tflite';
 import * as tf from '@tensorflow/tfjs';
 import { HandFeatureExtractor } from './handFeatureExtractor';
-import { BISINDO_LABELS } from './labels';
+import {
+  BISINDO_LETTER_LABELS,
+  BISINDO_WORD_LABELS_38,
+  BISINDO_LABELS,
+} from './labels';
 
 const HAND_CONNECTIONS = [
   [0, 1], [1, 2], [2, 3], [3, 4],       // Thumb
@@ -14,37 +18,69 @@ const HAND_CONNECTIONS = [
   [5, 9], [9, 13], [13, 17],            // Palm base
 ];
 
+// Helper aman mengunduh model binary TFLite & verifikasi magic bytes
+async function fetchModelBuffer(url) {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`Gagal mengunduh file model dari ${url} (HTTP ${res.status}: ${res.statusText})`);
+  }
+  const buf = await res.arrayBuffer();
+  const bytes = new Uint8Array(buf);
+  // Verifikasi TFLite magic identifier ('TFL3' pada offset byte 4-7)
+  if (
+    bytes.length < 8 ||
+    bytes[4] !== 84 || // 'T'
+    bytes[5] !== 70 || // 'F'
+    bytes[6] !== 76 || // 'L'
+    bytes[7] !== 51    // '3'
+  ) {
+    throw new Error(`File dari ${url} bukan binary FlatBuffer TFLite yang valid.`);
+  }
+  return buf;
+}
+
 export function useHandSpeakAI(videoRef, canvasRef) {
+  const [mode, setMode] = useState('letters');
   const [state, setState] = useState({
+    mode: 'letters',
     isModelLoading: true,
     isModelReady: false,
     isCameraActive: false,
     error: null,
     currentLetter: '-',
+    currentPrediction: '-',
     confidence: 0,
     stableLetter: '-',
+    stablePrediction: '-',
     accumulatedText: '',
     feedback: 'Menyiapkan modul AI...',
     detectedHandsCount: 0,
     showSkeleton: true,
   });
 
+  const modeRef = useRef('letters');
   const handLandmarkerRef = useRef(null);
-  const tfliteModelRef = useRef(null);
+  const letterModelRef = useRef(null);
+  const wordModelRef = useRef(null);
   const animFrameIdRef = useRef(null);
   const lastProcessTimeRef = useRef(0);
   const recentPredictionsRef = useRef([]);
   const lastCommittedTimeRef = useRef(0);
-  const lastCommittedLetterRef = useRef(null);
+  const lastCommittedPredictionRef = useRef(null);
   const showSkeletonRef = useRef(true);
 
-  // 1. Inisialisasi Model MediaPipe Tasks Vision & TFLite
+  // 1. Inisialisasi Model MediaPipe Tasks Vision & Kedua Model TFLite
   useEffect(() => {
     let isMounted = true;
 
     async function initModels() {
       try {
-        setState((s) => ({ ...s, isModelLoading: true, feedback: 'Memuat MediaPipe & TFLite Model...' }));
+        setState((s) => ({
+          ...s,
+          isModelLoading: true,
+          error: null,
+          feedback: 'Memuat MediaPipe & Dual AI Model (Huruf + Kosakata)...',
+        }));
 
         // Inisialisasi MediaPipe Tasks Vision
         const vision = await FilesetResolver.forVisionTasks(
@@ -63,25 +99,37 @@ export function useHandSpeakAI(videoRef, canvasRef) {
           minTrackingConfidence: 0.35,
         });
 
-        // Set local WASM path untuk TFLite runner
+        // Set local WASM path untuk TFLite WebAssembly runner
         try {
           tflite.setWasmPath('/wasm/');
         } catch (e) {
           console.warn('tflite.setWasmPath notice:', e);
         }
 
-        // Inisialisasi TensorFlow & TFLite model
+        // Inisialisasi TensorFlow.js backend
         await tf.ready();
-        const model = await tflite.loadTFLiteModel('/models/bisindo_az_2hands_aug.tflite');
+
+        // Unduh buffer binary model secara paralel dengan validasi integritas FlatBuffer
+        const [letterBuf, wordBuf] = await Promise.all([
+          fetchModelBuffer('/models/bisindo_az_2hands_aug.tflite'),
+          fetchModelBuffer('/models/bisindo_words_v2.tflite'),
+        ]);
+
+        // Load TFLite models dengan opsi { numThreads: 1 } untuk stabilitas cross-browser
+        const [letterModel, wordModel] = await Promise.all([
+          tflite.loadTFLiteModel(letterBuf, { numThreads: 1 }),
+          tflite.loadTFLiteModel(wordBuf, { numThreads: 1 }),
+        ]);
 
         if (isMounted) {
           handLandmarkerRef.current = landmarker;
-          tfliteModelRef.current = model;
+          letterModelRef.current = letterModel;
+          wordModelRef.current = wordModel;
           setState((s) => ({
             ...s,
             isModelLoading: false,
             isModelReady: true,
-            feedback: 'Model AI siap! Tekan "Buka Kamera" untuk mulai.',
+            feedback: 'Model Huruf & Kosakata siap! Tekan "Buka Kamera" untuk mulai.',
           }));
         }
       } catch (err) {
@@ -91,7 +139,7 @@ export function useHandSpeakAI(videoRef, canvasRef) {
             ...s,
             isModelLoading: false,
             error: err.message || 'Gagal memuat model AI HandSpeak.',
-            feedback: 'Error saat inisialisasi model.',
+            feedback: 'Error saat inisialisasi model: ' + (err.message || 'Unknown error'),
           }));
         }
       }
@@ -103,6 +151,27 @@ export function useHandSpeakAI(videoRef, canvasRef) {
       isMounted = false;
       stopCamera();
     };
+  }, []);
+
+  // 2. Switch Mode (Huruf vs Kosakata)
+  const switchMode = useCallback((newMode) => {
+    setMode(newMode);
+    modeRef.current = newMode;
+    recentPredictionsRef.current = [];
+    lastCommittedPredictionRef.current = null;
+    setState((s) => ({
+      ...s,
+      mode: newMode,
+      currentLetter: '-',
+      currentPrediction: '-',
+      confidence: 0,
+      stableLetter: '-',
+      stablePrediction: '-',
+      feedback:
+        newMode === 'letters'
+          ? 'Beralih ke Mode Huruf (A–Z)'
+          : 'Beralih ke Mode Kosakata (38 Kata)',
+    }));
   }, []);
 
   // 2. Start Camera
@@ -221,9 +290,11 @@ export function useHandSpeakAI(videoRef, canvasRef) {
     const processFrame = () => {
       const video = videoRef.current;
       const landmarker = handLandmarkerRef.current;
-      const model = tfliteModelRef.current;
+      const currentMode = modeRef.current;
+      const activeModel = currentMode === 'letters' ? letterModelRef.current : wordModelRef.current;
+      const activeLabels = currentMode === 'letters' ? BISINDO_LETTER_LABELS : BISINDO_WORD_LABELS_38;
 
-      if (!video || !landmarker || !model || video.readyState < 2) {
+      if (!video || !landmarker || !activeModel || video.readyState < 2) {
         animFrameIdRef.current = requestAnimationFrame(processFrame);
         return;
       }
@@ -246,6 +317,7 @@ export function useHandSpeakAI(videoRef, canvasRef) {
             setState((s) => ({
               ...s,
               currentLetter: '-',
+              currentPrediction: '-',
               confidence: 0,
               detectedHandsCount: 0,
               feedback: 'Tangan tidak terdeteksi. Posisikan tangan di depan kamera.',
@@ -267,7 +339,7 @@ export function useHandSpeakAI(videoRef, canvasRef) {
 
             // Inferensi Model TFLite
             const inputTensor = tf.tensor2d([features], [1, 176], 'float32');
-            const outputTensor = model.predict(inputTensor);
+            const outputTensor = activeModel.predict(inputTensor);
             const probabilities = Array.from(outputTensor.dataSync());
             inputTensor.dispose();
             outputTensor.dispose();
@@ -282,12 +354,16 @@ export function useHandSpeakAI(videoRef, canvasRef) {
               }
             }
 
-            const predictedLetter = BISINDO_LABELS[bestIdx] || '-';
+            const predictedLabel = activeLabels[bestIdx] || '-';
             const score = maxScore;
 
             // Voting filter untuk stabilitas
-            if (score >= 0.50) {
-              recentPredictionsRef.current.push(predictedLetter);
+            const liveThreshold = currentMode === 'letters' ? 0.55 : 0.50;
+            const commitThreshold = currentMode === 'letters' ? 0.65 : 0.60;
+            const cooldown = currentMode === 'letters' ? 650 : 1200;
+
+            if (score >= liveThreshold) {
+              recentPredictionsRef.current.push(predictedLabel);
               if (recentPredictionsRef.current.length > 5) {
                 recentPredictionsRef.current.shift();
               }
@@ -297,7 +373,7 @@ export function useHandSpeakAI(videoRef, canvasRef) {
                 counts[l] = (counts[l] || 0) + 1;
               });
 
-              let stableCandidate = predictedLetter;
+              let stableCandidate = predictedLabel;
               let bestCount = 0;
               Object.entries(counts).forEach(([l, c]) => {
                 if (c > bestCount) {
@@ -306,30 +382,34 @@ export function useHandSpeakAI(videoRef, canvasRef) {
                 }
               });
 
-              // Commit text logic (score >= 0.65, count >= 2, cooldown 650ms)
+              // Commit text logic
               let textUpdate = null;
-              if (score >= 0.65 && bestCount >= 2) {
+              if (score >= commitThreshold && bestCount >= 2) {
                 const canCommit =
-                  lastCommittedLetterRef.current !== stableCandidate ||
-                  now - lastCommittedTimeRef.current >= 650;
+                  lastCommittedPredictionRef.current !== stableCandidate ||
+                  now - lastCommittedTimeRef.current >= cooldown;
 
                 if (canCommit) {
-                  lastCommittedLetterRef.current = stableCandidate;
+                  lastCommittedPredictionRef.current = stableCandidate;
                   lastCommittedTimeRef.current = now;
-                  textUpdate = stableCandidate;
+                  textUpdate = currentMode === 'letters' ? stableCandidate : ` ${stableCandidate} `;
                 }
               }
 
               setState((s) => ({
                 ...s,
-                currentLetter: predictedLetter,
+                currentLetter: predictedLabel,
+                currentPrediction: predictedLabel,
                 confidence: score,
                 stableLetter: stableCandidate,
+                stablePrediction: stableCandidate,
                 detectedHandsCount: results.landmarks.length,
-                accumulatedText: textUpdate ? s.accumulatedText + textUpdate : s.accumulatedText,
+                accumulatedText: textUpdate
+                  ? (s.accumulatedText + textUpdate).trimStart()
+                  : s.accumulatedText,
                 feedback:
                   score >= 0.85
-                    ? '🎯 Gestur Sangat Jelas!'
+                    ? (currentMode === 'letters' ? '🎯 Huruf Sangat Jelas!' : '🎯 Kosakata Terdeteksi Mantap!')
                     : score >= 0.70
                     ? '👍 Bagus, tahan posisinya'
                     : '✋ Coba perjelas arah gestur',
@@ -361,11 +441,15 @@ export function useHandSpeakAI(videoRef, canvasRef) {
   }, []);
 
   const backspace = useCallback(() => {
-    setState((s) => ({ ...s, accumulatedText: s.accumulatedText.slice(0, -1) }));
+    setState((s) => ({
+      ...s,
+      accumulatedText: s.accumulatedText.trimEnd().slice(0, -1),
+    }));
   }, []);
 
   return {
     ...state,
+    switchMode,
     startCamera,
     stopCamera,
     toggleSkeleton,

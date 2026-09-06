@@ -17,6 +17,7 @@ import {
   Layers,
 } from 'lucide-react';
 import { useHandSpeakAI } from './useHandSpeakAI';
+import { BISINDO_WORD_LABELS_38 } from './labels';
 import { useSoundContext } from '../ui/SoundProvider';
 
 const BISINDO_QUICK_TIPS = [
@@ -39,16 +40,19 @@ export default function HandSpeakDemo() {
   const [copied, setCopied] = useState(false);
 
   const {
+    mode,
     isModelLoading,
     isModelReady,
     isCameraActive,
     error,
     currentLetter,
+    currentPrediction,
     confidence,
     feedback,
     accumulatedText,
     detectedHandsCount,
     showSkeleton,
+    switchMode,
     startCamera,
     stopCamera,
     toggleSkeleton,
@@ -127,7 +131,7 @@ export default function HandSpeakDemo() {
               }}
             >
               <ShieldCheck size={13} />
-              <span>94.71% Akurasi Validasi</span>
+              <span>{mode === 'letters' ? '94.71% Akurasi Validasi (Huruf)' : '38 Kosakata BISINDO (~89.5% Akurasi)'}</span>
             </div>
           </div>
 
@@ -154,7 +158,7 @@ export default function HandSpeakDemo() {
             }}
           >
             <HelpCircle size={14} />
-            <span>{showGuide ? 'Tutup Panduan' : 'Panduan Gestur Huruf'}</span>
+            <span>{showGuide ? 'Tutup Panduan' : (mode === 'letters' ? 'Panduan Gestur Huruf' : 'Daftar 38 Kosakata')}</span>
           </button>
         </div>
 
@@ -175,16 +179,81 @@ export default function HandSpeakDemo() {
               fontSize: '0.9rem',
               color: 'var(--text-muted)',
               lineHeight: 1.55,
-              margin: 0,
+              margin: '0 0 14px',
               maxWidth: '780px',
             }}
           >
-            Ekstraksi 176 fitur koordinat 3D tangan dan inferensi model Dense Neural Network (TFLite) dieksekusi 100% lokal di browsermu melalui akselerasi WebAssembly &amp; WebGL tanpa mengirim rekaman video ke server.
+            Ekstraksi 176 fitur landmark tangan dan inferensi model Dense Neural Network (Huruf A–Z &amp; Kosakata 38 Kata) dieksekusi 100% lokal di browser via WebAssembly tanpa mengirim rekaman video ke server.
           </p>
+
+          {/* Dual-Mode Selector Tabs (Huruf vs Kosakata) */}
+          <div
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '4px',
+              background: 'var(--surface-2)',
+              borderRadius: '14px',
+              border: '1px solid var(--border)',
+            }}
+          >
+            <button
+              onClick={() => {
+                playClick();
+                switchMode('letters');
+              }}
+              onMouseEnter={playHover}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '7px 16px',
+                borderRadius: '10px',
+                fontSize: '0.82rem',
+                fontWeight: 700,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                background: mode === 'letters' ? 'var(--accent)' : 'transparent',
+                color: mode === 'letters' ? '#ffffff' : 'var(--text-muted)',
+                border: 'none',
+                boxShadow: mode === 'letters' ? '0 2px 10px var(--accent-glow)' : 'none',
+              }}
+            >
+              <span>🔤</span>
+              <span>Mode Huruf (A–Z)</span>
+            </button>
+
+            <button
+              onClick={() => {
+                playClick();
+                switchMode('words');
+              }}
+              onMouseEnter={playHover}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '7px 16px',
+                borderRadius: '10px',
+                fontSize: '0.82rem',
+                fontWeight: 700,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                background: mode === 'words' ? 'var(--accent)' : 'transparent',
+                color: mode === 'words' ? '#ffffff' : 'var(--text-muted)',
+                border: 'none',
+                boxShadow: mode === 'words' ? '0 2px 10px var(--accent-glow)' : 'none',
+              }}
+            >
+              <span>💬</span>
+              <span>Mode Kosakata (38 Kata)</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Collapsible Gesture Quick Tips Guide */}
+      {/* Collapsible Gesture Quick Tips Guide & Vocabulary Words */}
       <AnimatePresence>
         {showGuide && (
           <motion.div
@@ -203,58 +272,96 @@ export default function HandSpeakDemo() {
                 border: '1px solid var(--border)',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-                <Zap size={16} style={{ color: 'var(--accent)' }} />
-                <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                  Tips Gestur Huruf BISINDO yang Paling Mudah Dicoba:
-                </span>
-              </div>
+              {mode === 'letters' ? (
+                <>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+                    <Zap size={16} style={{ color: 'var(--accent)' }} />
+                    <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                      Tips Gestur Huruf BISINDO yang Paling Mudah Dicoba:
+                    </span>
+                  </div>
 
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-                  gap: '10px',
-                }}
-              >
-                {BISINDO_QUICK_TIPS.map((tip) => (
                   <div
-                    key={tip.letter}
                     style={{
-                      padding: '8px 12px',
-                      borderRadius: '10px',
-                      background: 'var(--surface)',
-                      border: '1px solid var(--border)',
-                      display: 'flex',
-                      alignItems: 'flex-start',
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
                       gap: '10px',
                     }}
                   >
-                    <div
-                      style={{
-                        width: '28px',
-                        height: '28px',
-                        borderRadius: '6px',
-                        background: 'var(--accent-dim)',
-                        border: '1px solid var(--accent-border)',
-                        color: 'var(--accent)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontWeight: 800,
-                        fontSize: '14px',
-                        fontFamily: 'monospace',
-                        flexShrink: 0,
-                      }}
-                    >
-                      {tip.letter}
-                    </div>
-                    <span style={{ fontSize: '0.76rem', color: 'var(--text-muted)', lineHeight: 1.4 }}>
-                      {tip.desc}
+                    {BISINDO_QUICK_TIPS.map((tip) => (
+                      <div
+                        key={tip.letter}
+                        style={{
+                          padding: '8px 12px',
+                          borderRadius: '10px',
+                          background: 'var(--surface)',
+                          border: '1px solid var(--border)',
+                          display: 'flex',
+                          alignItems: 'flex-start',
+                          gap: '10px',
+                        }}
+                      >
+                        <div
+                          style={{
+                            width: '28px',
+                            height: '28px',
+                            borderRadius: '6px',
+                            background: 'var(--accent-dim)',
+                            border: '1px solid var(--accent-border)',
+                            color: 'var(--accent)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontWeight: 800,
+                            fontSize: '14px',
+                            fontFamily: 'monospace',
+                            flexShrink: 0,
+                          }}
+                        >
+                          {tip.letter}
+                        </div>
+                        <span style={{ fontSize: '0.76rem', color: 'var(--text-muted)', lineHeight: 1.4 }}>
+                          {tip.desc}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+                    <Zap size={16} style={{ color: 'var(--accent)' }} />
+                    <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                      Daftar 38 Kosakata BISINDO yang Didukung Model:
                     </span>
                   </div>
-                ))}
-              </div>
+
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                    {BISINDO_WORD_LABELS_38.map((word) => {
+                      const isMatch = (currentPrediction || currentLetter) === word;
+                      return (
+                        <span
+                          key={word}
+                          style={{
+                            padding: '6px 12px',
+                            borderRadius: '10px',
+                            background: isMatch ? 'var(--accent)' : 'var(--surface)',
+                            border: `1px solid ${isMatch ? 'var(--accent)' : 'var(--border)'}`,
+                            color: isMatch ? '#ffffff' : 'var(--text)',
+                            fontWeight: isMatch ? 700 : 500,
+                            fontSize: '0.78rem',
+                            fontFamily: "'Space Grotesk', monospace",
+                            transition: 'all 0.15s ease',
+                            boxShadow: isMatch ? '0 2px 8px var(--accent-glow)' : 'none',
+                          }}
+                        >
+                          {word}
+                        </span>
+                      );
+                    })}
+                  </div>
+                </>
+              )}
             </div>
           </motion.div>
         )}
@@ -415,7 +522,7 @@ export default function HandSpeakDemo() {
                       boxShadow: '0 0 10px #34d399',
                     }}
                   />
-                  <span>LIVE AI</span>
+                  <span>LIVE ({mode === 'letters' ? 'HURUF A–Z' : '38 KOSAKATA'})</span>
                 </div>
 
                 {detectedHandsCount > 0 && (
@@ -580,19 +687,24 @@ export default function HandSpeakDemo() {
                   letterSpacing: '1px',
                 }}
               >
-                Prediksi Huruf
+                {mode === 'letters' ? 'Prediksi Huruf' : 'Prediksi Kata'}
               </span>
               <div
                 style={{
-                  fontSize: '4.2rem',
+                  fontSize: (currentPrediction || currentLetter || '-').length > 7
+                    ? 'clamp(1.5rem, 3.5vw, 2.2rem)'
+                    : (currentPrediction || currentLetter || '-').length > 3
+                    ? 'clamp(2rem, 5vw, 2.8rem)'
+                    : '4.2rem',
                   fontWeight: 900,
                   fontFamily: "'JetBrains Mono', monospace",
                   color: 'var(--accent)',
-                  lineHeight: 1,
-                  marginTop: '4px',
+                  lineHeight: 1.1,
+                  marginTop: '6px',
+                  wordBreak: 'break-word',
                 }}
               >
-                {currentLetter}
+                {currentPrediction || currentLetter || '-'}
               </div>
             </div>
 
@@ -753,7 +865,9 @@ export default function HandSpeakDemo() {
               >
                 {accumulatedText || (
                   <span style={{ fontSize: '0.82rem', color: 'var(--text-dim)', fontWeight: 400, fontFamily: 'inherit' }}>
-                    Tahan gestur huruf selama ~0.6 detik untuk memasukkan huruf ke sini...
+                    {mode === 'letters'
+                      ? 'Tahan gestur huruf selama ~0.6 detik untuk memasukkan huruf ke sini...'
+                      : 'Tahan gestur kata selama ~1.2 detik untuk memasukkan kata ke sini...'}
                   </span>
                 )}
               </div>
@@ -794,10 +908,10 @@ export default function HandSpeakDemo() {
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--accent)', fontWeight: 700 }}>
               <Cpu size={14} />
-              <span>Pipeline Ekstraksi 176 Dimensi Scale-Invariant</span>
+              <span>Pipeline Ekstraksi 176 Dimensi Scale-Invariant (Dual Mode AI)</span>
             </div>
             <p style={{ margin: 0, color: 'var(--text-muted)', lineHeight: 1.45 }}>
-              Deteksi 21 titik sendi 3D (MediaPipe) diproses menjadi vektor 176D (fitur spasial + 25 jarak geometris). Dieksekusi secara instan dengan frame-skipping selektif 100ms untuk performa stabil 60 FPS.
+              Deteksi 21 titik sendi 3D (MediaPipe) diproses menjadi vektor 176D (fitur spasial + 25 jarak geometris). Dua model TFLite (26 Huruf &amp; 38 Kosakata) dijalankan on-device dengan akselerasi WebAssembly 100% aman dan bebas biaya server.
             </p>
           </div>
         </div>
