@@ -14,7 +14,7 @@ const FEATURED_GALLERY_ITEMS = [
     caption: 'Sesi fotografi produk dengan efek water splash dan pencahayaan dramatis untuk kebutuhan advertising.',
     aspectRatio: '9 / 16',
     ratioLabel: '9:16',
-    src: '/gallery/fotografi produk coca cola (9_16).png',
+    src: '/gallery/fotografi produk coca cola (9_16).webp',
     alt: 'Fotografi Komersial Produk Coca-Cola 9:16',
   },
   {
@@ -24,7 +24,7 @@ const FEATURED_GALLERY_ITEMS = [
     caption: 'Perancangan media promosi visual dan tata letak informasi produk inovasi untuk kebutuhan presentasi teknologi.',
     aspectRatio: '1 / 1',
     ratioLabel: '1:1',
-    src: '/gallery/x banner produk inovasi 1_1.png',
+    src: '/gallery/x banner produk inovasi 1_1.webp',
     alt: 'Desain X-Banner Produk Inovasi 1:1',
   },
   {
@@ -34,7 +34,7 @@ const FEATURED_GALLERY_ITEMS = [
     caption: 'Perancangan identitas kartu tanda pengenal staff internship dengan tipografi modern dan tata letak visual yang presisi.',
     aspectRatio: '4 / 3',
     ratioLabel: '4:3',
-    src: '/gallery/design id card 4_3.png',
+    src: '/gallery/design id card 4_3.webp',
     alt: 'Desain ID Card Staff Internship 4:3',
   },
   {
@@ -44,7 +44,7 @@ const FEATURED_GALLERY_ITEMS = [
     caption: 'Dokumentasi manajemen operasional panggung dan koordinasi kepanitiaan pada pagelaran musik dan seni Rindu Tenang.',
     aspectRatio: '16 / 9',
     ratioLabel: '16:9',
-    src: '/gallery/event organizer rindu tenang 16_9.png',
+    src: '/gallery/event organizer rindu tenang 16_9.webp',
     alt: 'Event Organizer Rindu Tenang 16:9',
   },
   {
@@ -54,7 +54,7 @@ const FEATURED_GALLERY_ITEMS = [
     caption: 'Liputan dokumentasi visual turnamen e-sports dan kompetisi olahraga tahunan Himpunan Mahasiswa TI.',
     aspectRatio: '9 / 16',
     ratioLabel: '9:16',
-    src: '/gallery/event himti games (9_16).png',
+    src: '/gallery/event himti games (9_16).webp',
     alt: 'Volunteer Event HIMTI Games 9:16',
   },
   {
@@ -64,7 +64,7 @@ const FEATURED_GALLERY_ITEMS = [
     caption: 'Aksi dokumentasi visual tim publikasi dalam mengabadikan dinamika orientasi mahasiswa baru Fakultas Vokasi USU 2025.',
     aspectRatio: '4 / 3',
     ratioLabel: '4:3',
-    src: '/gallery/tim publikasi dokumentasi pkkmb vokasi 2025 4_3.png',
+    src: '/gallery/tim publikasi dokumentasi pkkmb vokasi 2025 4_3.webp',
     alt: 'Tim Pubdok PKKMB Vokasi 2025 4:3',
   },
   {
@@ -74,7 +74,7 @@ const FEATURED_GALLERY_ITEMS = [
     caption: 'Perancangan banner perayaan kelulusan dan ucapan selamat sidang tugas akhir program studi Teknik Informatika.',
     aspectRatio: '1 / 1',
     ratioLabel: '1:1',
-    src: '/gallery/banner sidang 1_1.png',
+    src: '/gallery/banner sidang 1_1.webp',
     alt: 'Desain Banner Sidang 1:1',
   },
   {
@@ -84,7 +84,7 @@ const FEATURED_GALLERY_ITEMS = [
     caption: 'Program pelatihan literasi digital dan pengenalan aplikasi perkantoran bagi para peserta didik di PKBM Bintula.',
     aspectRatio: '16 / 9',
     ratioLabel: '16:9',
-    src: '/gallery/mengajar komputer di pkbm bintula 16_9.png',
+    src: '/gallery/mengajar komputer di pkbm bintula 16_9.webp',
     alt: 'Memberikan Pelajaran Komputer PKBM Bina Tunas Muda 16:9',
   },
   {
@@ -94,7 +94,7 @@ const FEATURED_GALLERY_ITEMS = [
     caption: 'Dokumentasi profesional selama bertugas di BPJS Ketenagakerjaan pada bagian IT support dan rekonsiliasi data operasional.',
     aspectRatio: '9 / 16',
     ratioLabel: '9:16',
-    src: '/gallery/magang bpjs 9_16.png',
+    src: '/gallery/magang bpjs 9_16.webp',
     alt: 'Aktivitas Magang BPJS Ketenagakerjaan 9:16',
   },
 ];
@@ -109,7 +109,7 @@ const ALL_GALLERY_ITEMS = [
     caption: 'Dokumentasi antusiasme dan interaksi mahasiswa baru dalam rangkaian pengenalan kehidupan kampus Fakultas Vokasi USU.',
     aspectRatio: '1 / 1',
     ratioLabel: '1:1',
-    src: '/gallery/dokumentasi kegiatan pkkmb 2025.png',
+    src: '/gallery/dokumentasi kegiatan pkkmb 2025.webp',
     alt: 'Dokumentasi Dinamika PKKMB Vokasi 2025 1:1',
   },
   {
@@ -119,7 +119,7 @@ const ALL_GALLERY_ITEMS = [
     caption: 'Partisipasi dan dokumentasi stand pameran karya inovasi teknologi mahasiswa pada gelaran tahunan Expo Vokasi USU.',
     aspectRatio: '4 / 3',
     ratioLabel: '4:3',
-    src: '/gallery/expo vokasi usu 2024 4_3.png',
+    src: '/gallery/expo vokasi usu 2024 4_3.webp',
     alt: 'Pameran Karya Expo Vokasi USU 2024 4:3',
   },
   {
@@ -129,7 +129,7 @@ const ALL_GALLERY_ITEMS = [
     caption: 'Potret personal Zacky Andyka di depan deretan papan bunga ucapan selamat kelulusan sarjana Teknik Informatika USU.',
     aspectRatio: '9 / 16',
     ratioLabel: '9:16',
-    src: '/gallery/potret sidang dengan papan bunga 9_16.png',
+    src: '/gallery/potret sidang dengan papan bunga 9_16.webp',
     alt: 'Sidang Zacky 9:16',
   },
   {
@@ -139,7 +139,7 @@ const ALL_GALLERY_ITEMS = [
     caption: 'Aksi potret vertikal kru pubdok dalam mengabadikan momen-momen krusial sepanjang kegiatan orientasi kampus.',
     aspectRatio: '9 / 16',
     ratioLabel: '9:16',
-    src: '/gallery/tim publikasi dan dokumentasi pkkmb vokasi 2025 9_16.png',
+    src: '/gallery/tim publikasi dan dokumentasi pkkmb vokasi 2025 9_16.webp',
     alt: 'Tim Publikasi dan Dokumentasi Visual 9:16',
   },
   {
@@ -149,7 +149,7 @@ const ALL_GALLERY_ITEMS = [
     caption: 'Momen kebersamaan bersama jajaran karyawan dan staf Back Office PT. Bank Syariah Indonesia selama masa magang profesional.',
     aspectRatio: '16 / 9',
     ratioLabel: '16:9',
-    src: '/gallery/foto bersama karyawan (magang di BSI).png',
+    src: '/gallery/foto bersama karyawan (magang di BSI).webp',
     alt: 'Keluarga Besar BSI KCP Medan Area 16:9',
   },
   {
@@ -159,7 +159,7 @@ const ALL_GALLERY_ITEMS = [
     caption: 'Dokumentasi dukungan administrasi dan kepanitiaan pada program pelatihan peningkatan kualitas layanan PT. Bank Sumut.',
     aspectRatio: '1 / 1',
     ratioLabel: '1:1',
-    src: '/gallery/program peningkatan kualitas satpam bank sumut (PKL Bank Sumut).png',
+    src: '/gallery/program peningkatan kualitas satpam bank sumut (PKL Bank Sumut).webp',
     alt: 'Pelatihan Layanan Operasional PKL Bank Sumut 1:1',
   },
   {
@@ -169,7 +169,7 @@ const ALL_GALLERY_ITEMS = [
     caption: 'Momen kebersamaan seluruh divisi panitia pelaksana setelah sukses menyelenggarakan rangkaian orientasi kampus.',
     aspectRatio: '16 / 9',
     ratioLabel: '16:9',
-    src: '/gallery/fotbar panitia pkkmb vokasi 2025.png',
+    src: '/gallery/fotbar panitia pkkmb vokasi 2025.webp',
     alt: 'Kepanitiaan Bersama PKKMB Vokasi 2025 16:9',
   },
   {
@@ -179,7 +179,7 @@ const ALL_GALLERY_ITEMS = [
     caption: 'Potret perayaan bersama rekan seperjuangan setelah menyelesaikan sidang meja hijau program studi Teknik Informatika USU.',
     aspectRatio: '9 / 16',
     ratioLabel: '9:16',
-    src: '/gallery/fotbar sidang 9_16.png',
+    src: '/gallery/fotbar sidang 9_16.webp',
     alt: 'Momen Kelulusan Sidang Tugas Akhir 9:16',
   },
   {
@@ -189,7 +189,7 @@ const ALL_GALLERY_ITEMS = [
     caption: 'Sesi pembekalan awal dan pengenalan alur kerja operasional perbankan syariah pada kantor cabang Medan Area.',
     aspectRatio: '4 / 3',
     ratioLabel: '4:3',
-    src: '/gallery/on-boarding magang bsi 4_3.png',
+    src: '/gallery/on-boarding magang bsi 4_3.webp',
     alt: 'On-boarding Magang PT. Bank Syariah Indonesia 4:3',
   },
   {
@@ -199,7 +199,7 @@ const ALL_GALLERY_ITEMS = [
     caption: 'Koordinasi lapangan tim pendamping mahasiswa baru dalam mengawal kelancaran aktivitas orientasi akademik kampus.',
     aspectRatio: '4 / 3',
     ratioLabel: '4:3',
-    src: '/gallery/panitia pkkmb 2025 4_3.png',
+    src: '/gallery/panitia pkkmb 2025 4_3.webp',
     alt: 'Panitia PKKMB 2025 4:3',
   },
   {
@@ -209,7 +209,7 @@ const ALL_GALLERY_ITEMS = [
     caption: 'Dokumentasi momen kelulusan wisuda sarjana Teknik Informatika dengan predikat Cum Laude di Universitas Sumatera Utara.',
     aspectRatio: '1 / 1',
     ratioLabel: '1:1',
-    src: '/gallery/fotbar wisuda.png',
+    src: '/gallery/fotbar wisuda.webp',
     alt: 'Potret Wisuda Teknik Informatika USU 1:1',
   },
   {
@@ -219,7 +219,7 @@ const ALL_GALLERY_ITEMS = [
     caption: 'Dokumentasi seremoni pelantikan kepengurusan Himpunan Mahasiswa Teknologi Informasi Universitas Sumatera Utara.',
     aspectRatio: '16 / 9',
     ratioLabel: '16:9',
-    src: '/gallery/Pelantikan HIMTI.png',
+    src: '/gallery/Pelantikan HIMTI.webp',
     alt: 'Pelantikan Pengurus HIMTI USU 16:9',
   },
 ];
@@ -262,6 +262,8 @@ function GalleryCard({ item, index, onClick }) {
         cursor: 'pointer',
         border: '1px solid var(--border)',
         boxShadow: '0 4px 16px rgba(0, 0, 0, 0.14)',
+        transform: 'translateZ(0)',
+        willChange: 'transform',
       }}
     >
       {/* Ratio badge in top-left */}
@@ -288,6 +290,7 @@ function GalleryCard({ item, index, onClick }) {
         src={item.src}
         alt={item.title}
         loading="lazy"
+        decoding="async"
         style={{
           position: 'absolute',
           inset: 0,
@@ -296,6 +299,9 @@ function GalleryCard({ item, index, onClick }) {
           objectFit: 'cover',
           transition: 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
           transform: hovered ? 'scale(1.06)' : 'scale(1)',
+          willChange: 'transform',
+          backfaceVisibility: 'hidden',
+          WebkitBackfaceVisibility: 'hidden',
         }}
       />
 
@@ -411,6 +417,7 @@ function Lightbox({ item, onClose }) {
           <img
             src={item.src}
             alt={item.title}
+            decoding="async"
             style={{
               maxWidth: '100%',
               maxHeight: '70vh',
@@ -605,6 +612,8 @@ export default function Gallery({
             }
             .gallery-card-root {
               border-radius: 10px !important;
+              content-visibility: auto;
+              contain-intrinsic-size: 240px;
             }
             .gallery-card-overlay {
               display: none !important;
@@ -625,6 +634,8 @@ export default function Gallery({
             }
             .gallery-card-root {
               border-radius: 8px !important;
+              content-visibility: auto;
+              contain-intrinsic-size: 180px;
             }
           }
         `}</style>

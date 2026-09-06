@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowUpRight, Github, Linkedin, Instagram, Mail, Heart } from 'lucide-react';
+import { ArrowUpRight, Github, Linkedin, Instagram, Mail } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
 import InfiniteMarquee from './ui/InfiniteMarquee';
 import { scrollToDirectMessage } from '../utils/scrollHelper';
@@ -238,11 +238,10 @@ const Footer = () => {
       <div style={{
         borderTop: '1px solid var(--border)',
         padding: '20px 24px',
-        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px',
+        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
         fontSize: '0.75rem', color: 'var(--text-dim)',
       }}>
-        <span>&copy; {year} Zacky Andyka. Made with</span>
-        <Heart size={12} style={{ color: 'var(--accent)' }} fill="var(--accent)" />
+        <span>&copy; {year} Zacky Andyka &bull; Portfolio</span>
       </div>
 
       <style>{`
