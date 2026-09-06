@@ -372,19 +372,44 @@ export default function HandSpeakDemo() {
         <div
           style={{
             marginTop: '18px',
-            padding: '14px 18px',
-            borderRadius: '14px',
+            padding: '16px 20px',
+            borderRadius: '16px',
             background: 'rgba(239, 68, 68, 0.1)',
-            border: '1px solid rgba(239, 68, 68, 0.25)',
+            border: '1px solid rgba(239, 68, 68, 0.3)',
             color: '#ef4444',
             fontSize: '0.86rem',
             display: 'flex',
             alignItems: 'center',
-            gap: '10px',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '12px',
           }}
         >
-          <span>⚠️</span>
-          <span>{error}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flex: 1, minWidth: '240px' }}>
+            <span style={{ fontSize: '1.2rem' }}>⚠️</span>
+            <span style={{ lineHeight: 1.5 }}>{error}</span>
+          </div>
+
+          <button
+            onClick={() => {
+              playClick();
+              startCamera();
+            }}
+            onMouseEnter={playHover}
+            style={{
+              padding: '8px 16px',
+              borderRadius: '10px',
+              background: '#ef4444',
+              color: '#ffffff',
+              border: 'none',
+              fontSize: '0.8rem',
+              fontWeight: 700,
+              cursor: 'pointer',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Coba Buka Kamera Lagi
+          </button>
         </div>
       )}
 
@@ -450,38 +475,69 @@ export default function HandSpeakDemo() {
             {/* Inactive Camera Placeholder */}
             {!isCameraActive && (
               <div
+                onClick={() => {
+                  playClick();
+                  startCamera();
+                }}
+                onMouseEnter={playHover}
                 style={{
                   textAlign: 'center',
-                  padding: '28px',
+                  padding: '28px 20px',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
-                  gap: '10px',
+                  justifyContent: 'center',
+                  gap: '12px',
                   color: 'var(--text-dim)',
+                  cursor: 'pointer',
+                  width: '100%',
+                  height: '100%',
+                  zIndex: 2,
                 }}
               >
                 <div
                   style={{
-                    width: '64px',
-                    height: '64px',
-                    borderRadius: '18px',
+                    width: '68px',
+                    height: '68px',
+                    borderRadius: '20px',
                     background: 'var(--surface-2)',
-                    border: '1px solid var(--border)',
+                    border: '1.5px solid var(--accent-border)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     color: 'var(--accent)',
-                    marginBottom: '4px',
+                    boxShadow: '0 4px 20px var(--accent-glow)',
+                    transition: 'transform 0.2s ease',
                   }}
                 >
-                  <Camera size={30} />
+                  <Camera size={32} />
                 </div>
-                <h4 style={{ margin: 0, color: 'var(--text)', fontSize: '1rem', fontWeight: 700 }}>
-                  Kamera Belum Aktif
-                </h4>
-                <p style={{ margin: 0, fontSize: '0.82rem', color: 'var(--text-muted)', maxWidth: '280px', lineHeight: 1.5 }}>
-                  Tekan tombol <strong>Buka Kamera</strong> untuk mengizinkan web mendeteksi gestur tanganmu secara langsung.
-                </p>
+                <div>
+                  <h4 style={{ margin: '0 0 6px', color: 'var(--text)', fontSize: '1.05rem', fontWeight: 800 }}>
+                    Kamera Belum Aktif
+                  </h4>
+                  <p style={{ margin: 0, fontSize: '0.84rem', color: 'var(--text-muted)', maxWidth: '300px', lineHeight: 1.5 }}>
+                    Klik di sini untuk meminta izin kamera browser dan mulai deteksi isyarat BISINDO secara langsung.
+                  </p>
+                </div>
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    padding: '8px 20px',
+                    borderRadius: '999px',
+                    background: 'var(--accent)',
+                    color: '#ffffff',
+                    fontSize: '0.82rem',
+                    fontWeight: 700,
+                    boxShadow: '0 4px 14px var(--accent-glow)',
+                    marginTop: '4px',
+                  }}
+                >
+                  <Camera size={15} />
+                  <span>Izinkan &amp; Buka Kamera</span>
+                </div>
               </div>
             )}
 
@@ -557,51 +613,61 @@ export default function HandSpeakDemo() {
           >
             {/* Main Action Button */}
             {!isCameraActive ? (
-              <button
-                onClick={() => {
-                  playClick();
-                  startCamera();
-                }}
-                disabled={isModelLoading || !isModelReady}
-                onMouseEnter={playHover}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  padding: '11px 22px',
-                  borderRadius: '14px',
-                  background: 'var(--accent)',
-                  color: '#ffffff',
-                  border: 'none',
-                  fontSize: '0.86rem',
-                  fontWeight: 700,
-                  cursor: isModelLoading || !isModelReady ? 'not-allowed' : 'pointer',
-                  opacity: isModelLoading || !isModelReady ? 0.6 : 1,
-                  boxShadow: '0 4px 16px var(--accent-glow)',
-                  transition: 'all 0.2s ease',
-                }}
-              >
-                {isModelLoading ? (
-                  <>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+                <button
+                  onClick={() => {
+                    playClick();
+                    startCamera();
+                  }}
+                  onMouseEnter={playHover}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    padding: '11px 24px',
+                    borderRadius: '14px',
+                    background: 'var(--accent)',
+                    color: '#ffffff',
+                    border: 'none',
+                    fontSize: '0.88rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    boxShadow: '0 4px 16px var(--accent-glow)',
+                    transition: 'all 0.2s ease',
+                  }}
+                >
+                  <Camera size={16} />
+                  <span>Buka Kamera</span>
+                </button>
+
+                {isModelLoading && (
+                  <div
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      fontSize: '0.76rem',
+                      color: 'var(--text-muted)',
+                      padding: '4px 10px',
+                      borderRadius: '999px',
+                      background: 'var(--surface-2)',
+                      border: '1px solid var(--border)',
+                    }}
+                  >
                     <div
                       style={{
-                        width: '14px',
-                        height: '14px',
-                        border: '2px solid #ffffff',
+                        width: '10px',
+                        height: '10px',
+                        border: '2px solid var(--accent)',
                         borderTopColor: 'transparent',
                         borderRadius: '50%',
                         animation: 'spin 0.8s linear infinite',
                       }}
                     />
                     <span>Memuat Model AI...</span>
-                  </>
-                ) : (
-                  <>
-                    <Camera size={16} />
-                    <span>Buka Kamera</span>
-                  </>
+                  </div>
                 )}
-              </button>
+              </div>
             ) : (
               <button
                 onClick={() => {

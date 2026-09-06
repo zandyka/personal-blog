@@ -178,8 +178,22 @@ export function useHandSpeakAI(videoRef, canvasRef) {
   const startCamera = useCallback(async () => {
     if (!videoRef.current) return;
 
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      setState((s) => ({
+        ...s,
+        error: 'Browser Anda tidak mendukung akses kamera (MediaDevices API). Pastikan menggunakan browser modern (Chrome, Edge, Firefox, Safari) dengan protokol HTTPS.',
+        feedback: 'Kamera tidak didukung browser.',
+      }));
+      return;
+    }
+
     try {
-      setState((s) => ({ ...s, error: null, feedback: 'Membuka kamera...' }));
+      setState((s) => ({
+        ...s,
+        error: null,
+        feedback: 'Menunggu izin akses kamera dari browser...',
+      }));
+
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {
           width: { ideal: 640 },
@@ -192,18 +206,31 @@ export function useHandSpeakAI(videoRef, canvasRef) {
       videoRef.current.srcObject = stream;
       await videoRef.current.play();
 
-      setState((s) => ({ ...s, isCameraActive: true, feedback: 'Deteksi gesture aktif.' }));
+      setState((s) => ({
+        ...s,
+        isCameraActive: true,
+        error: null,
+        feedback: s.isModelReady ? 'Kamera aktif & deteksi gesture berjalan.' : 'Kamera aktif. Menyiapkan model AI...',
+      }));
       startLoop();
     } catch (err) {
       console.error('Camera access error:', err);
+      let errorMsg = 'Tidak dapat mengakses kamera. Pastikan izin kamera telah diberikan pada browser.';
+      if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+        errorMsg = 'Izin kamera ditolak. Silakan klik ikon gembok/setelan di sebelah kiri URL browser Anda, pilih "Izinkan" untuk kamera, lalu tekan Buka Kamera lagi.';
+      } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+        errorMsg = 'Kamera tidak ditemukan pada perangkat Anda. Pastikan webcam terpasang.';
+      } else if (err.name === 'NotReadableError' || err.name === 'TrackStartError') {
+        errorMsg = 'Kamera sedang digunakan oleh aplikasi lain (seperti Zoom, Google Meet, dll). Tutup aplikasi tersebut dan coba lagi.';
+      }
       setState((s) => ({
         ...s,
         isCameraActive: false,
-        error: 'Tidak dapat mengakses kamera. Pastikan izin kamera telah diberikan pada browser.',
-        feedback: 'Kamera diblokir atau tidak tersedia.',
+        error: errorMsg,
+        feedback: 'Akses kamera gagal.',
       }));
     }
-  }, []);
+  }, [startLoop]);
 
   // 3. Stop Camera
   const stopCamera = useCallback(() => {
