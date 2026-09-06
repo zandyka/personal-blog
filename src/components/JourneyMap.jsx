@@ -162,6 +162,7 @@ export default function JourneyMap() {
   return (
     <section
       ref={ref}
+      className="journey-section"
       style={{
         padding: '76px 20px',
         background: 'var(--bg)',
@@ -201,7 +202,7 @@ export default function JourneyMap() {
 
           <h2
             style={{
-              fontSize: 'clamp(2rem, 4.5vw, 3.2rem)',
+              fontSize: 'clamp(1.6rem, 4.5vw, 2.8rem)',
               fontWeight: 800,
               color: 'var(--text)',
               letterSpacing: '-0.03em',
@@ -225,6 +226,7 @@ export default function JourneyMap() {
 
           {/* Category Filter Tabs */}
           <div
+            className="journey-filter-tabs"
             style={{
               display: 'flex',
               justifyContent: 'center',
@@ -238,6 +240,7 @@ export default function JourneyMap() {
               return (
                 <button
                   key={c.id}
+                  className="journey-filter-btn"
                   onClick={() => {
                     playClick();
                     setActiveCategory(c.id);
@@ -270,6 +273,49 @@ export default function JourneyMap() {
           </div>
         </motion.div>
 
+        {/* MOBILE ONLY: Horizontal Quick-Select Rail */}
+        <div className="journey-mobile-rail">
+          {filteredLocations.map((loc) => {
+            const isSelected = selectedLocation.id === loc.id;
+            return (
+              <button
+                key={loc.id}
+                onClick={() => {
+                  playClick();
+                  setSelectedLocation(loc);
+                }}
+                className={`journey-mobile-pill ${isSelected ? 'active' : ''}`}
+                style={{
+                  border: isSelected ? `1.5px solid ${loc.accent}` : '1px solid var(--border)',
+                  background: isSelected ? `${loc.accent}15` : 'var(--surface)',
+                  color: isSelected ? loc.accent : 'var(--text-muted)',
+                }}
+              >
+                <div
+                  style={{
+                    width: '22px',
+                    height: '22px',
+                    borderRadius: '6px',
+                    background: isSelected ? loc.accent : 'var(--surface-2)',
+                    color: isSelected ? '#ffffff' : loc.accent,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '10px',
+                    fontWeight: 800,
+                    flexShrink: 0,
+                  }}
+                >
+                  {loc.order}
+                </div>
+                <span style={{ fontSize: '0.78rem', fontWeight: isSelected ? 700 : 500, whiteSpace: 'nowrap' }}>
+                  {loc.shortName}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
         {/* 2-Column Directed Journey Experience */}
         <div
           style={{
@@ -285,6 +331,7 @@ export default function JourneyMap() {
             initial={{ opacity: 0, x: -20 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.55, delay: 0.1 }}
+            className="journey-timeline-sidebar"
             style={{
               background: 'var(--surface)',
               border: '1px solid var(--border)',
@@ -478,6 +525,7 @@ export default function JourneyMap() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                className="journey-card-inner"
                 style={{
                   background: 'var(--surface)',
                   border: '1px solid var(--border)',
@@ -526,7 +574,10 @@ export default function JourneyMap() {
 
                 {/* Institution Title & Role Header */}
                 <div>
-                  <h3 style={{ margin: '0 0 5px', fontSize: '1.3rem', fontWeight: 800, color: 'var(--text)', letterSpacing: '-0.01em' }}>
+                  <h3
+                    className="journey-card-title"
+                    style={{ margin: '0 0 5px', fontSize: '1.3rem', fontWeight: 800, color: 'var(--text)', letterSpacing: '-0.01em' }}
+                  >
                     {selectedLocation.name}
                   </h3>
                   <span style={{ fontSize: '0.92rem', color: selectedLocation.accent, fontWeight: 700 }}>
@@ -536,6 +587,7 @@ export default function JourneyMap() {
 
                 {/* Clean Address Line */}
                 <div
+                  className="journey-address-box"
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -547,7 +599,7 @@ export default function JourneyMap() {
                   }}
                 >
                   <MapPin size={16} style={{ color: selectedLocation.accent, flexShrink: 0 }} />
-                  <span style={{ fontSize: '0.86rem', color: 'var(--text)', fontWeight: 500 }}>
+                  <span style={{ fontSize: '0.86rem', color: 'var(--text)', fontWeight: 500, wordBreak: 'break-word', minWidth: 0 }}>
                     {selectedLocation.address}
                   </span>
                 </div>
@@ -616,10 +668,65 @@ export default function JourneyMap() {
       </div>
 
       <style>{`
-        @media (max-width: 880px) {
+        @media (min-width: 880px) {
+          .journey-mobile-rail {
+            display: none !important;
+          }
+          .journey-timeline-sidebar {
+            display: block !important;
+          }
+        }
+        @media (max-width: 879px) {
+          .journey-section {
+            padding: 40px 16px !important;
+          }
+          .journey-filter-tabs {
+            gap: 6px !important;
+            margin-top: 14px !important;
+          }
+          .journey-filter-btn {
+            padding: 5px 12px !important;
+            font-size: 0.76rem !important;
+          }
+          .journey-mobile-rail {
+            display: flex !important;
+            align-items: center;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 4px 2px 14px;
+            margin-bottom: 8px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+          }
+          .journey-mobile-rail::-webkit-scrollbar {
+            display: none;
+          }
+          .journey-mobile-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+          }
           .journey-roadmap-container {
-            grid-template-columns: 1fr !important;
-            gap: 20px !important;
+            display: block !important;
+          }
+          .journey-timeline-sidebar {
+            display: none !important;
+          }
+          .journey-card-inner {
+            padding: 16px 14px !important;
+            border-radius: 16px !important;
+            gap: 14px !important;
+          }
+          .journey-card-title {
+            font-size: 1.15rem !important;
+          }
+          .journey-address-box {
+            padding: 8px 10px !important;
           }
         }
       `}</style>

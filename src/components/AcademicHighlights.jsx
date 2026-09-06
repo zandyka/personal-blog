@@ -109,6 +109,7 @@ export default function AcademicHighlights() {
   return (
     <section
       ref={ref}
+      className="academic-section"
       style={{
         padding: '76px 20px',
         background: 'var(--bg)',
@@ -173,6 +174,7 @@ export default function AcademicHighlights() {
           </h2>
 
           <div
+            className="academic-subheading-wrap"
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -184,11 +186,13 @@ export default function AcademicHighlights() {
               fontWeight: 500,
             }}
           >
-            <span>Real-Time On-Device BISINDO Sign Language Translator</span>
-            <span style={{ color: 'var(--border)' }}>•</span>
-            <span style={{ color: 'var(--text)', fontWeight: 600 }}>Teknik Informatika USU</span>
-            <span style={{ color: 'var(--border)' }}>•</span>
-            <span style={{ color: '#34d399', fontWeight: 700 }}>Predikat Cumlaude</span>
+            <span className="academic-project-desc">Real-Time On-Device BISINDO Sign Language Translator</span>
+            <span className="academic-sep" style={{ color: 'var(--border)' }}>•</span>
+            <div className="academic-badge-row">
+              <span style={{ color: 'var(--text)', fontWeight: 600 }}>Teknik Informatika USU</span>
+              <span style={{ color: 'var(--border)', margin: '0 4px' }}>•</span>
+              <span style={{ color: '#34d399', fontWeight: 700 }}>Predikat Cumlaude</span>
+            </div>
           </div>
         </motion.div>
 
@@ -197,10 +201,11 @@ export default function AcademicHighlights() {
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, delay: 0.1 }}
+          className="academic-stats-grid"
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-            gap: '16px',
+            gridTemplateColumns: 'repeat(4, 1fr)',
+            gap: '14px',
             marginBottom: '32px',
           }}
         >
@@ -209,16 +214,17 @@ export default function AcademicHighlights() {
             return (
               <div
                 key={idx}
+                className="academic-stat-card"
                 style={{
                   background: 'var(--surface)',
                   border: '1px solid var(--border)',
-                  borderRadius: '18px',
-                  padding: '18px 20px',
+                  borderRadius: '14px',
+                  padding: '16px',
+                  boxShadow: '0 4px 14px rgba(0, 0, 0, 0.03)',
+                  transition: 'border-color 0.2s, box-shadow 0.2s',
                   display: 'flex',
-                  alignItems: 'center',
-                  gap: '14px',
-                  boxShadow: '0 4px 16px var(--shadow-color)',
-                  transition: 'transform 0.2s ease, border-color 0.2s ease',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
                 }}
                 onMouseEnter={(e) => {
                   playHover();
@@ -232,43 +238,62 @@ export default function AcademicHighlights() {
               >
                 <div
                   style={{
-                    width: '46px',
-                    height: '46px',
-                    borderRadius: '14px',
-                    background: `${metric.color}15`,
-                    border: `1px solid ${metric.color}35`,
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center',
-                    color: metric.color,
-                    flexShrink: 0,
+                    justifyContent: 'space-between',
+                    marginBottom: '8px',
                   }}
                 >
-                  <Icon size={22} />
+                  <span
+                    className="academic-stat-label"
+                    style={{
+                      fontSize: '0.78rem',
+                      color: 'var(--text-muted)',
+                      fontWeight: 600,
+                    }}
+                  >
+                    {metric.label}
+                  </span>
+                  <div
+                    className="academic-stat-icon"
+                    style={{
+                      width: '30px',
+                      height: '30px',
+                      borderRadius: '8px',
+                      background: `${metric.color}15`,
+                      border: `1px solid ${metric.color}35`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: metric.color,
+                      flexShrink: 0,
+                    }}
+                  >
+                    <Icon size={15} />
+                  </div>
                 </div>
                 <div>
                   <div
+                    className="academic-stat-value"
                     style={{
-                      fontSize: '1.65rem',
-                      fontWeight: 800,
+                      fontSize: '1.5rem',
+                      fontWeight: 700,
                       color: 'var(--text)',
+                      letterSpacing: '-0.5px',
+                      marginBottom: '2px',
                       lineHeight: 1.1,
-                      letterSpacing: '-0.02em',
                     }}
                   >
                     {metric.value}
                   </div>
                   <div
+                    className="academic-stat-sub"
                     style={{
-                      fontSize: '0.78rem',
-                      fontWeight: 700,
-                      color: metric.color,
-                      marginTop: '2px',
+                      fontSize: '0.72rem',
+                      color: 'var(--text-dim)',
+                      lineHeight: 1.3,
                     }}
                   >
-                    {metric.label}
-                  </div>
-                  <div style={{ fontSize: '0.72rem', color: 'var(--text-dim)', marginTop: '1px' }}>
                     {metric.sub}
                   </div>
                 </div>
@@ -688,10 +713,66 @@ export default function AcademicHighlights() {
       </div>
 
       <style>{`
+        @media (min-width: 860px) {
+          .academic-stats-grid {
+            grid-template-columns: repeat(4, 1fr) !important;
+            gap: 14px !important;
+          }
+        }
         @media (max-width: 900px) {
           .ta-showcase-grid {
             grid-template-columns: 1fr !important;
             gap: 20px !important;
+          }
+        }
+        @media (max-width: 859px) {
+          .academic-section {
+            padding: 44px 16px !important;
+          }
+          .academic-subheading-wrap {
+            flex-direction: column !important;
+            gap: 6px !important;
+          }
+          .academic-sep {
+            display: none !important;
+          }
+          .academic-project-desc {
+            font-size: 0.82rem !important;
+            text-align: center;
+          }
+          .academic-badge-row {
+            font-size: 0.8rem !important;
+            white-space: nowrap !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 3px 10px !important;
+            border-radius: 999px !important;
+            background: var(--surface-2) !important;
+            border: 1px solid var(--border) !important;
+          }
+          .academic-stats-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 8px !important;
+            margin-bottom: 24px !important;
+          }
+          .academic-stat-card {
+            padding: 12px 10px !important;
+            border-radius: 12px !important;
+          }
+          .academic-stat-icon {
+            width: 26px !important;
+            height: 26px !important;
+          }
+          .academic-stat-label {
+            font-size: 0.72rem !important;
+          }
+          .academic-stat-value {
+            font-size: 1.25rem !important;
+          }
+          .academic-stat-sub {
+            font-size: 0.68rem !important;
+            line-height: 1.25 !important;
           }
         }
       `}</style>

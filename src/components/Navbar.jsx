@@ -557,6 +557,14 @@ export default function Navbar() {
           onClick={playClick}
           onHover={playHover}
         />
+        <DockButton
+          to="/album"
+          icon={Image}
+          label="Album"
+          isActive={location.pathname.startsWith('/album')}
+          onClick={playClick}
+          onHover={playHover}
+        />
         <div className="dock-divider" />
         <DockButton
           to="/contact"
@@ -605,8 +613,8 @@ export default function Navbar() {
             z-index: 9999 !important;
             align-items: center !important;
             justify-content: center !important;
-            gap: 5px !important;
-            padding: 5px 10px !important;
+            gap: 4px !important;
+            padding: 4px 8px !important;
             background: var(--glass-bg) !important;
             backdrop-filter: blur(24px) !important;
             -webkit-backdrop-filter: blur(24px) !important;
