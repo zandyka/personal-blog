@@ -18,46 +18,106 @@ const SUGGESTIONS = [
   'Bagaimana cara menghubungi Zacky?',
 ];
 
-// Profile knowledge base for instant natural responses
-function generateAIResponse(query) {
-  const q = query.toLowerCase();
+// Keywords that indicate the user wants reasoning, comparison, deep opinions, or creative generation
+const IMPROV_KEYWORDS = [
+  'kenapa', 'mengapa', 'bagaimana jika', 'gimana jika',
+  'opini', 'pendapat', 'menurutmu', 'menurut kamu', 'menurut anda',
+  'bandingkan', 'perbandingan', 'beda', 'bedanya', 'versus', ' vs ',
+  'tantangan', 'kesulitan', 'pelajaran', 'hikmah', 'struggle',
+  'bikin', 'buatkan', 'tuliskan', 'puisi', 'cerita dong', 'jelaskan detail',
+  'kapan indonesia', 'presiden', 'siapa yang', 'hitung', 'sejarah',
+  'apa saran', 'tips', 'solusi', 'ide', 'rekomendasi', 'bisa bantu',
+  'apakah mungkin', 'alasan', 'kenapa milih', 'mengapa memilih',
+];
 
-  if (q.includes('magang') || q.includes('bank') || q.includes('pengalaman') || q.includes('kerja')) {
+// High-confidence local memory router for verified profile facts
+function queryLocalMemory(query) {
+  const q = query.toLowerCase().trim();
+
+  // If the query asks for deep reasoning or improvisation, route directly to Cloud AI
+  if (IMPROV_KEYWORDS.some((k) => q.includes(k))) {
+    return null;
+  }
+
+  // 1. Magang & Pengalaman Kerja Perbankan/IT
+  if (
+    q.includes('magang') ||
+    q.includes('bank sumut') ||
+    q.includes('bsi') ||
+    q.includes('bpjs') ||
+    q.includes('telkom') ||
+    (q.includes('pengalaman') && (q.includes('kerja') || q.includes('zacky')))
+  ) {
     return {
       text: 'Zacky memiliki 4 pengalaman magang yang solid:\n\n1. **PT. Bank Sumut (Operational Division)**: Mengelola transaksi operasional SOP, kliring, dan membuat dashboard analitik transaksi.\n2. **PT. Bank Syariah Indonesia (BSI KCP Medan Area - Back Office)**: Verifikasi data perbankan, administrasi dokumen pembiayaan, dan kearsipan berstandar kepatuhan tinggi.\n3. **BPJS Ketenagakerjaan Medan Kota (IT / Admin Support)**: Membangun sistem monitoring MBKM SIGMA (React.js & Laravel 11) dan troubleshooting aplikasi mobile JMO.\n4. **PT. Telkom Akses (Fiber Technician)**: Fusion splicing kabel fiber optik, pengujian OPM/OTDR, dan pemeliharaan jaringan GPON.',
-      badge: '4 Institusi Terkemuka',
+      badge: '⚡ Memori: 4 Magang Perbankan & IT',
       actions: [{ label: 'Buka Halaman Experience', link: '/experience' }],
     };
   }
 
-  if (q.includes('handspeak') || q.includes('proyek') || q.includes('project') || q.includes('ai') || q.includes('karya')) {
+  // 2. Proyek Unggulan & Handspeak AI
+  if (
+    q.includes('handspeak') ||
+    q.includes('bisindo') ||
+    q.includes('proyek unggulan') ||
+    q.includes('karya unggulan') ||
+    (q.includes('proyek') && !q.includes('lain')) ||
+    q.includes('sigma')
+  ) {
     return {
       text: 'Proyek unggulan riset Zacky adalah **Handspeak — BISINDO Sign Language Translator**:\n\n• Aplikasi mobile AI yang menerjemahkan bahasa isyarat Indonesia secara real-time untuk membantu teman tuli.\n• Dibangun dengan **Flutter, Python, TensorFlow Lite, dan Computer Vision (MediaPipe)**.\n\nSelain itu, Zacky juga membangun **SIGMA BPJSTK** (sistem monitoring MBKM enterprise), **Mahaasyik Resto** (aplikasi web restoran dengan payment gateway Midtrans), dan **Visualisasi Rekapan Bank Sumut**.',
-      badge: 'Computer Vision & Fullstack',
+      badge: '⚡ Memori: Riset Handspeak & Proyek AI',
       actions: [{ label: 'Lihat Semua Proyek', link: '/projects' }],
     };
   }
 
-  if (q.includes('ipk') || q.includes('kampus') || q.includes('kuliah') || q.includes('usu') || q.includes('pendidikan')) {
+  // 3. Pendidikan, Kampus, dan IPK
+  if (
+    q.includes('ipk') ||
+    q.includes('kampus') ||
+    q.includes('kuliah di mana') ||
+    q.includes('asal kampus') ||
+    (q.includes('usu') && !q.includes('expo')) ||
+    q.includes('jurusan') ||
+    q.includes('cum laude') ||
+    q.includes('pendidikan zacky')
+  ) {
     return {
       text: 'Zacky adalah lulusan **Teknik Informatika dari Universitas Sumatera Utara (USU)** dengan predikat **Cum Laude (IPK 3.84 / 4.00)**.\n\nZacky juga meraih sertifikasi kompetensi nasional SKKNI BNSP (Junior Web Developer & Junior Mobile Programmer), Google Gemini Certified Student, serta Huawei ICT Academy.',
-      badge: 'Cum Laude (IPK 3.84)',
+      badge: '⚡ Memori: TI USU Cum Laude (IPK 3.84)',
       actions: [{ label: 'Buka Halaman About', link: '/about' }],
     };
   }
 
-  if (q.includes('relokasi') || q.includes('jakarta') || q.includes('luar kota') || q.includes('tersedia') || q.includes('notice') || q.includes('hire')) {
+  // 4. Relokasi & Kesiapan Kerja
+  if (
+    q.includes('relokasi') ||
+    q.includes('notice period') ||
+    q.includes('kapan bisa mulai') ||
+    (q.includes('siap') && (q.includes('kerja') || q.includes('gabung'))) ||
+    q.includes('siap kerja di jakarta') ||
+    q.includes('available immediately')
+  ) {
     return {
       text: 'Zacky berstatus **Available Immediately** (siap bergabung secepatnya)!\n\nZacky sangat bersedia untuk bekerja secara **On-Site, Hybrid, maupun Remote**, dan siap **relokasi ke Jakarta atau kota lainnya** untuk peluang karir profesional di bidang Software Engineering, IT Support/Banking, atau Data Analytics.',
-      badge: 'Available Immediately',
+      badge: '⚡ Memori: Available Immediately & Relokasi',
       actions: [{ label: 'Kirim Email ke Zacky', link: 'mailto:zackyandyka1@gmail.com' }],
     };
   }
 
-  if (q.includes('kontak') || q.includes('email') || q.includes('wa') || q.includes('hubungi') || q.includes('whatsapp') || q.includes('telepon')) {
+  // 5. Kontak, Email, dan Media Sosial
+  if (
+    q.includes('kontak') ||
+    q.includes('email') ||
+    q.includes('wa') ||
+    q.includes('hubungi') ||
+    q.includes('whatsapp') ||
+    q.includes('telepon') ||
+    q.includes('linkedin')
+  ) {
     return {
       text: 'Anda bisa menghubungi Zacky secara langsung melalui:\n\n• **Email**: zackyandyka1@gmail.com\n• **LinkedIn**: linkedin.com/in/zackyandyka\n• **WhatsApp**: Tersedia via tombol kontak langsung\n• **Lokasi Domisili**: Medan, Sumatera Utara (Siap Relokasi)',
-      badge: 'Respon < 24 Jam',
+      badge: '⚡ Memori: Kontak Resmi',
       actions: [
         { label: 'Kirim Email', link: 'mailto:zackyandyka1@gmail.com' },
         { label: 'Buka LinkedIn', link: 'https://linkedin.com/in/zackyandyka' },
@@ -65,23 +125,18 @@ function generateAIResponse(query) {
     };
   }
 
-  if (q.includes('halo') || q.includes('hai') || q.includes('siapa') || q.includes('pagi') || q.includes('siang') || q.includes('malam')) {
+  // 6. Salam / Sapaan Awal Ringkas
+  const greetings = ['halo', 'hai', 'hello', 'hey', 'pagi', 'siang', 'sore', 'malam', 'assalamualaikum', 'siapa kamu'];
+  if (greetings.some((w) => q === w || q.startsWith(w + ' ') || q.endsWith(' ' + w))) {
     return {
       text: 'Halo! Saya asisten pintar portofolio **Muhammad Daffa Zacky Andyka**.\n\nSaya siap menjawab pertanyaan seputar riwayat pendidikan di USU (IPK 3.84), pengalaman magang di Bank Sumut, BSI KCP Medan Area, BPJS Ketenagakerjaan Medan Kota, proyek AI Handspeak, hingga kesiapan kerja dan kontak langsung. Apa yang ingin Anda ketahui?',
-      badge: 'Zacky AI Assistant',
+      badge: '⚡ Memori: Asisten Zacky AI',
       actions: [],
     };
   }
 
-  // Default response
-  return {
-    text: `Terima kasih pertanyaannya! Zacky Andyka adalah profesional Software Engineering & Banking Operations lulusan TI USU (IPK 3.84 Cum Laude).\n\nZacky memiliki keahlian di bidang Full-Stack Web (React, Laravel), Mobile AI (Flutter, TensorFlow), pemrosesan data operasional perbankan, dan desain visual komersial.\n\nApakah Anda ingin mengetahui detail magang, proyek AI, atau cara menghubungi Zacky?`,
-    badge: 'Profil Lengkap',
-    actions: [
-      { label: 'Lihat Pengalaman Kerja', link: '/experience' },
-      { label: 'Hubungi Zacky', link: 'mailto:zackyandyka1@gmail.com' },
-    ],
-  };
+  // Not in static memory -> Hand off to Cloud AI
+  return null;
 }
 
 // Helper to format text with **bold** markers safely during streaming
@@ -168,34 +223,64 @@ export default function ProfileAIChatbox() {
     setInputText('');
     setIsTyping(true);
 
-    // Prepare recent history for conversational context
-    const historyPayload = messages.slice(-6).map((m) => ({
-      sender: m.sender,
-      text: m.text,
-    }));
-
-    // Fetch response from serverless Cloud LLM endpoint with graceful fallback
+    // SMART DUAL-ENGINE ROUTER:
+    // Cek apakah pertanyaan adalah hal seputar profil yang konteksnya sudah pasti ada di memori web
+    const memoryHit = queryLocalMemory(query);
     let responseData = null;
-    try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: query,
-          history: historyPayload,
-        }),
-      });
 
-      if (res.ok) {
-        responseData = await res.json();
+    if (memoryHit) {
+      // 1. DIJAWAB LANGSUNG OLEH MEMORI WEB SENDIRI (0ms network, hemat token API, cepat & akurat)
+      await new Promise((resolve) => setTimeout(resolve, 320));
+      responseData = {
+        ...memoryHit,
+        source: 'memory',
+      };
+    } else {
+      // 2. PERTANYAAN IMPROVISASI / ANALITIS / DI LUAR MEMORI -> Panggil Cloud AI (Gemini 2.5 Flash)
+      const historyPayload = messages.slice(-6).map((m) => ({
+        sender: m.sender,
+        text: m.text,
+      }));
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: query,
+            history: historyPayload,
+          }),
+        });
+
+        if (res.ok) {
+          const apiData = await res.json();
+          if (apiData && apiData.text) {
+            responseData = {
+              text: apiData.text,
+              badge: apiData.provider?.toLowerCase().includes('gemini')
+                ? '✨ Gemini 2.5 Flash • Improvisasi'
+                : apiData.badge || '✨ AI Improvisasi',
+              actions: apiData.actions || [],
+              source: 'ai',
+            };
+          }
+        }
+      } catch (err) {
+        console.warn('Cloud AI API error, falling back to general memory:', err);
       }
-    } catch (err) {
-      console.warn('Chat API error, switching to local knowledge fallback:', err);
-    }
 
-    // Graceful offline fallback if API is unreachable or key not set
-    if (!responseData || !responseData.text) {
-      responseData = generateAIResponse(query);
+      // Fallback cadangan jika jaringan terputus
+      if (!responseData || !responseData.text) {
+        responseData = {
+          text: `Halo! Saya asisten profil Zacky Andyka. Untuk pertanyaan spesifik tersebut, Anda juga dapat berdiskusi langsung dengan Zacky via email di zackyandyka1@gmail.com atau LinkedIn. Ada topik lain seputar magang, riset Handspeak, atau IPK yang ingin Anda tanyakan?`,
+          badge: '⚡ Memori: Asisten Zacky AI',
+          actions: [
+            { label: 'Lihat Pengalaman Kerja', link: '/experience' },
+            { label: 'Kirim Pesan', link: 'mailto:zackyandyka1@gmail.com' },
+          ],
+          source: 'memory',
+        };
+      }
     }
 
     const fullText = responseData.text;
