@@ -20,8 +20,8 @@ export default function AlbumPage() {
       {/* 1. Mainframe 3D Cat Hero Section */}
       <MainframeHero onExploreClick={handleScrollToAlbum} />
 
-      {/* 2. Gallery Section — 100% Identical to Homepage and About */}
-      <Gallery showAlbumButton={false} />
+      {/* 2. Gallery Section — Complete 21-Photo Visual Album */}
+      <Gallery showAlbumButton={false} isFullAlbum={true} />
     </div>
   );
 }

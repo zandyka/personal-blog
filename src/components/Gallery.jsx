@@ -5,7 +5,8 @@ import { Link } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import { useSoundContext } from './ui/SoundProvider';
 
-const GALLERY_ITEMS = [
+// Featured 9 items displayed on Homepage & About preview
+const FEATURED_GALLERY_ITEMS = [
   {
     id: 1,
     category: 'Photography',
@@ -95,6 +96,131 @@ const GALLERY_ITEMS = [
     ratioLabel: '9:16',
     src: '/gallery/magang bpjs 9_16.png',
     alt: 'Aktivitas Magang BPJS Ketenagakerjaan 9:16',
+  },
+];
+
+// Complete 21 items displayed exclusively on the Visual Album Page (/album)
+const ALL_GALLERY_ITEMS = [
+  ...FEATURED_GALLERY_ITEMS,
+  {
+    id: 10,
+    category: 'Events',
+    title: 'Dokumentasi Dinamika PKKMB Vokasi 2025',
+    caption: 'Dokumentasi antusiasme dan interaksi mahasiswa baru dalam rangkaian pengenalan kehidupan kampus Fakultas Vokasi USU.',
+    aspectRatio: '1 / 1',
+    ratioLabel: '1:1',
+    src: '/gallery/dokumentasi kegiatan pkkmb 2025.png',
+    alt: 'Dokumentasi Dinamika PKKMB Vokasi 2025 1:1',
+  },
+  {
+    id: 11,
+    category: 'Events',
+    title: 'Pameran Karya Expo Vokasi USU 2024',
+    caption: 'Partisipasi dan dokumentasi stand pameran karya inovasi teknologi mahasiswa pada gelaran tahunan Expo Vokasi USU.',
+    aspectRatio: '4 / 3',
+    ratioLabel: '4:3',
+    src: '/gallery/expo vokasi usu 2024 4_3.png',
+    alt: 'Pameran Karya Expo Vokasi USU 2024 4:3',
+  },
+  {
+    id: 12,
+    category: 'Photography',
+    title: 'Potret Kelulusan Meja Hijau',
+    caption: 'Potret personal Zacky Andyka di depan deretan papan bunga ucapan selamat kelulusan sarjana Teknik Informatika USU.',
+    aspectRatio: '9 / 16',
+    ratioLabel: '9:16',
+    src: '/gallery/potret sidang dengan papan bunga 9_16.png',
+    alt: 'Potret Kelulusan Meja Hijau 9:16',
+  },
+  {
+    id: 13,
+    category: 'Photography',
+    title: 'Tim Publikasi & Dokumentasi Visual',
+    caption: 'Aksi potret vertikal kru pubdok dalam mengabadikan momen-momen krusial sepanjang kegiatan orientasi kampus.',
+    aspectRatio: '9 / 16',
+    ratioLabel: '9:16',
+    src: '/gallery/tim publikasi dan dokumentasi pkkmb vokasi 2025 9_16.png',
+    alt: 'Tim Publikasi dan Dokumentasi Visual 9:16',
+  },
+  {
+    id: 14,
+    category: 'Events',
+    title: 'Keluarga Besar BSI KCP Medan Area',
+    caption: 'Momen kebersamaan bersama jajaran karyawan dan staf Back Office PT. Bank Syariah Indonesia selama masa magang profesional.',
+    aspectRatio: '16 / 9',
+    ratioLabel: '16:9',
+    src: '/gallery/foto bersama karyawan (magang di BSI).png',
+    alt: 'Keluarga Besar BSI KCP Medan Area 16:9',
+  },
+  {
+    id: 15,
+    category: 'Events',
+    title: 'Pelatihan Layanan Operasional PKL Bank Sumut',
+    caption: 'Dokumentasi dukungan administrasi dan kepanitiaan pada program pelatihan peningkatan kualitas layanan PT. Bank Sumut.',
+    aspectRatio: '1 / 1',
+    ratioLabel: '1:1',
+    src: '/gallery/program peningkatan kualitas satpam bank sumut (PKL Bank Sumut).png',
+    alt: 'Pelatihan Layanan Operasional PKL Bank Sumut 1:1',
+  },
+  {
+    id: 16,
+    category: 'Events',
+    title: 'Kepanitiaan Bersama PKKMB Vokasi 2025',
+    caption: 'Momen kebersamaan seluruh divisi panitia pelaksana setelah sukses menyelenggarakan rangkaian orientasi kampus.',
+    aspectRatio: '16 / 9',
+    ratioLabel: '16:9',
+    src: '/gallery/fotbar panitia pkkmb vokasi 2025.png',
+    alt: 'Kepanitiaan Bersama PKKMB Vokasi 2025 16:9',
+  },
+  {
+    id: 17,
+    category: 'Events',
+    title: 'Momen Kelulusan Sidang Tugas Akhir',
+    caption: 'Potret perayaan bersama rekan seperjuangan setelah menyelesaikan sidang meja hijau program studi Teknik Informatika USU.',
+    aspectRatio: '9 / 16',
+    ratioLabel: '9:16',
+    src: '/gallery/fotbar sidang 9_16.png',
+    alt: 'Momen Kelulusan Sidang Tugas Akhir 9:16',
+  },
+  {
+    id: 18,
+    category: 'Events',
+    title: 'On-boarding Magang PT. Bank Syariah Indonesia',
+    caption: 'Sesi pembekalan awal dan pengenalan alur kerja operasional perbankan syariah pada kantor cabang Medan Area.',
+    aspectRatio: '4 / 3',
+    ratioLabel: '4:3',
+    src: '/gallery/on-boarding magang bsi 4_3.png',
+    alt: 'On-boarding Magang PT. Bank Syariah Indonesia 4:3',
+  },
+  {
+    id: 19,
+    category: 'Events',
+    title: 'Tim Fasilitator PKKMB Vokasi 2025',
+    caption: 'Koordinasi lapangan tim pendamping mahasiswa baru dalam mengawal kelancaran aktivitas orientasi akademik kampus.',
+    aspectRatio: '4 / 3',
+    ratioLabel: '4:3',
+    src: '/gallery/panitia pkkmb 2025 4_3.png',
+    alt: 'Tim Fasilitator PKKMB Vokasi 2025 4:3',
+  },
+  {
+    id: 20,
+    category: 'Events',
+    title: 'Perayaan Wisuda Sarjana TI USU',
+    caption: 'Dokumentasi momen kelulusan wisuda sarjana Teknik Informatika dengan predikat Cum Laude di Universitas Sumatera Utara.',
+    aspectRatio: '1 / 1',
+    ratioLabel: '1:1',
+    src: '/gallery/fotbar wisuda.png',
+    alt: 'Perayaan Wisuda Sarjana TI USU 1:1',
+  },
+  {
+    id: 21,
+    category: 'Events',
+    title: 'Pelantikan Pengurus HIMTI USU',
+    caption: 'Dokumentasi seremoni pelantikan kepengurusan Himpunan Mahasiswa Teknologi Informasi Universitas Sumatera Utara.',
+    aspectRatio: '16 / 9',
+    ratioLabel: '16:9',
+    src: '/gallery/Pelantikan HIMTI.png',
+    alt: 'Pelantikan Pengurus HIMTI USU 16:9',
   },
 ];
 
@@ -324,15 +450,20 @@ function Lightbox({ item, onClose }) {
   );
 }
 
-export default function Gallery({ showAlbumButton = true, id = 'gallery' }) {
+export default function Gallery({
+  showAlbumButton = true,
+  id = 'gallery',
+  isFullAlbum = false,
+}) {
   const [activeCategory, setActiveCategory] = useState('All');
   const [selectedItem, setSelectedItem] = useState(null);
   const { playClick } = useSoundContext();
   const { ref: titleRef, inView: titleVisible } = useInView({ threshold: 0.2, triggerOnce: true });
 
+  const rawItems = isFullAlbum ? ALL_GALLERY_ITEMS : FEATURED_GALLERY_ITEMS;
   const filtered = activeCategory === 'All'
-    ? GALLERY_ITEMS
-    : GALLERY_ITEMS.filter(i => i.category === activeCategory);
+    ? rawItems
+    : rawItems.filter(i => i.category === activeCategory);
 
   return (
     <section id={id} style={{ padding: '48px 0', background: 'var(--bg)' }}>
