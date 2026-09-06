@@ -16,6 +16,9 @@
     "type": "module",
     "dependencies": {
         "@emailjs/browser": "^4.4.1",
+        "@mediapipe/tasks-vision": "^1.0.1",
+        "@tensorflow/tfjs": "^4.22.0",
+        "@tensorflow/tfjs-tflite": "^0.0.1-alpha.10",
         "@vercel/analytics": "^2.0.1",
         "framer-motion": "^11.3.21",
         "lucide-react": "^0.408.0",

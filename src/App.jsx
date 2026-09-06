@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { SoundProvider } from './components/ui/SoundProvider';
@@ -21,6 +21,8 @@ import ExperiencePage from './pages/ExperiencePage';
 import ProjectsPage from './pages/ProjectsPage';
 import ContactPage from './pages/ContactPage';
 import AlbumPage from './pages/AlbumPage';
+
+const PlaygroundPage = lazy(() => import('./pages/PlaygroundPage'));
 
 function AppInner() {
   useTheme();
@@ -61,6 +63,29 @@ function AppInner() {
           <Route path="/projects" element={<ProjectsPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/album" element={<AlbumPage />} />
+          <Route
+            path="/playground"
+            element={
+              <Suspense
+                fallback={
+                  <div
+                    style={{
+                      minHeight: '80vh',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: 'var(--text-muted)',
+                      fontFamily: "'Space Grotesk', monospace",
+                    }}
+                  >
+                    Memuat Playground...
+                  </div>
+                }
+              >
+                <PlaygroundPage />
+              </Suspense>
+            }
+          />
         </Routes>
       </AnimatePresence>
       <Footer />

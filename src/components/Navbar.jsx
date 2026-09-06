@@ -14,6 +14,7 @@ import {
   Cat,
   PawPrint,
   Image,
+  Gamepad2,
 } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
 import ThemeToggle from './ui/ThemeToggle';
@@ -25,6 +26,7 @@ const ABOUT_DROPDOWN = [
   { label: 'Experience', path: '/experience', icon: Briefcase },
   { label: 'Projects', path: '/projects', icon: FolderGit2 },
   { label: 'Album Gallery', path: '/album', icon: Image },
+  { label: 'Playground', path: '/playground', icon: Gamepad2 },
 ];
 
 const DockButton = ({ to, icon: Icon, label, isActive, onClick, onHover }) => {
@@ -123,6 +125,7 @@ export default function Navbar() {
 
   const isHome = location.pathname === '/';
   const isContact = location.pathname === '/contact';
+  const isPlayground = location.pathname.startsWith('/playground');
   const isAboutActive = ['/about', '/experience', '/projects', '/album'].some((p) =>
     location.pathname.startsWith(p)
   );
@@ -302,6 +305,30 @@ export default function Navbar() {
               )}
             </AnimatePresence>
           </div>
+
+          {/* Playground */}
+          <Link
+            to="/playground"
+            onClick={playClick}
+            onMouseEnter={playHover}
+            style={{
+              padding: '7px 20px',
+              borderRadius: '999px',
+              fontSize: '13px',
+              fontWeight: 600,
+              textDecoration: 'none',
+              color: isPlayground ? 'var(--text)' : 'var(--text-muted)',
+              background: isPlayground ? 'var(--surface-2)' : 'transparent',
+              boxShadow: isPlayground ? '0 2px 10px var(--shadow-color)' : 'none',
+              transition: 'all 0.2s ease',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+            }}
+          >
+            <Gamepad2 size={14} style={{ color: isPlayground ? 'var(--accent, #FF3B1D)' : 'inherit' }} />
+            <span>Playground</span>
+          </Link>
 
           {/* Contact */}
           <Link
@@ -562,6 +589,14 @@ export default function Navbar() {
           icon={Image}
           label="Album"
           isActive={location.pathname.startsWith('/album')}
+          onClick={playClick}
+          onHover={playHover}
+        />
+        <DockButton
+          to="/playground"
+          icon={Gamepad2}
+          label="Play"
+          isActive={location.pathname.startsWith('/playground')}
           onClick={playClick}
           onHover={playHover}
         />

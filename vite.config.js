@@ -8,6 +8,17 @@ export default defineConfig(({ mode }) => {
   if (env.GROQ_API_KEY) process.env.GROQ_API_KEY = env.GROQ_API_KEY
 
   return {
+    resolve: {
+      alias: {
+        '@tensorflow/tfjs-tflite': '@tensorflow/tfjs-tflite/dist/tf-tflite.fesm.js',
+      },
+    },
+    server: {
+      headers: {
+        'Cross-Origin-Opener-Policy': 'same-origin',
+        'Cross-Origin-Embedder-Policy': 'credentialless',
+      },
+    },
     plugins: [
       react(),
       {
