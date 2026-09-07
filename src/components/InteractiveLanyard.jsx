@@ -17,6 +17,7 @@ import { useSoundContext } from './ui/SoundProvider';
  */
 export default function InteractiveLanyard() {
   const mountRef = useRef(null);
+  const hitboxRef = useRef(null);
   const { playClick, playHover } = useSoundContext();
   const [isDragging, setIsDragging] = useState(false);
 
@@ -38,7 +39,8 @@ export default function InteractiveLanyard() {
 
   useEffect(() => {
     const mount = mountRef.current;
-    if (!mount) return;
+    const hitbox = hitboxRef.current;
+    if (!mount || !hitbox) return;
 
     let animId;
     const width = mount.clientWidth || 340;
@@ -338,17 +340,19 @@ export default function InteractiveLanyard() {
     const raycaster = p.raycaster;
 
     const onPointerDown = (e) => {
-      const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-      const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+      const clientX = e.clientX !== undefined ? e.clientX : (e.touches && e.touches[0] ? e.touches[0].clientX : null);
+      const clientY = e.clientY !== undefined ? e.clientY : (e.touches && e.touches[0] ? e.touches[0].clientY : null);
+      if (clientX === null || clientY === null) return;
 
       const rect = mount.getBoundingClientRect();
       p.pointerPos.x = ((clientX - rect.left) / rect.width) * 2 - 1;
       p.pointerPos.y = -(((clientY - rect.top) / rect.height) * 2 - 1);
 
       raycaster.setFromCamera(p.pointerPos, camera);
-      const intersects = raycaster.intersectObjects([cardGroup], true);
+      const intersects = raycaster.intersectObjects([cardGroup, strapMesh], true);
 
       if (intersects.length > 0) {
+        if (e.cancelable) e.preventDefault();
         p.isDragging = true;
         setIsDragging(true);
         p.dragDistance = 0;
@@ -364,8 +368,9 @@ export default function InteractiveLanyard() {
     };
 
     const onPointerMove = (e) => {
-      const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-      const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+      const clientX = e.clientX !== undefined ? e.clientX : (e.touches && e.touches[0] ? e.touches[0].clientX : null);
+      const clientY = e.clientY !== undefined ? e.clientY : (e.touches && e.touches[0] ? e.touches[0].clientY : null);
+      if (clientX === null || clientY === null) return;
 
       const rect = mount.getBoundingClientRect();
       const currentPointer = new THREE.Vector2(
@@ -377,6 +382,7 @@ export default function InteractiveLanyard() {
       redGlow.position.y = currentPointer.y * 3.5;
 
       if (!p.isDragging) return;
+      if (e.cancelable) e.preventDefault();
 
       raycaster.setFromCamera(currentPointer, camera);
       const planeIntersect = new THREE.Vector3();
@@ -416,12 +422,12 @@ export default function InteractiveLanyard() {
       }
     };
 
-    mount.addEventListener('mousedown', onPointerDown);
+    hitbox.addEventListener('mousedown', onPointerDown);
     window.addEventListener('mousemove', onPointerMove);
     window.addEventListener('mouseup', onPointerUp);
 
-    mount.addEventListener('touchstart', onPointerDown, { passive: true });
-    window.addEventListener('touchmove', onPointerMove, { passive: true });
+    hitbox.addEventListener('touchstart', onPointerDown, { passive: false });
+    window.addEventListener('touchmove', onPointerMove, { passive: false });
     window.addEventListener('touchend', onPointerUp);
 
     // 8. Physics & Animation Loop
@@ -487,10 +493,10 @@ export default function InteractiveLanyard() {
       themeObserver.disconnect();
       cancelAnimationFrame(animId);
       window.removeEventListener('resize', handleResize);
-      mount.removeEventListener('mousedown', onPointerDown);
+      hitbox.removeEventListener('mousedown', onPointerDown);
       window.removeEventListener('mousemove', onPointerMove);
       window.removeEventListener('mouseup', onPointerUp);
-      mount.removeEventListener('touchstart', onPointerDown);
+      hitbox.removeEventListener('touchstart', onPointerDown);
       window.removeEventListener('touchmove', onPointerMove);
       window.removeEventListener('touchend', onPointerUp);
 
@@ -544,7 +550,6 @@ export default function InteractiveLanyard() {
           border: 'none',
           boxShadow: 'none',
           overflow: 'visible',
-          cursor: isDragging ? 'grabbing' : 'grab',
         }}
       >
         {/* Bright atmospheric background light directly behind the lanyard */}
@@ -596,15 +601,33 @@ export default function InteractiveLanyard() {
           }}
         />
 
-        {/* Three.js Canvas */}
+        {/* Three.js Canvas (Visual Only - Never intercepts touch events) */}
         <div
           ref={mountRef}
           style={{
-            position: 'relative',
+            position: 'absolute',
+            inset: 0,
             width: '100%',
             height: '100%',
-            touchAction: 'none',
+            pointerEvents: 'none',
             zIndex: 1,
+          }}
+        />
+
+        {/* Interactive Hitbox (Constrained to Lanyard + Card Shape Only) */}
+        <div
+          ref={hitboxRef}
+          className="lanyard-interactive-hitbox"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            zIndex: 2,
+            touchAction: 'none',
+            cursor: isDragging ? 'grabbing' : 'grab',
+            clipPath: 'polygon(43% 0%, 57% 0%, 57% 24%, 68% 28%, 84% 33%, 84% 93%, 16% 93%, 16% 33%, 32% 28%, 43% 24%)',
+            WebkitClipPath: 'polygon(43% 0%, 57% 0%, 57% 24%, 68% 28%, 84% 33%, 84% 93%, 16% 93%, 16% 33%, 32% 28%, 43% 24%)',
           }}
         />
       </div>
