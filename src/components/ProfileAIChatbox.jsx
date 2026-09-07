@@ -50,7 +50,7 @@ function queryLocalMemory(query) {
   ) {
     return {
       text: 'Zacky memiliki 4 pengalaman magang yang solid:\n\n1. **PT. Bank Sumut (Operational Division)**: Mengelola transaksi operasional SOP, kliring, dan membuat dashboard analitik transaksi.\n2. **PT. Bank Syariah Indonesia (BSI KCP Medan Area - Back Office)**: Verifikasi data perbankan, administrasi dokumen pembiayaan, dan kearsipan berstandar kepatuhan tinggi.\n3. **BPJS Ketenagakerjaan Medan Kota (IT / Admin Support)**: Membangun sistem monitoring MBKM SIGMA (React.js & Laravel 11) dan troubleshooting aplikasi mobile JMO.\n4. **PT. Telkom Akses (Fiber Technician)**: Fusion splicing kabel fiber optik, pengujian OPM/OTDR, dan pemeliharaan jaringan GPON.',
-      badge: '⚡ Memori: 4 Magang Perbankan & IT',
+      badge: 'Pengalaman Magang & IT',
       actions: [{ label: 'Buka Halaman Experience', link: '/experience' }],
     };
   }
@@ -66,7 +66,7 @@ function queryLocalMemory(query) {
   ) {
     return {
       text: 'Proyek unggulan riset Zacky adalah **Handspeak — BISINDO Sign Language Translator**:\n\n• Aplikasi mobile AI yang menerjemahkan bahasa isyarat Indonesia secara real-time untuk membantu teman tuli.\n• Dibangun dengan **Flutter, Python, TensorFlow Lite, dan Computer Vision (MediaPipe)**.\n\nSelain itu, Zacky juga membangun **SIGMA BPJSTK** (sistem monitoring MBKM enterprise), **Mahaasyik Resto** (aplikasi web restoran dengan payment gateway Midtrans), dan **Visualisasi Rekapan Bank Sumut**.',
-      badge: '⚡ Memori: Riset Handspeak & Proyek AI',
+      badge: 'Riset Handspeak & Proyek AI',
       actions: [{ label: 'Lihat Semua Proyek', link: '/projects' }],
     };
   }
@@ -84,7 +84,7 @@ function queryLocalMemory(query) {
   ) {
     return {
       text: 'Zacky adalah lulusan **Teknik Informatika dari Universitas Sumatera Utara (USU)** dengan predikat **Cum Laude (IPK 3.84 / 4.00)**.\n\nZacky juga meraih sertifikasi kompetensi nasional SKKNI BNSP (Junior Web Developer & Junior Mobile Programmer), Google Gemini Certified Student, serta Huawei ICT Academy.',
-      badge: '⚡ Memori: TI USU Cum Laude (IPK 3.84)',
+      badge: 'TI USU Cum Laude (IPK 3.84)',
       actions: [{ label: 'Buka Halaman About', link: '/about' }],
     };
   }
@@ -100,7 +100,7 @@ function queryLocalMemory(query) {
   ) {
     return {
       text: 'Zacky berstatus **Available Immediately** (siap bergabung secepatnya)!\n\nZacky sangat bersedia untuk bekerja secara **On-Site, Hybrid, maupun Remote**, dan siap **relokasi ke Jakarta atau kota lainnya** untuk peluang karir profesional di bidang Software Engineering, IT Support/Banking, atau Data Analytics.',
-      badge: '⚡ Memori: Available Immediately & Relokasi',
+      badge: 'Available Immediately & Relokasi',
       actions: [{ label: 'Kirim Email ke Zacky', link: 'mailto:zackyandyka1@gmail.com' }],
     };
   }
@@ -117,7 +117,7 @@ function queryLocalMemory(query) {
   ) {
     return {
       text: 'Anda bisa menghubungi Zacky secara langsung melalui:\n\n• **Email**: zackyandyka1@gmail.com\n• **LinkedIn**: linkedin.com/in/zackyandyka\n• **WhatsApp**: Tersedia via tombol kontak langsung\n• **Lokasi Domisili**: Medan, Sumatera Utara (Siap Relokasi)',
-      badge: '⚡ Memori: Kontak Resmi',
+      badge: 'Kontak Resmi',
       actions: [
         { label: 'Kirim Email', link: 'mailto:zackyandyka1@gmail.com' },
         { label: 'Buka LinkedIn', link: 'https://linkedin.com/in/zackyandyka' },
@@ -130,7 +130,7 @@ function queryLocalMemory(query) {
   if (greetings.some((w) => q === w || q.startsWith(w + ' ') || q.endsWith(' ' + w))) {
     return {
       text: 'Halo! Saya asisten pintar portofolio **Muhammad Daffa Zacky Andyka**.\n\nSaya siap menjawab pertanyaan seputar riwayat pendidikan di USU (IPK 3.84), pengalaman magang di Bank Sumut, BSI KCP Medan Area, BPJS Ketenagakerjaan Medan Kota, proyek AI Handspeak, hingga kesiapan kerja dan kontak langsung. Apa yang ingin Anda ketahui?',
-      badge: '⚡ Memori: Asisten Zacky AI',
+      badge: 'Ask Zacky AI',
       actions: [],
     };
   }
@@ -257,9 +257,7 @@ export default function ProfileAIChatbox() {
           if (apiData && apiData.text) {
             responseData = {
               text: apiData.text,
-              badge: apiData.provider?.toLowerCase().includes('gemini')
-                ? '✨ Gemini 2.5 Flash • Improvisasi'
-                : apiData.badge || '✨ AI Improvisasi',
+              badge: apiData.badge || 'Ask Zacky AI',
               actions: apiData.actions || [],
               source: 'ai',
             };
@@ -273,7 +271,7 @@ export default function ProfileAIChatbox() {
       if (!responseData || !responseData.text) {
         responseData = {
           text: `Halo! Saya asisten profil Zacky Andyka. Untuk pertanyaan spesifik tersebut, Anda juga dapat berdiskusi langsung dengan Zacky via email di zackyandyka1@gmail.com atau LinkedIn. Ada topik lain seputar magang, riset Handspeak, atau IPK yang ingin Anda tanyakan?`,
-          badge: '⚡ Memori: Asisten Zacky AI',
+          badge: 'Ask Zacky AI',
           actions: [
             { label: 'Lihat Pengalaman Kerja', link: '/experience' },
             { label: 'Kirim Pesan', link: 'mailto:zackyandyka1@gmail.com' },

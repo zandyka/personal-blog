@@ -265,7 +265,7 @@ function generateLocalFallback(query) {
   if (q.includes('magang') || q.includes('bank') || q.includes('pengalaman') || q.includes('kerja')) {
     return {
       text: 'Zacky memiliki 4 pengalaman magang yang solid:\n\n1. **PT. Bank Sumut (Operational Division)**: Mengelola transaksi operasional SOP, kliring, dan membuat dashboard analitik transaksi.\n2. **PT. Bank Syariah Indonesia (BSI KCP Medan Area - Back Office)**: Verifikasi data perbankan, administrasi dokumen pembiayaan, dan kearsipan berstandar kepatuhan tinggi.\n3. **BPJS Ketenagakerjaan Medan Kota (IT / Admin Support)**: Membangun sistem monitoring MBKM SIGMA (React.js & Laravel 11) dan troubleshooting aplikasi mobile JMO.\n4. **PT. Telkom Akses (Fiber Technician)**: Fusion splicing kabel fiber optik, pengujian OPM/OTDR, dan pemeliharaan jaringan GPON.',
-      badge: '4 Institusi Terkemuka',
+      badge: 'Pengalaman Magang & IT',
       actions: [{ label: 'Buka Halaman Experience', link: '/experience' }],
     };
   }
@@ -273,7 +273,7 @@ function generateLocalFallback(query) {
   if (q.includes('handspeak') || q.includes('proyek') || q.includes('project') || q.includes('ai') || q.includes('karya')) {
     return {
       text: 'Proyek unggulan riset Zacky adalah **Handspeak — BISINDO Sign Language Translator**:\n\n• Aplikasi mobile AI yang menerjemahkan bahasa isyarat Indonesia secara real-time untuk membantu teman tuli.\n• Dibangun dengan **Flutter, Python, TensorFlow Lite, dan Computer Vision (MediaPipe)**.\n\nSelain itu, Zacky juga membangun **SIGMA BPJSTK** (sistem monitoring MBKM enterprise), **Mahaasyik Resto** (aplikasi web restoran dengan payment gateway Midtrans), dan **Visualisasi Rekapan Bank Sumut**.',
-      badge: 'Computer Vision & Fullstack',
+      badge: 'Riset Handspeak & Proyek AI',
       actions: [{ label: 'Lihat Semua Proyek', link: '/projects' }],
     };
   }
@@ -281,7 +281,7 @@ function generateLocalFallback(query) {
   if (q.includes('ipk') || q.includes('kampus') || q.includes('kuliah') || q.includes('usu') || q.includes('pendidikan')) {
     return {
       text: 'Zacky adalah lulusan **Teknik Informatika dari Universitas Sumatera Utara (USU)** dengan predikat **Cum Laude (IPK 3.84 / 4.00)**.\n\nZacky juga meraih sertifikasi kompetensi nasional SKKNI BNSP (Junior Web Developer & Junior Mobile Programmer), Google Gemini Certified Student, serta Huawei ICT Academy.',
-      badge: 'Cum Laude (IPK 3.84)',
+      badge: 'TI USU Cum Laude (IPK 3.84)',
       actions: [{ label: 'Buka Halaman About', link: '/about' }],
     };
   }
@@ -289,7 +289,7 @@ function generateLocalFallback(query) {
   if (q.includes('relokasi') || q.includes('jakarta') || q.includes('luar kota') || q.includes('tersedia') || q.includes('notice') || q.includes('hire')) {
     return {
       text: 'Zacky berstatus **Available Immediately** (siap bergabung secepatnya)!\n\nZacky sangat bersedia untuk bekerja secara **On-Site, Hybrid, maupun Remote**, dan siap **relokasi ke Jakarta atau kota lainnya** untuk peluang karir profesional di bidang Software Engineering, IT Support/Banking, atau Data Analytics.',
-      badge: 'Available Immediately',
+      badge: 'Available Immediately & Relokasi',
       actions: [{ label: 'Kirim Email ke Zacky', link: 'mailto:zackyandyka1@gmail.com' }],
     };
   }
@@ -297,7 +297,7 @@ function generateLocalFallback(query) {
   if (q.includes('kontak') || q.includes('email') || q.includes('wa') || q.includes('hubungi') || q.includes('whatsapp') || q.includes('telepon')) {
     return {
       text: 'Anda bisa menghubungi Zacky secara langsung melalui:\n\n• **Email**: zackyandyka1@gmail.com\n• **LinkedIn**: linkedin.com/in/zackyandyka\n• **WhatsApp**: Tersedia via tombol kontak langsung\n• **Lokasi Domisili**: Medan, Sumatera Utara (Siap Relokasi)',
-      badge: 'Respon < 24 Jam',
+      badge: 'Kontak Resmi',
       actions: [
         { label: 'Kirim Email', link: 'mailto:zackyandyka1@gmail.com' },
         { label: 'Buka LinkedIn', link: 'https://linkedin.com/in/zackyandyka' },
@@ -307,7 +307,7 @@ function generateLocalFallback(query) {
 
   return {
     text: 'Halo! Zacky Andyka adalah profesional Software Engineering & Banking Operations lulusan TI USU (IPK 3.84 Cum Laude).\n\nZacky berpengalaman di bidang Full-Stack Web (React, Laravel), Mobile AI (Flutter, TensorFlow), pemrosesan data operasional perbankan, dan desain visual komersial.\n\nApa yang ingin Anda tanyakan seputar pengalaman magang, proyek AI, atau peluang kerja sama dengan Zacky?',
-    badge: 'Profil Lengkap',
+    badge: 'Ask Zacky AI',
     actions: [
       { label: 'Lihat Pengalaman Kerja', link: '/experience' },
       { label: 'Hubungi Zacky', link: 'mailto:zackyandyka1@gmail.com' },
