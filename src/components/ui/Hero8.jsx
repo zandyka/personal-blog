@@ -3,26 +3,27 @@ import { motion, useInView } from 'framer-motion';
 import { ArrowDown } from 'lucide-react';
 import { useSoundContext } from './SoundProvider';
 
+// 8 Pure Photographic Moments of Zacky Andyka — NO LANYARDS OR ID CARDS
 const LINE_1_IMAGES = [
   {
-    url: '/gallery/foto diri di about (depan) 4_3.webp',
-    aspectRatio: 1.33,
-    alt: 'Potret Zacky Andyka dengan Almamater',
-  },
-  {
     url: '/gallery/potret sidang dengan papan bunga 9_16.webp',
-    aspectRatio: 0.85,
-    alt: 'Momen Sidang Zacky Andyka',
+    aspectRatio: 0.92,
+    alt: 'Potret Sidang Kelulusan Zacky Andyka',
   },
   {
     url: '/gallery/fotbar wisuda.webp',
     aspectRatio: 1.25,
-    alt: 'Wisuda Cum Laude Zacky Andyka',
+    alt: 'Wisuda Cum Laude Teknik Informatika USU',
   },
   {
-    url: '/gallery/foto diri di about 4_3.webp',
-    aspectRatio: 1.33,
-    alt: 'Potret Personal Zacky Andyka',
+    url: '/gallery/foto bersama karyawan (magang di BSI).webp',
+    aspectRatio: 1.35,
+    alt: 'Momen Kebersamaan Magang BSI KCP Medan Area',
+  },
+  {
+    url: '/gallery/fotografi produk coca cola (9_16).webp',
+    aspectRatio: 1.05,
+    alt: 'Karya Fotografi Komersial Produk Coca-Cola',
   },
 ];
 
@@ -30,22 +31,22 @@ const LINE_2_IMAGES = [
   {
     url: '/gallery/fotbar sidang 9_16.webp',
     aspectRatio: 1.15,
-    alt: 'Momen Kelulusan Sidang Bersama Sahabat',
+    alt: 'Momen Perayaan Sidang Kelulusan Bersama Sahabat',
   },
   {
-    url: '/gallery/foto diri di about (belakang) 4_3.webp',
+    url: '/gallery/on-boarding magang bsi 4_3.webp',
     aspectRatio: 1.33,
-    alt: 'Potret Zacky Andyka',
+    alt: 'Sesi On-boarding Magang PT Bank Syariah Indonesia',
   },
   {
-    url: '/gallery/tim publikasi dokumentasi pkkmb vokasi 2025 4_3.webp',
+    url: '/gallery/mengajar komputer di pkbm bintula 16_9.webp',
+    aspectRatio: 1.35,
+    alt: 'Kegiatan Pengajaran Literasi Komputer di PKBM',
+  },
+  {
+    url: '/gallery/Pelantikan HIMTI.webp',
     aspectRatio: 1.33,
-    alt: 'Tim Publikasi dan Dokumentasi PKKMB',
-  },
-  {
-    url: '/about/profile.png',
-    aspectRatio: 1.0,
-    alt: 'Profil Zacky Andyka',
+    alt: 'Seremoni Pelantikan Pengurus HIMTI USU',
   },
 ];
 
@@ -75,10 +76,11 @@ function HeroLine({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Shuffle photos every 3 seconds as requested
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % images.length);
-    }, 4500);
+    }, 3000);
     return () => clearInterval(timer);
   }, [images.length]);
 
@@ -115,8 +117,8 @@ function HeroLine({
           opacity: active ? 1 : 0,
         }}
         transition={{
-          width: { duration: 0.5, type: 'spring', bounce: 0 },
-          opacity: { duration: 0.3 },
+          width: { duration: 0.45, type: 'spring', bounce: 0 },
+          opacity: { duration: 0.28 },
         }}
         style={{
           boxShadow: isHovered
@@ -200,34 +202,21 @@ export default function Hero8({ onExploreClick }) {
 
       <div ref={containerRef} className="hero8-content-wrapper">
         <div className="hero8-stack">
-          {/* Eyebrow Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: -12 }}
-            animate={active ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5 }}
-            className="hero8-badge"
-          >
-            <span className="hero8-badge-dot" />
-            <span className="hero8-badge-label">
-              VISUAL ARCHIVE &bull; PORTFOLIO ALBUM
-            </span>
-          </motion.div>
-
           {/* Typography with Expandable Media Tiles */}
           <div className="hero8-lines-wrapper">
             <HeroLine
               leftText="Capturing"
               rightText="Stories"
               images={LINE_1_IMAGES}
-              alt="Potret dan karya visual Zacky Andyka"
+              alt="Momen dan cerita visual Zacky Andyka"
               isInView={active}
               delay={0.05}
             />
             <HeroLine
-              leftText="Crafting"
-              rightText="Moments"
+              leftText="Visualizing"
+              rightText="Reality"
               images={LINE_2_IMAGES}
-              alt="Momen berkesan dan dokumentasi kreatif Zacky Andyka"
+              alt="Dokumentasi dan visualisasi karya Zacky Andyka"
               isInView={active}
               delay={0.18}
             />
@@ -237,17 +226,17 @@ export default function Hero8({ onExploreClick }) {
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={active ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.38 }}
+            transition={{ duration: 0.5, delay: 0.35 }}
             className="hero8-subtitle"
           >
             An archive of captured moments, creative media, and visual stories from my journey in design, university events, and personal achievements.
           </motion.p>
 
-          {/* Large Showcase Banner (16:9 on mobile, 21:9 on desktop) */}
+          {/* Large Showcase Banner (16:9 on mobile, 21:9 on desktop) - Without caption pill */}
           <motion.div
             initial={{ opacity: 0, y: 32 }}
             animate={active ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.65, delay: 0.48 }}
+            transition={{ duration: 0.65, delay: 0.45 }}
             className="hero8-banner-card"
           >
             <div className="hero8-banner-aspect">
@@ -258,13 +247,6 @@ export default function Hero8({ onExploreClick }) {
                 loading="eager"
               />
               <div aria-hidden="true" className="hero8-banner-overlay" />
-              {/* Bottom Caption Pill */}
-              <div className="hero8-caption-pill">
-                <span className="hero8-caption-dot" />
-                <span className="hero8-caption-text">
-                  PKKMB Vokasi USU 2025 &bull; Committee Memories
-                </span>
-              </div>
             </div>
           </motion.div>
 
@@ -272,7 +254,7 @@ export default function Hero8({ onExploreClick }) {
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={active ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.6 }}
+            transition={{ duration: 0.5, delay: 0.55 }}
             style={{ marginTop: '4px' }}
           >
             <motion.button
@@ -321,34 +303,6 @@ export default function Hero8({ onExploreClick }) {
           width: 100%;
         }
 
-        .hero8-badge {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          padding: 6px 16px;
-          border-radius: 999px;
-          background: var(--surface-2);
-          border: 1px solid var(--border);
-          box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        .hero8-badge-dot {
-          width: 7px;
-          height: 7px;
-          border-radius: 50%;
-          background: var(--accent);
-          box-shadow: 0 0 10px var(--accent);
-          display: inline-block;
-        }
-
-        .hero8-badge-label {
-          font-size: 11px;
-          font-weight: 700;
-          letter-spacing: 2px;
-          text-transform: uppercase;
-          color: var(--text);
-        }
-
         .hero8-lines-wrapper {
           display: flex;
           flex-direction: column;
@@ -368,7 +322,7 @@ export default function Hero8({ onExploreClick }) {
         }
 
         .hero8-text {
-          font-size: clamp(2rem, 6.8vw, 6.8rem);
+          font-size: clamp(1.85rem, 6.4vw, 6.4rem);
           font-weight: 800;
           text-transform: uppercase;
           letter-spacing: -0.03em;
@@ -438,38 +392,8 @@ export default function Hero8({ onExploreClick }) {
         .hero8-banner-overlay {
           position: absolute;
           inset: 0;
-          background: linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 45%);
+          background: linear-gradient(to top, rgba(0,0,0,0.3) 0%, transparent 40%);
           pointer-events: none;
-        }
-
-        .hero8-caption-pill {
-          position: absolute;
-          bottom: clamp(12px, 2vw, 20px);
-          left: clamp(12px, 2vw, 24px);
-          background: rgba(10, 10, 15, 0.72);
-          backdrop-filter: blur(12px);
-          -webkit-backdrop-filter: blur(12px);
-          border: 1px solid rgba(255, 255, 255, 0.16);
-          border-radius: 999px;
-          padding: 6px 16px;
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-        }
-
-        .hero8-caption-dot {
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          background: #22c55e;
-          display: inline-block;
-        }
-
-        .hero8-caption-text {
-          color: #ffffff;
-          font-size: 12px;
-          font-weight: 600;
-          letter-spacing: 0.5px;
         }
 
         .hero8-explore-btn {
@@ -501,7 +425,7 @@ export default function Hero8({ onExploreClick }) {
 
         @media (max-width: 480px) {
           .hero8-text {
-            font-size: clamp(1.6rem, 7vw, 2.1rem);
+            font-size: clamp(1.45rem, 6.4vw, 1.95rem);
           }
           .hero8-line-container {
             gap: 6px;
