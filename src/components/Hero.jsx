@@ -208,40 +208,47 @@ const Hero = () => {
             </div>
           </motion.div>
 
-          {/* Main Cover Hero Title */}
+          {/* Line 1: Web Dev, */}
           <div style={{ position: 'relative', zIndex: 20 }}>
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.25, duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ delay: 0.22, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               className="hero-cover-heading"
             >
-              Web Dev, <br />
-              AI Engineer &amp; <br />
-              <Cover>Graphic Designer</Cover>
+              Web Dev,
             </motion.h1>
           </div>
 
-          {/* Sub-row: Desktop Floating Socials & Tagline */}
+          {/* Line 2: AI Engineer & with desktop floating socials on the right */}
           <div
+            className="hero-line-2"
             style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: '20px',
-              marginTop: '16px',
               position: 'relative',
+              gap: '24px',
               zIndex: 20,
             }}
           >
-            {/* Desktop Socials Row */}
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.36, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="hero-cover-heading"
+            >
+              AI Engineer &amp;
+            </motion.h1>
+
+            {/* Desktop Socials Row - placed on the right side above the tagline */}
             <div
               className="hero-socials-float"
               style={{
                 display: 'flex',
                 gap: '12px',
                 alignItems: 'center',
+                marginRight: '20px',
               }}
             >
               {SOCIALS.map(({ icon: Icon, href, label }, i) => (
@@ -277,8 +284,31 @@ const Hero = () => {
                 </motion.a>
               ))}
             </div>
+          </div>
 
-            {/* Tagline beside Socials */}
+          {/* Line 3: Graphic Designer with Cover + Tagline directly under Socials */}
+          <div
+            className="hero-line-3"
+            style={{
+              display: 'flex',
+              alignItems: 'flex-end',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: '24px',
+              position: 'relative',
+              zIndex: 20,
+            }}
+          >
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="hero-cover-heading"
+            >
+              <Cover>Graphic Designer</Cover>
+            </motion.h1>
+
+            {/* Tagline beside Graphic Designer (under the 3 socials) */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -288,6 +318,8 @@ const Hero = () => {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '12px',
+                paddingBottom: '0.4em',
+                marginRight: '20px',
               }}
             >
               <div style={{
