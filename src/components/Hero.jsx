@@ -216,7 +216,8 @@ const Hero = () => {
               transition={{ delay: 0.25, duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
               className="hero-cover-heading"
             >
-              Web, AI Engineer &amp; <br />
+              Web Dev, <br />
+              AI Engineer &amp; <br />
               <Cover>Graphic Designer</Cover>
             </motion.h1>
           </div>

@@ -50,31 +50,33 @@ const LINE_2_IMAGES = [
   },
 ];
 
-// Showcase Banners that auto-rotate smoothly
-const SHOWCASE_BANNERS = [
+import MorphSlider from './MorphSlider';
+
+// MorphSlider Showcase Slides of Zacky Andyka's Memorable Journey
+const MORPH_SLIDES = [
   {
-    url: '/gallery/fotbar panitia pkkmb vokasi 2025.webp',
-    alt: 'Dokumentasi Kepanitiaan Bersama PKKMB Vokasi 2025',
+    image: '/gallery/fotbar panitia pkkmb vokasi 2025.webp',
+    caption: 'Dokumentasi Kepanitiaan Bersama PKKMB Vokasi 2025',
   },
   {
-    url: '/gallery/Pelantikan HIMTI.webp',
-    alt: 'Seremoni Pelantikan Pengurus HIMTI USU',
+    image: '/gallery/Pelantikan HIMTI.webp',
+    caption: 'Seremoni Pelantikan Pengurus HIMTI USU',
   },
   {
-    url: '/gallery/foto bersama karyawan (magang di BSI).webp',
-    alt: 'Kebersamaan Magang BSI KCP Medan Area',
+    image: '/gallery/foto bersama karyawan (magang di BSI).webp',
+    caption: 'Kebersamaan Magang BSI KCP Medan Area',
   },
   {
-    url: '/gallery/mengajar komputer di pkbm bintula 16_9.webp',
-    alt: 'Kegiatan Pengajaran Literasi Komputer di PKBM',
+    image: '/gallery/mengajar komputer di pkbm bintula 16_9.webp',
+    caption: 'Kegiatan Pengajaran Literasi Komputer di PKBM',
   },
   {
-    url: '/gallery/expo vokasi usu 2024 4_3.webp',
-    alt: 'Pameran Karya Inovasi Expo Vokasi USU',
+    image: '/gallery/expo vokasi usu 2024 4_3.webp',
+    caption: 'Pameran Karya Inovasi Expo Vokasi USU',
   },
   {
-    url: '/gallery/fotbar wisuda.webp',
-    alt: 'Momen Wisuda Sarjana Teknik Informatika USU',
+    image: '/gallery/fotbar wisuda.webp',
+    caption: 'Momen Wisuda Sarjana Teknik Informatika USU Cum Laude',
   },
 ];
 
@@ -178,20 +180,11 @@ export default function Hero8({ onExploreClick }) {
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: true, amount: 0.1 });
   const [mounted, setMounted] = useState(false);
-  const [bannerIndex, setBannerIndex] = useState(0);
   const { playClick } = useSoundContext();
 
   useEffect(() => {
     const timer = setTimeout(() => setMounted(true), 80);
     return () => clearTimeout(timer);
-  }, []);
-
-  // Auto-rotate showcase banner every 5 seconds with crossfade
-  useEffect(() => {
-    const bannerTimer = setInterval(() => {
-      setBannerIndex((prev) => (prev + 1) % SHOWCASE_BANNERS.length);
-    }, 5000);
-    return () => clearInterval(bannerTimer);
   }, []);
 
   const active = isInView || mounted;
@@ -264,7 +257,7 @@ export default function Hero8({ onExploreClick }) {
             An archive of captured moments, creative media, and visual stories from my journey in design, university events, and personal achievements.
           </motion.p>
 
-          {/* Large Showcase Banner with Auto-rotating Crossfade Photos */}
+          {/* Large Showcase MorphSlider with WebGL Melt Transitions */}
           <motion.div
             initial={{ opacity: 0, y: 32 }}
             animate={active ? { opacity: 1, y: 0 } : {}}
@@ -272,27 +265,20 @@ export default function Hero8({ onExploreClick }) {
             className="hero8-banner-card"
           >
             <div className="hero8-banner-aspect">
-              <AnimatePresence initial={false}>
-                <motion.img
-                  key={SHOWCASE_BANNERS[bannerIndex].url}
-                  src={SHOWCASE_BANNERS[bannerIndex].url}
-                  alt={SHOWCASE_BANNERS[bannerIndex].alt}
-                  className="hero8-banner-img"
-                  initial={{ opacity: 0, scale: 1.02 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.8, ease: 'easeInOut' }}
-                  style={{
-                    position: 'absolute',
-                    inset: 0,
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                  }}
-                  loading="eager"
-                />
-              </AnimatePresence>
-              <div aria-hidden="true" className="hero8-banner-overlay" />
+              <MorphSlider
+                items={MORPH_SLIDES}
+                transition="melt"
+                intensity={0.55}
+                scale={2.4}
+                aberration={0.35}
+                drift={0.3}
+                autoplay={true}
+                autoplayDelay={4}
+                radius={20}
+                showCaptions={true}
+                showControls={true}
+                showIndicators={true}
+              />
             </div>
           </motion.div>
 
@@ -412,35 +398,14 @@ export default function Hero8({ onExploreClick }) {
           border-radius: clamp(14px, 2vw, 22px);
           border: 1px solid var(--border);
           box-shadow: 0 20px 60px var(--shadow-color);
-          background: var(--surface);
+          background: #0c0c0e;
         }
 
         .hero8-banner-aspect {
           position: relative;
           width: 100%;
+          height: clamp(280px, 42vw, 540px);
           overflow: hidden;
-          aspect-ratio: 16 / 9;
-        }
-
-        @media (min-width: 640px) {
-          .hero8-banner-aspect {
-            aspect-ratio: 21 / 9;
-          }
-        }
-
-        .hero8-banner-img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          display: block;
-        }
-
-        .hero8-banner-overlay {
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(to top, rgba(0,0,0,0.3) 0%, transparent 40%);
-          pointer-events: none;
-          z-index: 2;
         }
 
         .hero8-explore-btn {

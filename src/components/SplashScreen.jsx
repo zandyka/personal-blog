@@ -15,8 +15,8 @@ export default function SplashScreen({ onComplete }) {
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
 
-    // Progress animation coordinated with accelerated StrokeText draw + wipe (~1.65s)
-    const duration = 1650;
+    // Smoothly paced StrokeText draw + wipe with comfortable viewing time (~2.1s)
+    const duration = 2100;
     const startTime = performance.now();
     let animId;
 
@@ -37,7 +37,7 @@ export default function SplashScreen({ onComplete }) {
             playWhoosh?.();
           } catch {}
           onComplete?.();
-        }, 180);
+        }, 220);
 
         return () => clearTimeout(exitTimer);
       }
@@ -145,10 +145,10 @@ export default function SplashScreen({ onComplete }) {
             strokeColor={isLight ? '#2563EB' : '#FF3B1D'}
             fillColor={isLight ? '#19181A' : '#FFFFFF'}
             strokeWidth={1.6}
-            drawDuration={0.95}
-            fillDelay={0.04}
-            stagger={0.03}
-            wipeDuration={0.3}
+            drawDuration={1.15}
+            fillDelay={0.05}
+            stagger={0.035}
+            wipeDuration={0.34}
             wipeEase="power2.out"
             ease="power2.out"
             trigger="mount"

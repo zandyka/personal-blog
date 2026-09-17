@@ -62,6 +62,7 @@ function AppInner() {
             <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/album" element={<AlbumPage />} />
+            <Route path="/gallery" element={<AlbumPage />} />
             <Route path="/playground" element={<PlaygroundPage />} />
           </Routes>
         </AnimatePresence>
