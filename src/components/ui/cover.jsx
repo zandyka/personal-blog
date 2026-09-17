@@ -17,10 +17,10 @@ export const Cover = ({
     const updateDimensions = () => {
       if (ref.current) {
         const width = ref.current.offsetWidth || 300;
-        const height = ref.current.offsetHeight || 60;
+        const height = ref.current.offsetHeight || 80;
         setContainerWidth(width);
 
-        const numberOfBeams = Math.min(6, Math.max(3, Math.floor(height / 14)));
+        const numberOfBeams = Math.min(5, Math.max(3, Math.floor(height / 22)));
         const positions = Array.from(
           { length: numberOfBeams },
           (_, i) => (i + 1) * (height / (numberOfBeams + 1))
@@ -49,7 +49,7 @@ export const Cover = ({
             exit={{ opacity: 0 }}
             transition={{
               opacity: {
-                duration: 0.2,
+                duration: 0.25,
               },
             }}
             className="cover-sparkles-wrapper"
@@ -92,8 +92,8 @@ export const Cover = ({
         <Beam
           key={index}
           hovered={hovered}
-          duration={Math.random() * 2 + 1}
-          delay={Math.random() * 2 + 1}
+          duration={Math.random() * 2 + 4.5}
+          delay={Math.random() * 2 + 2}
           width={containerWidth || 400}
           style={{
             top: `${position}px`,
@@ -102,27 +102,54 @@ export const Cover = ({
       ))}
 
       <motion.span
-        animate={{
-          scale: hovered ? 0.94 : 1,
-          x: hovered ? [0, -8, 8, -8, 8, 0] : 0,
-          y: hovered ? [0, 6, -6, 6, -6, 0] : 0,
-        }}
-        transition={{
-          duration: 0.2,
-          x: {
-            duration: 0.22,
-            repeat: Infinity,
-            repeatType: 'loop',
-          },
-          y: {
-            duration: 0.22,
-            repeat: Infinity,
-            repeatType: 'loop',
-          },
-          scale: {
-            duration: 0.2,
-          },
-        }}
+        animate={
+          hovered
+            ? {
+                scale: 0.96,
+                x: [-3, 3, -3],
+                y: [2, -2, 2],
+              }
+            : {
+                scale: 1,
+                x: 0,
+                y: 0,
+              }
+        }
+        transition={
+          hovered
+            ? {
+                x: {
+                  duration: 0.65,
+                  repeat: Infinity,
+                  repeatType: 'reverse',
+                  ease: 'easeInOut',
+                },
+                y: {
+                  duration: 0.65,
+                  repeat: Infinity,
+                  repeatType: 'reverse',
+                  ease: 'easeInOut',
+                },
+                scale: {
+                  duration: 0.25,
+                  ease: 'easeOut',
+                },
+              }
+            : {
+                x: {
+                  duration: 0.35,
+                  ease: [0.16, 1, 0.3, 1],
+                },
+                y: {
+                  duration: 0.35,
+                  ease: [0.16, 1, 0.3, 1],
+                },
+                scale: {
+                  duration: 0.35,
+                  ease: [0.16, 1, 0.3, 1],
+                },
+              }
+        }
         className={cn('cover-badge-text', className)}
       >
         {children}
@@ -192,11 +219,11 @@ export const Beam = ({
             y2: 0,
           }}
           transition={{
-            duration: hovered ? 0.5 : duration ?? 2,
+            duration: hovered ? 0.75 : (duration ?? 5),
             ease: 'linear',
             repeat: Infinity,
-            delay: hovered ? Math.random() * (1 - 0.2) + 0.2 : 0,
-            repeatDelay: hovered ? Math.random() * (2 - 1) + 1 : delay ?? 1,
+            delay: hovered ? Math.random() * 0.3 + 0.1 : 0,
+            repeatDelay: hovered ? Math.random() * 0.6 + 0.4 : (delay ?? 2.5),
           }}
         >
           <stop stopColor="#2EB9DF" stopOpacity="0" />

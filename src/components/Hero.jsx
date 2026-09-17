@@ -189,16 +189,16 @@ const Hero = () => {
             </div>
           </motion.div>
 
-          {/* Main Cover Hero Title from tekshero.txt */}
+          {/* Main Cover Hero Title */}
           <div style={{ position: 'relative', zIndex: 20 }}>
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.25, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ delay: 0.25, duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
               className="hero-cover-heading"
             >
               Web, AI Engineer &amp; <br />
-              at <Cover>Graphic Designer</Cover>
+              <Cover>Graphic Designer</Cover>
             </motion.h1>
           </div>
 
