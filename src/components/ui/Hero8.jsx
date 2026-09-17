@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { ArrowDown } from 'lucide-react';
 import { useSoundContext } from './SoundProvider';
 
@@ -50,10 +50,33 @@ const LINE_2_IMAGES = [
   },
 ];
 
-const SHOWCASE_BANNER = {
-  url: '/gallery/fotbar panitia pkkmb vokasi 2025.webp',
-  alt: 'Dokumentasi Kepanitiaan Bersama PKKMB Vokasi 2025',
-};
+// Showcase Banners that auto-rotate smoothly
+const SHOWCASE_BANNERS = [
+  {
+    url: '/gallery/fotbar panitia pkkmb vokasi 2025.webp',
+    alt: 'Dokumentasi Kepanitiaan Bersama PKKMB Vokasi 2025',
+  },
+  {
+    url: '/gallery/Pelantikan HIMTI.webp',
+    alt: 'Seremoni Pelantikan Pengurus HIMTI USU',
+  },
+  {
+    url: '/gallery/foto bersama karyawan (magang di BSI).webp',
+    alt: 'Kebersamaan Magang BSI KCP Medan Area',
+  },
+  {
+    url: '/gallery/mengajar komputer di pkbm bintula 16_9.webp',
+    alt: 'Kegiatan Pengajaran Literasi Komputer di PKBM',
+  },
+  {
+    url: '/gallery/expo vokasi usu 2024 4_3.webp',
+    alt: 'Pameran Karya Inovasi Expo Vokasi USU',
+  },
+  {
+    url: '/gallery/fotbar wisuda.webp',
+    alt: 'Momen Wisuda Sarjana Teknik Informatika USU',
+  },
+];
 
 function HeroLine({
   leftText,
@@ -76,11 +99,11 @@ function HeroLine({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Shuffle photos every 3 seconds as requested
+  // Reverted shuffle interval to standard 5 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % images.length);
-    }, 3000);
+    }, 5000);
     return () => clearInterval(timer);
   }, [images.length]);
 
@@ -155,11 +178,20 @@ export default function Hero8({ onExploreClick }) {
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: true, amount: 0.1 });
   const [mounted, setMounted] = useState(false);
+  const [bannerIndex, setBannerIndex] = useState(0);
   const { playClick } = useSoundContext();
 
   useEffect(() => {
     const timer = setTimeout(() => setMounted(true), 80);
     return () => clearTimeout(timer);
+  }, []);
+
+  // Auto-rotate showcase banner every 5 seconds with crossfade
+  useEffect(() => {
+    const bannerTimer = setInterval(() => {
+      setBannerIndex((prev) => (prev + 1) % SHOWCASE_BANNERS.length);
+    }, 5000);
+    return () => clearInterval(bannerTimer);
   }, []);
 
   const active = isInView || mounted;
@@ -232,7 +264,7 @@ export default function Hero8({ onExploreClick }) {
             An archive of captured moments, creative media, and visual stories from my journey in design, university events, and personal achievements.
           </motion.p>
 
-          {/* Large Showcase Banner (16:9 on mobile, 21:9 on desktop) - Without caption pill */}
+          {/* Large Showcase Banner with Auto-rotating Crossfade Photos */}
           <motion.div
             initial={{ opacity: 0, y: 32 }}
             animate={active ? { opacity: 1, y: 0 } : {}}
@@ -240,12 +272,26 @@ export default function Hero8({ onExploreClick }) {
             className="hero8-banner-card"
           >
             <div className="hero8-banner-aspect">
-              <img
-                src={SHOWCASE_BANNER.url}
-                alt={SHOWCASE_BANNER.alt}
-                className="hero8-banner-img"
-                loading="eager"
-              />
+              <AnimatePresence initial={false}>
+                <motion.img
+                  key={SHOWCASE_BANNERS[bannerIndex].url}
+                  src={SHOWCASE_BANNERS[bannerIndex].url}
+                  alt={SHOWCASE_BANNERS[bannerIndex].alt}
+                  className="hero8-banner-img"
+                  initial={{ opacity: 0, scale: 1.02 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.8, ease: 'easeInOut' }}
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                  }}
+                  loading="eager"
+                />
+              </AnimatePresence>
               <div aria-hidden="true" className="hero8-banner-overlay" />
             </div>
           </motion.div>
@@ -394,6 +440,7 @@ export default function Hero8({ onExploreClick }) {
           inset: 0;
           background: linear-gradient(to top, rgba(0,0,0,0.3) 0%, transparent 40%);
           pointer-events: none;
+          z-index: 2;
         }
 
         .hero8-explore-btn {
