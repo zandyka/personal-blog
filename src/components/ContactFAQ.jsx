@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import {
-  HelpCircle,
-  ChevronDown,
+  Plus,
+  Minus,
+  ArrowRight,
   Sparkles,
+  ChevronDown,
+  HelpCircle,
 } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
 
@@ -67,20 +70,19 @@ const FAQ_ITEMS = [
   },
 ];
 
-const INITIAL_COUNT = 4;
+const INITIAL_VISIBLE_COUNT = 5;
 
 export default function ContactFAQ() {
   const { playClick, playHover } = useSoundContext();
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
-  const [expandedId, setExpandedId] = useState('core-value');
+  const [activeId, setActiveId] = useState('core-value');
   const [showAll, setShowAll] = useState(false);
 
-  const displayedFaqs = showAll ? FAQ_ITEMS : FAQ_ITEMS.slice(0, INITIAL_COUNT);
-  const remainingCount = FAQ_ITEMS.length - INITIAL_COUNT;
+  const displayedFaqs = showAll ? FAQ_ITEMS : FAQ_ITEMS.slice(0, INITIAL_VISIBLE_COUNT);
 
-  const toggleAccordion = (id) => {
+  const toggleFAQ = (id) => {
     playClick();
-    setExpandedId(expandedId === id ? null : id);
+    setActiveId((prev) => (prev === id ? null : id));
   };
 
   const handleToggleShowAll = () => {
@@ -88,262 +90,545 @@ export default function ContactFAQ() {
     setShowAll((prev) => !prev);
   };
 
+  const handleScrollToContact = () => {
+    playClick();
+    const el = document.querySelector('.contact-main-split-grid') || document.querySelector('.contact-hero-header');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  const handleScrollToAI = () => {
+    playClick();
+    const el = document.querySelector('.chatbox-section') || document.querySelector('.chatbox-card');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   return (
-    <section
-      ref={ref}
-      className="faq-section"
-      style={{
-        padding: '54px 20px 24px',
-        maxWidth: '860px',
-        margin: '0 auto',
-        boxSizing: 'border-box',
-        width: '100%',
-      }}
-    >
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.45 }}
-        style={{ textAlign: 'center', marginBottom: '28px' }}
-      >
-        <div
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '5px 14px',
-            borderRadius: '999px',
-            background: 'var(--accent-dim)',
-            border: '1px solid var(--accent-border)',
-            color: 'var(--accent)',
-            fontSize: '0.78rem',
-            fontWeight: 700,
-            textTransform: 'uppercase',
-            letterSpacing: '2px',
-            marginBottom: '12px',
-          }}
-        >
-          <HelpCircle size={14} />
-          <span>Quick Answers &bull; FAQ</span>
-        </div>
-        <h2
-          style={{
-            fontSize: 'clamp(1.7rem, 3.2vw, 2.3rem)',
-            fontWeight: 800,
-            color: 'var(--text)',
-            letterSpacing: '-0.025em',
-            margin: '0 0 10px',
-          }}
-        >
-          Pertanyaan yang Sering Diajukan
-        </h2>
-        <p
-          style={{
-            color: 'var(--text-muted)',
-            fontSize: '0.92rem',
-            maxWidth: '560px',
-            margin: '0 auto',
-            lineHeight: 1.6,
-          }}
-        >
-          Jawaban lugas seputar latar belakang, ketersediaan kerja, spesialisasi teknis, dan alur kolaborasi profesional.
-        </p>
-      </motion.div>
+    <section ref={ref} className="faq2-section">
+      <div className="faq2-container">
+        <div className="faq2-grid">
+          {/* Left Column: Sticky Header & Action Buttons */}
+          <div className="faq2-left-col">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.45 }}
+              className="faq2-badge"
+            >
+              <HelpCircle size={14} />
+              <span>Quick Answers &bull; FAQ</span>
+            </motion.div>
 
-      {/* Accordion List */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        <AnimatePresence initial={false}>
-          {displayedFaqs.map((faq, idx) => {
-            const isExpanded = expandedId === faq.id;
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.05 }}
+              className="faq2-headline"
+            >
+              Ready to <br className="faq2-br-desktop" />
+              collaborate?
+            </motion.h2>
 
-            return (
-              <motion.div
-                key={faq.id}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.28, delay: idx < INITIAL_COUNT ? idx * 0.04 : (idx - INITIAL_COUNT) * 0.04 }}
-                className="faq-accordion-item"
-                style={{
-                  borderRadius: '16px',
-                  background: 'var(--surface)',
-                  border: isExpanded ? '1px solid var(--accent-border)' : '1px solid var(--border)',
-                  overflow: 'hidden',
-                  boxShadow: isExpanded ? '0 8px 24px var(--shadow-color)' : 'none',
-                  transition: 'border-color 0.25s, box-shadow 0.25s',
-                }}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="faq2-subtext"
+            >
+              Semua jawaban ringkas seputar spesialisasi teknis, ketersediaan kerja, kepatuhan NDA, dan alur kolaborasi profesional bersama Zacky Andyka.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.15 }}
+              className="faq2-actions"
+            >
+              <button
+                type="button"
+                onClick={handleScrollToContact}
+                onMouseEnter={playHover}
+                className="faq2-btn-primary"
               >
-                {/* Question Header */}
+                Kirim Pesan
+              </button>
+
+              <button
+                type="button"
+                onClick={handleScrollToAI}
+                onMouseEnter={playHover}
+                className="faq2-btn-secondary"
+              >
+                <span>Tanya Asisten AI</span>
+                <ArrowRight size={15} className="faq2-btn-arrow" />
+              </button>
+            </motion.div>
+          </div>
+
+          {/* Right Column: Message Bubble FAQ List */}
+          <div className="faq2-right-col">
+            <div className="faq2-list">
+              {displayedFaqs.map((item, idx) => {
+                const isActive = activeId === item.id;
+
+                return (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={inView ? { opacity: 1, y: 0 } : {}}
+                    transition={{
+                      duration: 0.45,
+                      delay: idx < INITIAL_VISIBLE_COUNT ? idx * 0.04 : 0.02,
+                    }}
+                    className="faq2-item"
+                  >
+                    {/* Question Row: Bubble + Circle Toggle */}
+                    <div className="faq2-question-row">
+                      <motion.button
+                        type="button"
+                        onClick={() => toggleFAQ(item.id)}
+                        onMouseEnter={playHover}
+                        whileHover={{ scale: 1.012 }}
+                        whileTap={{ scale: 0.988 }}
+                        className={`faq2-question-bubble ${isActive ? 'is-active' : ''}`}
+                      >
+                        <span className="faq2-question-text">{item.question}</span>
+                      </motion.button>
+
+                      <button
+                        type="button"
+                        onClick={() => toggleFAQ(item.id)}
+                        onMouseEnter={playHover}
+                        className={`faq2-toggle-btn ${isActive ? 'is-active' : ''}`}
+                        aria-label={isActive ? 'Tutup jawaban' : 'Buka jawaban'}
+                      >
+                        {isActive ? (
+                          <Minus size={14} strokeWidth={2.5} />
+                        ) : (
+                          <Plus size={14} strokeWidth={2.5} />
+                        )}
+                      </button>
+                    </div>
+
+                    {/* Chat Bubble Reply (Answer) */}
+                    <AnimatePresence initial={false}>
+                      {isActive && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{
+                            height: { duration: 0.38, ease: [0.4, 0, 0.2, 1] },
+                            opacity: { duration: 0.28, ease: 'easeInOut' },
+                          }}
+                          className="faq2-answer-wrapper"
+                        >
+                          <motion.div
+                            initial={{ scale: 0.85, y: -8 }}
+                            animate={{ scale: 1, y: 0 }}
+                            exit={{ scale: 0.85, y: -8 }}
+                            transition={{ duration: 0.28, ease: [0.4, 0, 0.2, 1] }}
+                            className="faq2-bubble-container"
+                          >
+                            <div className="faq2-answer-bubble">
+                              <p className="faq2-answer-text">{item.answer}</p>
+                              {item.tag && (
+                                <div className="faq2-answer-tag">
+                                  <Sparkles size={11} />
+                                  <span>{item.tag}</span>
+                                </div>
+                              )}
+                            </div>
+                          </motion.div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            {/* Expand / Collapse All Toggle */}
+            {FAQ_ITEMS.length > INITIAL_VISIBLE_COUNT && (
+              <div className="faq2-more-wrap">
                 <button
                   type="button"
-                  onClick={() => toggleAccordion(faq.id)}
+                  onClick={handleToggleShowAll}
                   onMouseEnter={playHover}
-                  className="faq-question-btn"
-                  style={{
-                    width: '100%',
-                    padding: '15px 18px',
-                    background: 'none',
-                    border: 'none',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    textAlign: 'left',
-                    cursor: 'pointer',
-                    gap: '12px',
-                  }}
+                  className="faq2-more-btn"
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
-                    <span
-                      style={{
-                        fontSize: '11px',
-                        fontWeight: 700,
-                        color: isExpanded ? 'var(--accent)' : 'var(--text-dim)',
-                        padding: '2px 8px',
-                        borderRadius: '6px',
-                        background: 'var(--surface-2)',
-                        border: '1px solid var(--border)',
-                        flexShrink: 0,
-                      }}
-                    >
-                      {idx < 9 ? `0${idx + 1}` : idx + 1}
-                    </span>
-                    <span
-                      style={{
-                        fontSize: 'clamp(0.88rem, 1.15vw, 0.98rem)',
-                        fontWeight: 700,
-                        color: isExpanded ? 'var(--accent)' : 'var(--text)',
-                        transition: 'color 0.2s ease',
-                        lineHeight: 1.45,
-                      }}
-                    >
-                      {faq.question}
-                    </span>
-                  </div>
-
-                  <div
+                  <span>
+                    {showAll
+                      ? 'Tampilkan Lebih Sedikit'
+                      : `Lihat Pertanyaan Lainnya (${FAQ_ITEMS.length - INITIAL_VISIBLE_COUNT}+)`}
+                  </span>
+                  <ChevronDown
+                    size={15}
                     style={{
-                      width: '30px',
-                      height: '30px',
-                      borderRadius: '50%',
-                      background: isExpanded ? 'var(--accent-dim)' : 'var(--surface-2)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: isExpanded ? 'var(--accent)' : 'var(--text-muted)',
-                      flexShrink: 0,
-                      transition: 'all 0.25s ease',
-                      transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
+                      transform: showAll ? 'rotate(180deg)' : 'rotate(0deg)',
+                      transition: 'transform 0.25s ease',
                     }}
-                  >
-                    <ChevronDown size={15} />
-                  </div>
+                  />
                 </button>
-
-                {/* Collapsible Answer */}
-                <AnimatePresence initial={false}>
-                  {isExpanded && (
-                    <motion.div
-                      key="content"
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }}
-                      style={{ overflow: 'hidden' }}
-                    >
-                      <div
-                        className="faq-answer-inner"
-                        style={{
-                          borderTop: '1px dashed var(--border)',
-                          padding: '12px 18px 16px 46px',
-                        }}
-                      >
-                        <p
-                          style={{
-                            margin: '0 0 10px',
-                            color: 'var(--text-muted)',
-                            fontSize: '0.88rem',
-                            lineHeight: 1.62,
-                          }}
-                        >
-                          {faq.answer}
-                        </p>
-                        <span
-                          style={{
-                            display: 'inline-block',
-                            fontSize: '10.5px',
-                            fontWeight: 600,
-                            color: 'var(--accent)',
-                            background: 'var(--accent-dim)',
-                            padding: '2px 8px',
-                            borderRadius: '4px',
-                            border: '1px solid var(--accent-border)',
-                          }}
-                        >
-                          &bull; {faq.tag}
-                        </span>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            );
-          })}
-        </AnimatePresence>
-      </div>
-
-      {/* More Questions? Expand/Collapse Button */}
-      <div style={{ textAlign: 'center', marginTop: '22px' }}>
-        <button
-          type="button"
-          onClick={handleToggleShowAll}
-          onMouseEnter={playHover}
-          className="faq-more-btn"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '9px 20px',
-            borderRadius: '999px',
-            background: 'var(--surface)',
-            border: '1px solid var(--border)',
-            color: 'var(--text)',
-            fontSize: '0.85rem',
-            fontWeight: 700,
-            cursor: 'pointer',
-            transition: 'all 0.2s ease',
-            boxShadow: '0 4px 14px var(--shadow-color)',
-          }}
-        >
-          <span>{showAll ? 'Show Less' : `More Questions? (${remainingCount}+)`}</span>
-          <ChevronDown
-            size={15}
-            style={{
-              transform: showAll ? 'rotate(180deg)' : 'rotate(0deg)',
-              transition: 'transform 0.25s ease',
-              color: 'var(--accent)',
-            }}
-          />
-        </button>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
       <style>{`
-        .faq-more-btn:hover {
-          border-color: var(--accent-border) !important;
-          background: var(--surface-2) !important;
-          color: var(--accent) !important;
+        .faq2-section {
+          width: 100%;
+          box-sizing: border-box;
+          padding: clamp(48px, 7vw, 84px) 24px clamp(36px, 5vw, 60px);
+        }
+
+        .faq2-container {
+          max-width: 1260px;
+          margin: 0 auto;
+          width: 100%;
+          box-sizing: border-box;
+        }
+
+        .faq2-grid {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) minmax(0, 1.75fr);
+          gap: clamp(36px, 5vw, 68px);
+          align-items: start;
+        }
+
+        /* Left Column Sticky Header */
+        .faq2-left-col {
+          display: flex;
+          flex-direction: column;
+          position: sticky;
+          top: 100px;
+          align-self: flex-start;
+        }
+
+        .faq2-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 6px 14px;
+          border-radius: 999px;
+          background: var(--accent-dim);
+          border: 1px solid var(--accent-border);
+          color: var(--accent);
+          font-size: 0.78rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 1.8px;
+          margin-bottom: 18px;
+          width: fit-content;
+        }
+
+        .faq2-headline {
+          font-size: clamp(2.4rem, 4.2vw, 3.8rem);
+          font-weight: 800;
+          color: var(--text);
+          letter-spacing: -0.035em;
+          line-height: 1.08;
+          margin: 0 0 16px;
+        }
+
+        .faq2-subtext {
+          color: var(--text-muted);
+          font-size: clamp(0.92rem, 1.15vw, 1.02rem);
+          line-height: 1.62;
+          margin: 0 0 28px;
+          max-width: 440px;
+        }
+
+        .faq2-actions {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          flex-wrap: wrap;
+        }
+
+        .faq2-btn-primary {
+          padding: 13px 26px;
+          border-radius: 999px;
+          background: var(--text);
+          color: var(--bg);
+          font-weight: 700;
+          font-size: 0.92rem;
+          border: none;
+          cursor: pointer;
+          transition: all 0.22s ease;
+          box-shadow: 0 4px 18px var(--shadow-color);
+          white-space: nowrap;
+        }
+        .faq2-btn-primary:hover {
+          opacity: 0.92;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 24px var(--shadow-color);
+        }
+
+        .faq2-btn-secondary {
+          padding: 12px 22px;
+          border-radius: 999px;
+          background: transparent;
+          border: 1px solid var(--border);
+          color: var(--text);
+          font-weight: 600;
+          font-size: 0.92rem;
+          cursor: pointer;
+          transition: all 0.22s ease;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          white-space: nowrap;
+        }
+        .faq2-btn-secondary:hover {
+          border-color: var(--accent-border);
+          color: var(--accent);
+          background: var(--surface-2);
+          transform: translateY(-2px);
+        }
+        .faq2-btn-arrow {
+          transition: transform 0.2s ease;
+        }
+        .faq2-btn-secondary:hover .faq2-btn-arrow {
+          transform: translateX(4px);
+        }
+
+        /* Right Column FAQ Stream */
+        .faq2-right-col {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          min-width: 0;
+        }
+
+        .faq2-list {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          width: 100%;
+        }
+
+        .faq2-item {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+        }
+
+        .faq2-question-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 14px;
+          width: 100%;
+        }
+
+        .faq2-question-bubble {
+          flex: 1;
+          max-width: 86%;
+          padding: 13px 22px;
+          border-radius: 999px;
+          background: var(--surface-2);
+          border: 1px solid var(--border);
+          color: var(--text);
+          text-align: left;
+          cursor: pointer;
+          transition: background-color 0.22s ease, border-color 0.22s ease, color 0.22s ease;
+          display: flex;
+          align-items: center;
+          box-sizing: border-box;
+        }
+        .faq2-question-bubble:hover {
+          background: var(--surface-3);
+          border-color: var(--border-light);
+        }
+        .faq2-question-bubble.is-active {
+          background: var(--accent-dim);
+          border-color: var(--accent-border);
+          color: var(--accent);
+        }
+
+        .faq2-question-text {
+          font-size: clamp(0.9rem, 1.1vw, 1rem);
+          font-weight: 600;
+          line-height: 1.45;
+          letter-spacing: -0.01em;
+        }
+
+        .faq2-toggle-btn {
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          border: 1px solid var(--border);
+          background: var(--surface);
+          color: var(--text-muted);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          flex-shrink: 0;
+          transition: all 0.22s ease;
+        }
+        .faq2-toggle-btn:hover {
+          border-color: var(--accent-border);
+          color: var(--text);
+        }
+        .faq2-toggle-btn.is-active {
+          border-color: var(--accent-border);
+          background: var(--accent-dim);
+          color: var(--accent);
+        }
+
+        /* Reply Chat Bubble */
+        .faq2-answer-wrapper {
+          overflow: hidden;
+          width: 100%;
+        }
+
+        .faq2-bubble-container {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          width: 100%;
+          margin-top: 12px;
+          margin-bottom: 4px;
+        }
+
+        .faq2-answer-bubble {
+          align-self: flex-end;
+          margin-left: auto;
+          max-width: 86%;
+          padding: 15px 22px;
+          border-radius: 20px 20px 4px 20px;
+          background: var(--accent);
+          color: #ffffff;
+          box-shadow: 0 8px 24px var(--accent-glow);
+          box-sizing: border-box;
+        }
+
+        .faq2-answer-text {
+          margin: 0;
+          font-size: clamp(0.88rem, 1.05vw, 0.96rem);
+          line-height: 1.62;
+          color: #ffffff;
+        }
+
+        .faq2-answer-tag {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          margin-top: 10px;
+          padding-top: 8px;
+          border-top: 1px solid rgba(255, 255, 255, 0.22);
+          font-size: 11px;
+          font-weight: 600;
+          color: rgba(255, 255, 255, 0.88);
+          letter-spacing: 0.5px;
+        }
+
+        /* Show More Toggle Button */
+        .faq2-more-wrap {
+          display: flex;
+          justify-content: center;
+          margin-top: 26px;
+          width: 100%;
+        }
+
+        .faq2-more-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 10px 22px;
+          border-radius: 999px;
+          background: var(--surface-2);
+          border: 1px solid var(--border);
+          color: var(--text);
+          font-size: 0.86rem;
+          font-weight: 700;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          box-shadow: 0 4px 14px var(--shadow-color);
+        }
+        .faq2-more-btn:hover {
+          border-color: var(--accent-border);
+          background: var(--surface-3);
+          color: var(--accent);
           transform: translateY(-1px);
         }
-        @media (max-width: 640px) {
-          .faq-section {
-            padding: 38px 12px 20px !important;
+
+        /* Tablet & Mobile Responsiveness */
+        @media (max-width: 1023px) {
+          .faq2-grid {
+            grid-template-columns: 1fr !important;
+            gap: 40px !important;
           }
-          .faq-question-btn {
-            padding: 12px 14px !important;
+          .faq2-left-col {
+            position: static !important;
+            top: auto !important;
+          }
+          .faq2-headline {
+            font-size: 2.5rem !important;
+          }
+          .faq2-br-desktop {
+            display: none;
+          }
+          .faq2-subtext {
+            max-width: 100% !important;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .faq2-section {
+            padding: 36px 14px 44px !important;
+          }
+          .faq2-headline {
+            font-size: 2rem !important;
+            margin-bottom: 12px !important;
+          }
+          .faq2-subtext {
+            font-size: 0.88rem !important;
+            line-height: 1.55 !important;
+            margin-bottom: 20px !important;
+          }
+          .faq2-actions {
+            width: 100% !important;
+            flex-direction: column !important;
+            align-items: stretch !important;
             gap: 10px !important;
           }
-          .faq-answer-inner {
-            padding: 10px 14px 14px 14px !important;
+          .faq2-btn-primary,
+          .faq2-btn-secondary {
+            width: 100% !important;
+            justify-content: center !important;
+            text-align: center !important;
+            padding: 12px 18px !important;
+          }
+          .faq2-list {
+            gap: 14px !important;
+          }
+          .faq2-question-bubble {
+            max-width: 82% !important;
+            padding: 10px 16px !important;
+          }
+          .faq2-question-text {
+            font-size: 0.85rem !important;
+            line-height: 1.4 !important;
+          }
+          .faq2-toggle-btn {
+            width: 28px !important;
+            height: 28px !important;
+          }
+          .faq2-answer-bubble {
+            max-width: 90% !important;
+            padding: 12px 16px !important;
+            border-radius: 16px 16px 4px 16px !important;
+          }
+          .faq2-answer-text {
+            font-size: 0.84rem !important;
+            line-height: 1.55 !important;
           }
         }
       `}</style>
