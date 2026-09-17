@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import MainframeHero from '../components/MainframeHero';
+import Hero8 from '../components/ui/Hero8';
 import Gallery from '../components/Gallery';
 
 export default function AlbumPage() {
@@ -17,8 +17,8 @@ export default function AlbumPage() {
 
   return (
     <div style={{ position: 'relative', width: '100%', minHeight: '100vh', background: 'var(--bg)' }}>
-      {/* 1. Mainframe 3D Cat Hero Section */}
-      <MainframeHero onExploreClick={handleScrollToAlbum} />
+      {/* 1. React Bits Pro Hero 8 Section */}
+      <Hero8 onExploreClick={handleScrollToAlbum} />
 
       {/* 2. Gallery Section — Complete 21-Photo Visual Album */}
       <Gallery showAlbumButton={false} isFullAlbum={true} />
