@@ -326,3 +326,162 @@ html[data-theme-transition="crossfade"]::view-transition-new(root) {
 .no-transitions *::after {
   transition: none !important;
 }
+
+/* ============================================
+   ACETERNITY COVER & HERO TEXT COMPONENT
+   ============================================ */
+.hero-cover-heading {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(2.2rem, 5.8vw, 5.6rem);
+  font-weight: 700;
+  line-height: 1.14;
+  letter-spacing: -0.035em;
+  margin: 0;
+  padding: 8px 0;
+  position: relative;
+  z-index: 20;
+  background-image: linear-gradient(180deg, #b4b4bc 0%, #ffffff 50%, #ffffff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@media (max-width: 640px) {
+  .hero-cover-heading {
+    font-size: clamp(1.55rem, 7.2vw, 2.35rem);
+    line-height: 1.25;
+    letter-spacing: -0.025em;
+  }
+}
+
+html.light .hero-cover-heading {
+  background-image: linear-gradient(180deg, #18181b 0%, #27272a 60%, #3f3f46 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.cover-badge-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  vertical-align: middle;
+  line-height: 1;
+  padding: 0.08em 0.32em;
+  margin: 0 0.1em;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: visible;
+  cursor: default;
+  -webkit-text-fill-color: initial;
+}
+
+.cover-badge-container:hover {
+  background: #09090b !important;
+  border-color: rgba(255, 255, 255, 0.24) !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.65), 0 0 24px rgba(46, 185, 223, 0.3);
+}
+
+html.light .cover-badge-container {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+html.light .cover-badge-container:hover {
+  background: #18181b !important;
+  border-color: #27272a !important;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.2), 0 0 20px rgba(59, 130, 246, 0.25);
+}
+
+.cover-sparkles-wrapper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 10;
+  border-radius: inherit;
+  display: block;
+}
+
+.cover-sparkles-inner {
+  display: flex;
+  width: 200%;
+  height: 100%;
+}
+
+.cover-beam {
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  height: 1px !important;
+  pointer-events: none !important;
+  z-index: 15;
+}
+
+.cover-badge-text {
+  display: inline-block;
+  position: relative;
+  z-index: 20;
+  color: var(--text);
+  -webkit-text-fill-color: var(--text) !important;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+.cover-badge-container:hover .cover-badge-text {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+.cover-dot-icon {
+  position: absolute !important;
+  width: 6px !important;
+  height: 6px !important;
+  border-radius: 50% !important;
+  pointer-events: none !important;
+  z-index: 25;
+  background: rgba(255, 255, 255, 0.45);
+  transition: opacity 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+}
+
+html.light .cover-dot-icon {
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.cover-dot-tr {
+  top: -3px !important;
+  right: -3px !important;
+}
+
+.cover-dot-br {
+  bottom: -3px !important;
+  right: -3px !important;
+}
+
+.cover-dot-tl {
+  top: -3px !important;
+  left: -3px !important;
+}
+
+.cover-dot-bl {
+  bottom: -3px !important;
+  left: -3px !important;
+}
+
+.cover-badge-container:hover .cover-dot-icon {
+  opacity: 1;
+  background: #ffffff;
+  transform: scale(1.3);
+}

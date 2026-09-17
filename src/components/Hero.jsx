@@ -4,6 +4,7 @@ import { ArrowDown, ArrowDownRight, Github, Linkedin, Instagram, Mail, Sparkles 
 import { Link, useLocation } from 'react-router-dom';
 import { useSoundContext } from './ui/SoundProvider';
 import SpotlightOverlay from './ui/SpotlightOverlay';
+import { Cover } from './ui/cover';
 
 const GREETING_FONTS = [
   { name: 'Playfair Italic', font: "'Playfair Display', 'Georgia', serif", style: 'italic', weight: 600 },
@@ -188,71 +189,39 @@ const Hero = () => {
             </div>
           </motion.div>
 
-          {/* Line 1: GRAPHIC DESIGNER, */}
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.22, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            style={{
-              fontSize: 'clamp(2.3rem, 7.5vw, 7.6rem)',
-              fontWeight: 900,
-              lineHeight: 0.9,
-              letterSpacing: '-0.04em',
-              color: 'var(--text)',
-              margin: 0,
-              padding: 0,
-              textAlign: 'left',
-            }}
-            className="text-gradient-static"
-          >
-            GRAPHIC DESIGNER,
-          </motion.h1>
+          {/* Main Cover Hero Title from tekshero.txt */}
+          <div style={{ position: 'relative', zIndex: 20 }}>
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.25, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="hero-cover-heading"
+            >
+              Web, AI Engineer &amp; <br />
+              at <Cover>Graphic Designer</Cover>
+            </motion.h1>
+          </div>
 
-          {/* Line 2: WEB & with desktop floating socials */}
+          {/* Sub-row: Desktop Floating Socials & Tagline */}
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: '20px',
+              marginTop: '16px',
               position: 'relative',
-              gap: '24px',
+              zIndex: 20,
             }}
           >
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.36, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              style={{
-                fontSize: 'clamp(2.3rem, 7.5vw, 7.6rem)',
-                fontWeight: 900,
-                lineHeight: 0.9,
-                letterSpacing: '-0.04em',
-                color: 'var(--text)',
-                margin: 0,
-                padding: 0,
-                display: 'flex',
-                alignItems: 'center',
-              }}
-              className="text-gradient-static"
-            >
-              <span>WEB &amp;</span>
-              <motion.span
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}
-                style={{ display: 'inline-flex', margin: '0 0.08em', color: 'var(--accent)' }}
-              >
-                <Sparkles style={{ width: '0.36em', height: '0.36em' }} />
-              </motion.span>
-            </motion.h1>
-
-            {/* Desktop Socials Row - placed neatly on the right side of Line 2 */}
+            {/* Desktop Socials Row */}
             <div
               className="hero-socials-float"
               style={{
                 display: 'flex',
                 gap: '12px',
                 alignItems: 'center',
-                marginRight: '20px',
               }}
             >
               {SOCIALS.map(({ icon: Icon, href, label }, i) => (
@@ -263,7 +232,7 @@ const Hero = () => {
                   rel="noopener noreferrer"
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 0.85, scale: 1 }}
-                  transition={{ delay: 0.7 + i * 0.1, duration: 0.4 }}
+                  transition={{ delay: 0.6 + i * 0.1, duration: 0.4 }}
                   whileHover={{ scale: 1.15, opacity: 1 }}
                   onMouseEnter={() => { playHover(); setHoveredSocial(label); }}
                   onMouseLeave={() => setHoveredSocial(null)}
@@ -288,37 +257,8 @@ const Hero = () => {
                 </motion.a>
               ))}
             </div>
-          </div>
 
-          {/* Line 3: AI ENGINEER + Tagline */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'flex-end',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: '24px',
-            }}
-          >
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              style={{
-                fontSize: 'clamp(2.3rem, 7.5vw, 7.6rem)',
-                fontWeight: 900,
-                lineHeight: 0.9,
-                letterSpacing: '-0.04em',
-                color: 'var(--text)',
-                margin: 0,
-                padding: 0,
-              }}
-              className="text-gradient-static"
-            >
-              AI ENGINEER
-            </motion.h1>
-
-            {/* Tagline beside AI ENGINEER */}
+            {/* Tagline beside Socials */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -328,7 +268,6 @@ const Hero = () => {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '12px',
-                paddingBottom: '0.4em',
               }}
             >
               <div style={{
@@ -350,7 +289,7 @@ const Hero = () => {
                   textTransform: 'uppercase',
                   letterSpacing: '0.18em',
                   lineHeight: 1.6,
-                  maxWidth: '240px',
+                  maxWidth: '280px',
                   fontWeight: 500,
                   margin: 0,
                 }}
