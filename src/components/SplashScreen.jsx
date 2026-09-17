@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useSoundContext } from './ui/SoundProvider';
 import { useTheme } from '../hooks/useTheme';
+import StrokeText from './ui/StrokeText';
 
 export default function SplashScreen({ onComplete }) {
   const { playWhoosh, playSuccess } = useSoundContext();
@@ -14,8 +15,8 @@ export default function SplashScreen({ onComplete }) {
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
 
-    // Progress animation over ~1.4 seconds
-    const duration = 1400;
+    // Progress animation coordinated with StrokeText draw + wipe duration (~2.6s)
+    const duration = 2600;
     const startTime = performance.now();
     let animId;
 
@@ -128,61 +129,35 @@ export default function SplashScreen({ onComplete }) {
           padding: '0 24px',
         }}
       >
-        {/* Kinetic Typography "Hello I'm.." */}
+        {/* StrokeText Animated Heading "Hello I'm..." from React Bits */}
         <div
           style={{
-            display: 'inline-flex',
+            width: '100%',
+            maxWidth: 'min(92vw, 680px)',
+            margin: '0 auto 24px',
+            display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            marginBottom: '28px',
           }}
         >
-          <span
+          <StrokeText
+            text="Hello I'm..."
+            strokeColor={isLight ? '#2563EB' : '#FF3B1D'}
+            fillColor={isLight ? '#19181A' : '#FFFFFF'}
+            strokeWidth={1.8}
+            drawDuration={1.3}
+            fillDelay={0.15}
+            stagger={0.05}
+            ease="power2.out"
+            trigger="mount"
+            fillMode="wipe"
+            fontSize={96}
+            fontWeight={800}
+            letterSpacing={-2}
+            fontFamily="'Space Grotesk', 'Plus Jakarta Sans', sans-serif"
             style={{
-              fontFamily: "'Space Grotesk', sans-serif",
-              fontSize: 'clamp(2.4rem, 7vw, 5.2rem)',
-              fontWeight: 800,
-              color: isLight ? '#19181A' : '#ffffff',
-              letterSpacing: '-0.02em',
-              display: 'inline-flex',
-              alignItems: 'center',
-              userSelect: 'none',
-            }}
-          >
-            {"Hello I'm..".split('').map((char, index) => (
-              <motion.span
-                key={index}
-                initial={{ opacity: 0, y: 24, filter: 'blur(8px)' }}
-                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                transition={{
-                  delay: 0.1 + index * 0.05,
-                  duration: 0.4,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                style={{
-                  display: 'inline-block',
-                  color: char === '.' ? (isLight ? '#2563EB' : '#FF3B1D') : (isLight ? '#19181A' : '#ffffff'),
-                  fontWeight: char === '.' ? 900 : 700,
-                  textShadow: char === '.' ? (isLight ? '0 0 20px rgba(37, 99, 235, 0.5)' : '0 0 20px #FF3B1D') : (isLight ? '0 0 30px rgba(25, 24, 26, 0.08)' : '0 0 30px rgba(255, 255, 255, 0.2)'),
-                }}
-              >
-                {char === ' ' ? '\u00A0' : char}
-              </motion.span>
-            ))}
-          </span>
-
-          {/* Glowing Blinking Caret */}
-          <motion.span
-            animate={{ opacity: [1, 0, 1] }}
-            transition={{ duration: 0.6, repeat: Infinity, ease: 'linear' }}
-            style={{
-              display: 'inline-block',
-              width: 'clamp(3px, 0.5vw, 5px)',
-              height: 'clamp(2rem, 6vw, 4.4rem)',
-              background: isLight ? '#2563EB' : '#FF3B1D',
-              boxShadow: isLight ? '0 0 14px rgba(37, 99, 235, 0.6)' : '0 0 14px #FF3B1D',
-              marginLeft: '6px',
-              borderRadius: '2px',
+              width: '100%',
+              '--stroke-text-height': 'clamp(68px, 14vw, 125px)',
             }}
           />
         </div>
