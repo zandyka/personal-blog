@@ -5,6 +5,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { useSoundContext } from './ui/SoundProvider';
 import SpotlightOverlay from './ui/SpotlightOverlay';
 import { Cover } from './ui/cover';
+import { useTheme } from '../hooks/useTheme';
+import BlinkingSquares from './ui/BlinkingSquares';
 
 const GREETING_FONTS = [
   { name: 'Playfair Italic', font: "'Playfair Display', 'Georgia', serif", style: 'italic', weight: 600 },
@@ -29,6 +31,8 @@ const SOCIALS = [
 
 const Hero = () => {
   const { playClick, playHover } = useSoundContext();
+  const { theme } = useTheme();
+  const squareColor = theme === 'light' ? '#000000' : '#ffffff';
   const location = useLocation();
   const [hoveredSocial, setHoveredSocial] = useState(null);
   const [fontIndex, setFontIndex] = useState(0);
@@ -83,6 +87,22 @@ const Hero = () => {
         style={{ position: 'absolute', inset: 0, zIndex: 0 }}
       />
 
+      {/* Blinking Squares Background (React Bits Pro) */}
+      <BlinkingSquares
+        opacity={0.15}
+        squareColor={squareColor}
+        direction="right"
+        gridSize={52}
+        squareSize={0.57}
+        fadeStart={0.15}
+        fadeEnd={1.0}
+        falloff={1.25}
+        minBrightness={0.55}
+        twinkleSpeed={1.4}
+        twinkleStrength={0.94}
+        style={{ zIndex: 1 }}
+      />
+
       {/* Spotlight beams */}
       <SpotlightOverlay />
 
@@ -101,15 +121,14 @@ const Hero = () => {
         margin: '0 auto',
       }}>
 
-        {/* Hero text block - with generous left clearance from the Available sidebar */}
+        {/* Hero text block */}
         <div
           className="hero-text-container"
           style={{
             display: 'flex',
             flexDirection: 'column',
             gap: '6px',
-            padding: '0 clamp(20px, 3.5vw, 44px)',
-            paddingLeft: 'clamp(56px, 7vw, 110px)',
+            padding: '0 clamp(24px, 4.5vw, 64px)',
           }}
         >
 
