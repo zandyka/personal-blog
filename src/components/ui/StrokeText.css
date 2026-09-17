@@ -2,6 +2,7 @@
   display: block;
   width: 100%;
   line-height: 0;
+  font-family: 'Space Grotesk', sans-serif;
 }
 
 .stroke-text--hover {
@@ -12,9 +13,11 @@
   display: block;
   width: 100%;
   height: var(--stroke-text-height, 160px);
+  font-family: 'Space Grotesk', sans-serif;
 }
 
 .stroke-text__stroke,
 .stroke-text__fill {
+  font-family: 'Space Grotesk', sans-serif;
   user-select: none;
 }

@@ -15,8 +15,8 @@ export default function SplashScreen({ onComplete }) {
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
 
-    // Progress animation coordinated with StrokeText draw + wipe duration (~2.6s)
-    const duration = 2600;
+    // Progress animation coordinated with accelerated StrokeText draw + wipe (~1.65s)
+    const duration = 1650;
     const startTime = performance.now();
     let animId;
 
@@ -144,17 +144,19 @@ export default function SplashScreen({ onComplete }) {
             text="Hello I'm..."
             strokeColor={isLight ? '#2563EB' : '#FF3B1D'}
             fillColor={isLight ? '#19181A' : '#FFFFFF'}
-            strokeWidth={1.8}
-            drawDuration={1.3}
-            fillDelay={0.15}
-            stagger={0.05}
+            strokeWidth={1.6}
+            drawDuration={0.95}
+            fillDelay={0.04}
+            stagger={0.03}
+            wipeDuration={0.3}
+            wipeEase="power2.out"
             ease="power2.out"
             trigger="mount"
             fillMode="wipe"
             fontSize={96}
-            fontWeight={800}
-            letterSpacing={-2}
-            fontFamily="'Space Grotesk', 'Plus Jakarta Sans', sans-serif"
+            fontWeight={700}
+            letterSpacing="-0.02em"
+            fontFamily="'Space Grotesk', sans-serif"
             style={{
               width: '100%',
               '--stroke-text-height': 'clamp(68px, 14vw, 125px)',

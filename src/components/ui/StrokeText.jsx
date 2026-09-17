@@ -21,10 +21,12 @@ const StrokeText = ({
   ease = 'power2.out',
   trigger = 'mount',
   fillMode = 'wipe',
+  wipeDuration = 0.35,
+  wipeEase = 'power2.out',
   fontSize = 128,
   fontWeight = 800,
   letterSpacing = -4,
-  fontFamily = "'Space Grotesk', 'Plus Jakarta Sans', sans-serif",
+  fontFamily = "'Space Grotesk', sans-serif",
   reverse = false,
   className = '',
   style = {},
@@ -41,14 +43,14 @@ const StrokeText = ({
 
   const characters = useMemo(() => Array.from(String(text ?? '')), [text]);
 
-  const dash = Math.max(fontSize * 7, 200);
+  const dash = Math.max((typeof fontSize === 'number' ? fontSize : 96) * 7, 200);
 
   const fontStyle = useMemo(
     () => ({
       fontFamily,
-      fontSize: `${fontSize}px`,
+      fontSize: typeof fontSize === 'number' ? `${fontSize}px` : fontSize,
       fontWeight,
-      letterSpacing: `${letterSpacing}px`
+      letterSpacing: typeof letterSpacing === 'number' ? `${letterSpacing}px` : letterSpacing,
     }),
     [fontFamily, fontSize, fontWeight, letterSpacing]
   );
@@ -108,9 +110,10 @@ const StrokeText = ({
 
     const fillEnabled = fillMode !== 'none';
     const useWipe = fillEnabled && fillMode === 'wipe';
-    const fillDuration = Math.max(0.4, drawDuration * 0.5);
+    const fillDuration = wipeDuration !== undefined ? wipeDuration : 0.35;
     const staggerConfig = reverse ? { each: stagger, from: 'end' } : stagger;
     const targets = [...strokes, ...fills, wipe].filter(Boolean);
+    const wipeStartTime = Math.max(0, drawDuration * 0.75 + fillDelay);
 
     const setStart = () => {
       gsap.killTweensOf(targets);
@@ -150,14 +153,14 @@ const StrokeText = ({
       if (useWipe && wipe) {
         tl.to(
           wipe,
-          { attr: { width: box.width }, duration: fillDuration, ease: 'power2.inOut' },
-          drawDuration + fillDelay
+          { attr: { width: box.width }, duration: fillDuration, ease: wipeEase || 'power2.out' },
+          wipeStartTime
         );
       } else if (fillEnabled) {
         tl.to(
           fills,
           { opacity: 1, duration: fillDuration, ease: 'power2.out', stagger: staggerConfig },
-          drawDuration + fillDelay
+          wipeStartTime
         );
       }
 
@@ -247,7 +250,11 @@ const StrokeText = ({
           clipPath={fillMode === 'wipe' && box ? `url(#${wipeId})` : undefined}
         >
           {characters.map((char, index) => (
-            <tspan data-fill-char key={`f-${index}`}>
+            <tspan
+              data-fill-char
+              key={`f-${index}`}
+              fill={char === '.' ? strokeColor : fillColor}
+            >
               {char}
             </tspan>
           ))}
