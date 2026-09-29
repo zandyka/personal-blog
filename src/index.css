@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cinzel:wght@600;700;900&family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,500;1,700&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Space+Grotesk:wght@400;600;700;800&family=Syne:wght@700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Bebas+Neue&family=Caveat:wght@600;700&family=Cinzel:wght@600;700;900&family=Comfortaa:wght@700&family=Dancing+Script:wght@700&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500;600;700&family=Permanent+Marker&family=Playfair+Display:ital,wght@1,500;1,700&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Silkscreen:wght@400;700&family=Space+Grotesk:wght@400;600;700;800&family=Syne:wght@700;800&display=swap');
 
 /* ============================================
    DARK MODE (Default) — Bold Blaze & Obsidian
@@ -332,12 +332,12 @@ html[data-theme-transition="crossfade"]::view-transition-new(root) {
    ============================================ */
 .hero-cover-heading {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: clamp(2.2rem, 5.6vw, 6.4rem);
+  font-size: clamp(2.8rem, 6.8vw, 7.6rem);
   font-weight: 900;
   line-height: 0.94;
   letter-spacing: -0.04em;
   margin: 0;
-  padding: 6px 0;
+  padding: 4px 0;
   position: relative;
   z-index: 20;
   background: linear-gradient(135deg, var(--text) 20%, var(--accent) 70%, var(--accent-2) 100%);
@@ -346,24 +346,30 @@ html[data-theme-transition="crossfade"]::view-transition-new(root) {
   -webkit-text-fill-color: transparent;
 }
 
-@media (max-width: 1280px) and (min-width: 860px) {
+@media (max-width: 1400px) and (min-width: 1100px) {
   .hero-cover-heading {
-    font-size: clamp(2.2rem, 5vw, 4.8rem);
+    font-size: clamp(2.6rem, 6.2vw, 5.8rem);
+  }
+}
+
+@media (max-width: 1099px) and (min-width: 860px) {
+  .hero-cover-heading {
+    font-size: clamp(2.3rem, 5.2vw, 4.4rem);
   }
 }
 
 @media (max-width: 859px) {
   .hero-cover-heading {
-    font-size: clamp(2rem, 8vw, 3.8rem);
-    line-height: 1.05;
+    font-size: clamp(2.4rem, 10vw, 4.4rem);
+    line-height: 1.02;
     letter-spacing: -0.035em;
   }
 }
 
 @media (max-width: 480px) {
   .hero-cover-heading {
-    font-size: clamp(1.75rem, 8.2vw, 2.6rem);
-    line-height: 1.08;
+    font-size: clamp(2rem, 9.8vw, 3.2rem);
+    line-height: 1.06;
     letter-spacing: -0.03em;
   }
 }

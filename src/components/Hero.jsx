@@ -11,10 +11,18 @@ import BlinkingSquares from './ui/BlinkingSquares';
 const GREETING_FONTS = [
   { name: 'Playfair Italic', font: "'Playfair Display', 'Georgia', serif", style: 'italic', weight: 600 },
   { name: 'Plus Jakarta Sans', font: "'Plus Jakarta Sans', sans-serif", style: 'normal', weight: 700 },
-  { name: 'Caveat Script', font: "'Caveat', cursive", style: 'normal', weight: 700, sizeAdjust: true },
-  { name: 'Cinzel Roman', font: "'Cinzel', 'Times New Roman', serif", style: 'normal', weight: 700, letterSpacing: '0.06em' },
+  { name: 'Caveat Script', font: "'Caveat', cursive", style: 'normal', weight: 700, sizeAdjust: 1.2 },
+  { name: 'Cinzel Roman', font: "'Cinzel', 'Times New Roman', serif", style: 'normal', weight: 700, letterSpacing: '0.05em' },
+  { name: 'Bebas Neue', font: "'Bebas Neue', sans-serif", style: 'normal', weight: 400, letterSpacing: '0.08em', sizeAdjust: 1.15 },
   { name: 'Space Grotesk', font: "'Space Grotesk', sans-serif", style: 'normal', weight: 700 },
-  { name: 'Syne Display', font: "'Syne', sans-serif", style: 'italic', weight: 800 },
+  { name: 'Syne Display', font: "'Syne', sans-serif", style: 'normal', weight: 800 },
+  { name: 'JetBrains Mono', font: "'JetBrains Mono', monospace", style: 'normal', weight: 600, letterSpacing: '-0.02em' },
+  { name: 'Dancing Script', font: "'Dancing Script', cursive", style: 'normal', weight: 700, sizeAdjust: 1.18 },
+  { name: 'Silkscreen 8-Bit', font: "'Silkscreen', monospace", style: 'normal', weight: 700, sizeAdjust: 0.9, letterSpacing: '-0.02em' },
+  { name: 'Abril Fatface', font: "'Abril Fatface', serif", style: 'normal', weight: 400, sizeAdjust: 1.05 },
+  { name: 'Comfortaa Rounded', font: "'Comfortaa', cursive", style: 'normal', weight: 700 },
+  { name: 'DM Serif Italic', font: "'DM Serif Display', serif", style: 'italic', weight: 400, sizeAdjust: 1.08 },
+  { name: 'Permanent Marker', font: "'Permanent Marker', cursive", style: 'normal', weight: 400, sizeAdjust: 0.96 },
 ];
 
 const HERO_LINES = [
@@ -41,7 +49,7 @@ const Hero = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setFontIndex((prev) => (prev + 1) % GREETING_FONTS.length);
-    }, 1100);
+    }, 1400);
     return () => clearInterval(interval);
   }, []);
 
@@ -165,28 +173,29 @@ const Hero = () => {
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  minWidth: '56px',
+                  minWidth: 'clamp(60px, 5.2vw, 76px)',
                   justifyContent: 'flex-start',
                 }}
               >
-                <AnimatePresence mode="wait">
+                <AnimatePresence mode="popLayout">
                   <motion.span
                     key={fontIndex}
-                    initial={{ opacity: 0, y: 4, filter: 'blur(3px)' }}
+                    initial={{ opacity: 0, y: 3, filter: 'blur(2px)' }}
                     animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                    exit={{ opacity: 0, y: -4, filter: 'blur(3px)' }}
-                    transition={{ duration: 0.28, ease: 'easeInOut' }}
+                    exit={{ opacity: 0, y: -3, filter: 'blur(2px)' }}
+                    transition={{ duration: 0.2, ease: 'easeOut' }}
                     style={{
                       fontFamily: GREETING_FONTS[fontIndex].font,
                       fontStyle: GREETING_FONTS[fontIndex].style,
                       fontWeight: GREETING_FONTS[fontIndex].weight,
                       letterSpacing: GREETING_FONTS[fontIndex].letterSpacing || 'normal',
                       fontSize: GREETING_FONTS[fontIndex].sizeAdjust
-                        ? `calc(clamp(13px, 1.15vw, 15px) * 1.15)`
+                        ? `calc(clamp(13px, 1.15vw, 15px) * ${GREETING_FONTS[fontIndex].sizeAdjust})`
                         : 'clamp(13px, 1.15vw, 15px)',
                       color: 'var(--accent)',
                       display: 'inline-block',
                       lineHeight: 1,
+                      whiteSpace: 'nowrap',
                     }}
                   >
                     Hi, I'm
