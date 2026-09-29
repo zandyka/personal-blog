@@ -14,7 +14,7 @@ const SUGGESTIONS = [
   'Ceritakan pengalaman magang perbankan Zacky',
   'Apa proyek unggulan Handspeak AI?',
   'Berapa IPK dan asal kampus Zacky?',
-  'Apakah Zacky siap relokasi kerja?',
+  'Di mana domisili dan kesiapan kerja Zacky?',
   'Bagaimana cara menghubungi Zacky?',
 ];
 
@@ -96,11 +96,15 @@ function queryLocalMemory(query) {
     q.includes('kapan bisa mulai') ||
     (q.includes('siap') && (q.includes('kerja') || q.includes('gabung'))) ||
     q.includes('siap kerja di jakarta') ||
-    q.includes('available immediately')
+    q.includes('available immediately') ||
+    q.includes('domisili') ||
+    q.includes('lokasi') ||
+    q.includes('tinggal') ||
+    q.includes('jakarta')
   ) {
     return {
-      text: 'Zacky berstatus **Available Immediately** (siap bergabung secepatnya)!\n\nZacky sangat bersedia untuk bekerja secara **On-Site, Hybrid, maupun Remote**, dan siap **relokasi ke Jakarta atau kota lainnya** untuk peluang karir profesional di bidang Software Engineering, IT Support/Banking, atau Data Analytics.',
-      badge: 'Available Immediately & Relokasi',
+      text: 'Zacky berstatus **Available Immediately** (siap bergabung secepatnya)!\n\nSaat ini Zacky berdomisili di **Jakarta, Indonesia** dan sangat terbuka untuk bekerja secara **On-Site (Jakarta & sekitarnya), Hybrid, maupun Remote** untuk peluang karir profesional di bidang Software Engineering, IT Support/Banking, atau Data Analytics.',
+      badge: 'Available Immediately (Jakarta)',
       actions: [{ label: 'Kirim Email ke Zacky', link: 'mailto:zackyandyka1@gmail.com' }],
     };
   }
@@ -116,7 +120,7 @@ function queryLocalMemory(query) {
     q.includes('linkedin')
   ) {
     return {
-      text: 'Anda bisa menghubungi Zacky secara langsung melalui:\n\n• **Email**: zackyandyka1@gmail.com\n• **LinkedIn**: linkedin.com/in/zackyandyka\n• **WhatsApp**: Tersedia via tombol kontak langsung\n• **Lokasi Domisili**: Medan, Sumatera Utara (Siap Relokasi)',
+      text: 'Anda bisa menghubungi Zacky secara langsung melalui:\n\n• **Email**: zackyandyka1@gmail.com\n• **LinkedIn**: linkedin.com/in/zackyandyka\n• **WhatsApp**: Tersedia via tombol kontak langsung\n• **Lokasi Domisili**: Jakarta, Indonesia',
       badge: 'Kontak Resmi',
       actions: [
         { label: 'Kirim Email', link: 'mailto:zackyandyka1@gmail.com' },

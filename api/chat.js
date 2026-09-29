@@ -7,8 +7,8 @@ PROFIL UTAMA:
 - Nama Lengkap: Muhammad Daffa Zacky Andyka (biasa dipanggil Zacky).
 - Pendidikan: S1 Teknik Informatika dari Universitas Sumatera Utara (USU). Masuk tahun 2023, lulus dengan predikat Cum Laude (IPK 3.84 / 4.00). (PENTING: Jangan pernah menyebutkan D3 atau tahun 2021).
 - Status Ketersediaan: Available Immediately (siap langsung bergabung).
-- Mobilitas Kerja: Siap bekerja On-Site, Hybrid, maupun Remote, dan SANGAT BERSEDIA RELOKASI ke Jakarta atau kota besar lainnya.
-- Domisili: Medan, Sumatera Utara.
+- Mobilitas Kerja: Siap bekerja On-Site di Jakarta & sekitarnya, Hybrid, maupun Remote.
+- Domisili: Jakarta, Indonesia.
 - Kontak: Email: zackyandyka1@gmail.com, LinkedIn: linkedin.com/in/zackyandyka.
 
 PENGALAMAN MAGANG & KERJA (4 Institusi):
@@ -286,17 +286,17 @@ function generateLocalFallback(query) {
     };
   }
 
-  if (q.includes('relokasi') || q.includes('jakarta') || q.includes('luar kota') || q.includes('tersedia') || q.includes('notice') || q.includes('hire')) {
+  if (q.includes('relokasi') || q.includes('jakarta') || q.includes('luar kota') || q.includes('tersedia') || q.includes('notice') || q.includes('hire') || q.includes('domisili') || q.includes('lokasi')) {
     return {
-      text: 'Zacky berstatus **Available Immediately** (siap bergabung secepatnya)!\n\nZacky sangat bersedia untuk bekerja secara **On-Site, Hybrid, maupun Remote**, dan siap **relokasi ke Jakarta atau kota lainnya** untuk peluang karir profesional di bidang Software Engineering, IT Support/Banking, atau Data Analytics.',
-      badge: 'Available Immediately & Relokasi',
+      text: 'Zacky berstatus **Available Immediately** (siap bergabung secepatnya)!\n\nSaat ini Zacky berdomisili di **Jakarta, Indonesia** dan sangat terbuka untuk bekerja secara **On-Site (Jakarta & sekitarnya), Hybrid, maupun Remote** untuk peluang karir profesional di bidang Software Engineering, IT Support/Banking, atau Data Analytics.',
+      badge: 'Available Immediately (Jakarta)',
       actions: [{ label: 'Kirim Email ke Zacky', link: 'mailto:zackyandyka1@gmail.com' }],
     };
   }
 
   if (q.includes('kontak') || q.includes('email') || q.includes('wa') || q.includes('hubungi') || q.includes('whatsapp') || q.includes('telepon')) {
     return {
-      text: 'Anda bisa menghubungi Zacky secara langsung melalui:\n\n• **Email**: zackyandyka1@gmail.com\n• **LinkedIn**: linkedin.com/in/zackyandyka\n• **WhatsApp**: Tersedia via tombol kontak langsung\n• **Lokasi Domisili**: Medan, Sumatera Utara (Siap Relokasi)',
+      text: 'Anda bisa menghubungi Zacky secara langsung melalui:\n\n• **Email**: zackyandyka1@gmail.com\n• **LinkedIn**: linkedin.com/in/zackyandyka\n• **WhatsApp**: Tersedia via tombol kontak langsung\n• **Lokasi Domisili**: Jakarta, Indonesia',
       badge: 'Kontak Resmi',
       actions: [
         { label: 'Kirim Email', link: 'mailto:zackyandyka1@gmail.com' },

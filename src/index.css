@@ -332,12 +332,12 @@ html[data-theme-transition="crossfade"]::view-transition-new(root) {
    ============================================ */
 .hero-cover-heading {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: clamp(2.3rem, 7.5vw, 7.6rem);
+  font-size: clamp(2.2rem, 5.6vw, 6.4rem);
   font-weight: 900;
   line-height: 0.94;
   letter-spacing: -0.04em;
   margin: 0;
-  padding: 8px 0;
+  padding: 6px 0;
   position: relative;
   z-index: 20;
   background: linear-gradient(135deg, var(--text) 20%, var(--accent) 70%, var(--accent-2) 100%);
@@ -346,7 +346,13 @@ html[data-theme-transition="crossfade"]::view-transition-new(root) {
   -webkit-text-fill-color: transparent;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1280px) and (min-width: 860px) {
+  .hero-cover-heading {
+    font-size: clamp(2.2rem, 5vw, 4.8rem);
+  }
+}
+
+@media (max-width: 859px) {
   .hero-cover-heading {
     font-size: clamp(2rem, 8vw, 3.8rem);
     line-height: 1.05;

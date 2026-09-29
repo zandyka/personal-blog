@@ -208,148 +208,151 @@ const Hero = () => {
             </div>
           </motion.div>
 
-          {/* Line 1: Web Dev, */}
-          <div style={{ position: 'relative', zIndex: 20 }}>
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.22, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="hero-cover-heading"
-            >
-              Web Dev,
-            </motion.h1>
-          </div>
-
-          {/* Line 2: AI Engineer & with desktop floating socials on the right */}
+          {/* Main 2-column hero layout: Left = 3 lines heading, Right = Stacked Socials (top) & Tagline (bottom) */}
           <div
-            className="hero-line-2"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              position: 'relative',
-              gap: '24px',
-              zIndex: 20,
-            }}
-          >
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.36, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="hero-cover-heading"
-            >
-              AI Engineer &amp;
-            </motion.h1>
-
-            {/* Desktop Socials Row - placed on the right side above the tagline */}
-            <div
-              className="hero-socials-float"
-              style={{
-                display: 'flex',
-                gap: '12px',
-                alignItems: 'center',
-                marginRight: '20px',
-              }}
-            >
-              {SOCIALS.map(({ icon: Icon, href, label }, i) => (
-                <motion.a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 0.85, scale: 1 }}
-                  transition={{ delay: 0.6 + i * 0.1, duration: 0.4 }}
-                  whileHover={{ scale: 1.15, opacity: 1 }}
-                  onMouseEnter={() => { playHover(); setHoveredSocial(label); }}
-                  onMouseLeave={() => setHoveredSocial(null)}
-                  onClick={playClick}
-                  style={{
-                    width: '44px',
-                    height: '44px',
-                    borderRadius: '12px',
-                    background: 'var(--surface)',
-                    border: '1px solid var(--border)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'var(--accent)',
-                    textDecoration: 'none',
-                    boxShadow: '0 4px 16px rgba(0,0,0,0.25)',
-                    transition: 'all 0.2s ease',
-                  }}
-                  aria-label={label}
-                >
-                  <Icon size={18} />
-                </motion.a>
-              ))}
-            </div>
-          </div>
-
-          {/* Line 3: Graphic Designer with Cover + Tagline directly under Socials */}
-          <div
-            className="hero-line-3"
+            className="hero-main-row"
             style={{
               display: 'flex',
               alignItems: 'flex-end',
               justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: '24px',
+              gap: 'clamp(24px, 3.5vw, 48px)',
               position: 'relative',
               zIndex: 20,
+              width: '100%',
             }}
           >
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="hero-cover-heading"
-            >
-              <Cover>Graphic Designer</Cover>
-            </motion.h1>
+            {/* Left Column: 3-line Heading */}
+            <div className="hero-heading-block" style={{ flex: '1 1 auto', minWidth: 0 }}>
+              {/* Line 1: Web Dev, */}
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.22, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                className="hero-cover-heading"
+              >
+                Web Dev,
+              </motion.h1>
 
-            {/* Tagline beside Graphic Designer (under the 3 socials) */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.85, duration: 0.7 }}
-              className="hero-tagline-wrapper"
+              {/* Line 2: AI Engineer & */}
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.36, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                className="hero-cover-heading"
+              >
+                AI Engineer &amp;
+              </motion.h1>
+
+              {/* Line 3: Graphic Designer with Cover */}
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                className="hero-cover-heading"
+              >
+                <Cover>Graphic Designer</Cover>
+              </motion.h1>
+            </div>
+
+            {/* Right Column: 3 Social Icons on top + Tagline below */}
+            <div
+              className="hero-right-col"
               style={{
                 display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                paddingBottom: '0.4em',
-                marginRight: '20px',
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+                gap: '20px',
+                flexShrink: 0,
+                paddingBottom: '0.4rem',
+                marginRight: '12px',
               }}
             >
-              <div style={{
-                width: '18px',
-                height: '18px',
-                borderRadius: '50%',
-                border: '1px solid var(--accent)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0,
-              }}>
-                <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--accent)' }} />
-              </div>
-              <p
+              {/* Desktop 3 Social Icons (GitHub, LinkedIn, Instagram) */}
+              <div
+                className="hero-socials-float"
                 style={{
-                  fontSize: 'clamp(9.5px, 0.85vw, 11.5px)',
-                  color: 'var(--text-muted)',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.18em',
-                  lineHeight: 1.6,
-                  maxWidth: '280px',
-                  fontWeight: 500,
-                  margin: 0,
+                  display: 'flex',
+                  gap: '12px',
+                  alignItems: 'center',
                 }}
-                className="hero-tagline-text"
               >
-                Open to all forms of collaboration, regardless of location and language.
-              </p>
-            </motion.div>
+                {SOCIALS.map(({ icon: Icon, href, label }, i) => (
+                  <motion.a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 0.85, scale: 1 }}
+                    transition={{ delay: 0.6 + i * 0.1, duration: 0.4 }}
+                    whileHover={{ scale: 1.15, opacity: 1 }}
+                    onMouseEnter={() => { playHover(); setHoveredSocial(label); }}
+                    onMouseLeave={() => setHoveredSocial(null)}
+                    onClick={playClick}
+                    style={{
+                      width: '44px',
+                      height: '44px',
+                      borderRadius: '12px',
+                      background: 'var(--surface)',
+                      border: '1px solid var(--border)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: 'var(--accent)',
+                      textDecoration: 'none',
+                      boxShadow: '0 4px 16px rgba(0,0,0,0.25)',
+                      transition: 'all 0.2s ease',
+                    }}
+                    aria-label={label}
+                  >
+                    <Icon size={18} />
+                  </motion.a>
+                ))}
+              </div>
+
+              {/* Tagline: Below Social Icons, Right of Graphic Designer, Above Location Bar */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.85, duration: 0.7 }}
+                className="hero-tagline-wrapper"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                }}
+              >
+                <div
+                  style={{
+                    width: '18px',
+                    height: '18px',
+                    borderRadius: '50%',
+                    border: '1px solid var(--accent)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                  }}
+                >
+                  <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--accent)' }} />
+                </div>
+                <p
+                  style={{
+                    fontSize: 'clamp(9.5px, 0.82vw, 11.5px)',
+                    color: 'var(--text-muted)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.18em',
+                    lineHeight: 1.6,
+                    maxWidth: '280px',
+                    fontWeight: 500,
+                    margin: 0,
+                  }}
+                  className="hero-tagline-text"
+                >
+                  Open to all forms of collaboration, regardless of location and language.
+                </p>
+              </motion.div>
+            </div>
           </div>
         </div>
 
@@ -447,7 +450,7 @@ const Hero = () => {
               textTransform: 'uppercase',
               whiteSpace: 'nowrap',
             }}>
-              MEDAN, ID — 2026
+              JAKARTA, ID — 2026
             </span>
 
             {/* View Resume expanding pill */}
@@ -530,6 +533,7 @@ const Hero = () => {
         @media (min-width: 860px) {
           .hero-intro-eyebrow { display: inline-flex !important; }
           .hero-socials-float { display: flex !important; }
+          .hero-right-col { display: flex !important; }
           .hero-mobile-socials { display: none !important; }
         }
         @media (max-width: 859px) {
@@ -539,22 +543,33 @@ const Hero = () => {
             padding-bottom: 60px !important;
           }
           .hero-text-container {
-            padding-left: clamp(32px, 8vw, 50px) !important;
+            padding-left: clamp(24px, 6vw, 40px) !important;
             padding-right: 16px !important;
           }
           .hero-intro-eyebrow {
             display: inline-flex !important;
             margin-bottom: 8px !important;
           }
+          .hero-main-row {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 16px !important;
+          }
           .hero-socials-float {
             display: none !important;
+          }
+          .hero-right-col {
+            width: 100% !important;
+            padding-bottom: 0 !important;
+            margin-right: 0 !important;
           }
           .hero-mobile-socials {
             display: flex !important;
           }
           .hero-tagline-wrapper {
-            margin-top: 10px !important;
-            padding-left: 0 !important;
+            margin-top: 6px !important;
+            padding-bottom: 0 !important;
+            margin-right: 0 !important;
           }
           .hero-tagline-text {
             max-width: 100% !important;
