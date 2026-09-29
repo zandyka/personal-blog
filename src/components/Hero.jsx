@@ -9,20 +9,25 @@ import { useTheme } from '../hooks/useTheme';
 import BlinkingSquares from './ui/BlinkingSquares';
 
 const GREETING_FONTS = [
-  { name: 'Playfair Italic', font: "'Playfair Display', 'Georgia', serif", style: 'italic', weight: 600 },
-  { name: 'Plus Jakarta Sans', font: "'Plus Jakarta Sans', sans-serif", style: 'normal', weight: 700 },
-  { name: 'Caveat Script', font: "'Caveat', cursive", style: 'normal', weight: 700, sizeAdjust: 1.2 },
-  { name: 'Cinzel Roman', font: "'Cinzel', 'Times New Roman', serif", style: 'normal', weight: 700, letterSpacing: '0.05em' },
-  { name: 'Bebas Neue', font: "'Bebas Neue', sans-serif", style: 'normal', weight: 400, letterSpacing: '0.08em', sizeAdjust: 1.15 },
-  { name: 'Space Grotesk', font: "'Space Grotesk', sans-serif", style: 'normal', weight: 700 },
-  { name: 'Syne Display', font: "'Syne', sans-serif", style: 'normal', weight: 800 },
-  { name: 'JetBrains Mono', font: "'JetBrains Mono', monospace", style: 'normal', weight: 600, letterSpacing: '-0.02em' },
-  { name: 'Dancing Script', font: "'Dancing Script', cursive", style: 'normal', weight: 700, sizeAdjust: 1.18 },
-  { name: 'Silkscreen 8-Bit', font: "'Silkscreen', monospace", style: 'normal', weight: 700, sizeAdjust: 0.9, letterSpacing: '-0.02em' },
-  { name: 'Abril Fatface', font: "'Abril Fatface', serif", style: 'normal', weight: 400, sizeAdjust: 1.05 },
-  { name: 'Comfortaa Rounded', font: "'Comfortaa', cursive", style: 'normal', weight: 700 },
-  { name: 'DM Serif Italic', font: "'DM Serif Display', serif", style: 'italic', weight: 400, sizeAdjust: 1.08 },
-  { name: 'Permanent Marker', font: "'Permanent Marker', cursive", style: 'normal', weight: 400, sizeAdjust: 0.96 },
+  // 1. Handwriting & Calligraphy
+  { name: 'Caveat (Handwriting)', font: "'Caveat', cursive", style: 'normal', weight: 700, sizeAdjust: 1.18 },
+  { name: 'Great Vibes (Calligraphy)', font: "'Great Vibes', cursive", style: 'normal', weight: 400, sizeAdjust: 1.15 },
+  { name: 'Permanent Marker (Graffiti)', font: "'Permanent Marker', cursive", style: 'normal', weight: 400, sizeAdjust: 0.95 },
+
+  // 2. Retro & Cyber Terminal
+  { name: 'Silkscreen (Retro 8-Bit)', font: "'Silkscreen', monospace", style: 'normal', weight: 700, sizeAdjust: 0.88, letterSpacing: '-0.02em' },
+  { name: 'VT323 (Retro CRT Terminal)', font: "'VT323', monospace", style: 'normal', weight: 400, sizeAdjust: 1.28, letterSpacing: '0.04em' },
+
+  // 3. Typograph & High-Fashion Serif
+  { name: 'Cinzel (Imperial Roman)', font: "'Cinzel', 'Times New Roman', serif", style: 'normal', weight: 700, letterSpacing: '0.04em' },
+  { name: 'Abril Fatface (High-Fashion Didone)', font: "'Abril Fatface', serif", style: 'normal', weight: 400, sizeAdjust: 1.05 },
+  { name: 'DM Serif (Editorial Literary)', font: "'DM Serif Display', serif", style: 'italic', weight: 400, sizeAdjust: 1.08 },
+
+  // 4. Sans-Serif & Contemporary Display
+  { name: 'Plus Jakarta Sans (Clean Geometric)', font: "'Plus Jakarta Sans', sans-serif", style: 'normal', weight: 700 },
+  { name: 'Space Grotesk (Tech Brutalist)', font: "'Space Grotesk', sans-serif", style: 'normal', weight: 700 },
+  { name: 'Bebas Neue (Condensed Headline)', font: "'Bebas Neue', sans-serif", style: 'normal', weight: 400, letterSpacing: '0.06em', sizeAdjust: 1.15 },
+  { name: 'Syne (Avant-Garde Wide)', font: "'Syne', sans-serif", style: 'normal', weight: 800 },
 ];
 
 const HERO_LINES = [
@@ -142,14 +147,18 @@ const Hero = () => {
 
           {/* Typographic Identity Capsule for Zacky Andyka */}
           <motion.div
+            layout
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15, duration: 0.6 }}
+            transition={{
+              delay: 0.15,
+              duration: 0.6,
+              layout: { duration: 0.32, ease: [0.25, 1, 0.5, 1] },
+            }}
             className="hero-intro-eyebrow"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '10px',
               padding: '7px 18px',
               borderRadius: '999px',
               background: 'var(--surface-2)',
@@ -162,7 +171,9 @@ const Hero = () => {
             }}
           >
             {/* Dynamic Font Changing Greeting + Title Case Name */}
-            <div
+            <motion.div
+              layout
+              transition={{ layout: { duration: 0.32, ease: [0.25, 1, 0.5, 1] } }}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -173,11 +184,11 @@ const Hero = () => {
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  minWidth: 'clamp(60px, 5.2vw, 76px)',
                   justifyContent: 'flex-start',
+                  position: 'relative',
                 }}
               >
-                <AnimatePresence mode="popLayout">
+                <AnimatePresence mode="popLayout" initial={false}>
                   <motion.span
                     key={fontIndex}
                     initial={{ opacity: 0, y: 3, filter: 'blur(2px)' }}
@@ -202,7 +213,10 @@ const Hero = () => {
                   </motion.span>
                 </AnimatePresence>
               </div>
-              <span
+
+              <motion.span
+                layout="position"
+                transition={{ layout: { duration: 0.32, ease: [0.25, 1, 0.5, 1] } }}
                 style={{
                   fontFamily: "'Space Grotesk', sans-serif",
                   fontSize: 'clamp(13px, 1.15vw, 15px)',
@@ -210,11 +224,12 @@ const Hero = () => {
                   letterSpacing: '0.04em',
                   color: 'var(--text)',
                   lineHeight: 1,
+                  whiteSpace: 'nowrap',
                 }}
               >
                 Zacky Andyka
-              </span>
-            </div>
+              </motion.span>
+            </motion.div>
           </motion.div>
 
           {/* Main 2-column hero layout: Left = 3 lines heading, Right = Stacked Socials (top) & Tagline (bottom) */}
