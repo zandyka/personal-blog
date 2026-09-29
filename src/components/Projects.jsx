@@ -29,8 +29,8 @@ const SOFTWARE_PROJECTS = [
     typeIcon: Smartphone,
     accent: '#FF3B1D',
     description:
-      'Aplikasi penerjemah bahasa isyarat Indonesia (BISINDO) secara real-time berbasis kecerdasan buatan (Computer Vision & Machine Learning) untuk menjembatani komunikasi inklusif bagi teman tuli.',
-    techStack: ['Flutter', 'Python', 'TensorFlow', 'Computer Vision', 'Mobile AI'],
+      'Aplikasi mobile Android penerjemah bahasa isyarat Indonesia (BISINDO) dua tangan secara real-time mencapai akurasi validasi 94.71% pada 26 kelas alfabet (A–Z) berbasis TensorFlow Lite, ekstraksi 21 titik koordinat MediaPipe Hand Landmarker, dan inferensi on-device dengan feature vector 176 dimensi.',
+    techStack: ['Flutter', 'Python', 'TensorFlow Lite', 'MediaPipe Hands', 'Computer Vision', 'Mobile AI'],
     image: '/projects/handspeak.webp',
     previewUrl: '/playground#handspeak',
   },
@@ -41,7 +41,7 @@ const SOFTWARE_PROJECTS = [
     typeIcon: Globe,
     accent: '#FFAA00',
     description:
-      'Platform aplikasi web manajemen dan pemesanan restoran komprehensif berstandar production-ready dengan arsitektur decoupled (React.js SPA & Laravel 11 REST API). Mendigitalkan operasional kuliner mulai dari katalog menu interaktif, reservasi meja cerdas dengan down payment (DP) otomatis, integrasi Midtrans Snap payment gateway (QRIS, e-wallet, VA), hingga manajemen pesanan dan dashboard analitik omzet.',
+      'Platform aplikasi web manajemen dan pemesanan restoran komprehensif berstandar production-ready dengan arsitektur decoupled (React.js SPA & Laravel 11 REST API). Mendigitalkan operasional kuliner mulai dari katalog menu interaktif, reservasi meja cerdas dengan down payment (DP) otomatis, integrasi Midtrans Snap payment gateway (QRIS, e-wallet, VA) dengan automated webhook callbacks, deployed on Vercel & Railway.',
     techStack: ['React.js 18', 'Laravel 11', 'TailwindCSS', 'Midtrans Snap', 'MySQL 8', 'RESTful API'],
     image: '/projects/Mahaasyik.webp',
   },

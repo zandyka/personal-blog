@@ -11,34 +11,39 @@ PROFIL UTAMA:
 - Domisili: Jakarta, Indonesia.
 - Kontak: Email: zackyandyka1@gmail.com, LinkedIn: linkedin.com/in/zackyandyka.
 
-PENGALAMAN MAGANG & KERJA (4 Institusi):
-1. PT. Bank Sumut (Operational Division):
-   - Menjalankan SOP operasional perbankan harian, penanganan kliring transaksi, dan rekonsiliasi data keuangan.
-   - Mengembangkan dashboard visualisasi analitik data rekap transaksi operasional cabang.
-2. PT. Bank Syariah Indonesia (BSI KCP Medan Area - Back Office):
-   - Verifikasi data nasabah & dokumen pembiayaan syariah dengan standar kepatuhan (*compliance*) tinggi.
-   - Manajemen kearsipan legal perbankan dan administrasi berkas back-office.
-3. BPJS Ketenagakerjaan Medan Kota (IT / Admin Support):
+PENGALAMAN MAGANG & KERJA (5 Institusi):
+1. PT Perkebunan Nusantara III Holding (Persero) — Divisi Strategi dan Pengembangan SDM (Officer Data Support Intern - Sep 2026 – Sekarang, Jakarta):
+   - Mengembangkan sistem dashboard Learning & Development (L&D) terpusat untuk monitoring data pelatihan seluruh PTPN Group (Holding, Subholding, dan anak perusahaan).
+   - Mengonsolidasikan anggaran RKAP ke dalam dashboard pelaporan korporat terpusat.
+   - Mengotomasi alur pemrosesan data manual untuk meningkatkan efisiensi dan akurasi pelaporan.
+2. BPJS Ketenagakerjaan Cabang Medan Kota (IT Team Coordinator & Admin Support - Agu 2025 – Des 2025):
    - Mengembangkan SIGMA (Sistem Informasi & Monitoring Magang MBKM) berbasis React.js & Laravel 11.
    - Troubleshooting kendala teknis aplikasi mobile JMO (Jamsostek Mobile) dan rekonsiliasi data kepesertaan.
-4. PT. Telkom Akses (Fiber Technician):
+3. PT. Bank Sumut (Operational Division - Jun 2025 – Jul 2025):
+   - Menjalankan SOP operasional perbankan harian, penanganan kliring transaksi, dan rekonsiliasi data keuangan.
+   - Mengembangkan dashboard visualisasi analitik data rekap transaksi operasional cabang.
+4. PT. Bank Syariah Indonesia (BSI KCP Medan Area - Back Office - Mar 2025 – Jun 2025):
+   - Verifikasi data nasabah & dokumen pembiayaan syariah dengan standar kepatuhan (*compliance*) tinggi.
+   - Manajemen kearsipan legal perbankan dan administrasi berkas back-office.
+5. PT. Telkom Akses Indonesia (Fiber Technician - Feb 2022 – Apr 2022):
    - Fusion splicing kabel fiber optik, pengujian redaman sinyal dengan OPM/OTDR, dan pemeliharaan jaringan GPON.
 
 PROYEK & RISET UNGGULAN:
 1. Handspeak — BISINDO Sign Language Translator:
-   - Aplikasi mobile AI penerjemah bahasa isyarat Indonesia secara real-time untuk membantu teman tuli.
-   - Teknologi: Flutter, Python, TensorFlow Lite, dan Computer Vision (MediaPipe Hands).
-2. SIGMA BPJSTK:
+   - Aplikasi mobile Android penerjemah bahasa isyarat BISINDO dua tangan secara real-time dengan akurasi validasi 94.71% pada 26 kelas alfabet (A–Z).
+   - Teknologi: Flutter, Python, TensorFlow Lite, dan Computer Vision MediaPipe Hand Landmarker (ekstraksi 21 titik koordinat, feature vector 176 dimensi).
+2. Mahaasyik Resto:
+   - Platform web manajemen restoran full-stack production-ready (React.js Vite + Tailwind CSS, Laravel 11 RESTful API, MySQL) terintegrasi Midtrans Snap payment gateway dengan automated webhook callback, dideploy di Vercel & Railway.
+3. SIGMA BPJSTK:
    - Web application enterprise monitoring mahasiswa MBKM di BPJS Ketenagakerjaan Medan Kota (React.js, Laravel 11, Tailwind CSS, MySQL).
-3. Mahaasyik Resto:
-   - Web restoran interaktif modern dengan integrasi payment gateway Midtrans.
 4. Visualisasi Rekapan Bank Sumut:
    - Dashboard analitik data transaksi dan operasional perbankan.
 
 SERTIFIKASI:
-- SKKNI BNSP: Junior Web Developer & Junior Mobile Programmer
-- Google Gemini Certified Student
-- Huawei ICT Academy
+- Huawei ICT Academy: Overview of AI (Cert ID: ICT20251111001963) & HCIA-Datacom V1.0 Course (Cert ID: EBG20260519040762)
+- SKKNI BNSP: Junior Web Developer (Cert ID: 19391021040-30/VSGA/BLSDM.Kominfo/2024) & Junior Mobile Programmer (Cert ID: 19362161040-17/VSGA/BLSDM.Kominfo/2023)
+- Google Gemini Certified Student & Claude AI Certified Practitioner
+- Fiber Technician Certified Internship (PT Telkom Akses Indonesia)
 
 ATURAN KOMUNIKASI & GAYA BICARA:
 - Bersikap ramah, sopan, percaya diri, lugas, dan profesional.
@@ -262,17 +267,17 @@ function extractContextMeta(query, reply) {
 function generateLocalFallback(query) {
   const q = query.toLowerCase();
 
-  if (q.includes('magang') || q.includes('bank') || q.includes('pengalaman') || q.includes('kerja')) {
+  if (q.includes('magang') || q.includes('bank') || q.includes('ptpn') || q.includes('holding') || q.includes('pengalaman') || q.includes('kerja')) {
     return {
-      text: 'Zacky memiliki 4 pengalaman magang yang solid:\n\n1. **PT. Bank Sumut (Operational Division)**: Mengelola transaksi operasional SOP, kliring, dan membuat dashboard analitik transaksi.\n2. **PT. Bank Syariah Indonesia (BSI KCP Medan Area - Back Office)**: Verifikasi data perbankan, administrasi dokumen pembiayaan, dan kearsipan berstandar kepatuhan tinggi.\n3. **BPJS Ketenagakerjaan Medan Kota (IT / Admin Support)**: Membangun sistem monitoring MBKM SIGMA (React.js & Laravel 11) dan troubleshooting aplikasi mobile JMO.\n4. **PT. Telkom Akses (Fiber Technician)**: Fusion splicing kabel fiber optik, pengujian OPM/OTDR, dan pemeliharaan jaringan GPON.',
-      badge: 'Pengalaman Magang & IT',
+      text: 'Zacky memiliki 5 rekam jejak pengalaman magang profesional yang solid:\n\n1. **PT Perkebunan Nusantara III Holding (Persero)** *(Officer Data Support Intern - Sep 2026 – Sekarang, Jakarta)*: Mengembangkan sistem dashboard Learning & Development (L&D) terpusat seluruh PTPN Group, konsolidasi anggaran RKAP, dan otomasi alur pemrosesan data korporat.\n2. **BPJS Ketenagakerjaan Medan Kota (IT Team Coordinator & Admin Support)**: Membangun sistem monitoring MBKM SIGMA (React.js & Laravel 11) dan troubleshooting aplikasi mobile JMO.\n3. **PT. Bank Sumut (Operational Division)**: Mengelola transaksi operasional SOP, kliring, dan membuat dashboard analitik transaksi.\n4. **PT. Bank Syariah Indonesia (BSI KCP Medan Area - Back Office)**: Verifikasi data perbankan, administrasi dokumen pembiayaan syariah, dan kearsipan berstandar kepatuhan tinggi.\n5. **PT. Telkom Akses Indonesia (Fiber Technician)**: Fusion splicing kabel fiber optik, pengujian OPM/OTDR, dan pemeliharaan jaringan GPON.',
+      badge: 'Pengalaman Magang & Korporat',
       actions: [{ label: 'Buka Halaman Experience', link: '/experience' }],
     };
   }
 
   if (q.includes('handspeak') || q.includes('proyek') || q.includes('project') || q.includes('ai') || q.includes('karya')) {
     return {
-      text: 'Proyek unggulan riset Zacky adalah **Handspeak — BISINDO Sign Language Translator**:\n\n• Aplikasi mobile AI yang menerjemahkan bahasa isyarat Indonesia secara real-time untuk membantu teman tuli.\n• Dibangun dengan **Flutter, Python, TensorFlow Lite, dan Computer Vision (MediaPipe)**.\n\nSelain itu, Zacky juga membangun **SIGMA BPJSTK** (sistem monitoring MBKM enterprise), **Mahaasyik Resto** (aplikasi web restoran dengan payment gateway Midtrans), dan **Visualisasi Rekapan Bank Sumut**.',
+      text: 'Proyek unggulan riset Zacky adalah **Handspeak — BISINDO Sign Language Translator**:\n\n• Aplikasi mobile Android AI yang menerjemahkan bahasa isyarat Indonesia secara real-time dengan akurasi validasi **94.71% pada 26 kelas alfabet (A–Z)**.\n• Dibangun menggunakan **Flutter, Python, TensorFlow Lite, dan MediaPipe Hands** (ekstraksi 21 titik koordinat, feature vector 176 dimensi).\n\nSelain itu, Zacky juga membangun **Mahaasyik Resto** (aplikasi restoran full-stack React.js Vite + Laravel 11 + Midtrans Snap), **SIGMA BPJSTK** (sistem monitoring MBKM enterprise), dan **Visualisasi Rekapan Bank Sumut**.',
       badge: 'Riset Handspeak & Proyek AI',
       actions: [{ label: 'Lihat Semua Proyek', link: '/projects' }],
     };
@@ -280,7 +285,7 @@ function generateLocalFallback(query) {
 
   if (q.includes('ipk') || q.includes('kampus') || q.includes('kuliah') || q.includes('usu') || q.includes('pendidikan')) {
     return {
-      text: 'Zacky adalah lulusan **Teknik Informatika dari Universitas Sumatera Utara (USU)** dengan predikat **Cum Laude (IPK 3.84 / 4.00)**.\n\nZacky juga meraih sertifikasi kompetensi nasional SKKNI BNSP (Junior Web Developer & Junior Mobile Programmer), Google Gemini Certified Student, serta Huawei ICT Academy.',
+      text: 'Zacky adalah lulusan **Teknik Informatika dari Universitas Sumatera Utara (USU)** dengan predikat **Cum Laude (IPK 3.84 / 4.00)**.\n\nZacky juga meraih sertifikasi Huawei ICT Academy (Overview of AI & HCIA-Datacom), sertifikasi kompetensi nasional SKKNI BNSP (Junior Web Developer & Junior Mobile Programmer), Google Gemini Certified Student, serta Claude AI Certified Practitioner.',
       badge: 'TI USU Cum Laude (IPK 3.84)',
       actions: [{ label: 'Buka Halaman About', link: '/about' }],
     };

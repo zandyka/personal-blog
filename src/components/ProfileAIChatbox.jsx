@@ -39,9 +39,11 @@ function queryLocalMemory(query) {
     return null;
   }
 
-  // 1. Magang & Pengalaman Kerja Perbankan/IT
+  // 1. Magang & Pengalaman Kerja Perbankan/IT/BUMN
   if (
     q.includes('magang') ||
+    q.includes('ptpn') ||
+    q.includes('holding') ||
     q.includes('bank sumut') ||
     q.includes('bsi') ||
     q.includes('bpjs') ||
@@ -49,8 +51,8 @@ function queryLocalMemory(query) {
     (q.includes('pengalaman') && (q.includes('kerja') || q.includes('zacky')))
   ) {
     return {
-      text: 'Zacky memiliki 4 pengalaman magang yang solid:\n\n1. **PT. Bank Sumut (Operational Division)**: Mengelola transaksi operasional SOP, kliring, dan membuat dashboard analitik transaksi.\n2. **PT. Bank Syariah Indonesia (BSI KCP Medan Area - Back Office)**: Verifikasi data perbankan, administrasi dokumen pembiayaan, dan kearsipan berstandar kepatuhan tinggi.\n3. **BPJS Ketenagakerjaan Medan Kota (IT / Admin Support)**: Membangun sistem monitoring MBKM SIGMA (React.js & Laravel 11) dan troubleshooting aplikasi mobile JMO.\n4. **PT. Telkom Akses (Fiber Technician)**: Fusion splicing kabel fiber optik, pengujian OPM/OTDR, dan pemeliharaan jaringan GPON.',
-      badge: 'Pengalaman Magang & IT',
+      text: 'Zacky memiliki 5 rekam jejak pengalaman magang profesional yang solid:\n\n1. **PT Perkebunan Nusantara III Holding (Persero)** *(Officer Data Support Intern - Sep 2026 – Sekarang, Jakarta)*: Mengembangkan sistem dashboard Learning & Development (L&D) terpusat seluruh PTPN Group, konsolidasi anggaran RKAP, dan otomasi alur pemrosesan data korporat.\n2. **BPJS Ketenagakerjaan Medan Kota (IT Team Coordinator & Admin Support)**: Membangun sistem monitoring MBKM SIGMA (React.js & Laravel 11) dan troubleshooting aplikasi mobile JMO.\n3. **PT. Bank Sumut (Operational Division)**: Mengelola transaksi operasional SOP, kliring, dan membuat dashboard analitik transaksi.\n4. **PT. Bank Syariah Indonesia (BSI KCP Medan Area - Back Office)**: Verifikasi data perbankan, administrasi dokumen pembiayaan syariah, dan tata kelola kearsipan berstandar kepatuhan tinggi.\n5. **PT. Telkom Akses Indonesia (Fiber Technician)**: Fusion splicing kabel fiber optik, pengujian OPM/OTDR, dan pemeliharaan jaringan GPON.',
+      badge: 'Pengalaman Magang & Korporat',
       actions: [{ label: 'Buka Halaman Experience', link: '/experience' }],
     };
   }
@@ -65,7 +67,7 @@ function queryLocalMemory(query) {
     q.includes('sigma')
   ) {
     return {
-      text: 'Proyek unggulan riset Zacky adalah **Handspeak — BISINDO Sign Language Translator**:\n\n• Aplikasi mobile AI yang menerjemahkan bahasa isyarat Indonesia secara real-time untuk membantu teman tuli.\n• Dibangun dengan **Flutter, Python, TensorFlow Lite, dan Computer Vision (MediaPipe)**.\n\nSelain itu, Zacky juga membangun **SIGMA BPJSTK** (sistem monitoring MBKM enterprise), **Mahaasyik Resto** (aplikasi web restoran dengan payment gateway Midtrans), dan **Visualisasi Rekapan Bank Sumut**.',
+      text: 'Proyek unggulan riset Zacky adalah **Handspeak — BISINDO Sign Language Translator**:\n\n• Aplikasi mobile Android AI yang menerjemahkan bahasa isyarat Indonesia secara real-time dengan akurasi validasi **94.71% pada 26 kelas alfabet (A–Z)**.\n• Dibangun menggunakan **Flutter, Python, TensorFlow Lite, dan MediaPipe Hands** (ekstraksi 21 titik koordinat, feature vector 176 dimensi).\n\nSelain itu, Zacky juga membangun **Mahaasyik Resto** (aplikasi web restoran full-stack React.js + Laravel 11 + Midtrans Snap), **SIGMA BPJSTK** (sistem monitoring MBKM enterprise), dan **Visualisasi Rekapan Bank Sumut**.',
       badge: 'Riset Handspeak & Proyek AI',
       actions: [{ label: 'Lihat Semua Proyek', link: '/projects' }],
     };
@@ -83,7 +85,7 @@ function queryLocalMemory(query) {
     q.includes('pendidikan zacky')
   ) {
     return {
-      text: 'Zacky adalah lulusan **Teknik Informatika dari Universitas Sumatera Utara (USU)** dengan predikat **Cum Laude (IPK 3.84 / 4.00)**.\n\nZacky juga meraih sertifikasi kompetensi nasional SKKNI BNSP (Junior Web Developer & Junior Mobile Programmer), Google Gemini Certified Student, serta Huawei ICT Academy.',
+      text: 'Zacky adalah lulusan **Teknik Informatika dari Universitas Sumatera Utara (USU)** dengan predikat **Cum Laude (IPK 3.84 / 4.00)**.\n\nZacky juga meraih sertifikasi Huawei ICT Academy (Overview of AI & HCIA-Datacom), sertifikasi kompetensi nasional SKKNI BNSP (Junior Web Developer & Junior Mobile Programmer), Google Gemini Certified Student, serta Claude AI Certified Practitioner.',
       badge: 'TI USU Cum Laude (IPK 3.84)',
       actions: [{ label: 'Buka Halaman About', link: '/about' }],
     };
@@ -133,7 +135,7 @@ function queryLocalMemory(query) {
   const greetings = ['halo', 'hai', 'hello', 'hey', 'pagi', 'siang', 'sore', 'malam', 'assalamualaikum', 'siapa kamu'];
   if (greetings.some((w) => q === w || q.startsWith(w + ' ') || q.endsWith(' ' + w))) {
     return {
-      text: 'Halo! Saya asisten pintar portofolio **Muhammad Daffa Zacky Andyka**.\n\nSaya siap menjawab pertanyaan seputar riwayat pendidikan di USU (IPK 3.84), pengalaman magang di Bank Sumut, BSI KCP Medan Area, BPJS Ketenagakerjaan Medan Kota, proyek AI Handspeak, hingga kesiapan kerja dan kontak langsung. Apa yang ingin Anda ketahui?',
+      text: 'Halo! Saya asisten pintar portofolio **Muhammad Daffa Zacky Andyka**.\n\nSaya siap menjawab pertanyaan seputar riwayat pendidikan di USU (IPK 3.84 Cum Laude), pengalaman magang di PT Perkebunan Nusantara III Holding, Bank Sumut, BSI, BPJS Ketenagakerjaan, proyek AI Handspeak, hingga kesiapan kerja dan kontak langsung. Apa yang ingin Anda ketahui?',
       badge: 'Ask Zacky AI',
       actions: [],
     };

@@ -52,8 +52,8 @@ const STATS = [
   },
   {
     label: 'Pengalaman',
-    sub: 'Banking, IT & Telco',
-    value: '4',
+    sub: 'BUMN, Banking & IT',
+    value: '5',
     decimals: 0,
     suffix: ' Magang',
     icon: Briefcase,
@@ -70,8 +70,8 @@ const STATS = [
   },
   {
     label: 'Sertifikasi',
-    sub: 'Dicoding, Google & BNSP',
-    value: '5',
+    sub: 'Huawei, Google & BNSP',
+    value: '7',
     decimals: 0,
     suffix: '+',
     icon: Award,
@@ -221,7 +221,7 @@ const About = () => {
                   fontWeight: 400,
                 }}
               >
-                Lulusan <strong>Teknik Informatika USU</strong> dengan rekam jejak di bidang operasional perbankan (BSI & Bank Sumut), IT support & dashboard analytics (BPJS Ketenagakerjaan), serta infrastruktur fiber optik (Telkom Akses). Mengutamakan akurasi, efisiensi kerja, dan kode yang tangguh.
+                Lulusan <strong>Teknik Informatika USU</strong> dengan rekam jejak di PT Perkebunan Nusantara III Holding (Persero), operasional perbankan (BSI & Bank Sumut), IT support & dashboard analytics (BPJS Ketenagakerjaan), serta infrastruktur fiber optik (Telkom Akses). Mengutamakan akurasi, efisiensi kerja, dan kode yang tangguh.
               </p>
             </motion.div>
 

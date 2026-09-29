@@ -2,19 +2,19 @@
 
 ## 1. Professional Overview
 
-Muhammad Daffa Zacky Andyka is a **D3 Teknik Informatika graduate from
+Muhammad Daffa Zacky Andyka is a **Teknik Informatika graduate from
 Universitas Sumatera Utara (USU)** with a multidisciplinary background
-spanning **banking operations, administration, IT support, web/mobile
+spanning **BUMN corporate systems, banking operations, administration, IT support, web/mobile
 development, networking, data management, and creative media**.
 
 His experience combines technical capability with operational and
-administrative exposure, particularly through internships at banking
-institutions and BPJS Ketenagakerjaan. This makes his profile suitable
+administrative exposure, particularly through internships at PT Perkebunan Nusantara III Holding (Persero),
+banking institutions (Bank Syariah Indonesia & Bank Sumut), and BPJS Ketenagakerjaan. This makes his profile suitable
 for roles that require **accuracy, data handling, administrative
 discipline, technology literacy, problem solving, and adaptability**.
 
 For professional positioning, he prefers a **professional and corporate
-image**, particularly suitable for **banks, large companies, and BUMN**.
+image**, particularly suitable for **BUMN, banks, and large enterprise corporations**.
 
 ------------------------------------------------------------------------
 
@@ -105,21 +105,41 @@ listed as a professional tool.
 
 ## 4. Professional Experience
 
-### PT. Bank Syariah Indonesia (BSI)
+### PT Perkebunan Nusantara III Holding (Persero)
 
-**Back Office Intern**\
-**Mar 2025 -- Jun 2025**
+**Officer Data Support Intern — Divisi Strategi & Pengembangan SDM**\
+**Sep 2026 -- Present | Jakarta, Indonesia**
 
-Key responsibilities: - Supported administrative and back-office
-processes. - Managed and organized operational data. - Assisted with
-document verification. - Performed document archival and administrative
-documentation. - Supported day-to-day banking administrative
-workflows. - Worked in an environment requiring accuracy,
-confidentiality, and compliance with procedures.
+Key responsibilities:
+- Developed an automated Learning & Development (L&D) dashboard system to monitor and manage employee training data across the entire PTPN Group (Holding, Subholding, and subsidiary companies).
+- Consolidated RKAP (training budget) data into the dashboard for centralized corporate reporting.
+- Systemized manual data-processing workflows into automated processes to improve reporting efficiency and accuracy.
 
-Professional relevance: - Banking administration - Data management -
-Document control - Accuracy and attention to detail - Understanding of
-banking operational environments
+Professional relevance:
+- Corporate Dashboard Development
+- Enterprise Data Automation
+- RKAP Budgeting Consolidation
+- Multi-Entity Corporate Reporting
+- Analytical Problem Solving
+
+------------------------------------------------------------------------
+
+### BPJS Ketenagakerjaan
+
+**IT Team Coordinator & Admin Support Intern**\
+**Aug 2025 -- Dec 2025**
+
+Key responsibilities: - Coordinated IT-related internship systems and
+workflows. - Managed participant data. - Supported webinar
+implementation and technical requirements. - Assisted users with JMO
+activation and troubleshooting. - Prepared reports and performed
+data-related administrative tasks. - Conducted data blasting /
+communication support. - Developed a website/dashboard (SIGMA BPJSTK) for visualizing
+intern performance and JMO activation metrics.
+
+Professional relevance: - IT support - Data administration - User
+support - Reporting - Dashboard development - Process coordination -
+Troubleshooting
 
 ------------------------------------------------------------------------
 
@@ -139,21 +159,21 @@ Communication
 
 ------------------------------------------------------------------------
 
-### BPJS Ketenagakerjaan
+### PT. Bank Syariah Indonesia (BSI)
 
-**IT / Internship Administration Support**
+**Back Office Intern**\
+**Mar 2025 -- Jun 2025**
 
-Key responsibilities: - Coordinated IT-related internship systems and
-workflows. - Managed participant data. - Supported webinar
-implementation and technical requirements. - Assisted users with JMO
-activation and troubleshooting. - Prepared reports and performed
-data-related administrative tasks. - Conducted data blasting /
-communication support. - Developed a website/dashboard for visualizing
-intern performance and JMO activation metrics.
+Key responsibilities: - Supported administrative and back-office
+processes. - Managed and organized operational data. - Assisted with
+document verification. - Performed document archival and administrative
+documentation. - Supported day-to-day banking administrative
+workflows. - Worked in an environment requiring accuracy,
+confidentiality, and compliance with procedures.
 
-Professional relevance: - IT support - Data administration - User
-support - Reporting - Dashboard development - Process coordination -
-Troubleshooting
+Professional relevance: - Banking administration - Data management -
+Document control - Accuracy and attention to detail - Understanding of
+banking operational environments
 
 ------------------------------------------------------------------------
 
@@ -208,23 +228,39 @@ execute tasks according to event requirements**.
 
 ## 7. Certifications & Training
 
-### VSGA Kominfo --- Junior Mobile Programmer
+### Huawei ICT Academy — Overview of AI
 
-**Jun 2023 -- Jul 2023**
+**Nov 2025** (Cert ID: `ICT20251111001963`)
 
-Focus: - Mobile application programming - Application development
-fundamentals
+Focus:
+- Artificial Intelligence concepts
+- Machine learning algorithms & deep learning fundamentals
+- Python for AI & model deployment
+
+### Huawei ICT Academy — HCIA-Datacom V1.0 Course
+
+**May 2026** (Cert ID: `EBG20260519040762`)
+
+Focus:
+- Routing & switching architecture
+- Enterprise data communication protocols & IP addressing
+- Network infrastructure configuration and troubleshooting
 
 ### VSGA Kominfo --- Junior Web Developer
 
-**Aug 2024**
+**Aug 2024** (Cert ID: `19391021040-30/VSGA/BLSDM.Kominfo/2024`)
 
-Focus: - Web development - Web programming fundamentals
+Focus: - Web development - Web programming fundamentals - Relational database integration
+
+### VSGA Kominfo --- Junior Mobile Programmer
+
+**Jun 2023 -- Jul 2023** (Cert ID: `19362161040-17/VSGA/BLSDM.Kominfo/2023`)
+
+Focus: - Mobile application programming - Application development fundamentals
 
 ### Fiber Technician --- PT Telkom Akses Indonesia
 
-Certified internship experience involving fiber optic and GPON
-infrastructure.
+Certified internship experience involving fiber optic and GPON infrastructure.
 
 ------------------------------------------------------------------------
 
@@ -391,12 +427,13 @@ Creative Suite when listing design tools - Present the user as a
 
 ## 15. One-Paragraph Professional Summary
 
-Muhammad Daffa Zacky Andyka is a D3 Teknik Informatika graduate from
-Universitas Sumatera Utara with practical experience in banking
-operations, administration, IT support, networking, and software
-development. He has internship experience at Bank Syariah Indonesia in
-back-office administration, Bank Sumut in operational support, BPJS
-Ketenagakerjaan in IT and internship administration, and PT Telkom Akses
+Muhammad Daffa Zacky Andyka is a Teknik Informatika graduate from
+Universitas Sumatera Utara with practical experience in BUMN corporate systems,
+banking operations, administration, IT support, networking, and software
+development. He has internship experience at PT Perkebunan Nusantara III Holding (Persero)
+as an Officer Data Support Intern developing automated L&D dashboard systems,
+Bank Syariah Indonesia in back-office administration, Bank Sumut in operational support,
+BPJS Ketenagakerjaan in IT and internship administration, and PT Telkom Akses
 Indonesia in fiber optic and GPON infrastructure. His technical
 background includes web and mobile development, databases, networking,
 troubleshooting, and dashboard development, complemented by experience

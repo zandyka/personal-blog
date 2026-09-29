@@ -33,7 +33,7 @@ const WORK_EXPERIENCES = [
     id: 'bsi',
     company: 'PT. Bank Syariah Indonesia (BSI)',
     role: 'Back Office Intern',
-    period: 'Maret 2025 - Mei 2025',
+    period: 'Maret 2025 - Juni 2025',
     type: 'Internship',
     logo: '/logos/logo bsi.png',
     icon: Landmark,
@@ -57,14 +57,27 @@ const WORK_EXPERIENCES = [
   {
     id: 'bpjs',
     company: 'BPJS Ketenagakerjaan',
-    role: 'IT / Admin Support Intern',
-    period: 'September 2025 - Desember 2025',
+    role: 'IT Team Coordinator & Admin Support Intern',
+    period: 'Agustus 2025 - Desember 2025',
     type: 'Internship',
     logo: '/logos/logo bpjs.png',
     icon: Server,
     description:
       'Mengembangkan dashboard analitik performa magang, melakukan troubleshooting aplikasi JMO (Jamsostek Mobile), dan mengelola dataset kepesertaan.',
     tags: ['IT Support', 'Dashboard Analytics', 'Data Management', 'JMO Troubleshooting'],
+  },
+  {
+    id: 'ptpn',
+    company: 'PT Perkebunan Nusantara III Holding (Persero)',
+    role: 'Officer Data Support Intern',
+    period: 'September 2026 - Sekarang',
+    type: 'Internship',
+    logo: '/logos/logo ptpn.png',
+    logoBg: '#ffffff',
+    icon: Building2,
+    description:
+      'Mengembangkan sistem dashboard Learning & Development (L&D) terpusat untuk monitoring data pelatihan seluruh PTPN Group (Holding, Subholding, dan anak perusahaan), mengonsolidasikan anggaran RKAP ke dalam dashboard, serta mengotomasi alur pemrosesan data manual untuk meningkatkan efisiensi dan akurasi pelaporan.',
+    tags: ['Officer Data Support', 'L&D Dashboard', 'PTPN Holding', 'RKAP Budgeting', 'Data Automation'],
   },
 ];
 
@@ -494,7 +507,7 @@ const Experience = () => {
               fontWeight: 300,
             }}
           >
-            Rekam jejak pengalaman magang dan kerja profesional yang diurutkan secara kronologis mulai dari telekomunikasi hingga perbankan dan IT operasional.
+            Rekam jejak pengalaman magang dan kerja profesional yang diurutkan secara kronologis mulai dari telekomunikasi, perbankan, IT operasional hingga BUMN holding perkebunan.
           </p>
         </motion.div>
 

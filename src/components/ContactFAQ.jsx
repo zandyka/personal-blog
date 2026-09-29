@@ -16,7 +16,7 @@ const FAQ_ITEMS = [
     id: 'core-value',
     question: 'Apa keahlian utama dan nilai tambah yang Anda tawarkan?',
     answer:
-      'Lulusan TI USU (IPK 3.84 Cum Laude) dengan kombinasi kuat antara rekayasa perangkat lunak (Full-Stack Web & Mobile AI) dan ketelitian operasional perbankan (Bank Sumut, BSI KCP Medan Area, BPJS Ketenagakerjaan Medan Kota). Terbiasa membangun solusi teknologi yang solutif, scalable, dan terstruktur rapi.',
+      'Lulusan TI USU (IPK 3.84 Cum Laude) dengan kombinasi kuat antara rekayasa perangkat lunak (Full-Stack Web & Mobile AI) dan ketelitian operasional korporat & perbankan (PT Perkebunan Nusantara III Holding, Bank Sumut, BSI KCP Medan Area, BPJS Ketenagakerjaan). Terbiasa membangun solusi teknologi yang solutif, scalable, dan terstruktur rapi.',
     tag: 'Keahlian & Profil',
   },
   {
@@ -30,7 +30,7 @@ const FAQ_ITEMS = [
     id: 'roles',
     question: 'Posisi atau peran apa yang paling Anda kuasai?',
     answer:
-      'Fokus utama saya terbagi ke dalam tiga domain utama: (1) Software Engineer / Full-Stack Web Developer (React.js, Laravel, REST API), (2) Mobile AI Developer (Flutter, TensorFlow Lite), dan (3) Banking Operations & IT Support Specialist (rekonsiliasi data, audit kepatuhan, dan otomasi alur kerja).',
+      'Fokus utama saya terbagi ke dalam tiga domain utama: (1) Software Engineer / Full-Stack Web Developer (React.js, Laravel, REST API), (2) Mobile AI Developer (Flutter, TensorFlow Lite), dan (3) Data Support & Banking Operations Specialist (L&D dashboard systems, rekonsiliasi data, audit kepatuhan, dan otomasi alur kerja korporat).',
     tag: 'Spesialisasi Karir',
   },
   {
@@ -44,7 +44,7 @@ const FAQ_ITEMS = [
     id: 'handspeak-ai',
     question: 'Bagaimana teknologi dan inovasi di balik proyek Handspeak AI?',
     answer:
-      'Handspeak adalah aplikasi mobile penerjemah bahasa isyarat BISINDO secara real-time. Menggunakan Computer Vision (MediaPipe) untuk melacak landmark tangan dan model deep learning TensorFlow Lite teroptimasi untuk inferensi cepat langsung di perangkat mobile (on-device AI).',
+      'Handspeak adalah aplikasi mobile Android penerjemah bahasa isyarat BISINDO dua tangan secara real-time dengan akurasi validasi 94.71% (26 kelas alfabet A–Z). Menggunakan Computer Vision MediaPipe Hand Landmarker untuk ekstraksi 21 titik koordinat tangan dan model deep learning TensorFlow Lite teroptimasi untuk inferensi on-device langsung di smartphone.',
     tag: 'Riset AI & Mobile',
   },
   {

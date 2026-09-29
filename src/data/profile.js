@@ -12,7 +12,7 @@ export const profile = {
     'Data Administrator',
   ],
   summary:
-    'Muhammad Daffa Zacky Andyka is a Teknik Informatika graduate from Universitas Sumatera Utara with practical experience in banking operations, administration, IT support, networking, and software development. He has internship experience at Bank Syariah Indonesia, Bank Sumut, BPJS Ketenagakerjaan, and PT Telkom Akses Indonesia.',
+    'Muhammad Daffa Zacky Andyka is a Teknik Informatika graduate from Universitas Sumatera Utara with practical experience in BUMN corporate systems, banking operations, administration, IT support, networking, and software development. He has internship experience at PT Perkebunan Nusantara III Holding (Persero), Bank Syariah Indonesia, Bank Sumut, BPJS Ketenagakerjaan, and PT Telkom Akses Indonesia.',
   tagline: 'Bridging Technology, Banking & Administration',
   email: 'zackyandyka1@gmail.com',
   linkedin: 'https://www.linkedin.com/in/zacky-andyka/',
@@ -48,13 +48,22 @@ export const profile = {
   ],
   experience: [
     {
-      company: 'PT. Bank Syariah Indonesia (BSI)',
-      role: 'Back Office Intern',
-      period: 'Mar 2025 – Jun 2025',
+      company: 'PT Perkebunan Nusantara III Holding (Persero)',
+      role: 'Officer Data Support Intern',
+      period: 'Sep 2026 – Present',
       type: 'internship',
       description:
-        'Supported administrative and back-office processes, managed operational data, assisted with document verification and archival. Worked in an environment requiring accuracy, confidentiality, and compliance with banking procedures.',
-      tags: ['Banking', 'Administration', 'Data Management', 'Document Control'],
+        'Developing an automated Learning & Development (L&D) dashboard system to monitor and manage employee training data across the entire PTPN Group (Holding, Subholding, and subsidiary companies). Consolidating RKAP (training budget) data into the dashboard for centralized corporate reporting and systemizing manual data-processing workflows into automated processes.',
+      tags: ['Officer Data Support', 'L&D Dashboard', 'Data Automation', 'RKAP Budgeting', 'Corporate Reporting'],
+    },
+    {
+      company: 'BPJS Ketenagakerjaan',
+      role: 'IT Team Coordinator & Admin Support Intern',
+      period: 'Aug 2025 – Dec 2025',
+      type: 'internship',
+      description:
+        'Coordinated IT-related internship systems, managed participant data, supported webinar implementation, assisted users with JMO activation and troubleshooting. Developed a dashboard website for visualizing intern performance and JMO activation metrics.',
+      tags: ['IT Support', 'Dashboard Development', 'Data Administration', 'User Support'],
     },
     {
       company: 'PT. Bank Sumut',
@@ -66,13 +75,13 @@ export const profile = {
       tags: ['Banking Operations', 'Customer Service', 'Transaction Processing'],
     },
     {
-      company: 'BPJS Ketenagakerjaan',
-      role: 'IT & Internship Administration Support',
-      period: '',
+      company: 'PT. Bank Syariah Indonesia (BSI)',
+      role: 'Back Office Intern',
+      period: 'Mar 2025 – Jun 2025',
       type: 'internship',
       description:
-        'Coordinated IT-related internship systems, managed participant data, supported webinar implementation, assisted users with JMO activation and troubleshooting. Developed a dashboard website for visualizing intern performance and JMO activation metrics.',
-      tags: ['IT Support', 'Dashboard Development', 'Data Administration', 'User Support'],
+        'Supported administrative and back-office processes, managed operational data, assisted with document verification and archival. Worked in an environment requiring accuracy, confidentiality, and compliance with banking procedures.',
+      tags: ['Banking', 'Administration', 'Data Management', 'Document Control'],
     },
     {
       company: 'PT. Telkom Akses Indonesia',
@@ -86,7 +95,7 @@ export const profile = {
     {
       company: 'HIMTI USU',
       role: 'Head of Creative Media Division',
-      period: '',
+      period: 'Sep 2024 – Sep 2025',
       type: 'organization',
       description:
         'Managed the Creative Media Division, coordinated division members, managed social media content, created visual materials for organizational activities — banners, posters, ID cards, certificates, and Instagram content.',
@@ -97,15 +106,15 @@ export const profile = {
     {
       title: 'Handspeak — BISINDO Sign Language Translator',
       description:
-        'Mobile application for translating BISINDO two-handed sign language into text in real time using machine learning and computer vision.',
-      tech: ['Flutter', 'Python', 'TensorFlow', 'Computer Vision', 'Mobile AI'],
+        'Real-time BISINDO sign language translator Android app achieving 94.71% validation accuracy across 26 letter classes (A–Z) using TensorFlow Lite, MediaPipe Hand Landmarker 21-point extraction, and on-device inference with 176-dimensional feature vector.',
+      tech: ['Flutter', 'Python', 'TensorFlow Lite', 'MediaPipe', 'Mobile AI'],
       type: 'Mobile AI Application',
       ratio: '16:9',
     },
     {
       title: 'Mahaasyik Resto — Sistem Manajemen & Pemesanan Restoran Berbasis Web',
       description:
-        'Full-stack restaurant management and ordering web platform with React.js SPA, Laravel 11 REST API, and Midtrans Snap payment gateway integration.',
+        'Production-ready full-stack restaurant management platform built with React.js (Vite) + Tailwind CSS, Laravel 11 RESTful API backend, polymorphic MySQL architecture, Midtrans Payment Gateway (Snap API) with automated webhook callbacks, deployed on Vercel & Railway.',
       tech: ['React.js 18', 'Laravel 11', 'TailwindCSS', 'Midtrans Snap', 'MySQL 8'],
       type: 'Full-Stack Web App',
       ratio: '16:9',
@@ -129,16 +138,28 @@ export const profile = {
   ],
   certifications: [
     {
-      name: 'Junior Mobile Programmer',
-      issuer: 'VSGA Kominfo',
-      period: 'Jun – Jul 2023',
-      focus: 'Mobile application programming and development fundamentals',
+      name: 'Overview of AI',
+      issuer: 'Huawei ICT Academy',
+      period: 'Nov 2025',
+      focus: 'Artificial Intelligence, machine learning algorithms, and deep learning fundamentals (Cert ID: ICT20251111001963)',
+    },
+    {
+      name: 'HCIA-Datacom V1.0 Course',
+      issuer: 'Huawei ICT Academy',
+      period: 'May 2026',
+      focus: 'Data communications, routing & switching, network protocols, and enterprise infrastructure (Cert ID: EBG20260519040762)',
     },
     {
       name: 'Junior Web Developer',
       issuer: 'VSGA Kominfo',
       period: 'Aug 2024',
-      focus: 'Web development and web programming fundamentals',
+      focus: 'Web development, database integration, and RESTful API fundamentals (Cert ID: 19391021040-30/VSGA/BLSDM.Kominfo/2024)',
+    },
+    {
+      name: 'Junior Mobile Programmer',
+      issuer: 'VSGA Kominfo',
+      period: 'Jun – Jul 2023',
+      focus: 'Mobile application programming and Android lifecycle fundamentals (Cert ID: 19362161040-17/VSGA/BLSDM.Kominfo/2023)',
     },
     {
       name: 'Fiber Technician',
