@@ -4,6 +4,7 @@ import { useInView } from 'react-intersection-observer';
 import { GraduationCap, Briefcase, FolderGit2, Users2, Globe, Award, CheckCircle2 } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
 import InteractiveLanyard from './InteractiveLanyard';
+import GithubGraph from './GithubGraph';
 
 const CountUp = ({ end, duration = 1.5, decimals = 0, suffix = '', inView }) => {
   const [count, setCount] = useState(0);
@@ -365,6 +366,24 @@ const About = () => {
             </motion.div>
           </motion.div>
         </div>
+
+        {/* GitHub Contribution Activity Graph (Framer Github-graph equivalent) */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.15 }}
+          variants={fadeUp}
+          style={{
+            marginTop: '36px',
+            width: '100%',
+          }}
+        >
+          <GithubGraph
+            githubUsername="zandyka"
+            title="GitHub Contribution Activity"
+            subtitle="Aktivitas commit & open-source 52 minggu terakhir"
+          />
+        </motion.div>
       </div>
 
       <style>{`
