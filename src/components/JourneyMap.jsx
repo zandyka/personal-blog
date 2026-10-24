@@ -61,24 +61,8 @@ const LOCATIONS = [
     ],
   },
   {
-    id: 'pkbm',
-    order: '04',
-    name: 'PKBM Bintula (Bina Tunas Muda)',
-    shortName: 'PKBM Bintula',
-    role: 'Volunteer Pengajar Komputer & MS Office',
-    period: '2024',
-    logo: '/logos/logo pkbm.png',
-    accent: '#f59e0b',
-    address: 'Jl. Kemuning VIII Perumnas No.166 Blok 19, Helvetia, Kota Medan',
-    highlights: [
-      'Pelatihan literasi komputer aplikatif masyarakat',
-      'Pendampingan intensif Word, Excel & PowerPoint',
-      'Edukasi inklusif kesetaraan Paket A, B, dan C',
-    ],
-  },
-  {
     id: 'bsi',
-    order: '05',
+    order: '04',
     name: 'PT. Bank Syariah Indonesia (BSI)',
     shortName: 'Bank BSI',
     role: 'Back Office Intern (MBKM)',
@@ -94,7 +78,7 @@ const LOCATIONS = [
   },
   {
     id: 'bank-sumut',
-    order: '06',
+    order: '05',
     name: 'PT. Bank Sumut (Kantor Pusat)',
     shortName: 'Bank Sumut',
     role: 'Operational Division Intern',
@@ -110,7 +94,7 @@ const LOCATIONS = [
   },
   {
     id: 'bpjs',
-    order: '07',
+    order: '06',
     name: 'BPJS Ketenagakerjaan Medan Kota',
     shortName: 'BPJSTK Medan Kota',
     role: 'IT Team Coordinator & Admin Support Intern',
@@ -126,7 +110,7 @@ const LOCATIONS = [
   },
   {
     id: 'ptpn',
-    order: '08',
+    order: '07',
     name: 'PT Perkebunan Nusantara III Holding (Persero)',
     shortName: 'PTPN III Holding',
     role: 'Officer Data Support Intern',

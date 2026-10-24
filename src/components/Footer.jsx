@@ -2,18 +2,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, Github, Linkedin, Instagram, Mail } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
-import InfiniteMarquee from './ui/InfiniteMarquee';
+import GradientWaves from './ui/GradientWaves';
 import { scrollToDirectMessage } from '../utils/scrollHelper';
-
-const MARQUEE_ITEMS = [
-  'Open to Opportunities',
-  'Web Development',
-  'Mobile Development',
-  'Banking Operations',
-  'UI/UX Design',
-  'Problem Solving',
-  'System Optimization',
-];
 
 const NAV_LINKS = [
   { label: 'Home', path: '/' },
@@ -47,11 +37,36 @@ const Footer = () => {
   };
 
   return (
-    <footer style={{ position: 'relative', overflow: 'hidden' }}>
-      {/* Marquee ribbon */}
-      <InfiniteMarquee items={MARQUEE_ITEMS} speed={35} />
+    <footer style={{ position: 'relative', overflow: 'hidden', background: 'var(--bg)' }}>
+      {/* Background Gradient Waves */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 0,
+          pointerEvents: 'none',
+          opacity: 0.55,
+        }}
+      >
+        <GradientWaves
+          horizonColor="#18181b"
+          waveColor="#27272a"
+          crestColor="#a1a1aa"
+          backgroundColor="transparent"
+          speed={0.2}
+          amplitude={2.0}
+          relief={0.8}
+          lightAngle={130}
+          mouseInteraction={true}
+          swellOnClick={false}
+          waveScale={0.45}
+          swell={28}
+          turbulence={14}
+        />
+      </div>
 
-      {/* CTA Section — Homepage only */}
+      <div style={{ position: 'relative', zIndex: 1 }}>
+        {/* CTA Section — Homepage only */}
       {isHomePage && (
         <div style={{
           padding: 'clamp(60px, 10vh, 120px) 24px',
@@ -244,6 +259,7 @@ const Footer = () => {
         fontSize: '0.75rem', color: 'var(--text-dim)',
       }}>
         <span>&copy; {year} Zacky Andyka &bull; Portfolio</span>
+      </div>
       </div>
 
       <style>{`
