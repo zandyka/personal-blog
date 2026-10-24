@@ -1,7 +1,10 @@
-﻿import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef } from 'react'
+import { useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 
 export default function CustomCursor() {
+  const location = useLocation()
+  const isPlayground = location.pathname === '/playground' || location.pathname.startsWith('/playground')
   const [pos, setPos] = useState({ x: -100, y: -100 })
   const [ringPos, setRingPos] = useState({ x: -100, y: -100 })
   const [isHovering, setIsHovering] = useState(false)
@@ -14,7 +17,7 @@ export default function CustomCursor() {
     ('ontouchstart' in window || navigator.maxTouchPoints > 0)
 
   useEffect(() => {
-    if (isTouchDevice) return
+    if (isTouchDevice || isPlayground) return
 
     const onMove = (e) => {
       setPos({ x: e.clientX, y: e.clientY })
@@ -56,7 +59,7 @@ export default function CustomCursor() {
     }
   }, [pos.x, pos.y, isTouchDevice])
 
-  if (isTouchDevice) return null
+  if (isTouchDevice || isPlayground) return null
 
   return (
     <>

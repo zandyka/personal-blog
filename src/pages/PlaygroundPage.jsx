@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Gamepad2, Sparkles, Blocks, Ghost, ArrowRight, Terminal } from 'lucide-react';
 import HandSpeakDemo from '../components/handspeak/HandSpeakDemo';
 import { useSoundContext } from '../components/ui/SoundProvider';
+import TargetCursor from '../components/ui/TargetCursor';
 
 const ARCADE_EXPERIMENTS = [
   {
@@ -56,6 +57,7 @@ export default function PlaygroundPage() {
 
   return (
     <div className="page-container" style={{ paddingBottom: '90px' }}>
+      <TargetCursor spinDuration={2} hideDefaultCursor parallaxOn />
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -74,6 +76,8 @@ export default function PlaygroundPage() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45 }}
+              className="cursor-target"
+              data-cursor-label="Interactive Lab"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -185,6 +189,8 @@ export default function PlaygroundPage() {
                 return (
                   <motion.div
                     key={item.id}
+                    className="cursor-target"
+                    data-cursor-label={item.badge}
                     whileHover={{ y: -4 }}
                     onMouseEnter={playHover}
                     style={{

@@ -146,6 +146,7 @@ export default function HandSpeakDemo() {
                   switchMode('letters');
                 }}
                 onMouseEnter={playHover}
+                data-cursor-label="Mode Huruf"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -172,6 +173,7 @@ export default function HandSpeakDemo() {
                   switchMode('words');
                 }}
                 onMouseEnter={playHover}
+                data-cursor-label="Mode Kata"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -201,6 +203,7 @@ export default function HandSpeakDemo() {
                   setShowKamus(!showKamus);
                 }}
                 onMouseEnter={playHover}
+                data-cursor-label="Kamus BISINDO"
                 title="Buka Kamus Gestur Alfabet BISINDO A–Z"
                 style={{
                   display: 'inline-flex',
@@ -228,6 +231,7 @@ export default function HandSpeakDemo() {
                   setShowGuide(!showGuide);
                 }}
                 onMouseEnter={playHover}
+                data-cursor-label="Daftar Kata"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -493,6 +497,8 @@ export default function HandSpeakDemo() {
             {/* Inactive Camera Placeholder */}
             {!isCameraActive && (
               <div
+                className="cursor-target"
+                data-cursor-label="Buka Kamera"
                 onClick={() => {
                   playClick();
                   startCamera();
@@ -745,6 +751,7 @@ export default function HandSpeakDemo() {
                     startCamera();
                   }}
                   onMouseEnter={playHover}
+                  data-cursor-label="Buka Kamera"
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',
@@ -800,6 +807,7 @@ export default function HandSpeakDemo() {
                   stopCamera();
                 }}
                 onMouseEnter={playHover}
+                data-cursor-label="Tutup Kamera"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -828,6 +836,7 @@ export default function HandSpeakDemo() {
                   toggleSkeleton();
                 }}
                 onMouseEnter={playHover}
+                data-cursor-label="Toggle Skeleton"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -890,6 +899,7 @@ export default function HandSpeakDemo() {
                     addSpace();
                   }}
                   onMouseEnter={playHover}
+                  data-cursor-label="Spasi"
                   title="Tambah Spasi"
                   style={{
                     padding: '6px 12px',
@@ -911,6 +921,7 @@ export default function HandSpeakDemo() {
                     backspace();
                   }}
                   onMouseEnter={playHover}
+                  data-cursor-label="Hapus"
                   title="Hapus Satu Huruf"
                   style={{
                     padding: '6px 10px',
@@ -932,6 +943,7 @@ export default function HandSpeakDemo() {
                     clearText();
                   }}
                   onMouseEnter={playHover}
+                  data-cursor-label="Reset"
                   title="Bersihkan Seluruh Teks"
                   style={{
                     padding: '6px 10px',
@@ -987,6 +999,7 @@ export default function HandSpeakDemo() {
               {accumulatedText && (
                 <button
                   onClick={handleCopy}
+                  data-cursor-label="Salin Teks"
                   title="Salin Teks"
                   style={{
                     padding: '8px',
