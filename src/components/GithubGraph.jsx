@@ -482,36 +482,6 @@ export default function GithubGraph(props) {
               <ExternalLink size={12} style={{ opacity: 0.7 }} />
             </a>
           )}
-
-          <div
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              fontSize: '0.72rem',
-              color: status === 'loading' ? '#f59e0b' : '#39d353',
-              background: 'rgba(0, 0, 0, 0.3)',
-              padding: '5px 10px',
-              borderRadius: '8px',
-              border: '1px solid rgba(255, 255, 255, 0.06)',
-            }}
-          >
-            <span
-              style={{
-                width: '6px',
-                height: '6px',
-                borderRadius: '50%',
-                background: status === 'loading' ? '#f59e0b' : '#39d353',
-                boxShadow:
-                  status === 'loading'
-                    ? '0 0 8px #f59e0b'
-                    : '0 0 8px #39d353',
-                display: 'inline-block',
-                animation: 'pulse 2s infinite',
-              }}
-            />
-            <span>{status === 'loading' ? 'Memuat…' : 'Live Sync'}</span>
-          </div>
         </div>
       </div>
 
@@ -632,7 +602,7 @@ export default function GithubGraph(props) {
         style={{
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
+          justifyContent: status === 'error' ? 'space-between' : 'flex-end',
           marginTop: '14px',
           paddingTop: '12px',
           borderTop: '1px solid rgba(255, 255, 255, 0.05)',
@@ -641,16 +611,12 @@ export default function GithubGraph(props) {
           fontSize: '0.74rem',
         }}
       >
-        <div style={{ color: 'var(--text-muted, #94a3b8)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <Sparkles size={12} style={{ color: '#39d353' }} />
-          <span>
-            {status === 'loading'
-              ? `Sinkronisasi data @${cleanUsername} dari GitHub…`
-              : status === 'error'
-              ? `${errorMessage} (menampilkan data simulasi)`
-              : `Terhubung langsung dengan profil GitHub @${cleanUsername}`}
-          </span>
-        </div>
+        {status === 'error' && (
+          <div style={{ color: 'var(--text-muted, #94a3b8)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <Sparkles size={12} style={{ color: '#ef4444' }} />
+            <span>{errorMessage} (menampilkan data simulasi)</span>
+          </div>
+        )}
 
         {showLegend && (
           <div

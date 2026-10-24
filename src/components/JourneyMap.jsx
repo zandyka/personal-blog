@@ -13,51 +13,57 @@ import { useSoundContext } from './ui/SoundProvider';
 
 const LOCATIONS = [
   {
-    id: 'smk',
+    id: 'ptpn',
     order: '01',
-    name: 'SMK Darussalam Medan',
-    shortName: 'SMK Darussalam',
-    role: 'Teknik Komputer & Jaringan (TKJ)',
-    period: '2020 - 2023',
-    logo: '/logos/logo smk darussalam.jpg',
-    accent: '#38bdf8',
-    address: 'Jl. Darussalam No. 26 ABC, Sei Sikambing D, Kota Medan',
+    name: 'PT Perkebunan Nusantara III Holding (Persero)',
+    shortName: 'PTPN III Holding',
+    role: 'ODS Strategi & Pengembangan SDM',
+    period: 'September 2026 - Sekarang',
+    logo: '/logos/logo ptpn.png',
+    photo: '/journey/ptpn.jpeg',
+    photoPosition: 'center 20%',
+    accent: '#059669',
+    address: 'Gedung Agro Plaza, Jl. H. R. Rasuna Said Kav. X-2 No. 1, Kuningan, Jakarta Selatan',
     highlights: [
-      'Kompetensi Kejuruan Teknik Komputer & Jaringan (TKJ)',
-      'Instalasi Jaringan Komputer, LAN, Routing & Mikrotik',
-      'Predikat Peserta Terbaik Uji Kompetensi Keahlian (UKK)',
+      'Dashboard L&D terpusat Holding & Subholding PTPN Group',
+      'Konsolidasi anggaran RKAP untuk pelaporan korporat',
+      'Automasi alur pemrosesan data pelaporan manual',
     ],
   },
   {
-    id: 'telkom',
+    id: 'bpjs',
     order: '02',
-    name: 'PT. Telkom Akses Indonesia',
-    shortName: 'Telkom Akses',
-    role: 'Fiber Technician Intern',
-    period: 'Februari 2022 - April 2022',
-    logo: '/logos/logo telkom.png',
-    accent: '#ef4444',
-    address: 'Regional Area Medan, Sumatera Utara',
+    name: 'BPJS Ketenagakerjaan Medan Kota',
+    shortName: 'BPJSTK Medan Kota',
+    role: 'IT Team Coordinator & Admin Support Intern',
+    period: 'Agustus 2025 - Desember 2025',
+    logo: '/logos/logo bpjs.png',
+    photo: '/journey/bpjs.png',
+    photoPosition: 'center 25%',
+    accent: '#10b981',
+    address: 'BPJS Ketenagakerjaan Kantor Cabang Medan Kota, Jl. Pattimura No. 334, Medan',
     highlights: [
-      'Fusion Splicing kabel serat optik presisi',
-      'Pengujian transmisi jaringan OPM & OTDR',
-      'Maintenance infrastruktur lapangan FTTH / GPON',
+      'Membangun sistem informasi SIGMA BPJSTK',
+      'Troubleshooting teknis aplikasi mobile JMO',
+      'Monitoring analitik dataset 198 peserta magang',
     ],
   },
   {
-    id: 'usu',
+    id: 'bank-sumut',
     order: '03',
-    name: 'Universitas Sumatera Utara (USU)',
-    shortName: 'Kampus USU',
-    role: 'Teknik Informatika & Kadiv Media HIMTI',
-    period: '2023 - 2026',
-    logo: '/logos/logo usu.png',
-    accent: '#818cf8',
-    address: 'Jl. Dr. T. Mansur No. 9, Padang Bulan, Medan',
+    name: 'PT. Bank Sumut (Kantor Pusat)',
+    shortName: 'Bank Sumut',
+    role: 'Operational Division Intern',
+    period: 'Juni 2025 - Juli 2025',
+    logo: '/logos/logo bank sumut.png',
+    photo: '/journey/banksumut.jpeg',
+    photoPosition: 'center 20%',
+    accent: '#0284c7',
+    address: 'Jl. Imam Bonjol No. 18, Petisah Tengah, Medan',
     highlights: [
-      'Lulus Predikat Cum Laude (IPK 3.84 / 4.00)',
-      'Kepala Divisi Media Kreatif HIMTI USU',
-      'Riset Inovasi AI HandSpeak BISINDO Translator',
+      'Pemrosesan transaksi operasional sesuai SOP',
+      'Dashboard analitik visual volume transaksi',
+      'Rekonsiliasi harian data kliring perbankan',
     ],
   },
   {
@@ -68,6 +74,8 @@ const LOCATIONS = [
     role: 'Back Office Intern (MBKM)',
     period: 'Maret 2025 - Mei 2025',
     logo: '/logos/logo bsi.png',
+    photo: '/journey/bsi.png',
+    photoPosition: 'center center',
     accent: '#00a39d',
     address: 'Kantor Cabang Medan Area, Kota Medan',
     highlights: [
@@ -77,51 +85,57 @@ const LOCATIONS = [
     ],
   },
   {
-    id: 'bank-sumut',
+    id: 'usu',
     order: '05',
-    name: 'PT. Bank Sumut (Kantor Pusat)',
-    shortName: 'Bank Sumut',
-    role: 'Operational Division Intern',
-    period: 'Juni 2025 - Juli 2025',
-    logo: '/logos/logo bank sumut.png',
-    accent: '#0284c7',
-    address: 'Jl. Imam Bonjol No. 18, Petisah Tengah, Medan',
+    name: 'Universitas Sumatera Utara (USU)',
+    shortName: 'Kampus USU',
+    role: 'Teknik Informatika & Kadiv Media HIMTI',
+    period: '2023 - 2026',
+    logo: '/logos/logo usu.png',
+    photo: '/journey/wisudaku.jpg',
+    photoPosition: 'center 15%',
+    accent: '#818cf8',
+    address: 'Jl. Dr. T. Mansur No. 9, Padang Bulan, Medan',
     highlights: [
-      'Pemrosesan transaksi operasional sesuai SOP',
-      'Dashboard analitik visual volume transaksi',
-      'Rekonsiliasi harian data kliring perbankan',
+      'Lulus Predikat Cum Laude (IPK 3.84 / 4.00)',
+      'Kepala Divisi Media Kreatif HIMTI USU',
+      'Riset Inovasi AI HandSpeak BISINDO Translator',
     ],
   },
   {
-    id: 'bpjs',
+    id: 'telkom',
     order: '06',
-    name: 'BPJS Ketenagakerjaan Medan Kota',
-    shortName: 'BPJSTK Medan Kota',
-    role: 'IT Team Coordinator & Admin Support Intern',
-    period: 'Agustus 2025 - Desember 2025',
-    logo: '/logos/logo bpjs.png',
-    accent: '#10b981',
-    address: 'BPJS Ketenagakerjaan Kantor Cabang Medan Kota, Jl. Pattimura No. 334, Medan',
+    name: 'PT. Telkom Akses Indonesia',
+    shortName: 'Telkom Akses',
+    role: 'Fiber Technician Intern',
+    period: 'Februari 2022 - April 2022',
+    logo: '/logos/logo telkom.png',
+    photo: '/journey/telkom.png',
+    photoPosition: 'center center',
+    accent: '#ef4444',
+    address: 'Regional Area Medan, Sumatera Utara',
     highlights: [
-      'Membangun sistem informasi SIGMA BPJSTK',
-      'Troubleshooting teknis aplikasi mobile JMO',
-      'Monitoring analitik dataset 198 peserta magang',
+      'Fusion Splicing kabel serat optik presisi',
+      'Pengujian transmisi jaringan OPM & OTDR',
+      'Maintenance infrastruktur lapangan FTTH / GPON',
     ],
   },
   {
-    id: 'ptpn',
+    id: 'smk',
     order: '07',
-    name: 'PT Perkebunan Nusantara III Holding (Persero)',
-    shortName: 'PTPN III Holding',
-    role: 'Officer Data Support Intern',
-    period: 'September 2026 - Sekarang',
-    logo: '/logos/logo ptpn.png',
-    accent: '#059669',
-    address: 'Gedung Agro Plaza, Jl. H. R. Rasuna Said Kav. X-2 No. 1, Kuningan, Jakarta Selatan',
+    name: 'SMK Darussalam Medan',
+    shortName: 'SMK Darussalam',
+    role: 'Teknik Komputer & Jaringan (TKJ)',
+    period: '2020 - 2023',
+    logo: '/logos/logo smk darussalam.jpg',
+    photo: '/journey/telkom.png',
+    photoPosition: 'center center',
+    accent: '#38bdf8',
+    address: 'Jl. Darussalam No. 26 ABC, Sei Sikambing D, Kota Medan',
     highlights: [
-      'Dashboard L&D terpusat Holding & Subholding PTPN Group',
-      'Konsolidasi anggaran RKAP untuk pelaporan korporat',
-      'Automasi alur pemrosesan data pelaporan manual',
+      'Kompetensi Kejuruan Teknik Komputer & Jaringan (TKJ)',
+      'Instalasi Jaringan Komputer, LAN, Routing & Mikrotik',
+      'Predikat Peserta Terbaik Uji Kompetensi Keahlian (UKK)',
     ],
   },
 ];
@@ -467,14 +481,15 @@ export default function JourneyMap() {
                   </div>
                 </div>
 
-                {/* Milestone Photo / Documentation Placeholder */}
+                {/* Milestone Photo / Documentation Display */}
                 <div
                   style={{
                     width: '100%',
-                    height: '190px',
+                    height: 'clamp(210px, 26vw, 260px)',
                     borderRadius: '16px',
                     background: 'var(--surface-2)',
-                    border: '1.5px dashed var(--border)',
+                    border: selectedLocation.photo ? '1px solid var(--border)' : '1.5px dashed var(--border)',
+                    boxShadow: selectedLocation.photo ? '0 6px 20px rgba(0, 0, 0, 0.2)' : 'none',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
@@ -489,7 +504,13 @@ export default function JourneyMap() {
                     <img
                       src={selectedLocation.photo}
                       alt={selectedLocation.name}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        objectPosition: selectedLocation.photoPosition || 'center center',
+                        display: 'block',
+                      }}
                     />
                   ) : (
                     <>
@@ -510,9 +531,6 @@ export default function JourneyMap() {
                       </div>
                       <span style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-muted)' }}>
                         Dokumentasi Kegiatan • {selectedLocation.shortName}
-                      </span>
-                      <span style={{ fontSize: '0.72rem', color: 'var(--text-dim)' }}>
-                        Placeholder Foto Milestone
                       </span>
                     </>
                   )}
