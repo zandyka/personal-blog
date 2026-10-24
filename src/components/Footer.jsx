@@ -60,11 +60,11 @@ const Footer = () => {
           inset: 0,
           zIndex: 0,
           pointerEvents: 'none',
-          opacity: isAboutDark ? 1 : 0.65,
+          opacity: isAboutPage ? 1 : 0.75,
         }}
       >
         <GradientWaves
-          horizonColor={isDark ? '#121214' : '#e4e4e7'}
+          horizonColor={isDark ? '#121214' : '#94a3b8'}
           waveColor={isDark ? '#3f3f46' : '#cbd5e1'}
           crestColor={isDark ? '#f4f4f5' : '#ffffff'}
           backgroundColor="transparent"
@@ -77,7 +77,8 @@ const Footer = () => {
           waveScale={isAboutPage ? 0.38 : 0.45}
           swell={28}
           turbulence={14}
-          lightMode={!isDark}
+          lightMode={false}
+          brightness={isDark ? 1.0 : 1.15}
           grain={0.22}
         />
       </div>
