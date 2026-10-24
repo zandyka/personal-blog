@@ -11,7 +11,6 @@ export const FEATURED_GALLERY_ITEMS = [
     id: 1,
     category: 'Photography',
     title: 'Fotografi Komersial Produk Coca-Cola',
-    caption: 'Sesi fotografi produk dengan efek water splash dan pencahayaan dramatis untuk kebutuhan advertising.',
     aspectRatio: '9 / 16',
     ratioLabel: '9:16',
     src: '/gallery/fotografi produk coca cola (9_16).webp',
@@ -21,7 +20,6 @@ export const FEATURED_GALLERY_ITEMS = [
     id: 2,
     category: 'Creative',
     title: 'Desain X-Banner Produk Inovasi',
-    caption: 'Perancangan media promosi visual dan tata letak informasi produk inovasi untuk kebutuhan presentasi teknologi.',
     aspectRatio: '1 / 1',
     ratioLabel: '1:1',
     src: '/gallery/x banner produk inovasi 1_1.webp',
@@ -31,7 +29,6 @@ export const FEATURED_GALLERY_ITEMS = [
     id: 3,
     category: 'Creative',
     title: 'Desain ID Card Staff Internship',
-    caption: 'Perancangan identitas kartu tanda pengenal staff internship dengan tipografi modern dan tata letak visual yang presisi.',
     aspectRatio: '4 / 3',
     ratioLabel: '4:3',
     src: '/gallery/design id card 4_3.webp',
@@ -41,7 +38,6 @@ export const FEATURED_GALLERY_ITEMS = [
     id: 4,
     category: 'Events',
     title: 'Event Organizer — Rindu Tenang',
-    caption: 'Dokumentasi manajemen operasional panggung dan koordinasi kepanitiaan pada pagelaran musik dan seni Rindu Tenang.',
     aspectRatio: '16 / 9',
     ratioLabel: '16:9',
     src: '/gallery/event organizer rindu tenang 16_9.webp',
@@ -51,7 +47,6 @@ export const FEATURED_GALLERY_ITEMS = [
     id: 5,
     category: 'Events',
     title: 'Volunteer Event HIMTI Games',
-    caption: 'Liputan dokumentasi visual turnamen e-sports dan kompetisi olahraga tahunan Himpunan Mahasiswa TI.',
     aspectRatio: '9 / 16',
     ratioLabel: '9:16',
     src: '/gallery/event himti games (9_16).webp',
@@ -61,7 +56,6 @@ export const FEATURED_GALLERY_ITEMS = [
     id: 6,
     category: 'Photography',
     title: 'Tim Pubdok PKKMB Vokasi 2025',
-    caption: 'Aksi dokumentasi visual tim publikasi dalam mengabadikan dinamika orientasi mahasiswa baru Fakultas Vokasi USU 2025.',
     aspectRatio: '4 / 3',
     ratioLabel: '4:3',
     src: '/gallery/tim publikasi dokumentasi pkkmb vokasi 2025 4_3.webp',
@@ -71,7 +65,6 @@ export const FEATURED_GALLERY_ITEMS = [
     id: 7,
     category: 'Creative',
     title: 'Desain Banner Sidang',
-    caption: 'Perancangan banner perayaan kelulusan dan ucapan selamat sidang tugas akhir program studi Teknik Informatika.',
     aspectRatio: '1 / 1',
     ratioLabel: '1:1',
     src: '/gallery/banner sidang 1_1.webp',
@@ -81,7 +74,6 @@ export const FEATURED_GALLERY_ITEMS = [
     id: 8,
     category: 'Events',
     title: 'Memberikan Pelajaran Komputer PKBM Bina Tunas Muda',
-    caption: 'Program pelatihan literasi digital dan pengenalan aplikasi perkantoran bagi para peserta didik di PKBM Bintula.',
     aspectRatio: '16 / 9',
     ratioLabel: '16:9',
     src: '/gallery/mengajar komputer di pkbm bintula 16_9.webp',
@@ -91,7 +83,6 @@ export const FEATURED_GALLERY_ITEMS = [
     id: 9,
     category: 'Events',
     title: 'Aktivitas Magang BPJS Ketenagakerjaan',
-    caption: 'Dokumentasi profesional selama bertugas di BPJS Ketenagakerjaan pada bagian IT support dan rekonsiliasi data operasional.',
     aspectRatio: '9 / 16',
     ratioLabel: '9:16',
     src: '/gallery/magang bpjs 9_16.webp',
@@ -106,7 +97,6 @@ export const ALL_GALLERY_ITEMS = [
     id: 10,
     category: 'Events',
     title: 'Dokumentasi Dinamika PKKMB Vokasi 2025',
-    caption: 'Dokumentasi antusiasme dan interaksi mahasiswa baru dalam rangkaian pengenalan kehidupan kampus Fakultas Vokasi USU.',
     aspectRatio: '1 / 1',
     ratioLabel: '1:1',
     src: '/gallery/dokumentasi kegiatan pkkmb 2025.webp',
@@ -116,7 +106,6 @@ export const ALL_GALLERY_ITEMS = [
     id: 11,
     category: 'Events',
     title: 'Pameran Karya Expo Vokasi USU 2024',
-    caption: 'Partisipasi dan dokumentasi stand pameran karya inovasi teknologi mahasiswa pada gelaran tahunan Expo Vokasi USU.',
     aspectRatio: '4 / 3',
     ratioLabel: '4:3',
     src: '/gallery/expo vokasi usu 2024 4_3.webp',
@@ -126,7 +115,6 @@ export const ALL_GALLERY_ITEMS = [
     id: 12,
     category: 'Photography',
     title: 'Sidang Zacky',
-    caption: 'Potret personal Zacky Andyka di depan deretan papan bunga ucapan selamat kelulusan sarjana Teknik Informatika USU.',
     aspectRatio: '9 / 16',
     ratioLabel: '9:16',
     src: '/gallery/potret sidang dengan papan bunga 9_16.webp',
@@ -136,7 +124,6 @@ export const ALL_GALLERY_ITEMS = [
     id: 13,
     category: 'Photography',
     title: 'Tim Publikasi & Dokumentasi Visual',
-    caption: 'Aksi potret vertikal kru pubdok dalam mengabadikan momen-momen krusial sepanjang kegiatan orientasi kampus.',
     aspectRatio: '9 / 16',
     ratioLabel: '9:16',
     src: '/gallery/tim publikasi dan dokumentasi pkkmb vokasi 2025 9_16.webp',
@@ -146,7 +133,6 @@ export const ALL_GALLERY_ITEMS = [
     id: 14,
     category: 'Events',
     title: 'Keluarga Besar BSI KCP Medan Area',
-    caption: 'Momen kebersamaan bersama jajaran karyawan dan staf Back Office PT. Bank Syariah Indonesia selama masa magang profesional.',
     aspectRatio: '16 / 9',
     ratioLabel: '16:9',
     src: '/gallery/foto bersama karyawan (magang di BSI).webp',
@@ -156,7 +142,6 @@ export const ALL_GALLERY_ITEMS = [
     id: 15,
     category: 'Events',
     title: 'Pelatihan Layanan Operasional PKL Bank Sumut',
-    caption: 'Dokumentasi dukungan administrasi dan kepanitiaan pada program pelatihan peningkatan kualitas layanan PT. Bank Sumut.',
     aspectRatio: '1 / 1',
     ratioLabel: '1:1',
     src: '/gallery/program peningkatan kualitas satpam bank sumut (PKL Bank Sumut).webp',
@@ -166,7 +151,6 @@ export const ALL_GALLERY_ITEMS = [
     id: 16,
     category: 'Events',
     title: 'Kepanitiaan Bersama PKKMB Vokasi 2025',
-    caption: 'Momen kebersamaan seluruh divisi panitia pelaksana setelah sukses menyelenggarakan rangkaian orientasi kampus.',
     aspectRatio: '16 / 9',
     ratioLabel: '16:9',
     src: '/gallery/fotbar panitia pkkmb vokasi 2025.webp',
@@ -176,7 +160,6 @@ export const ALL_GALLERY_ITEMS = [
     id: 17,
     category: 'Events',
     title: 'Momen Kelulusan Sidang Tugas Akhir',
-    caption: 'Potret perayaan bersama rekan seperjuangan setelah menyelesaikan sidang meja hijau program studi Teknik Informatika USU.',
     aspectRatio: '9 / 16',
     ratioLabel: '9:16',
     src: '/gallery/fotbar sidang 9_16.webp',
@@ -186,7 +169,6 @@ export const ALL_GALLERY_ITEMS = [
     id: 18,
     category: 'Events',
     title: 'On-boarding Magang PT. Bank Syariah Indonesia',
-    caption: 'Sesi pembekalan awal dan pengenalan alur kerja operasional perbankan syariah pada kantor cabang Medan Area.',
     aspectRatio: '4 / 3',
     ratioLabel: '4:3',
     src: '/gallery/on-boarding magang bsi 4_3.webp',
@@ -196,7 +178,6 @@ export const ALL_GALLERY_ITEMS = [
     id: 19,
     category: 'Events',
     title: 'Panitia PKKMB 2025',
-    caption: 'Koordinasi lapangan tim pendamping mahasiswa baru dalam mengawal kelancaran aktivitas orientasi akademik kampus.',
     aspectRatio: '4 / 3',
     ratioLabel: '4:3',
     src: '/gallery/panitia pkkmb 2025 4_3.webp',
@@ -206,7 +187,6 @@ export const ALL_GALLERY_ITEMS = [
     id: 20,
     category: 'Events',
     title: 'Potret Wisuda Teknik Informatika USU',
-    caption: 'Dokumentasi momen kelulusan wisuda sarjana Teknik Informatika dengan predikat Cum Laude di Universitas Sumatera Utara.',
     aspectRatio: '1 / 1',
     ratioLabel: '1:1',
     src: '/gallery/fotbar wisuda.webp',
@@ -216,7 +196,6 @@ export const ALL_GALLERY_ITEMS = [
     id: 21,
     category: 'Events',
     title: 'Pelantikan Pengurus HIMTI USU',
-    caption: 'Dokumentasi seremoni pelantikan kepengurusan Himpunan Mahasiswa Teknologi Informasi Universitas Sumatera Utara.',
     aspectRatio: '16 / 9',
     ratioLabel: '16:9',
     src: '/gallery/Pelantikan HIMTI.webp',
@@ -340,20 +319,10 @@ export function GalleryCard({ item, index, onClick }) {
             fontWeight: 700,
             color: '#ffffff',
             lineHeight: 1.25,
-            marginBottom: '4px',
+            marginBottom: 0,
           }}
         >
           {item.title}
-        </span>
-        <span
-          className="gallery-card-caption"
-          style={{
-            fontSize: '0.72rem',
-            color: 'rgba(255,255,255,0.7)',
-            lineHeight: 1.35,
-          }}
-        >
-          {item.caption}
         </span>
         <div
           className="gallery-zoom-btn"
@@ -432,12 +401,9 @@ export function Lightbox({ item, onClose }) {
               <span style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--accent-2)', textTransform: 'uppercase', letterSpacing: '1px' }}>
                 {item.category}
               </span>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text)', marginTop: '4px' }}>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text)', marginTop: '4px', marginBottom: 0 }}>
                 {item.title}
               </h3>
-              <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '6px', lineHeight: 1.6 }}>
-                {item.caption}
-              </p>
             </div>
             <button
               onClick={() => { playClick(); onClose(); }}
@@ -616,9 +582,6 @@ export default function Gallery({
               contain-intrinsic-size: 240px;
             }
             .gallery-card-overlay {
-              display: none !important;
-            }
-            .gallery-card-caption {
               display: none !important;
             }
             .gallery-zoom-btn {
