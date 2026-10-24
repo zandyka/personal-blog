@@ -217,7 +217,7 @@ export default function JourneyMap() {
             }}
           >
             <Navigation size={14} />
-            <span>Mobility &amp; Field Milestones</span>
+            <span>Milestones</span>
           </div>
 
           <h2
@@ -226,23 +226,11 @@ export default function JourneyMap() {
               fontWeight: 800,
               color: 'var(--text)',
               letterSpacing: '-0.03em',
-              margin: '0 0 10px',
+              margin: '0 0 16px',
             }}
           >
             My Journey Map
           </h2>
-
-          <p
-            style={{
-              color: 'var(--text-muted)',
-              fontSize: '0.94rem',
-              maxWidth: '650px',
-              margin: '0 auto',
-              lineHeight: 1.6,
-            }}
-          >
-            Rekam jejak mobilitas lapangan di Kota Medan &bull; Perbankan, BUMN, Almamater &amp; Aksi Sosial
-          </p>
 
           {/* Category Filter Tabs */}
           <div
@@ -623,11 +611,6 @@ export default function JourneyMap() {
                     {selectedLocation.address}
                   </span>
                 </div>
-
-                {/* Narrative Summary */}
-                <p style={{ margin: 0, fontSize: '0.88rem', color: 'var(--text-muted)', lineHeight: 1.6 }}>
-                  {selectedLocation.summary}
-                </p>
 
                 {/* Key Deliverables & Highlights */}
                 <div>

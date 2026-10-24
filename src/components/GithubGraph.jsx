@@ -431,16 +431,18 @@ export default function GithubGraph(props) {
               )}
             </div>
 
-            <p
-              style={{
-                fontSize: '0.78rem',
-                color: 'var(--text-muted, #94a3b8)',
-                margin: '2px 0 0',
-                fontWeight: 400,
-              }}
-            >
-              {subtitle}
-            </p>
+            {subtitle && (
+              <p
+                style={{
+                  fontSize: '0.78rem',
+                  color: 'var(--text-muted, #94a3b8)',
+                  margin: '2px 0 0',
+                  fontWeight: 400,
+                }}
+              >
+                {subtitle}
+              </p>
+            )}
           </div>
         </div>
 

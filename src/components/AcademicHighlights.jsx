@@ -410,7 +410,7 @@ export default function AcademicHighlights() {
                   Mobile Computer Vision &bull; AI On-Device
                 </span>
                 <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text)', lineHeight: 1.55, fontWeight: 500 }}>
-                  Penerjemah Bahasa Isyarat Indonesia (BISINDO) langsung di perangkat smartphone Android tanpa ketergantungan server internet.
+                  Penerjemah gestur alfabet BISINDO A–Z real-time berbasis on-device deep learning.
                 </p>
               </div>
 
@@ -427,7 +427,7 @@ export default function AcademicHighlights() {
                     marginBottom: '8px',
                   }}
                 >
-                  Tech Stack &amp; Metodologi
+                  Tech Stack
                 </span>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                   {['Flutter', 'Dart', 'TensorFlow Lite', 'MediaPipe 3D', 'Python / Keras', 'Agile Scrum', 'Dataset Mendeley'].map((tech, idx) => (
@@ -598,19 +598,12 @@ export default function AcademicHighlights() {
                 border: '1px solid rgba(52, 211, 153, 0.2)',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'space-between',
-                flexWrap: 'wrap',
                 gap: '8px',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Activity size={15} style={{ color: '#34d399' }} />
-                <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text)' }}>
-                  Performa Sempurna (F1 = 1.00): <strong>Huruf G, R, Z</strong>
-                </span>
-              </div>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>
-                Target Optimasi: Kemiripan Gestur M &amp; N
+              <Activity size={15} style={{ color: '#34d399' }} />
+              <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text)' }}>
+                Performa Klasifikasi Sempurna (F1 = 1.00): <strong>Huruf G, R, Z</strong>
               </span>
             </div>
           </motion.div>

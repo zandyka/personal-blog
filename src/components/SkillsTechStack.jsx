@@ -338,7 +338,7 @@ export default function SkillsTechStack() {
               marginBottom: '10px',
             }}
           >
-            TECHNICAL STACK &amp; CAPABILITIES
+            TECH STACK
           </span>
           <h2
             style={{
@@ -369,22 +369,10 @@ export default function SkillsTechStack() {
               width: '50px',
               height: '3px',
               background: 'var(--accent)',
-              margin: '0 auto 16px',
+              margin: '0 auto',
               borderRadius: '2px',
             }}
           />
-          <p
-            style={{
-              color: 'var(--text-muted)',
-              fontSize: '0.98rem',
-              maxWidth: '640px',
-              margin: '0 auto',
-              fontWeight: 400,
-              lineHeight: 1.6,
-            }}
-          >
-            Teknologi, framework modern, ekosistem AI, database, dan tools desain visual yang saya kuasai dan gunakan secara aktif.
-          </p>
         </motion.div>
       </div>
 

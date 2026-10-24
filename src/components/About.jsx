@@ -209,9 +209,9 @@ const About = () => {
                   lineHeight: 1.35,
                 }}
               >
-                Bridging{' '}
-                <span style={{ color: 'var(--accent)', fontWeight: 700 }}>Software Engineering</span>,{' '}
-                <span style={{ color: 'var(--accent-2)', fontWeight: 700 }}>Banking Operations</span> &amp; Infrastructure.
+                Web Dev,{' '}
+                <span style={{ color: 'var(--accent)', fontWeight: 700 }}>AI Engineer</span> &amp;{' '}
+                <span style={{ color: 'var(--accent-2)', fontWeight: 700 }}>Graphic Designer</span>.
               </h3>
               <p
                 style={{
@@ -222,7 +222,7 @@ const About = () => {
                   fontWeight: 400,
                 }}
               >
-                Lulusan <strong>Teknik Informatika USU</strong> dengan rekam jejak di PT Perkebunan Nusantara III Holding (Persero), operasional perbankan (BSI & Bank Sumut), IT support & dashboard analytics (BPJS Ketenagakerjaan), serta infrastruktur fiber optik (Telkom Akses). Mengutamakan akurasi, efisiensi kerja, dan kode yang tangguh.
+                Lulusan <strong>Teknik Informatika USU</strong> (Cum Laude, IPK 3.84) dengan pengalaman kerja di BUMN, perbankan, dan IT support. Berfokus pada rekayasa web modern, kecerdasan buatan on-device, dan desain visual.
               </p>
             </motion.div>
 
@@ -380,8 +380,8 @@ const About = () => {
         >
           <GithubGraph
             githubUsername="zandyka"
-            title="GitHub Contribution Activity"
-            subtitle="Aktivitas commit & open-source 52 minggu terakhir"
+            title="GitHub Contributions"
+            subtitle="52 Minggu Terakhir"
           />
         </motion.div>
       </div>
