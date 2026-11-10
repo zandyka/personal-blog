@@ -321,15 +321,10 @@ const TimelineCard = ({ item, index, showYear = true }) => {
           <Parallax speed={0.12}>
             <span
               className="timeline-year-num"
-              style={{ WebkitTextStroke: `1.5px ${lit ? badgeStyle.color : 'var(--border)'}` }}
+              style={{ WebkitTextStroke: `3px ${lit ? badgeStyle.color : 'var(--border)'}` }}
             >
               {yearOf(item.period)}
             </span>
-            {isCurrent && (
-              <span className="timeline-year-now" style={{ color: badgeStyle.color }}>
-                <i style={{ background: badgeStyle.color }} /> Sedang berjalan
-              </span>
-            )}
           </Parallax>
         </div>
       )}
@@ -856,31 +851,21 @@ const Experience = () => {
         }
 
         /* Tahun besar bergaris di sisi kosong */
+        /* Space Grotesk + jarak huruf normal: angka tidak saling menumpuk.
+           paint-order: garis digambar dulu lalu ditutup isian warna latar, jadi
+           kontur dalam font tidak ikut terlihat dan yang tersisa hanya garis luar
+           (stroke 3px -> tampak 1.5px). */
         .timeline-year-num {
           display: block;
+          font-family: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif;
           font-size: clamp(3.4rem, 7.5vw, 6.6rem);
-          font-weight: 800;
-          letter-spacing: -0.05em;
+          font-weight: 700;
+          letter-spacing: 0.02em;
           line-height: 0.9;
-          color: transparent;
+          color: var(--bg);
+          paint-order: stroke fill;
           transition: -webkit-text-stroke-color 0.5s ease;
           user-select: none;
-        }
-        .timeline-year-now {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          margin-top: 10px;
-          font-size: 0.72rem;
-          font-weight: 700;
-          letter-spacing: 0.14em;
-          text-transform: uppercase;
-        }
-        .timeline-year-now i {
-          width: 7px;
-          height: 7px;
-          border-radius: 50%;
-          animation: timelineBlink 1.6s ease-in-out infinite;
         }
 
         /* Cincin berdenyut pada pengalaman yang masih berjalan */
@@ -895,11 +880,8 @@ const Experience = () => {
           0% { transform: scale(0.6); opacity: 0.9; }
           100% { transform: scale(1.9); opacity: 0; }
         }
-        @keyframes timelineBlink {
-          50% { opacity: 0.25; }
-        }
         @media (prefers-reduced-motion: reduce) {
-          .timeline-node-pulse, .timeline-year-now i { animation: none; }
+          .timeline-node-pulse { animation: none; }
         }
 
         @media (max-width: 850px) {
