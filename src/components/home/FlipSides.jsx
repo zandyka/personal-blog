@@ -3,26 +3,16 @@ import { motion, useMotionValueEvent, useReducedMotion, useScroll, useSpring, us
 import SectionHead from './SectionHead';
 import { SIDES } from './homeData';
 
+// Kartu sederhana ala kartu galeri: foto penuh + label & judul di bawah.
 function Face({ side, back }) {
   return (
-    <div className={`h-flip__face h-side--${side.id} ${back ? 'h-flip__face--back' : ''}`}>
-      <div className="h-side__media">
-        <img className="h-side__bg" src={side.image} alt={side.imageAlt} loading="lazy" decoding="async" />
-      </div>
-      <div className="h-side__body">
-        <span className="h-mono h-side__tag">{side.tag}</span>
-        <h3 className="h-side__title">
+    <div className={`h-flip__face h-flip__face--${side.id} ${back ? 'h-flip__face--back' : ''}`}>
+      <img className="h-flip__img" src={side.image} alt={side.imageAlt} loading="lazy" decoding="async" />
+      <div className="h-flip__caption">
+        <span className="h-mono">{side.tag}</span>
+        <h3 className="h-flip__title">
           Saya <em>{side.verb}</em>.
         </h3>
-        <p className="h-side__lede">{side.lede}</p>
-        <ul className="h-side__list">
-          {side.items.map(([label, value]) => (
-            <li key={label}>
-              <span className="h-mono">{label}</span>
-              <span>{value}</span>
-            </li>
-          ))}
-        </ul>
       </div>
     </div>
   );

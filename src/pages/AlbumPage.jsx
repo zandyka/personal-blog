@@ -4,8 +4,13 @@ import Gallery from '../components/Gallery';
 
 export default function AlbumPage() {
   useEffect(() => {
-    document.title = 'Visual Album — Muhammad Daffa Zacky Andyka';
+    const previous = document.title;
+    document.title = 'Visual Album - Portofolio Zack';
     window.scrollTo(0, 0);
+    // kembalikan judul tab saat meninggalkan halaman album
+    return () => {
+      document.title = previous;
+    };
   }, []);
 
   const handleScrollToAlbum = () => {

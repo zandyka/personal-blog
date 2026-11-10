@@ -1,18 +1,5 @@
 // Semua konten homepage di satu tempat, supaya mudah diedit.
 
-export const HERO_PORTRAIT = '/gallery/potret sidang dengan papan bunga 9_16.webp';
-
-// Foto yang diputar di "viewfinder" splash screen. Yang terakhir sengaja
-// sama dengan potret hero, jadi splash berakhir tepat di foto yang lalu "dicetak".
-export const SPLASH_FRAMES = [
-  { src: '/gallery/fotografi produk coca cola (9_16).webp', caption: 'Foto produk — Coca-Cola' },
-  { src: '/gallery/event himti games (9_16).webp', caption: 'HIMTI Games' },
-  { src: '/gallery/tim publikasi dan dokumentasi pkkmb vokasi 2025 9_16.webp', caption: 'Tim dokumentasi PKKMB' },
-  { src: '/gallery/magang bpjs 9_16.webp', caption: 'Magang BPJS Ketenagakerjaan' },
-  { src: '/gallery/fotbar sidang 9_16.webp', caption: 'Hari sidang' },
-  { src: HERO_PORTRAIT, caption: 'Sidang TA, USU' },
-];
-
 // Ticker di bawah hero: bidang yang dikerjakan. em = kata yang dicetak miring & berwarna.
 export const TICKER_FACTS = [
   { text: 'Web', em: 'Development' },
@@ -32,13 +19,6 @@ export const SIDES = [
     tag: 'Sisi A — kode',
     hud: 'A — Kode',
     verb: 'menulis kode',
-    lede: 'Dari aplikasi web dan mobile sampai model AI yang berjalan langsung di ponsel, tanpa server.',
-    items: [
-      ['Web', 'React & Laravel — Mahaasyik Resto, SIGMA'],
-      ['Mobile', 'Flutter — aplikasi HandSpeak'],
-      ['AI', 'TensorFlow Lite & MediaPipe, on-device'],
-      ['Data', 'Dasbor operasional & L&D korporat'],
-    ],
     image: '/projects/handspeak.webp',
     imageAlt: 'Rancangan sistem aplikasi HandSpeak',
   },
@@ -47,27 +27,14 @@ export const SIDES = [
     tag: 'Sisi B — visual',
     hud: 'B — Visual',
     verb: 'merancang visual',
-    lede: 'Identitas acara, materi cetak, dan konten media sosial untuk organisasi dan kepanitiaan kampus.',
-    items: [
-      ['Identitas', 'Lanyard & ID card HIMTI dan PKKMB'],
-      ['Cetak', 'Banner, spanduk, X-banner, poster'],
-      ['Digital', 'Feed Instagram HIMTI & PKKMB'],
-      ['Foto', 'Juara 3 lomba foto produk Coca-Cola'],
-    ],
     image: '/designs/physical/id_card_panitia_pkkmb.webp',
     imageAlt: 'Desain ID card panitia PKKMB Vokasi USU 2025',
   },
 ];
 
-// *teks* = penekanan (miring & berwarna)
-export const SIDES_OUTRO =
-  'Dua sisi itu bertemu di setiap proyek: kode yang *bekerja dengan baik*, dibungkus visual yang *enak dilihat*.';
-
-export const FACTS = [
-  { label: 'Pendidikan', value: 'Teknik Informatika, Universitas Sumatera Utara', note: 'IPK 3.84 — cum laude' },
-  { label: 'Sekarang', value: 'Officer Data Support Intern', note: 'PTPN III Holding (Persero), Jakarta' },
-  { label: 'Bahasa', value: 'Indonesia & Inggris', note: 'Native, menengah' },
-];
+// Kutipan besar setelah "Dua sisi meja" (gaya tipografi seperti homepage awal):
+// baris 1 tebal, baris 2 tebal berwarna aksen, baris 3 serif miring berwarna aksen kedua.
+export const OUTRO_QUOTE = ['Kode yang bekerja.', 'Visual yang diingat.', 'dalam satu proyek'];
 
 export const WORK = [
   {
@@ -152,14 +119,7 @@ export const ARCHIVE = [
 
 export const STATS = [
   { value: 4, decimals: 0, suffix: '', label: 'Aplikasi dirilis', note: 'Mobile AI, web full-stack, dan dua dasbor' },
-  { value: 198, decimals: 0, suffix: '', label: 'Peserta dipantau', note: 'Lewat SIGMA di BPJS Ketenagakerjaan' },
-  { value: 26, decimals: 0, suffix: '', label: 'Huruf BISINDO', note: 'Dikenali HandSpeak langsung di ponsel' },
+  { value: 5, decimals: 0, suffix: '', label: 'Pengalaman magang', note: 'PTPN III, BPJS TK, Bank Sumut, BSI, Telkom Akses' },
+  { value: 14, decimals: 0, suffix: '', label: 'Sertifikasi', note: 'Huawei, Kominfo, BNSP, Google, Dicoding' },
   { value: 14, decimals: 0, suffix: '', label: 'Karya desain', note: 'Lanyard, ID card, banner, feed Instagram' },
-];
-
-export const TECH = [
-  'React', 'JavaScript', 'Flutter', 'Dart', 'Laravel', 'PHP', 'Python', 'TensorFlow Lite',
-  'MediaPipe', 'MySQL', 'Firebase', 'Node.js', 'Figma', 'Tailwind', 'Git', 'REST API',
-  'Java', 'C++', 'Android Studio', 'Bootstrap', 'MariaDB', 'Chart.js', 'Vite', 'Midtrans',
-  'Photoshop', 'GPON',
 ];

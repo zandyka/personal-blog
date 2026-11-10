@@ -1,32 +1,94 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import {
+  Android,
+  Bootstrap5,
+  Canva,
+  CPlusPlus,
+  CSS3,
+  Dart,
+  Figma,
+  Firebase,
+  Flutter,
+  Git,
+  GitHubDark,
+  GitHubLight,
+  HTML5,
+  Java,
+  JavaScript,
+  Laravel,
+  MariaDB,
+  MySQL,
+  NodeJs,
+  Photoshop,
+  PHP,
+  Postman,
+  Python,
+  React,
+  TailwindCSS,
+  Tensorflow,
+  TypeScript,
+  VercelDark,
+  VercelLight,
+  ViteJS,
+} from 'developer-icons';
+import { useTheme } from '../../hooks/useTheme';
 import SectionHead from './SectionHead';
-import { TECH } from './homeData';
 
 /*
- * "Neuro link": tiap teknologi adalah neuron di jaringan 3D yang berputar.
- * Neuron terhubung ke tetangga terdekatnya, sinyal cahaya merambat dari
- * neuron ke neuron, dan neuron dekat kursor menyala beserta koneksinya.
- * Digambar di <canvas> 2D supaya ringan (tanpa three.js).
+ * "Neuro link": tiap teknologi adalah neuron (logo dari developer-icons) di
+ * jaringan 3D yang berputar. Garis koneksi & sinyal digambar di <canvas>,
+ * logo dirender sebagai elemen DOM supaya SVG-nya tetap tajam.
+ * Neuron dekat kursor menyala beserta koneksinya dan memancarkan sinyal baru.
  */
 
+// [nama, ikon tema gelap, ikon tema terang]
+const LOGOS = [
+  ['React', React],
+  ['JavaScript', JavaScript],
+  ['TypeScript', TypeScript],
+  ['Flutter', Flutter],
+  ['Dart', Dart],
+  ['Laravel', Laravel],
+  ['PHP', PHP],
+  ['Python', Python],
+  ['TensorFlow', Tensorflow],
+  ['MySQL', MySQL],
+  ['MariaDB', MariaDB],
+  ['Firebase', Firebase],
+  ['Node.js', NodeJs],
+  ['Tailwind CSS', TailwindCSS],
+  ['Vite', ViteJS],
+  ['HTML5', HTML5],
+  ['CSS3', CSS3],
+  ['Bootstrap', Bootstrap5],
+  ['Java', Java],
+  ['C++', CPlusPlus],
+  ['Android', Android],
+  ['Git', Git],
+  ['GitHub', GitHubLight, GitHubDark],
+  ['Vercel', VercelLight, VercelDark],
+  ['Postman', Postman],
+  ['Figma', Figma],
+  ['Photoshop', Photoshop],
+  ['Canva', Canva],
+];
+
 const K_NEAREST = 3;
-const PULSES = 16;
+const PULSES = 18;
 
 const readColors = () => {
   const cs = getComputedStyle(document.documentElement);
   const get = (name, fallback) => cs.getPropertyValue(name).trim() || fallback;
-  return {
-    text: get('--text', '#F6F0F1'),
-    muted: get('--text-muted', '#B7A9AD'),
-    line: get('--border-light', '#3B2D32'),
-    accent: get('--accent', '#D65A6E'),
-    bg: get('--bg', '#0B0809'),
-  };
+  return { muted: get('--text-muted', '#B7A9AD'), accent: get('--accent', '#D65A6E') };
 };
 
 export default function TechSphere() {
+  const { theme } = useTheme();
+  const light = theme === 'light';
   const boxRef = useRef(null);
   const canvasRef = useRef(null);
+  const chipRefs = useRef([]);
+  const [hover, setHover] = useState(-1);
 
   useEffect(() => {
     const box = boxRef.current;
@@ -35,19 +97,19 @@ export default function TechSphere() {
     const ctx = canvas.getContext('2d');
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Titik merata di permukaan bola (spiral Fibonacci), sedikit diacak ke dalam
+    // Titik di permukaan bola (spiral Fibonacci), kedalamannya sedikit diacak
     // supaya terasa seperti jaringan, bukan bola sempurna.
-    const n = TECH.length;
-    const nodes = TECH.map((name, i) => {
+    const n = LOGOS.length;
+    const nodes = LOGOS.map((_, i) => {
       const y = 1 - (i / (n - 1)) * 2;
       const r = Math.sqrt(1 - y * y);
       const a = i * Math.PI * (3 - Math.sqrt(5));
-      const depth = 0.78 + ((i * 37) % 23) / 100;
-      return { name, p: [Math.cos(a) * r * depth, y * depth, Math.sin(a) * r * depth], sx: 0, sy: 0, z: 0, s: 1 };
+      const depth = 0.8 + ((i * 37) % 21) / 100;
+      return { p: [Math.cos(a) * r * depth, y * depth, Math.sin(a) * r * depth], sx: 0, sy: 0, z: 0, k: 1 };
     });
 
     // Sambungan: tiap neuron ke K tetangga terdekat (tanpa duplikat).
-    const edgeSet = new Set();
+    const seen = new Set();
     const edges = [];
     const neighbours = nodes.map(() => []);
     nodes.forEach((a, i) => {
@@ -58,8 +120,8 @@ export default function TechSphere() {
         .slice(0, K_NEAREST)
         .forEach(({ j }) => {
           const key = i < j ? `${i}-${j}` : `${j}-${i}`;
-          if (edgeSet.has(key)) return;
-          edgeSet.add(key);
+          if (seen.has(key)) return;
+          seen.add(key);
           edges.push([i, j]);
           neighbours[i].push(j);
           neighbours[j].push(i);
@@ -68,7 +130,7 @@ export default function TechSphere() {
 
     const newPulse = (from = Math.floor(Math.random() * n)) => {
       const list = neighbours[from];
-      return { from, to: list[Math.floor(Math.random() * list.length)], t: Math.random() * 0.4, speed: 0.6 + Math.random() * 0.7 };
+      return { from, to: list[Math.floor(Math.random() * list.length)], t: Math.random() * 0.4, speed: 0.55 + Math.random() * 0.7 };
     };
     let pulses = Array.from({ length: PULSES }, () => newPulse());
 
@@ -116,29 +178,27 @@ export default function TechSphere() {
       const f = 2.6;
       for (const node of nodes) {
         const [x, y, z] = node.p;
-        const k = f / (f - z);
-        node.sx = s.w / 2 + x * s.radius * k;
-        node.sy = s.h / 2 + y * s.radius * k;
+        node.k = f / (f - z);
+        node.sx = s.w / 2 + x * s.radius * node.k;
+        node.sy = s.h / 2 + y * s.radius * node.k;
         node.z = (z + 1) / 2; // 0 belakang .. 1 depan
-        node.s = k;
       }
+      let next = -1;
       if (s.mouse) {
-        let best = -1;
-        let bestD = 34 * 34;
+        let bestD = 30 * 30;
         nodes.forEach((node, i) => {
           const d = (node.sx - s.mouse.x) ** 2 + (node.sy - s.mouse.y) ** 2;
           if (d < bestD && node.z > 0.35) {
             bestD = d;
-            best = i;
+            next = i;
           }
         });
-        if (best !== s.hover && best >= 0) {
-          // neuron yang disentuh memancarkan sinyal baru
-          pulses = pulses.slice(3).concat([newPulse(best), newPulse(best), newPulse(best)]);
-        }
-        s.hover = best;
-      } else {
-        s.hover = -1;
+      }
+      if (next !== s.hover) {
+        // neuron yang disentuh memancarkan sinyal baru
+        if (next >= 0) pulses = pulses.slice(3).concat([newPulse(next), newPulse(next), newPulse(next)]);
+        s.hover = next;
+        setHover(next);
       }
     };
 
@@ -146,16 +206,13 @@ export default function TechSphere() {
       const c = s.colors;
       ctx.setTransform(s.dpr, 0, 0, s.dpr, 0, 0);
       ctx.clearRect(0, 0, s.w, s.h);
-      const lit = s.hover >= 0 ? new Set([s.hover, ...neighbours[s.hover]]) : null;
 
-      // koneksi
       ctx.lineWidth = 1;
       for (const [i, j] of edges) {
         const a = nodes[i];
         const b = nodes[j];
-        const depth = (a.z + b.z) / 2;
-        const hot = lit && (i === s.hover || j === s.hover);
-        ctx.globalAlpha = hot ? 0.95 : 0.06 + depth * 0.38;
+        const hot = s.hover >= 0 && (i === s.hover || j === s.hover);
+        ctx.globalAlpha = hot ? 0.95 : 0.05 + ((a.z + b.z) / 2) * 0.36;
         ctx.strokeStyle = hot ? c.accent : c.muted;
         ctx.beginPath();
         ctx.moveTo(a.sx, a.sy);
@@ -163,49 +220,29 @@ export default function TechSphere() {
         ctx.stroke();
       }
 
-      // sinyal
       ctx.fillStyle = c.accent;
       for (const p of pulses) {
         const a = nodes[p.from];
         const b = nodes[p.to];
-        const x = a.sx + (b.sx - a.sx) * p.t;
-        const y = a.sy + (b.sy - a.sy) * p.t;
         const depth = a.z + (b.z - a.z) * p.t;
         ctx.globalAlpha = 0.25 + depth * 0.75;
         ctx.beginPath();
-        ctx.arc(x, y, 1.4 + depth * 2.2, 0, Math.PI * 2);
+        ctx.arc(a.sx + (b.sx - a.sx) * p.t, a.sy + (b.sy - a.sy) * p.t, 1.4 + depth * 2.2, 0, Math.PI * 2);
         ctx.fill();
-      }
-
-      // neuron + label, dari belakang ke depan
-      const order = nodes.map((_, i) => i).sort((x, y) => nodes[x].z - nodes[y].z);
-      const base = Math.max(11, Math.min(15, s.w / 38));
-      for (const i of order) {
-        const node = nodes[i];
-        const hot = i === s.hover;
-        const near = lit && lit.has(i);
-        const r = (hot ? 6 : 2.4 + node.z * 2.6) * Math.min(1.3, node.s);
-        ctx.globalAlpha = hot || near ? 1 : 0.25 + node.z * 0.75;
-        ctx.fillStyle = hot || near ? c.accent : c.text;
-        ctx.beginPath();
-        ctx.arc(node.sx, node.sy, r, 0, Math.PI * 2);
-        ctx.fill();
-        if (hot) {
-          ctx.strokeStyle = c.accent;
-          ctx.globalAlpha = 0.5;
-          ctx.beginPath();
-          ctx.arc(node.sx, node.sy, r + 6, 0, Math.PI * 2);
-          ctx.stroke();
-        }
-        if (node.z > 0.42 || hot || near) {
-          const size = base * (0.78 + node.z * 0.4) * (hot ? 1.25 : 1);
-          ctx.font = `${hot ? 800 : 600} ${size.toFixed(1)}px 'Plus Jakarta Sans', sans-serif`;
-          ctx.globalAlpha = hot || near ? 1 : Math.min(1, (node.z - 0.42) * 2.2);
-          ctx.fillStyle = hot ? c.accent : c.text;
-          ctx.fillText(node.name, node.sx + r + 6, node.sy + size * 0.35);
-        }
       }
       ctx.globalAlpha = 1;
+
+      // posisikan logo
+      const lit = s.hover >= 0 ? new Set([s.hover, ...neighbours[s.hover]]) : null;
+      nodes.forEach((node, i) => {
+        const el = chipRefs.current[i];
+        if (!el) return;
+        const hot = i === s.hover;
+        const scale = (0.5 + node.z * 0.62) * (hot ? 1.3 : 1);
+        el.style.transform = `translate3d(${node.sx.toFixed(1)}px, ${node.sy.toFixed(1)}px, 0) translate(-50%, -50%) scale(${scale.toFixed(3)})`;
+        el.style.opacity = (hot || (lit && lit.has(i)) ? 1 : 0.22 + node.z * 0.78).toFixed(3);
+        el.style.zIndex = String(hot ? 200 : Math.round(node.z * 100));
+      });
     };
 
     const tick = (now) => {
@@ -218,11 +255,7 @@ export default function TechSphere() {
           p.t += dt * p.speed;
           if (p.t >= 1) {
             // sinyal diteruskan ke neuron berikutnya
-            const next = newPulse(p.to);
-            p.from = next.from;
-            p.to = next.to;
-            p.t = 0;
-            p.speed = next.speed;
+            Object.assign(p, newPulse(p.to), { t: 0 });
           }
         }
       }
@@ -248,11 +281,8 @@ export default function TechSphere() {
       }
       if (e.pointerType !== 'mouse') return;
       s.mouse = { x: e.clientX - rect.left, y: e.clientY - rect.top };
-      const nx = s.mouse.x / rect.width - 0.5;
-      const ny = s.mouse.y / rect.height - 0.5;
-      // makin jauh dari tengah, makin cepat berputar ke arah kursor
-      s.vy = nx * 0.016;
-      s.vx = -ny * 0.016;
+      s.vy = (s.mouse.x / rect.width - 0.5) * 0.016;
+      s.vx = -(s.mouse.y / rect.height - 0.5) * 0.016;
       if (reduce) start();
     };
     const onLeave = () => {
@@ -324,11 +354,33 @@ export default function TechSphere() {
               <li><span className="h-mono">Frontend</span>React, Tailwind, Vite</li>
               <li><span className="h-mono">Backend</span>Laravel, Node.js, MySQL</li>
               <li><span className="h-mono">Mobile & AI</span>Flutter, TensorFlow Lite, MediaPipe</li>
-              <li><span className="h-mono">Desain</span>Figma, Photoshop</li>
+              <li><span className="h-mono">Desain</span>Figma, Photoshop, Canva</li>
             </ul>
           </div>
-          <div ref={boxRef} className="h-tech__sphere">
-            <canvas ref={canvasRef} role="img" aria-label={`Jaringan teknologi: ${TECH.join(', ')}`} />
+          <div
+            ref={boxRef}
+            className="h-tech__sphere"
+            role="img"
+            aria-label={`Jaringan teknologi: ${LOGOS.map(([name]) => name).join(', ')}`}
+          >
+            <canvas ref={canvasRef} aria-hidden="true" />
+            {LOGOS.map(([name, DarkIcon, LightIcon], i) => {
+              const Icon = light && LightIcon ? LightIcon : DarkIcon;
+              return (
+                <span
+                  key={name}
+                  ref={(el) => {
+                    chipRefs.current[i] = el;
+                  }}
+                  className="h-node"
+                  data-hot={hover === i}
+                  aria-hidden="true"
+                >
+                  <Icon size={26} />
+                  <span className="h-node__label">{name}</span>
+                </span>
+              );
+            })}
           </div>
         </div>
       </div>

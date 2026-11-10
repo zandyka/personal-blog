@@ -108,156 +108,11 @@
 }
 .h-ticker__sep { width: 7px; height: 7px; background: var(--accent-solid); flex: none; }
 
-/* ---------- Dua sisi meja ---------- */
-.h-sides {
-  display: flex;
-  min-height: clamp(480px, 66vh, 620px);
-  border: 1px solid var(--border);
-}
-.h-side {
-  position: relative;
-  flex: 1 1 0;
-  min-width: 0;
-  display: flex;
-  align-items: flex-end;
-  transition: flex-grow 0.9s var(--ease-out);
-}
-.h-side[data-state='on'] { flex-grow: 1.55; }
-
-.h-side__media {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-.h-side__media::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-}
-.h-side__bg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: grayscale(1) contrast(1.05);
-  transform: scale(1.04);
-  transition: opacity 0.9s var(--ease-out), transform 1.4s var(--ease-out);
-  pointer-events: none;
-}
-.h-side[data-state='on'] .h-side__bg { transform: scale(1); }
-
 /* Sisi pembuat: gelap, foto samar */
-.h-side--make { background: var(--surface); color: var(--text); }
-.h-side--make .h-side__bg { opacity: 0.16; }
-.h-side--make[data-state='on'] .h-side__bg { opacity: 0.3; }
-.h-side--make .h-side__media::after {
-  background: linear-gradient(to top, var(--surface) 38%, transparent 100%);
-}
 
 /* Sisi pengguna: isian aksen + foto duotone (multiply) */
-.h-side--run { background: var(--accent-solid); color: var(--on-accent); }
-.h-side--run .h-side__bg { mix-blend-mode: multiply; opacity: 0.55; }
-.h-side--run[data-state='on'] .h-side__bg { opacity: 0.8; }
-.h-side--run .h-side__media::after {
-  background: linear-gradient(to top, var(--accent-solid) 30%, transparent 100%);
-  opacity: 0.92;
-}
-
-.h-side__body {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  max-width: 560px;
-  padding: clamp(24px, 3.4vw, 48px);
-  transition: opacity 0.6s var(--ease-out);
-}
-.h-side[data-state='off'] .h-side__body { opacity: 0.45; }
-
-.h-side__tag { display: block; margin-bottom: 14px; }
-.h-side--run .h-side__tag,
-.h-side--run .h-side__list .h-mono { color: rgba(255, 255, 255, 0.72); }
-
-.h-side__title {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: clamp(2.3rem, 4.6vw, 4.3rem);
-  line-height: 0.95;
-  letter-spacing: -0.02em;
-  margin: 0 0 14px;
-}
-.h-side__title em { font-style: italic; }
-.h-side--make .h-side__title em { color: var(--accent); }
-
-.h-side__lede {
-  margin: 0 0 22px;
-  max-width: 40ch;
-  font-size: 0.98rem;
-  line-height: 1.55;
-  opacity: 0.86;
-}
-
-.h-side__list { list-style: none; margin: 0; padding: 0; }
-.h-side__list li {
-  display: grid;
-  grid-template-columns: 120px minmax(0, 1fr);
-  gap: 16px;
-  align-items: baseline;
-  padding: 10px 0;
-  border-top: 1px solid currentColor;
-  border-top-color: color-mix(in srgb, currentColor 18%, transparent);
-  font-size: 0.95rem;
-}
 
 /* "&" di garis pertemuan kedua sisi */
-.h-side__seam {
-  position: absolute;
-  z-index: 2;
-  left: 0;
-  top: clamp(28px, 5vh, 48px);
-  width: 58px;
-  height: 58px;
-  margin-left: -29px;
-  border-radius: 50%;
-  background: var(--bg);
-  color: var(--text);
-  border: 1px solid var(--border-light);
-  display: grid;
-  place-items: center;
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 1.7rem;
-  line-height: 1;
-}
-
-.h-sides__after { margin-top: clamp(48px, 8vh, 88px); }
-.h-sides__outro {
-  margin: 0;
-  font-size: clamp(1.4rem, 2.6vw, 2.4rem);
-  line-height: 1.22;
-  letter-spacing: -0.02em;
-  font-weight: 500;
-  color: var(--text);
-  max-width: 30ch;
-}
-.h-sides__outro em {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 800;
-  color: var(--accent);
-}
-
-.h-facts {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  margin: clamp(52px, 9vh, 100px) 0 0;
-  border-top: 1px solid var(--border);
-}
-.h-facts > div { padding: 18px 24px 0 0; }
-.h-facts dd { margin: 10px 0 0; font-size: 0.98rem; line-height: 1.55; color: var(--text); }
-.h-facts dd span { color: var(--text-muted); }
-.h-statement__more { margin-top: clamp(36px, 6vh, 56px); }
 
 /* ---------- Experience index ---------- */
 .h-xp { position: relative; }
@@ -371,18 +226,6 @@
   .h-head__idx { padding-bottom: 0; }
   .h-head__aside { text-align: left; padding-bottom: 0; }
 
-  .h-sides { flex-direction: column; min-height: 0; }
-  .h-side { min-height: 460px; }
-  .h-side[data-state='on'] { flex-grow: 1; }
-  .h-side[data-state='off'] .h-side__body { opacity: 1; }
-  .h-side__seam { left: 50%; top: 0; margin-top: -29px; }
-
-  .h-side__list li { grid-template-columns: 104px minmax(0, 1fr); }
-
-  .h-facts { grid-template-columns: minmax(0, 1fr); }
-  .h-facts > div { padding: 16px 0; border-bottom: 1px solid var(--border); }
-
-
   .h-xp__row { grid-template-columns: minmax(0, 1fr) auto; gap: 4px 16px; }
   .h-xp__row > .h-xp__year { display: none; }
   .h-xp__role { grid-column: 1 / -1; grid-row: 2; }
@@ -396,8 +239,11 @@
 /* ==========================================================================
    v3 — kartu balik 3D, angka, bola teknologi, kartu bertumpuk
    ========================================================================== */
-.h-head__title, .h-side__title, .h-xp__co { letter-spacing: -0.045em; }
-.h-head__title em, .h-side__title em, .h-card__title em, .h-sides__outro em, .h-ticker__item em { font-style: italic; }
+.h-head__title,
+.h-xp__co { letter-spacing: -0.045em; }
+.h-head__title em,
+.h-card__title em,
+.h-ticker__item em { font-style: italic; }
 
 /* ---------- Kartu balik ---------- */
 .h-flip { height: 260vh; position: relative; }
@@ -437,9 +283,7 @@
   box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.6);
 }
 .h-flip__face--back { transform: rotateY(180deg); }
-.h-flip__face .h-side__body { max-width: 640px; }
-.h-flip__face .h-side__bg { opacity: 0.3; transform: none; }
-.h-flip__face.h-side--run .h-side__bg { opacity: 0.8; }
+
 .h-flip__hud { display: flex; align-items: center; gap: 16px; }
 .h-flip__hud span[data-on='true'] { color: var(--text); }
 .h-flip__bar { width: clamp(80px, 16vw, 220px); height: 2px; background: var(--border); position: relative; }
@@ -449,7 +293,7 @@
 
 /* ---------- Angka ---------- */
 .h-stats { padding-top: clamp(48px, 8vh, 96px); }
-.h-stats .h-sides__outro { max-width: 24ch; font-size: clamp(1.7rem, 3.6vw, 3.4rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.035em; }
+
 .h-stats__grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -534,8 +378,7 @@
 @media (max-width: 899px) {
   .h-flip__stage { height: min(620px, 74svh); }
   .h-flip__face { border-radius: 20px; }
-  .h-flip__face .h-side__body { padding: 22px; }
-  .h-flip__face .h-side__lede { display: none; }
+
   .h-stats__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 8px; }
   .h-stat:nth-child(3) { padding-left: 0; border-left: 0; }
   .h-stat:nth-child(n + 3) { border-top: 1px solid var(--border); margin-top: 14px; }
@@ -545,4 +388,123 @@
   .h-card__img { aspect-ratio: 1200 / 525; }
   .h-card__sum { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
   .h-stack__slot { top: 76px !important; }
+}
+
+/* ==========================================================================
+   v4 — kartu balik sederhana, kutipan, logo neuron
+   ========================================================================== */
+
+/* Kartu balik ala kartu galeri: foto penuh, label + judul di bawah */
+.h-flip__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.h-flip__face--run .h-flip__img { object-position: 50% 30%; }
+.h-flip__face::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.82) 0%, rgba(0, 0, 0, 0.35) 38%, transparent 62%);
+  pointer-events: none;
+}
+.h-flip__caption {
+  position: relative;
+  z-index: 1;
+  padding: clamp(20px, 3vw, 40px);
+  color: #fff;
+}
+.h-flip__caption .h-mono { color: rgba(255, 255, 255, 0.75); }
+.h-flip__title {
+  margin: 8px 0 0;
+  font-size: clamp(2rem, 4.6vw, 4.2rem);
+  font-weight: 800;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+}
+.h-flip__title em { font-style: italic; color: var(--accent); }
+.h-flip__face--run .h-flip__title em { color: #fff; }
+
+/* Kutipan bergaya homepage awal */
+.h-quote {
+  margin: 0;
+  font-size: clamp(2.2rem, 5.5vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+.h-quote__mask { display: block; overflow: hidden; padding-bottom: 0.08em; margin-bottom: -0.08em; }
+.h-quote__line { display: inline-block; }
+.h-quote__line--2 { color: var(--accent); }
+.h-quote__line--3 {
+  color: var(--accent-2);
+  font-family: 'DM Serif Display', Georgia, 'Times New Roman', serif;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+.h-quote__mark {
+  color: var(--text-muted);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-style: normal;
+  font-weight: 300;
+}
+
+/* Logo neuron */
+.h-tech__sphere { overflow: visible; }
+.h-node {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  box-shadow: 0 6px 18px -8px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  will-change: transform, opacity;
+  transition: border-color 0.25s, background-color 0.25s;
+}
+.h-node svg { display: block; width: 26px; height: 26px; }
+.h-node[data-hot='true'] { border-color: var(--accent); background: var(--surface-2); }
+.h-node__label {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  background: var(--surface-2);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  padding: 3px 10px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.h-node[data-hot='true'] .h-node__label { opacity: 1; }
+
+@media (max-width: 899px) {
+  /* kartu balik: lebih pendek agar gambar lebar tidak terpotong berat,
+     dan indikator A/B tidak tertutup navigasi bawah */
+  .h-flip { height: 220vh; }
+  .h-flip__sticky { padding: 72px 16px 112px; gap: 16px; }
+  .h-flip__stage { height: min(440px, 56svh); }
+  .h-flip__caption { padding: 20px; }
+  .h-flip__title { font-size: clamp(1.8rem, 9vw, 2.6rem); }
+  .h-flip__face--make .h-flip__img { object-position: 30% 50%; }
+
+  /* jaringan logo: chip lebih kecil di layar sempit */
+  .h-tech__sphere { max-height: 400px; margin-top: 8px; }
+  .h-node { width: 36px; height: 36px; }
+  .h-node svg { width: 20px; height: 20px; }
+
+  .h-quote { font-size: clamp(2rem, 9.5vw, 3rem); }
 }

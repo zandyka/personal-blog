@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { animate, motion, useInView, useReducedMotion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { useSoundContext } from '../ui/SoundProvider';
-import { SIDES_OUTRO, STATS } from './homeData';
+import { OUTRO_QUOTE, STATS } from './homeData';
 
 const EASE = [0.16, 1, 0.3, 1];
 
@@ -31,24 +31,32 @@ function Counter({ value, decimals = 0, suffix = '' }) {
   );
 }
 
-const withEmphasis = (text) =>
-  text.split('*').map((chunk, i) => (i % 2 === 1 ? <em key={i}>{chunk}</em> : chunk));
-
-// Kalimat penutup "dua sisi" + angka yang menghitung naik saat terlihat.
+// Kutipan besar (gaya tipografi homepage awal) + angka yang menghitung naik saat terlihat.
 export default function StatsBand() {
   const { playHover, playClick } = useSoundContext();
   return (
     <section className="h-sec h-stats">
       <div className="h-wrap">
-        <motion.p
-          className="h-sides__outro"
-          initial={{ opacity: 0, y: 28 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.6 }}
-          transition={{ duration: 1, ease: EASE }}
+        <motion.h2
+          className="h-quote"
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ staggerChildren: 0.12 }}
         >
-          {withEmphasis(SIDES_OUTRO)}
-        </motion.p>
+          {OUTRO_QUOTE.map((line, i) => (
+            <span key={line} className="h-quote__mask">
+              <motion.span
+                className={`h-quote__line h-quote__line--${i + 1}`}
+                variants={{ hidden: { y: '110%' }, show: { y: '0%', transition: { duration: 1, ease: EASE } } }}
+              >
+                {i === 0 && <span className="h-quote__mark">&ldquo; </span>}
+                {line}
+                {i === OUTRO_QUOTE.length - 1 && <span className="h-quote__mark">.&rdquo;</span>}
+              </motion.span>
+            </span>
+          ))}
+        </motion.h2>
 
         <div className="h-stats__grid">
           {STATS.map((s, i) => (
