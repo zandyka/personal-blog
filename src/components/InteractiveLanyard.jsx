@@ -63,8 +63,8 @@ export default function InteractiveLanyard() {
 
     // 2. Lights (Key, Fill, Rim & Back Atmosphere)
     const compStyle = getComputedStyle(document.documentElement);
-    const themeAccent = compStyle.getPropertyValue('--accent').trim() || '#FF3B1D';
-    const themeAccent2 = compStyle.getPropertyValue('--accent-2').trim() || '#FFAA00';
+    const themeAccent = compStyle.getPropertyValue('--accent').trim() || '#7F6DFF';
+    const themeAccent2 = compStyle.getPropertyValue('--accent-2').trim() || '#3DE0C4';
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 1.35);
     scene.add(ambientLight);

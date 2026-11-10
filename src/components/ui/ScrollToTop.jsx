@@ -22,7 +22,7 @@ export default function ScrollToTop() {
               nameInput.focus();
               nameInput.style.transition = 'all 0.3s ease';
               nameInput.style.borderColor = 'var(--accent)';
-              nameInput.style.boxShadow = '0 0 0 4px rgba(255, 59, 29, 0.3)';
+              nameInput.style.boxShadow = '0 0 0 4px var(--accent-glow)';
               setTimeout(() => {
                 nameInput.style.borderColor = '';
                 nameInput.style.boxShadow = '';

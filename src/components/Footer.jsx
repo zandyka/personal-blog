@@ -63,9 +63,9 @@ const Footer = () => {
         }}
       >
         <GradientWaves
-          horizonColor={isDark ? '#121214' : '#94a3b8'}
-          waveColor={isDark ? '#3f3f46' : '#cbd5e1'}
-          crestColor={isDark ? '#f4f4f5' : '#ffffff'}
+          horizonColor={isDark ? '#0C1030' : '#9D94E8'}
+          waveColor={isDark ? '#3A3384' : '#D3D0F5'}
+          crestColor={isDark ? '#C9F7EE' : '#ffffff'}
           backgroundColor="transparent"
           speed={0.2}
           amplitude={isAboutPage ? 2.6 : 2.0}

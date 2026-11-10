@@ -101,10 +101,10 @@ const ROW_2_CHANNELS = [
     subtitle: 'Official Inquiries',
     href: 'mailto:zackyandyka1@gmail.com',
     icon: Mail,
-    iconBg: 'rgba(37, 99, 235, 0.12)',
-    iconColor: '#2563EB',
+    iconBg: 'var(--accent-dim)',
+    iconColor: 'var(--accent)',
     Watermark: Watermarks.Mail,
-    color: '#2563EB',
+    color: 'var(--accent)',
   },
   {
     id: 'spotify',

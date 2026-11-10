@@ -377,7 +377,7 @@ export function Lightbox({ item, onClose }) {
           position: 'relative',
           width: '100%',
           maxHeight: '70vh',
-          background: '#070709',
+          background: '#07080C',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',

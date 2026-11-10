@@ -74,7 +74,7 @@ export default function SplashScreen({ onComplete }) {
         width: '100vw',
         height: '100vh',
         zIndex: 99999,
-        backgroundColor: isLight ? '#FAF8F5' : '#070709',
+        backgroundColor: isLight ? '#F5F6FA' : '#07080C',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -109,8 +109,8 @@ export default function SplashScreen({ onComplete }) {
           height: 'clamp(280px, 45vw, 550px)',
           borderRadius: '50%',
           background: isLight
-            ? 'radial-gradient(circle, rgba(37, 99, 235, 0.16) 0%, rgba(124, 58, 237, 0.08) 50%, transparent 70%)'
-            : 'radial-gradient(circle, rgba(255, 59, 29, 0.16) 0%, rgba(255, 170, 0, 0.06) 50%, transparent 70%)',
+            ? 'radial-gradient(circle, rgba(91, 69, 242, 0.16) 0%, rgba(10, 155, 134, 0.07) 50%, transparent 70%)'
+            : 'radial-gradient(circle, rgba(127, 109, 255, 0.18) 0%, rgba(61, 224, 196, 0.06) 50%, transparent 70%)',
           filter: 'blur(70px)',
           pointerEvents: 'none',
         }}
@@ -142,8 +142,8 @@ export default function SplashScreen({ onComplete }) {
         >
           <StrokeText
             text="Hello I'm..."
-            strokeColor={isLight ? '#2563EB' : '#FF3B1D'}
-            fillColor={isLight ? '#19181A' : '#FFFFFF'}
+            strokeColor={isLight ? '#5B45F2' : '#7F6DFF'}
+            fillColor={isLight ? '#0C0E16' : '#FFFFFF'}
             strokeWidth={1.6}
             drawDuration={1.15}
             fillDelay={0.05}
@@ -171,7 +171,7 @@ export default function SplashScreen({ onComplete }) {
           transition={{ delay: 0.2, duration: 0.4 }}
           style={{
             height: '2px',
-            background: isLight ? 'rgba(25, 24, 26, 0.1)' : 'rgba(255, 255, 255, 0.1)',
+            background: isLight ? 'rgba(12, 14, 22, 0.1)' : 'rgba(255, 255, 255, 0.1)',
             borderRadius: '2px',
             overflow: 'hidden',
             position: 'relative',
@@ -181,9 +181,9 @@ export default function SplashScreen({ onComplete }) {
             style={{
               height: '100%',
               width: `${progress}%`,
-              background: isLight ? 'linear-gradient(90deg, #2563EB, #7C3AED)' : 'linear-gradient(90deg, #FF3B1D, #FFAA00)',
+              background: isLight ? 'linear-gradient(90deg, #5B45F2, #0A9B86)' : 'linear-gradient(90deg, #7F6DFF, #3DE0C4)',
               borderRadius: '2px',
-              boxShadow: isLight ? '0 0 10px rgba(37, 99, 235, 0.5)' : '0 0 10px #FF3B1D',
+              boxShadow: isLight ? '0 0 10px rgba(91, 69, 242, 0.5)' : '0 0 10px #7F6DFF',
               transition: 'width 0.05s linear',
             }}
           />

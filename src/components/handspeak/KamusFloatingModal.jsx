@@ -221,7 +221,7 @@ export default function KamusFloatingModal({ isOpen, onClose }) {
           style={{
             flex: 1,
             overflow: 'auto',
-            background: '#070709',
+            background: '#07080C',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',

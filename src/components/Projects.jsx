@@ -27,7 +27,7 @@ const SOFTWARE_PROJECTS = [
     title: 'Handspeak — BISINDO Sign Language Translator',
     category: 'Mobile AI Application',
     typeIcon: Smartphone,
-    accent: '#FF3B1D',
+    accent: 'var(--accent)',
     description:
       'Aplikasi mobile Android penerjemah bahasa isyarat Indonesia (BISINDO) dua tangan secara real-time mencapai akurasi validasi 94.71% pada 26 kelas alfabet (A–Z) berbasis TensorFlow Lite, ekstraksi 21 titik koordinat MediaPipe Hand Landmarker, dan inferensi on-device dengan feature vector 176 dimensi.',
     techStack: ['Flutter', 'Python', 'TensorFlow Lite', 'MediaPipe Hands', 'Computer Vision', 'Mobile AI'],
@@ -39,7 +39,7 @@ const SOFTWARE_PROJECTS = [
     title: 'Mahaasyik Resto — Sistem Manajemen & Pemesanan Restoran Berbasis Web',
     category: 'Full-Stack Web & Payment Gateway',
     typeIcon: Globe,
-    accent: '#FFAA00',
+    accent: 'var(--accent-2)',
     description:
       'Platform aplikasi web manajemen dan pemesanan restoran komprehensif berstandar production-ready dengan arsitektur decoupled (React.js SPA & Laravel 11 REST API). Mendigitalkan operasional kuliner mulai dari katalog menu interaktif, reservasi meja cerdas dengan down payment (DP) otomatis, integrasi Midtrans Snap payment gateway (QRIS, e-wallet, VA) dengan automated webhook callbacks, deployed on Vercel & Railway.',
     techStack: ['React.js 18', 'Laravel 11', 'TailwindCSS', 'Midtrans Snap', 'MySQL 8', 'RESTful API'],
@@ -75,7 +75,7 @@ const PHYSICAL_DESIGNS = [
     id: 'lanyard-id-himpunan',
     title: 'Desain Lanyard & ID Card Pengurus HIMTI',
     category: 'Merchandise & Identitas',
-    accent: '#FF3B1D',
+    accent: 'var(--accent)',
     description:
       'Identitas resmi fungsionaris kepengurusan Himpunan Mahasiswa Teknik Informatika (HIMTI) dengan tipografi tegas, tata letak modern, dan palet warna kontras.',
     tools: ['Figma', 'Vector Design', 'Sublimation Print'],
@@ -115,7 +115,7 @@ const PHYSICAL_DESIGNS = [
     id: 'poster-handspeak',
     title: 'Poster Promosi & Peluncuran Aplikasi Handspeak',
     category: 'Poster Inovasi AI',
-    accent: '#FF3B1D',
+    accent: 'var(--accent)',
     description:
       'Media publikasi cetak dan promosi fitur unggulan aplikasi penerjemah bahasa isyarat BISINDO berbasis Computer Vision AI.',
     tools: ['Figma', 'Product Showcase', 'Visual Layout'],
@@ -125,7 +125,7 @@ const PHYSICAL_DESIGNS = [
     id: 'poster-menu-himti-games',
     title: 'Poster Menu Tenant & Konsumsi HIMTI Games',
     category: 'Event Signage',
-    accent: '#FFAA00',
+    accent: 'var(--accent-2)',
     description:
       'Desain daftar menu tenant makanan dan minuman pada venue acara kompetisi dengan layout harga yang mudah dibaca pengunjung.',
     tools: ['Graphic Design', 'Menu Layout', 'Typography'],
@@ -199,7 +199,7 @@ const DIGITAL_DESIGNS = [
     id: 'ig-himti',
     title: 'Desain Feed & Identitas Media Sosial HIMTI USU',
     category: 'Social Media & Brand Identity',
-    accent: '#FF3B1D',
+    accent: 'var(--accent)',
     platform: 'Instagram (@himti_fvusu)',
     url: 'https://www.instagram.com/himti_fvusu/',
     description:
@@ -211,7 +211,7 @@ const DIGITAL_DESIGNS = [
     id: 'ig-pkkmb',
     title: 'Desain Feed & Informasi Resmi PKKMB Vokasi USU 2025',
     category: 'Social Media & Event Campaign',
-    accent: '#FFAA00',
+    accent: 'var(--accent-2)',
     platform: 'Instagram (@simarmuda.fv.usu)',
     url: 'https://www.instagram.com/simarmuda.fv.usu/',
     description:
@@ -539,14 +539,14 @@ const Projects = () => {
                           gap: '6px',
                           padding: '6px 14px',
                           borderRadius: '999px',
-                          background: 'rgba(255, 59, 29, 0.12)',
-                          border: '1px solid rgba(255, 59, 29, 0.35)',
-                          color: '#FF3B1D',
+                          background: 'var(--accent-dim)',
+                          border: '1px solid var(--accent-border)',
+                          color: 'var(--accent)',
                           fontSize: '0.8rem',
                           fontWeight: 700,
                           textDecoration: 'none',
                           transition: 'all 0.2s ease',
-                          boxShadow: '0 2px 8px rgba(255, 59, 29, 0.15)',
+                          boxShadow: '0 2px 8px var(--accent-dim)',
                         }}
                       >
                         <Sparkles size={13} />
@@ -1256,12 +1256,12 @@ const Projects = () => {
                           gap: '8px',
                           padding: '10px 22px',
                           borderRadius: '10px',
-                          background: 'linear-gradient(135deg, #FF3B1D, #ff6444)',
+                          background: 'var(--gradient-brand)',
                           color: '#ffffff',
                           fontSize: '0.86rem',
                           fontWeight: 700,
                           textDecoration: 'none',
-                          boxShadow: '0 4px 18px rgba(255, 59, 29, 0.35)',
+                          boxShadow: '0 4px 18px var(--accent-glow)',
                           transition: 'all 0.2s ease',
                         }}
                       >

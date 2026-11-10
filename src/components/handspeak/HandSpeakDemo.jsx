@@ -452,7 +452,7 @@ export default function HandSpeakDemo() {
             style={{
               position: 'relative',
               width: '100%',
-              background: '#070709',
+              background: '#07080C',
               borderRadius: '20px',
               overflow: 'hidden',
               border: '1.5px solid var(--border)',

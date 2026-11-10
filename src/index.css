@@ -1,68 +1,82 @@
 @import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Bebas+Neue&family=Caveat:wght@600;700&family=Cinzel:wght@600;700;900&family=DM+Serif+Display:ital@0;1&family=Great+Vibes&family=JetBrains+Mono:wght@400;500;600;700&family=Permanent+Marker&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Silkscreen:wght@400;700&family=Space+Grotesk:wght@400;600;700;800&family=Syne:wght@700;800&family=VT323&display=swap');
 
-/* ============================================
-   DARK MODE (Default) — Bold Blaze & Obsidian
-   ============================================ */
+/* ==========================================================================
+   COLOR SYSTEM — "Iris & Aqua"
+   Satu identitas brand untuk kedua tema:
+   - Iris  (biru-ungu elektrik) = aksen utama: link, tombol, highlight, label
+   - Aqua  (hijau-toska)        = aksen kedua: ujung gradien, status, detail
+   Warna netral diberi rona iris tipis (hue ~235°) agar menyatu dengan aksen.
+   Kontras teks (WCAG): --text & --text-muted >= 7:1, --accent >= 4.5:1
+   terhadap --bg di kedua tema.
+   ========================================================================== */
+
+/* DARK MODE (default) — Midnight Ink */
 :root {
-  --bg: #070709;
-  --surface: #0f0f14;
-  --surface-2: #171720;
-  --surface-3: #20202d;
-  --border: #232333;
-  --border-light: #34344c;
-  --text: #f7f7fa;
-  --text-muted: #9191a6;
-  --text-dim: #5c5c72;
-  --accent: #FF3B1D; /* Bold Electric Vermilion */
-  --accent-hover: #FF5A40;
-  --accent-dim: rgba(255, 59, 29, 0.12);
-  --accent-border: rgba(255, 59, 29, 0.28);
-  --accent-glow: rgba(255, 59, 29, 0.25);
-  --accent-2: #FFAA00; /* Bold Sunfire Amber */
-  --accent-2-hover: #FFBB33;
-  --accent-2-dim: rgba(255, 170, 0, 0.12);
-  --accent-2-border: rgba(255, 170, 0, 0.28);
-  --glow: rgba(255, 59, 29, 0.2);
-  --success: #10b981;
-  --success-dim: rgba(16, 185, 129, 0.12);
-  --danger: #ef4444;
-  --warning: #f59e0b;
-  --shadow-color: rgba(0, 0, 0, 0.6);
-  --glass-bg: rgba(15, 15, 20, 0.75);
-  --glass-border: rgba(255, 255, 255, 0.08);
+  --bg: #07080C;
+  --surface: #0E1016;
+  --surface-2: #151821;
+  --surface-3: #1D212D;
+  --border: #222634;
+  --border-light: #2F3446;
+  --text: #F3F4F8;
+  --text-muted: #A0A6B8;
+  --text-dim: #646B80;
+
+  --accent: #7F6DFF;            /* Iris */
+  --accent-hover: #9A8CFF;
+  --accent-dim: rgba(127, 109, 255, 0.13);
+  --accent-border: rgba(127, 109, 255, 0.34);
+  --accent-glow: rgba(127, 109, 255, 0.32);
+  --accent-2: #3DE0C4;          /* Aqua */
+  --accent-2-hover: #6EEAD4;
+  --accent-2-dim: rgba(61, 224, 196, 0.12);
+  --accent-2-border: rgba(61, 224, 196, 0.3);
+  --on-accent: #FFFFFF;         /* teks di atas tombol beraksen */
+  --gradient-brand: linear-gradient(135deg, #7F6DFF 0%, #5E8BFF 50%, #3DE0C4 100%);
+  --glow: rgba(127, 109, 255, 0.24);
+
+  --success: #34D399;
+  --success-dim: rgba(52, 211, 153, 0.12);
+  --danger: #F87171;
+  --warning: #FBBF24;
+  --shadow-color: rgba(2, 3, 8, 0.65);
+  --glass-bg: rgba(14, 16, 22, 0.72);
+  --glass-border: rgba(160, 166, 255, 0.10);
   color-scheme: dark;
 }
 
-/* ============================================
-   LIGHT MODE — Milky White & Royal Sapphire (No Red/Orange/Yellow)
-   ============================================ */
+/* LIGHT MODE — Porcelain */
 html.light {
-  --bg: #FAF8F5; /* Putih Susu / Soft Milky White */
-  --surface: #FFFFFF; /* Pure White Elevated Cards */
-  --surface-2: #F2ECE4; /* Soft Warm Milky Tint */
-  --surface-3: #E6DFD4; /* Tertiary Milky Tint */
-  --border: #E5DDD3; /* Delicate Milky Border */
-  --border-light: #D6CCC0;
-  --text: #19181A; /* Crisp Obsidian Charcoal */
-  --text-muted: #5E5A66; /* Elegant Slate Text */
-  --text-dim: #8E8A96; /* Subtle Metadata */
-  --accent: #2563EB; /* Vibrant Royal Sapphire Blue */
-  --accent-hover: #1D4ED8;
-  --accent-dim: rgba(37, 99, 235, 0.08);
-  --accent-border: rgba(37, 99, 235, 0.24);
-  --accent-glow: rgba(37, 99, 235, 0.18);
-  --accent-2: #7C3AED; /* Deep Royal Violet / Iris */
-  --accent-2-hover: #6D28D9;
-  --accent-2-dim: rgba(124, 58, 237, 0.08);
-  --accent-2-border: rgba(124, 58, 237, 0.24);
-  --glow: rgba(37, 99, 235, 0.15);
+  --bg: #F5F6FA;
+  --surface: #FFFFFF;
+  --surface-2: #ECEEF4;
+  --surface-3: #E0E3EC;
+  --border: #DFE2EB;
+  --border-light: #C9CEDB;
+  --text: #0C0E16;
+  --text-muted: #4A5063;
+  --text-dim: #7D8396;
+
+  --accent: #5B45F2;            /* Iris (lebih pekat agar kontras di latar terang) */
+  --accent-hover: #4733DB;
+  --accent-dim: rgba(91, 69, 242, 0.08);
+  --accent-border: rgba(91, 69, 242, 0.26);
+  --accent-glow: rgba(91, 69, 242, 0.2);
+  --accent-2: #0A7D6C;          /* Aqua (versi gelap untuk keterbacaan) */
+  --accent-2-hover: #086656;
+  --accent-2-dim: rgba(10, 125, 108, 0.08);
+  --accent-2-border: rgba(10, 125, 108, 0.26);
+  --on-accent: #FFFFFF;
+  --gradient-brand: linear-gradient(135deg, #5B45F2 0%, #3B6EF0 50%, #0A9B86 100%);
+  --glow: rgba(91, 69, 242, 0.16);
+
   --success: #059669;
   --success-dim: rgba(5, 150, 105, 0.1);
-  --danger: #dc2626;
-  --warning: #2563EB;
-  --shadow-color: rgba(28, 25, 23, 0.07);
-  --glass-bg: rgba(255, 255, 255, 0.88);
-  --glass-border: rgba(229, 221, 211, 0.85);
+  --danger: #DC2626;
+  --warning: #D97706;
+  --shadow-color: rgba(18, 20, 40, 0.08);
+  --glass-bg: rgba(255, 255, 255, 0.82);
+  --glass-border: rgba(201, 206, 219, 0.7);
   color-scheme: light;
 }
 
@@ -409,7 +423,7 @@ html.light .hero-cover-heading {
 .cover-badge-container:hover {
   background: #09090b !important;
   border-color: rgba(255, 255, 255, 0.24) !important;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.65), 0 0 24px rgba(46, 185, 223, 0.3);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.65), 0 0 24px rgba(61, 224, 196, 0.3);
 }
 
 html.light .cover-badge-container {
@@ -421,7 +435,7 @@ html.light .cover-badge-container {
 html.light .cover-badge-container:hover {
   background: #18181b !important;
   border-color: #27272a !important;
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.2), 0 0 20px rgba(59, 130, 246, 0.25);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.2), 0 0 20px rgba(91, 69, 242, 0.25);
 }
 
 .cover-sparkles-wrapper {
@@ -471,13 +485,13 @@ html.light .cover-badge-container:hover {
   background: none !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  text-shadow: 0 0 20px rgba(129, 140, 248, 0.7), 0 0 36px rgba(192, 132, 252, 0.45);
+  text-shadow: 0 0 20px rgba(127, 109, 255, 0.7), 0 0 36px rgba(61, 224, 196, 0.4);
 }
 
 html.light .cover-badge-container:hover .cover-badge-text {
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  text-shadow: 0 0 20px rgba(59, 130, 246, 0.7), 0 0 36px rgba(147, 51, 234, 0.45);
+  text-shadow: 0 0 20px rgba(91, 69, 242, 0.7), 0 0 36px rgba(10, 155, 134, 0.4);
 }
 
 @keyframes cover-dot-glow {

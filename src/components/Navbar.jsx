@@ -359,8 +359,8 @@ export default function Navbar() {
                           textDecoration: 'none',
                           fontSize: '13px',
                           fontWeight: 500,
-                          color: active ? 'var(--accent, #FF3B1D)' : 'var(--text)',
-                          background: active ? 'rgba(255, 59, 29, 0.08)' : 'transparent',
+                          color: active ? 'var(--accent)' : 'var(--text)',
+                          background: active ? 'var(--accent-dim)' : 'transparent',
                           transition: 'background 0.15s, color 0.15s',
                         }}
                       >
@@ -394,7 +394,7 @@ export default function Navbar() {
               gap: '6px',
             }}
           >
-            <Gamepad2 size={14} style={{ color: isPlayground ? 'var(--accent, #FF3B1D)' : 'inherit' }} />
+            <Gamepad2 size={14} style={{ color: isPlayground ? 'var(--accent)' : 'inherit' }} />
             <span>Playground</span>
           </Link>
 

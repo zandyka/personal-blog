@@ -24,7 +24,7 @@ const HOMEPAGE_PROJECTS = [
     title: 'Handspeak — BISINDO Sign Language Translator',
     category: 'Mobile AI Application',
     typeIcon: Smartphone,
-    accent: '#FF3B1D',
+    accent: 'var(--accent)',
     description:
       'Aplikasi penerjemah bahasa isyarat Indonesia (BISINDO) secara real-time berbasis kecerdasan buatan (Computer Vision & Machine Learning) untuk menjembatani komunikasi inklusif bagi teman tuli.',
     techStack: ['Flutter', 'Python', 'TensorFlow', 'Computer Vision', 'Mobile AI'],
@@ -36,7 +36,7 @@ const HOMEPAGE_PROJECTS = [
     title: 'Mahaasyik Resto — Sistem Manajemen & Pemesanan Restoran Berbasis Web',
     category: 'Full-Stack Web & Payment Gateway',
     typeIcon: Globe,
-    accent: '#FFAA00',
+    accent: 'var(--accent-2)',
     description:
       'Platform aplikasi web manajemen dan pemesanan restoran komprehensif berstandar production-ready dengan arsitektur decoupled (React.js SPA & Laravel 11 REST API). Mendigitalkan operasional kuliner mulai dari katalog menu interaktif, reservasi meja cerdas dengan down payment (DP) otomatis, integrasi Midtrans Snap payment gateway, hingga manajemen pesanan dan dashboard analitik omzet.',
     techStack: ['React.js 18', 'Laravel 11', 'TailwindCSS', 'Midtrans Snap', 'MySQL 8'],
@@ -237,9 +237,9 @@ export default function HomeShowcase() {
                 gap: '8px',
                 padding: '5px 14px',
                 borderRadius: '999px',
-                background: 'rgba(255, 59, 29, 0.1)',
-                border: '1px solid rgba(255, 59, 29, 0.25)',
-                color: '#FF3B1D',
+                background: 'var(--accent-dim)',
+                border: '1px solid var(--accent-border)',
+                color: 'var(--accent)',
                 fontSize: '11px',
                 fontWeight: 700,
                 letterSpacing: '1.8px',
@@ -252,8 +252,8 @@ export default function HomeShowcase() {
                   width: '6px',
                   height: '6px',
                   borderRadius: '50%',
-                  background: '#FF3B1D',
-                  boxShadow: '0 0 8px #FF3B1D',
+                  background: 'var(--accent)',
+                  boxShadow: '0 0 8px var(--accent)',
                 }}
               />
               SELECTED WORK
@@ -488,14 +488,14 @@ export default function HomeShowcase() {
                             gap: '5px',
                             padding: '5px 12px',
                             borderRadius: '999px',
-                            background: 'rgba(255, 59, 29, 0.12)',
-                            border: '1px solid rgba(255, 59, 29, 0.35)',
-                            color: '#FF3B1D',
+                            background: 'var(--accent-dim)',
+                            border: '1px solid var(--accent-border)',
+                            color: 'var(--accent)',
                             fontSize: '0.76rem',
                             fontWeight: 700,
                             textDecoration: 'none',
                             transition: 'all 0.2s ease',
-                            boxShadow: '0 2px 8px rgba(255, 59, 29, 0.15)',
+                            boxShadow: '0 2px 8px var(--accent-dim)',
                           }}
                         >
                           <Sparkles size={12} />
@@ -745,12 +745,12 @@ export default function HomeShowcase() {
                         gap: '8px',
                         padding: '10px 20px',
                         borderRadius: '10px',
-                        background: 'linear-gradient(135deg, #FF3B1D, #ff6444)',
+                        background: 'var(--gradient-brand)',
                         color: '#ffffff',
                         fontSize: '0.86rem',
                         fontWeight: 700,
                         textDecoration: 'none',
-                        boxShadow: '0 4px 18px rgba(255, 59, 29, 0.35)',
+                        boxShadow: '0 4px 18px var(--accent-glow)',
                       }}
                     >
                       <Sparkles size={16} />

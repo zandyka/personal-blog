@@ -142,7 +142,7 @@ export function useHandSpeakAI(videoRef, canvasRef) {
         ctx.fillStyle = idx % 4 === 0 ? '#34d399' : '#ffffff';
         ctx.fill();
         ctx.lineWidth = 1.5;
-        ctx.strokeStyle = '#070709';
+        ctx.strokeStyle = '#07080C';
         ctx.stroke();
       });
     });

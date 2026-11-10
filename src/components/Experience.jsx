@@ -192,8 +192,8 @@ const getBadgeStyle = (type) => {
       };
     case 'Pelatihan':
       return {
-        bg: 'rgba(255, 59, 29, 0.12)',
-        border: 'rgba(255, 59, 29, 0.3)',
+        bg: 'var(--accent-dim)',
+        border: 'var(--accent-border)',
         color: 'var(--accent)',
       };
     default:
