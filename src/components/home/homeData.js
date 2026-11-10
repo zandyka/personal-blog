@@ -12,23 +12,23 @@ export const TICKER_FACTS = [
   { text: 'Product', em: 'Photography' },
 ];
 
-// Section "Dua sisi meja": sisi kode (depan kartu) dan sisi visual (belakang kartu).
+// Section "Dua sisi meja": kartu balik — depan = kampus, belakang = kantor.
 export const SIDES = [
   {
     id: 'make',
-    tag: 'Sisi A — kode',
-    hud: 'A — Kode',
-    verb: 'menulis kode',
-    image: '/projects/handspeak.webp',
-    imageAlt: 'Rancangan sistem aplikasi HandSpeak',
+    tag: 'Sisi A — kampus',
+    hud: 'A — Kampus',
+    verb: 'belajar & memimpin',
+    image: '/gallery/Pelantikan HIMTI.webp',
+    imageAlt: 'Pengurus HIMTI saat pelantikan di Fakultas Vokasi USU',
   },
   {
     id: 'run',
-    tag: 'Sisi B — visual',
-    hud: 'B — Visual',
-    verb: 'merancang visual',
-    image: '/designs/physical/id_card_panitia_pkkmb.webp',
-    imageAlt: 'Desain ID card panitia PKKMB Vokasi USU 2025',
+    tag: 'Sisi B — kantor',
+    hud: 'B — Kantor',
+    verb: 'bekerja di lapangan',
+    image: '/journey/aboutptpn.png',
+    imageAlt: 'Zacky di kantor PT Perkebunan Nusantara III',
   },
 ];
 

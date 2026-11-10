@@ -402,7 +402,7 @@
   height: 100%;
   object-fit: cover;
 }
-.h-flip__face--run .h-flip__img { object-position: 50% 30%; }
+.h-flip__face--run .h-flip__img { object-position: 24% 40%; }
 .h-flip__face::after {
   content: '';
   position: absolute;
@@ -499,7 +499,7 @@
   .h-flip__stage { height: min(440px, 56svh); }
   .h-flip__caption { padding: 20px; }
   .h-flip__title { font-size: clamp(1.8rem, 9vw, 2.6rem); }
-  .h-flip__face--make .h-flip__img { object-position: 30% 50%; }
+  .h-flip__face--make .h-flip__img { object-position: 50% 40%; }
 
   /* jaringan logo: chip lebih kecil di layar sempit */
   .h-tech__sphere { max-height: 400px; margin-top: 8px; }
