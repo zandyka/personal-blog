@@ -69,7 +69,7 @@ export const WORK = [
       'Katalog menu, reservasi meja dengan DP otomatis, dan pembayaran Midtrans (QRIS, e-wallet, VA) dengan webhook. Frontend React dan API Laravel dipisah, di-deploy di Vercel dan Railway.',
     tech: ['React 18', 'Laravel 11', 'Midtrans Snap', 'MySQL 8'],
     figure: 'Live',
-    figureLabel: 'di Vercel & Railway, pembayaran sungguhan',
+    figureLabel: 'deploy di Vercel & Railway, bayar via Midtrans',
     image: '/projects/Mahaasyik.webp',
     to: '/projects',
   },
