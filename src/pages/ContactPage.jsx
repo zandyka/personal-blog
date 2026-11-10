@@ -94,36 +94,10 @@ export default function ContactPage() {
             <ContactFormGlass />
           </div>
 
-          {/* Right Column: kartu kontak berjalan (sabuk 3D, ikut scroll, bisa diseret) */}
+          {/* Right Column: kartu kontak berjalan tanpa bingkai, memanjang sampai tepi kanan layar */}
           <div className="contact-grid-col-right">
-            <div
-              className="glassmorphic-card contact-social-card"
-              style={{
-                position: 'relative',
-                zIndex: 1,
-                borderRadius: '26px',
-                background: 'var(--glass-bg)',
-                backdropFilter: 'blur(28px)',
-                WebkitBackdropFilter: 'blur(28px)',
-                border: '1px solid var(--glass-border)',
-                boxShadow: '0 20px 60px var(--shadow-color)',
-                overflow: 'hidden',
-                padding: 'clamp(20px, 3vw, 32px) 0',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                height: '100%',
-                minHeight: '440px',
-                width: '100%',
-                maxWidth: '100%',
-                boxSizing: 'border-box',
-              }}
-            >
+            <div className="contact-social-bleed">
               <SocialMarquee />
-              <p className="contact-social-hint">
-                <span className="hint-mouse">Seret untuk menggeser · arahkan kursor untuk berhenti</span>
-                <span className="hint-touch">Geser untuk melihat semua kontak</span>
-              </p>
             </div>
           </div>
         </div>
@@ -150,20 +124,6 @@ export default function ContactPage() {
           margin: 0 auto;
           padding: 0 24px;
           align-items: stretch;
-          overflow: hidden;
-        }
-
-        .contact-social-hint {
-          margin: 10px 0 0;
-          text-align: center;
-          font-size: 0.74rem;
-          letter-spacing: 0.04em;
-          color: var(--text-dim);
-        }
-        .contact-social-hint .hint-touch { display: none; }
-        @media (hover: none) {
-          .contact-social-hint .hint-mouse { display: none; }
-          .contact-social-hint .hint-touch { display: inline; }
         }
 
         .contact-grid-col-left,
@@ -175,7 +135,23 @@ export default function ContactPage() {
           max-width: 100%;
           width: 100%;
           box-sizing: border-box;
-          overflow: hidden;
+        }
+        .contact-grid-col-left { overflow: hidden; }
+
+        /* Kartu berjalan keluar dari kolom sampai tepi kanan layar.
+           Jarak kolom ke tepi = (lebar layar - lebar grid) / 2 + padding grid.
+           Kelebihan sekecil lebar scrollbar dipotong oleh .page-container (overflow-x: clip). */
+        .contact-social-bleed {
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          margin-right: calc((min(1260px, 100vw) - 100vw) / 2 - 24px);
+        }
+        /* hanya tepi kiri yang memudar (sisi form); tepi kanan menyentuh ujung layar */
+        .contact-social-bleed .sm-viewport {
+          -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%);
+          mask-image: linear-gradient(90deg, transparent, #000 10%);
         }
 
         @media (max-width: 1023px) {
@@ -185,22 +161,16 @@ export default function ContactPage() {
             padding: 0 16px !important;
             width: 100% !important;
             max-width: 100% !important;
-            overflow: hidden !important;
           }
           .contact-grid-col-left,
           .contact-grid-col-right {
             width: 100% !important;
             max-width: 100% !important;
             min-width: 0 !important;
-            overflow: hidden !important;
           }
-          .contact-social-card {
-            padding: 20px 0 !important;
-            min-height: auto !important;
-            width: 100% !important;
-            max-width: 100% !important;
-            overflow: hidden !important;
-          }
+          /* satu kolom: kartu memanjang dari tepi kiri sampai tepi kanan layar */
+          .contact-social-bleed { margin: 0 -16px; }
+          .contact-social-bleed .sm-viewport { -webkit-mask-image: none; mask-image: none; }
         }
 
         @media (max-width: 640px) {
@@ -221,10 +191,7 @@ export default function ContactPage() {
             width: 100% !important;
             max-width: 100% !important;
           }
-          .contact-social-card {
-            padding: 16px 0 !important;
-            border-radius: 20px !important;
-          }
+          .contact-social-bleed { margin: 0 -12px; }
         }
       `}</style>
     </div>

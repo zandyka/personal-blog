@@ -122,7 +122,7 @@ const ROW_2_CHANNELS = [
     name: 'Spotify',
     handle: 'zndyka',
     subtitle: 'Focus & Coding Playlist',
-    href: 'https://open.spotify.com/',
+    href: 'https://open.spotify.com/user/31rq6oiw2rf5fgokpsk4qpzwve6a',
     icon: Music,
     iconBg: 'rgba(255, 255, 255, 0.08)',
     iconColor: '#1DB954',
