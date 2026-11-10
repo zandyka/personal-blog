@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Gamepad2, Sparkles, Blocks, Ghost, ArrowRight, Terminal } from 'lucide-react';
+import { Gamepad2, Sparkles, Blocks, Ghost, ArrowRight, Terminal, RotateCcw } from 'lucide-react';
 import HandSpeakDemo from '../components/handspeak/HandSpeakDemo';
 import { useSoundContext } from '../components/ui/SoundProvider';
 import TargetCursor from '../components/ui/TargetCursor';
@@ -160,6 +160,7 @@ export default function PlaygroundPage() {
   const reduce = useReducedMotion();
   const heroRef = useRef(null);
   const [swarmOn, setSwarmOn] = useState(readSwarmPref);
+  const [replayKey, setReplayKey] = useState(0);
 
   useEffect(() => {
     if (window.location.hash === '#handspeak') {
@@ -197,7 +198,7 @@ export default function PlaygroundPage() {
   return (
     <div className="page-container">
       <TargetCursor spinDuration={2} hideDefaultCursor parallaxOn />
-      <SwarmCursor enabled={swarmOn} />
+      <SwarmCursor enabled={swarmOn} replayKey={replayKey} root=".pg-hero" />
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
         {/* Section 1: Hero Header */}
         <section ref={heroRef} className="pg-hero" onPointerMove={onHeroMove}>
@@ -210,6 +211,7 @@ export default function PlaygroundPage() {
               transition={{ duration: 0.45 }}
               className="cursor-target"
               data-cursor-label="Interactive Lab"
+              data-swarm-build="box"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -232,6 +234,7 @@ export default function PlaygroundPage() {
 
             <h1
               aria-label="The Playground."
+              data-swarm-build="type"
               style={{
                 fontSize: 'clamp(2.4rem, 6vw, 4.2rem)',
                 fontWeight: 900,
@@ -266,6 +269,7 @@ export default function PlaygroundPage() {
             </h1>
 
             <motion.p
+              data-swarm-build="box"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.5 }}
@@ -287,7 +291,8 @@ export default function PlaygroundPage() {
               transition={{ duration: 0.6, delay: 0.9 }}
             >
               <span>
-                Gerakkan <kbd>kursor</kbd> — kawanan mengikuti. Arahkan ke tombol, lalu <kbd>klik</kbd> untuk menyebarkannya.
+                Kawanan kursor membangun halaman ini, lalu mengikuti <kbd>mouse</kbd>. Arahkan ke tombol, <kbd>klik</kbd> untuk
+                menyebarkan.
               </span>
               <button
                 type="button"
@@ -300,6 +305,20 @@ export default function PlaygroundPage() {
                 <span className="pg-toggle__switch" aria-hidden="true" />
                 Swarm {swarmOn ? 'aktif' : 'mati'}
               </button>
+              {swarmOn && (
+                <button
+                  type="button"
+                  className="pg-toggle cursor-target"
+                  data-cursor-label="Putar ulang"
+                  onClick={() => {
+                    playClick();
+                    setReplayKey((k) => k + 1);
+                  }}
+                  onMouseEnter={playHover}
+                >
+                  <RotateCcw size={14} /> Bangun ulang
+                </button>
+              )}
             </motion.div>
           </div>
         </section>
