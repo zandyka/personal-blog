@@ -4,7 +4,6 @@ import { ArrowUpRight, Github, Linkedin, Instagram, Mail } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
 import { useTheme } from '../hooks/useTheme';
 import GradientWaves from './ui/GradientWaves';
-import { scrollToDirectMessage } from '../utils/scrollHelper';
 
 const NAV_LINKS = [
   { label: 'Home', path: '/' },

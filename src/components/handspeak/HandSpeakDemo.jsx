@@ -43,7 +43,6 @@ export default function HandSpeakDemo() {
   const {
     mode,
     isModelLoading,
-    isModelReady,
     isCameraActive,
     error,
     currentLetter,

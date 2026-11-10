@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowDown, ArrowDownRight, Github, Linkedin, Instagram, Mail, Sparkles } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useSoundContext } from './ui/SoundProvider';
 import SpotlightOverlay from './ui/SpotlightOverlay';
 import { Cover } from './ui/cover';
@@ -46,7 +46,6 @@ const Hero = () => {
   const { playClick, playHover } = useSoundContext();
   const { theme } = useTheme();
   const squareColor = theme === 'light' ? '#000000' : '#ffffff';
-  const location = useLocation();
   const [hoveredSocial, setHoveredSocial] = useState(null);
   const [fontIndex, setFontIndex] = useState(0);
   const [resumeActive, setResumeActive] = useState(false);

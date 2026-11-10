@@ -1,5 +1,26 @@
-// Serverless Edge / Node function for Ask Zacky AI
-// Supports Google Gemini 1.5 Flash (default) and Groq Llama 3.3 70B
+// Serverless Node function for Ask Zacky AI
+// Supports Google Gemini 2.5 Flash (default) and Groq Llama 3.3 70B (fallback)
+
+import { profile } from '../src/data/profile.js';
+
+// Kontak diambil dari satu sumber (src/data/profile.js) agar tidak pernah beda dengan isi website.
+const CONTACT_EMAIL = profile.email;
+const MAILTO = `mailto:${CONTACT_EMAIL}`;
+const LINKEDIN_URL = profile.linkedin;
+const LINKEDIN_DISPLAY = LINKEDIN_URL.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+
+// --- Batasan untuk mencegah penyalahgunaan kuota API ---
+const MAX_MESSAGE_CHARS = 1000;
+const MAX_HISTORY_ITEMS = 6;
+const MAX_HISTORY_ITEM_CHARS = 1500;
+const RATE_LIMIT_WINDOW_MS = 5 * 60 * 1000;
+const RATE_LIMIT_MAX_REQUESTS = 15;
+// Domain tambahan yang boleh memanggil API ini (selain domain website sendiri),
+// dipisah koma, contoh: ALLOWED_ORIGINS=domainku.com,www.domainku.com
+const EXTRA_ALLOWED_HOSTS = (process.env.ALLOWED_ORIGINS || '')
+  .split(',')
+  .map((h) => h.trim().replace(/^https?:\/\//, '').replace(/\/$/, ''))
+  .filter(Boolean);
 
 const SYSTEM_PROMPT = `Anda adalah "Ask Zacky AI", asisten pintar representasi resmi dari portofolio Muhammad Daffa Zacky Andyka.
 
@@ -9,7 +30,7 @@ PROFIL UTAMA:
 - Status Ketersediaan: Available Immediately (siap langsung bergabung).
 - Mobilitas Kerja: Siap bekerja On-Site di Jakarta & sekitarnya, Hybrid, maupun Remote.
 - Domisili: Jakarta, Indonesia.
-- Kontak: Email: zackyandyka1@gmail.com, LinkedIn: linkedin.com/in/zackyandyka.
+- Kontak: Email: ${CONTACT_EMAIL}, LinkedIn: ${LINKEDIN_DISPLAY}.
 
 PENGALAMAN MAGANG & KERJA (5 Institusi):
 1. PT Perkebunan Nusantara III Holding (Persero) — Divisi Strategi dan Pengembangan SDM (Officer Data Support Intern - Sep 2026 – Sekarang, Jakarta):
@@ -52,18 +73,74 @@ ATURAN KOMUNIKASI & GAYA BICARA:
 - Sesuaikan bahasa dengan pengguna (Bahasa Indonesia secara default, atau Bahasa Inggris jika user bertanya dalam bahasa Inggris).
 - JANGAN PERNAH mengarang data palsu (*no hallucinations*). Jika ada hal di luar profil Zacky yang ditanyakan, katakan dengan sopan bahwa Anda fokus mewakili profil profesional Zacky atau sarankan menghubungi Zacky langsung via email.`;
 
+// Pembatas request per IP (best-effort: tersimpan di memori instance serverless yang sedang "hangat").
+// Untuk perlindungan penuh, aktifkan juga Rate Limiting di Vercel Firewall.
+const rateLimitStore = new Map();
+
+function getClientIp(req) {
+  const forwarded = req.headers['x-forwarded-for'];
+  if (typeof forwarded === 'string' && forwarded) return forwarded.split(',')[0].trim();
+  return req.headers['x-real-ip'] || req.socket?.remoteAddress || 'unknown';
+}
+
+function isRateLimited(ip) {
+  const now = Date.now();
+  if (rateLimitStore.size > 5000) {
+    for (const [key, entry] of rateLimitStore) {
+      if (entry.resetAt <= now) rateLimitStore.delete(key);
+    }
+  }
+  const entry = rateLimitStore.get(ip);
+  if (!entry || entry.resetAt <= now) {
+    rateLimitStore.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return false;
+  }
+  entry.count += 1;
+  return entry.count > RATE_LIMIT_MAX_REQUESTS;
+}
+
+// Hanya halaman dari domain website sendiri (atau ALLOWED_ORIGINS) yang boleh memanggil API.
+function getAllowedOrigin(req) {
+  const source = req.headers.origin || req.headers.referer;
+  if (!source) return null;
+  let sourceUrl;
+  try {
+    sourceUrl = new URL(source);
+  } catch {
+    return null;
+  }
+  const ownHost = req.headers['x-forwarded-host'] || req.headers.host;
+  if (sourceUrl.host === ownHost || EXTRA_ALLOWED_HOSTS.includes(sourceUrl.host)) {
+    return sourceUrl.origin;
+  }
+  return null;
+}
+
+function sanitizeHistory(history) {
+  if (!Array.isArray(history)) return [];
+  return history
+    .filter(
+      (item) =>
+        item &&
+        (item.sender === 'user' || item.sender === 'bot') &&
+        typeof item.text === 'string' &&
+        item.text.trim()
+    )
+    .slice(-MAX_HISTORY_ITEMS)
+    .map((item) => ({ sender: item.sender, text: item.text.slice(0, MAX_HISTORY_ITEM_CHARS) }));
+}
+
 export default async function handler(req, res) {
-  // CORS Headers
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-  );
+  const allowedOrigin = getAllowedOrigin(req);
+  if (allowedOrigin) {
+    res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
+    res.setHeader('Vary', 'Origin');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  }
 
   if (req.method === 'OPTIONS') {
-    res.status(200).end();
+    res.status(allowedOrigin ? 204 : 403).end();
     return;
   }
 
@@ -71,16 +148,30 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  if (!allowedOrigin) {
+    return res.status(403).json({ error: 'Origin tidak diizinkan' });
+  }
+
+  if (isRateLimited(getClientIp(req))) {
+    res.setHeader('Retry-After', String(Math.ceil(RATE_LIMIT_WINDOW_MS / 1000)));
+    return res.status(429).json({ error: 'Terlalu banyak permintaan. Coba lagi beberapa menit lagi.' });
+  }
+
   try {
-    const { message, history = [] } = req.body || {};
+    const { message } = req.body || {};
 
     if (!message || typeof message !== 'string' || !message.trim()) {
       return res.status(400).json({ error: 'Pesan tidak boleh kosong' });
     }
 
+    if (message.length > MAX_MESSAGE_CHARS) {
+      return res.status(413).json({ error: `Pesan maksimal ${MAX_MESSAGE_CHARS} karakter` });
+    }
+
+    const history = sanitizeHistory(req.body.history);
     const userMessage = message.trim();
-    const geminiApiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
-    const groqApiKey = process.env.GROQ_API_KEY || process.env.VITE_GROQ_API_KEY;
+    const geminiApiKey = process.env.GEMINI_API_KEY;
+    const groqApiKey = process.env.GROQ_API_KEY;
 
     // 1. Prioritize Google Gemini API
     if (geminiApiKey) {
@@ -99,17 +190,18 @@ export default async function handler(req, res) {
         contents.push({ role: 'user', parts: [{ text: userMessage }] });
 
         // Models to try in order of capability & availability
-        const modelsToTry = ['gemini-2.5-flash', 'gemini-flash-latest', 'gemini-1.5-flash'];
+        const modelsToTry = ['gemini-2.5-flash', 'gemini-flash-latest'];
         let replyText = '';
         let usedModel = 'Gemini 2.5 Flash';
 
         for (const model of modelsToTry) {
           try {
-            const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${geminiApiKey}`;
+            const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
 
+            // API key dikirim lewat header (bukan query string) agar tidak tercatat di log URL.
             const geminiRes = await fetch(geminiUrl, {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+              headers: { 'Content-Type': 'application/json', 'x-goog-api-key': geminiApiKey },
               body: JSON.stringify({
                 contents,
                 systemInstruction: {
@@ -248,8 +340,8 @@ function extractContextMeta(query, reply) {
     return {
       badge: 'Kontak Langsung',
       actions: [
-        { label: 'Kirim Email', link: 'mailto:zackyandyka1@gmail.com' },
-        { label: 'Buka LinkedIn', link: 'https://linkedin.com/in/zackyandyka' },
+        { label: 'Kirim Email', link: MAILTO },
+        { label: 'Buka LinkedIn', link: LINKEDIN_URL },
       ],
     };
   }
@@ -258,7 +350,7 @@ function extractContextMeta(query, reply) {
     badge: 'Ask Zacky AI',
     actions: [
       { label: 'Lihat Pengalaman Kerja', link: '/experience' },
-      { label: 'Kirim Pesan', link: 'mailto:zackyandyka1@gmail.com' },
+      { label: 'Kirim Pesan', link: MAILTO },
     ],
   };
 }
@@ -295,17 +387,17 @@ function generateLocalFallback(query) {
     return {
       text: 'Zacky berstatus **Available Immediately** (siap bergabung secepatnya)!\n\nSaat ini Zacky berdomisili di **Jakarta, Indonesia** dan sangat terbuka untuk bekerja secara **On-Site (Jakarta & sekitarnya), Hybrid, maupun Remote** untuk peluang karir profesional di bidang Software Engineering, IT Support/Banking, atau Data Analytics.',
       badge: 'Available Immediately (Jakarta)',
-      actions: [{ label: 'Kirim Email ke Zacky', link: 'mailto:zackyandyka1@gmail.com' }],
+      actions: [{ label: 'Kirim Email ke Zacky', link: MAILTO }],
     };
   }
 
   if (q.includes('kontak') || q.includes('email') || q.includes('wa') || q.includes('hubungi') || q.includes('whatsapp') || q.includes('telepon')) {
     return {
-      text: 'Anda bisa menghubungi Zacky secara langsung melalui:\n\n• **Email**: zackyandyka1@gmail.com\n• **LinkedIn**: linkedin.com/in/zackyandyka\n• **WhatsApp**: Tersedia via tombol kontak langsung\n• **Lokasi Domisili**: Jakarta, Indonesia',
+      text: 'Anda bisa menghubungi Zacky secara langsung melalui:\n\n• **Email**: zackyandyka1@gmail.com\n• **LinkedIn**: linkedin.com/in/zacky-andyka\n• **WhatsApp**: Tersedia via tombol kontak langsung\n• **Lokasi Domisili**: Jakarta, Indonesia',
       badge: 'Kontak Resmi',
       actions: [
-        { label: 'Kirim Email', link: 'mailto:zackyandyka1@gmail.com' },
-        { label: 'Buka LinkedIn', link: 'https://linkedin.com/in/zackyandyka' },
+        { label: 'Kirim Email', link: MAILTO },
+        { label: 'Buka LinkedIn', link: LINKEDIN_URL },
       ],
     };
   }
@@ -315,7 +407,7 @@ function generateLocalFallback(query) {
     badge: 'Ask Zacky AI',
     actions: [
       { label: 'Lihat Pengalaman Kerja', link: '/experience' },
-      { label: 'Hubungi Zacky', link: 'mailto:zackyandyka1@gmail.com' },
+      { label: 'Hubungi Zacky', link: MAILTO },
     ],
   };
 }

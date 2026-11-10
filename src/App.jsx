@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { SoundProvider } from './components/ui/SoundProvider';
@@ -15,13 +15,19 @@ import ScrollToTop from './components/ui/ScrollToTop';
 import { Analytics } from '@vercel/analytics/react';
 import ErrorBoundary from './components/ErrorBoundary';
 
-import HomePage from './pages/HomePage';
-import AboutPage from './pages/AboutPage';
-import ExperiencePage from './pages/ExperiencePage';
-import ProjectsPage from './pages/ProjectsPage';
-import ContactPage from './pages/ContactPage';
-import AlbumPage from './pages/AlbumPage';
-import PlaygroundPage from './pages/PlaygroundPage';
+// Setiap halaman dimuat terpisah (code splitting) agar kunjungan pertama tidak
+// ikut mengunduh Three.js, MediaPipe, OGL, dll. milik halaman lain.
+const HomePage = lazy(() => import('./pages/HomePage'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
+const ExperiencePage = lazy(() => import('./pages/ExperiencePage'));
+const ProjectsPage = lazy(() => import('./pages/ProjectsPage'));
+const ContactPage = lazy(() => import('./pages/ContactPage'));
+const AlbumPage = lazy(() => import('./pages/AlbumPage'));
+const PlaygroundPage = lazy(() => import('./pages/PlaygroundPage'));
+
+function PageFallback() {
+  return <div style={{ minHeight: '100vh' }} aria-busy="true" />;
+}
 
 function AppInner() {
   useTheme();
@@ -54,18 +60,20 @@ function AppInner() {
       <FloatingPet />
       <Navbar />
       <ErrorBoundary locationKey={location.pathname}>
-        <AnimatePresence mode="wait">
-          <Routes location={location} key={location.pathname}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/experience" element={<ExperiencePage />} />
-            <Route path="/projects" element={<ProjectsPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/album" element={<AlbumPage />} />
-            <Route path="/gallery" element={<AlbumPage />} />
-            <Route path="/playground" element={<PlaygroundPage />} />
-          </Routes>
-        </AnimatePresence>
+        <Suspense fallback={<PageFallback />}>
+          <AnimatePresence mode="wait">
+            <Routes location={location} key={location.pathname}>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/experience" element={<ExperiencePage />} />
+              <Route path="/projects" element={<ProjectsPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/album" element={<AlbumPage />} />
+              <Route path="/gallery" element={<AlbumPage />} />
+              <Route path="/playground" element={<PlaygroundPage />} />
+            </Routes>
+          </AnimatePresence>
+        </Suspense>
       </ErrorBoundary>
       <Footer />
       <BackToTop />

@@ -9,6 +9,10 @@ import {
   Zap,
 } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
+import { profile } from '../data/profile';
+
+const MAILTO = `mailto:${profile.email}`;
+const LINKEDIN_URL = profile.linkedin;
 
 const SUGGESTIONS = [
   'Ceritakan pengalaman magang perbankan Zacky',
@@ -107,7 +111,7 @@ function queryLocalMemory(query) {
     return {
       text: 'Zacky berstatus **Available Immediately** (siap bergabung secepatnya)!\n\nSaat ini Zacky berdomisili di **Jakarta, Indonesia** dan sangat terbuka untuk bekerja secara **On-Site (Jakarta & sekitarnya), Hybrid, maupun Remote** untuk peluang karir profesional di bidang Software Engineering, IT Support/Banking, atau Data Analytics.',
       badge: 'Available Immediately (Jakarta)',
-      actions: [{ label: 'Kirim Email ke Zacky', link: 'mailto:zackyandyka1@gmail.com' }],
+      actions: [{ label: 'Kirim Email ke Zacky', link: MAILTO }],
     };
   }
 
@@ -122,11 +126,11 @@ function queryLocalMemory(query) {
     q.includes('linkedin')
   ) {
     return {
-      text: 'Anda bisa menghubungi Zacky secara langsung melalui:\n\n• **Email**: zackyandyka1@gmail.com\n• **LinkedIn**: linkedin.com/in/zackyandyka\n• **WhatsApp**: Tersedia via tombol kontak langsung\n• **Lokasi Domisili**: Jakarta, Indonesia',
+      text: 'Anda bisa menghubungi Zacky secara langsung melalui:\n\n• **Email**: zackyandyka1@gmail.com\n• **LinkedIn**: linkedin.com/in/zacky-andyka\n• **WhatsApp**: Tersedia via tombol kontak langsung\n• **Lokasi Domisili**: Jakarta, Indonesia',
       badge: 'Kontak Resmi',
       actions: [
-        { label: 'Kirim Email', link: 'mailto:zackyandyka1@gmail.com' },
-        { label: 'Buka LinkedIn', link: 'https://linkedin.com/in/zackyandyka' },
+        { label: 'Kirim Email', link: MAILTO },
+        { label: 'Buka LinkedIn', link: LINKEDIN_URL },
       ],
     };
   }
@@ -280,7 +284,7 @@ export default function ProfileAIChatbox() {
           badge: 'Ask Zacky AI',
           actions: [
             { label: 'Lihat Pengalaman Kerja', link: '/experience' },
-            { label: 'Kirim Pesan', link: 'mailto:zackyandyka1@gmail.com' },
+            { label: 'Kirim Pesan', link: MAILTO },
           ],
           source: 'memory',
         };

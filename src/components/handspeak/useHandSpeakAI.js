@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { FilesetResolver, HandLandmarker } from '@mediapipe/tasks-vision';
-import * as tf from '@tensorflow/tfjs';
 import { loadDenseModelFromBin } from './bisindoModelLoader';
 import { HandFeatureExtractor } from './handFeatureExtractor';
 import {
@@ -421,7 +420,8 @@ export function useHandSpeakAI(videoRef, canvasRef) {
           vision = await FilesetResolver.forVisionTasks('/wasm/mediapipe');
         } catch {
           vision = await FilesetResolver.forVisionTasks(
-            'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm'
+            // Versi dikunci sama dengan paket npm agar file WASM selalu cocok dengan JS-nya.
+            'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@1.0.1/wasm'
           );
         }
 
@@ -460,9 +460,6 @@ export function useHandSpeakAI(videoRef, canvasRef) {
           ...s,
           feedback: 'Memuat Neural Network BISINDO (Huruf + Kosakata)...',
         }));
-
-        // Inisialisasi TensorFlow.js backend
-        await tf.ready();
 
         // Unduh dan inisialisasi kedua model Dense Neural Network secara native
         const [letterModel, wordModel] = await Promise.all([

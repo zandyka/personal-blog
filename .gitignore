@@ -26,3 +26,17 @@ dist-ssr
 *.sln
 *.sw?
 .backups
+# Bahan mentah (sumber desain/foto asli) - bukan bagian dari website.
+# Versi siap pakai (webp) ada di public/.
+/3d/
+/desain ig/
+/foto untuk galery/
+/hasil desain fisik/
+/logo logo/
+/pet/
+/projek/
+/sertif/
+/web_porto_materials/
+
+# Cache tool lokal
+.eslintcache

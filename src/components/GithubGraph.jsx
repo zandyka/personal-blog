@@ -1,5 +1,4 @@
 import React, { useMemo, useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { Github, ExternalLink, Calendar, GitCommit, Sparkles } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
 

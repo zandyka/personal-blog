@@ -86,7 +86,7 @@ export function useTheme() {
         transition.finished.finally(() => {
           document.documentElement.classList.remove('no-transitions')
         })
-      } catch (err) {
+      } catch {
         document.documentElement.classList.toggle('light', nextTheme === 'light')
         document.documentElement.classList.remove('no-transitions')
       }
@@ -106,7 +106,7 @@ export function useTheme() {
         transition.finished.finally(() => {
           document.documentElement.classList.remove('no-transitions')
         })
-      } catch (err) {
+      } catch {
         document.documentElement.classList.toggle('light', nextTheme === 'light')
         document.documentElement.classList.remove('no-transitions')
       }
@@ -126,7 +126,7 @@ export function useTheme() {
         transition.finished.finally(() => {
           document.documentElement.classList.remove('no-transitions')
         })
-      } catch (err) {
+      } catch {
         document.documentElement.classList.toggle('light', nextTheme === 'light')
         document.documentElement.classList.remove('no-transitions')
       }

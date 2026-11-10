@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {
   Home,
   User,
@@ -20,7 +20,6 @@ import {
 import { useSoundContext } from './ui/SoundProvider';
 import ThemeToggle from './ui/ThemeToggle';
 import { usePet } from '../hooks/usePet';
-import { scrollToDirectMessage } from '../utils/scrollHelper';
 
 const ABOUT_DROPDOWN = [
   { label: 'About Me', path: '/about', icon: User },
@@ -85,13 +84,6 @@ export default function Navbar() {
   const { playClick, playHover, soundEnabled, toggleSound } = useSoundContext();
   const { currentPet, isPetVisible, cyclePet, togglePetVisibility } = usePet();
   const location = useLocation();
-  const navigate = useNavigate();
-
-  const handleContactClick = (e) => {
-    if (e) e.preventDefault();
-    playClick();
-    navigate('/contact');
-  };
 
   // Real-time Digital Clock (HH:mm:ss)
   const [timeString, setTimeString] = useState('');

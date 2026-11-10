@@ -18,7 +18,7 @@ import { useSoundContext } from './ui/SoundProvider';
 export default function InteractiveLanyard() {
   const mountRef = useRef(null);
   const hitboxRef = useRef(null);
-  const { playClick, playHover } = useSoundContext();
+  const { playClick } = useSoundContext();
   const [isDragging, setIsDragging] = useState(false);
 
   // Physics & interaction state
