@@ -1,197 +1,178 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useSoundContext } from './ui/SoundProvider';
-
-/*
- * Splash: huruf "ZACKY ANDYKA" berputar masuk satu per satu secara 3D,
- * penghitung 000–100 dan garis progres, lalu tirai kolom terangkat.
- * variant "short" dipakai saat kembali ke Home: lebih cepat.
- */
-
-const COLUMNS = 6;
-const EASE = [0.76, 0, 0.24, 1];
-const OUT = [0.16, 1, 0.3, 1];
-const WORDS = ['ZACKY', 'ANDYKA'];
-const ROLES = ['Web Developer', 'AI Engineer', 'Graphic Designer'];
-
-const pad3 = (n) => String(n).padStart(3, '0');
+import { useTheme } from '../hooks/useTheme';
+import StrokeText from './ui/StrokeText';
 
 export default function SplashScreen({ onComplete, variant = 'full' }) {
-  const { playWhoosh, playSuccess } = useSoundContext();
+  // Saat kembali ke Home (variant "short") splash berjalan lebih singkat.
   const short = variant === 'short';
+  const { playWhoosh, playSuccess } = useSoundContext();
+  const { theme } = useTheme();
+  const isLight = theme === 'light' || (typeof document !== 'undefined' && document.documentElement.classList.contains('light'));
   const [progress, setProgress] = useState(0);
-  const doneRef = useRef(false);
-
-  const finish = () => {
-    if (doneRef.current) return;
-    doneRef.current = true;
-    try {
-      playWhoosh?.();
-    } catch {
-      /* suara opsional */
-    }
-    onComplete?.();
-  };
-  const finishRef = useRef(finish);
-  finishRef.current = finish;
 
   useEffect(() => {
-    const original = document.body.style.overflow;
+    // Lock body scroll while splash is active
+    const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = original;
-    };
-  }, []);
 
-  useEffect(() => {
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const duration = short ? 800 : reduce ? 1100 : 2300;
-    const start = performance.now();
-    let raf = 0;
-    let exitTimer = 0;
+    // Smoothly paced StrokeText draw + wipe with comfortable viewing time (~2.1s)
+    const duration = short ? 1100 : 2100;
+    const startTime = performance.now();
+    let animId;
 
     const tick = (now) => {
-      // timestamp rAF bisa sedikit lebih awal dari `start`, jadi dijepit ke 0..1
-      const t = Math.max(0, Math.min(1, (now - start) / duration));
-      const eased = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-      setProgress(Math.round(eased * 100));
-      if (t < 1) {
-        raf = requestAnimationFrame(tick);
+      const elapsed = now - startTime;
+      const fraction = Math.min(elapsed / duration, 1);
+      setProgress(Math.floor(fraction * 100));
+
+      if (fraction < 1) {
+        animId = requestAnimationFrame(tick);
       } else {
-        if (!short) {
+        try {
+          playSuccess?.();
+        } catch {}
+
+        const exitTimer = setTimeout(() => {
           try {
-            playSuccess?.();
-          } catch {
-            /* suara opsional */
-          }
-        }
-        exitTimer = window.setTimeout(() => finishRef.current(), short ? 80 : 320);
+            playWhoosh?.();
+          } catch {}
+          onComplete?.();
+        }, 220);
+
+        return () => clearTimeout(exitTimer);
       }
     };
-    raf = requestAnimationFrame(tick);
-    return () => {
-      cancelAnimationFrame(raf);
-      clearTimeout(exitTimer);
-    };
-  }, [short, playSuccess]);
 
-  const exitDuration = short ? 0.6 : 0.85;
-  const role = ROLES[Math.min(ROLES.length - 1, Math.floor((progress / 100) * ROLES.length))];
-  let letterIndex = 0;
+    animId = requestAnimationFrame(tick);
+
+    return () => {
+      cancelAnimationFrame(animId);
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [onComplete, playSuccess, playWhoosh, short]);
+
+  const handleSkip = () => {
+    try {
+      playWhoosh?.();
+    } catch {}
+    onComplete?.();
+  };
 
   return (
     <motion.div
       key="splash-screen"
-      role="status"
-      aria-label="Memuat portfolio"
-      onClick={finish}
-      initial="enter"
-      animate="enter"
-      exit="exit"
-      variants={{
-        enter: { opacity: 1 },
-        exit: { opacity: 0, transition: { delay: exitDuration + COLUMNS * 0.055 + 0.15, duration: 0.01 } },
+      initial={{ y: 0 }}
+      exit={{ y: '-100%' }}
+      transition={{
+        duration: 0.7,
+        ease: [0.76, 0, 0.24, 1],
       }}
-      style={{ position: 'fixed', inset: 0, zIndex: 99999, cursor: 'pointer', overflow: 'hidden' }}
+      onClick={handleSkip}
+      style={{
+        position: 'fixed',
+        inset: 0,
+        width: '100vw',
+        height: '100vh',
+        zIndex: 99999,
+        backgroundColor: 'var(--bg)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        overflow: 'hidden',
+        cursor: 'pointer',
+      }}
     >
-      {/* Tirai kolom: lapisan aksen di belakang, lapisan latar di depan */}
-      {Array.from({ length: COLUMNS }).map((_, i) => (
-        <div key={i} aria-hidden="true">
-          {['var(--accent-solid)', 'var(--bg)'].map((bg, layer) => (
-            <motion.div
-              key={bg}
-              variants={{
-                enter: { y: '0%' },
-                exit: { y: '-100%', transition: { duration: exitDuration, ease: EASE, delay: (layer === 0 ? 0.1 : 0) + i * 0.055 } },
-              }}
-              style={{
-                position: 'absolute',
-                top: 0,
-                bottom: 0,
-                left: `${(i * 100) / COLUMNS}%`,
-                width: `calc(${100 / COLUMNS}% + 1px)`,
-                background: bg,
-              }}
-            />
-          ))}
-        </div>
-      ))}
-
-      <motion.div
-        variants={{ enter: { opacity: 1 }, exit: { opacity: 0, transition: { duration: 0.2 } } }}
+      {/* Tactical Dot Grid Background Pattern */}
+      <div
+        aria-hidden="true"
         style={{
           position: 'absolute',
           inset: 0,
-          padding: 'clamp(20px, 4vw, 56px)',
-          display: 'grid',
-          gridTemplateRows: 'auto 1fr auto',
-          color: 'var(--text)',
-          fontFamily: "'Space Grotesk', 'Plus Jakarta Sans', sans-serif",
-          fontSize: 11,
-          letterSpacing: '0.14em',
-          textTransform: 'uppercase',
+          backgroundImage: isLight
+            ? 'radial-gradient(circle, rgba(25, 24, 26, 0.08) 1px, transparent 1px)'
+            : 'radial-gradient(circle, rgba(255, 255, 255, 0.08) 1px, transparent 1px)',
+          backgroundSize: '24px 24px',
+          pointerEvents: 'none',
+        }}
+      />
+
+
+      {/* Centered Typography Container: ONLY "Hello I'm.." */}
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 10,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          textAlign: 'center',
+          padding: '0 24px',
         }}
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 16, color: 'var(--text-muted)' }}>
-          <span>Portfolio — 2026</span>
-          <span style={{ color: 'var(--accent)' }}>{role}</span>
-        </div>
-
-        {/* Nama: tiap huruf berputar masuk pada sumbu X */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', perspective: 900 }}>
-          <div
-            aria-hidden="true"
+        {/* StrokeText Animated Heading "Hello I'm..." from React Bits */}
+        <div
+          style={{
+            width: '100%',
+            maxWidth: 'min(92vw, 680px)',
+            margin: '0 auto 24px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <StrokeText
+            text="Hello I'm..."
+            strokeColor={isLight ? '#5B45F2' : '#D65A6E'}
+            fillColor={isLight ? '#0C0E16' : '#FFFFFF'}
+            strokeWidth={1.6}
+            drawDuration={short ? 0.6 : 1.15}
+            fillDelay={0.05}
+            stagger={0.035}
+            wipeDuration={0.34}
+            wipeEase="power2.out"
+            ease="power2.out"
+            trigger="mount"
+            fillMode="wipe"
+            fontSize={96}
+            fontWeight={800}
+            letterSpacing="-0.04em"
+            fontFamily="'Plus Jakarta Sans', sans-serif"
             style={{
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              fontWeight: 800,
-              fontSize: 'clamp(2.6rem, 11.5vw, 11rem)',
-              lineHeight: 0.9,
-              letterSpacing: '-0.05em',
-              textTransform: 'none',
-              textAlign: 'center',
+              width: '100%',
+              '--stroke-text-height': 'clamp(68px, 14vw, 125px)',
             }}
-          >
-            {WORDS.map((word, w) => (
-              <div key={word} style={{ display: 'flex', justifyContent: 'center', color: w === 1 ? 'var(--accent)' : 'var(--text)' }}>
-                {[...word].map((ch) => {
-                  const i = letterIndex++;
-                  return (
-                    <motion.span
-                      key={i}
-                      initial={{ rotateX: -95, y: '40%', opacity: 0 }}
-                      animate={{ rotateX: 0, y: '0%', opacity: 1 }}
-                      transition={{ duration: short ? 0.5 : 0.9, ease: OUT, delay: (short ? 0.02 : 0.07) * i }}
-                      style={{ display: 'inline-block', transformOrigin: '50% 100%', backfaceVisibility: 'hidden' }}
-                    >
-                      {ch}
-                    </motion.span>
-                  );
-                })}
-              </div>
-            ))}
-          </div>
+          />
         </div>
 
-        <div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 16, marginBottom: 14 }}>
-            <span
-              style={{
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-                fontWeight: 800,
-                fontSize: 'clamp(40px, 7vw, 96px)',
-                lineHeight: 0.8,
-                letterSpacing: '-0.05em',
-                fontVariantNumeric: 'tabular-nums',
-              }}
-            >
-              {pad3(progress)}
-            </span>
-          </div>
-          <div style={{ height: 2, background: 'var(--border)' }}>
-            <div style={{ height: '100%', width: `${progress}%`, background: 'var(--accent)' }} />
-          </div>
-        </div>
-      </motion.div>
+        {/* Minimal Progress Line Indicator */}
+        <motion.div
+          initial={{ opacity: 0, width: 0 }}
+          animate={{ opacity: 1, width: '120px' }}
+          transition={{ delay: 0.2, duration: 0.4 }}
+          style={{
+            height: '2px',
+            background: isLight ? 'rgba(12, 14, 22, 0.1)' : 'rgba(255, 255, 255, 0.1)',
+            borderRadius: '2px',
+            overflow: 'hidden',
+            position: 'relative',
+          }}
+        >
+          <div
+            style={{
+              height: '100%',
+              width: `${progress}%`,
+              background: isLight ? 'linear-gradient(90deg, #5B45F2, #0A9B86)' : '#D65A6E',
+              borderRadius: '2px',
+              boxShadow: isLight ? '0 0 10px rgba(91, 69, 242, 0.5)' : 'none',
+              transition: 'width 0.05s linear',
+            }}
+          />
+        </motion.div>
+      </div>
     </motion.div>
   );
 }
