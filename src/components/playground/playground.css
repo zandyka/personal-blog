@@ -1,0 +1,224 @@
+/* ==========================================================================
+   Playground — hero lab, kartu arcade dengan pratinjau animasi
+   ========================================================================== */
+
+/* ---------- Hero ---------- */
+.pg-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 104px 20px 56px;
+  text-align: center;
+  isolation: isolate;
+}
+/* Kisi lab: samar di seluruh hero, menyala di sekitar kursor */
+.pg-grid,
+.pg-grid--lit {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 44px 44px;
+  background-position: center top;
+  pointer-events: none;
+}
+.pg-grid {
+  opacity: 0.45;
+  -webkit-mask-image: radial-gradient(ellipse 70% 80% at 50% 40%, #000 20%, transparent 75%);
+  mask-image: radial-gradient(ellipse 70% 80% at 50% 40%, #000 20%, transparent 75%);
+}
+.pg-grid--lit {
+  background-image:
+    linear-gradient(var(--accent) 1px, transparent 1px),
+    linear-gradient(90deg, var(--accent) 1px, transparent 1px);
+  opacity: 0.55;
+  -webkit-mask-image: radial-gradient(circle 220px at var(--mx, 50%) var(--my, 45%), #000 0%, transparent 70%);
+  mask-image: radial-gradient(circle 220px at var(--mx, 50%) var(--my, 45%), #000 0%, transparent 70%);
+  transition: opacity 0.4s ease;
+}
+.pg-hero:not(:hover) .pg-grid--lit { opacity: 0.25; }
+
+.pg-hint {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px 14px;
+  margin-top: 26px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+.pg-hint kbd {
+  font-family: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+}
+.pg-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px 6px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.pg-toggle__switch {
+  position: relative;
+  width: 30px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  transition: background 0.25s ease;
+}
+.pg-toggle__switch::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.25s ease;
+}
+.pg-toggle[aria-pressed='true'] .pg-toggle__switch { background: var(--accent-solid, var(--accent)); border-color: transparent; }
+.pg-toggle[aria-pressed='true'] .pg-toggle__switch::after { transform: translateX(12px); background: #fff; }
+
+/* Petunjuk & tombol swarm hanya relevan untuk mouse */
+@media (hover: none), (pointer: coarse) {
+  .pg-hint { display: none; }
+}
+
+/* ---------- Kartu arcade ---------- */
+.pg-arcade-card { position: relative; perspective: 1000px; }
+
+/* ---------- Pratinjau animasi ---------- */
+.pv {
+  position: relative;
+  height: 96px;
+  margin-bottom: 18px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+
+/* Pacman */
+.pv-dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(50% - 4px);
+  height: 8px;
+  background: radial-gradient(circle, rgba(250, 204, 21, 0.75) 3px, transparent 3.5px) 0 0 / 28px 8px repeat-x;
+  animation: pvDots 0.6s linear infinite;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0 31%, #000 33%);
+  mask-image: linear-gradient(90deg, transparent 0 31%, #000 33%);
+}
+.pv-pac {
+  position: absolute;
+  left: 22%;
+  top: calc(50% - 17px);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #facc15;
+  box-shadow: 0 0 18px rgba(250, 204, 21, 0.45);
+  animation: pvChomp 0.3s ease-in-out infinite alternate;
+}
+.pv-ghost {
+  position: absolute;
+  left: 6%;
+  top: calc(50% - 13px);
+  color: #38bdf8;
+  animation: pvBob 1.2s ease-in-out infinite;
+}
+@keyframes pvDots { to { background-position: -28px 0; } }
+@keyframes pvChomp {
+  from { clip-path: polygon(100% 18%, 48% 50%, 100% 82%, 100% 100%, 0 100%, 0 0, 100% 0); }
+  to { clip-path: polygon(100% 49%, 48% 50%, 100% 51%, 100% 100%, 0 100%, 0 0, 100% 0); }
+}
+@keyframes pvBob { 50% { transform: translateY(-5px); } }
+
+/* Tetris */
+.pv--tetris { display: grid; place-items: center; }
+.pv-board { --c: 13px; position: relative; width: calc(var(--c) * 9); height: calc(var(--c) * 5); }
+.pv-cell {
+  position: absolute;
+  left: calc(var(--x) * var(--c));
+  top: calc(var(--y) * var(--c));
+  width: calc(var(--c) - 2px);
+  height: calc(var(--c) - 2px);
+  border-radius: 3px;
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.25);
+}
+.pv-piece { position: absolute; inset: 0; animation: pvFall 2.4s steps(1, end) infinite; }
+@keyframes pvFall {
+  0% { transform: translateY(calc(var(--c) * -3)); opacity: 0; }
+  10% { transform: translateY(calc(var(--c) * -2)); opacity: 1; }
+  25% { transform: translateY(calc(var(--c) * -1)); }
+  40% { transform: translateY(0); }
+  55% { transform: translateY(var(--c)); }
+  70% { transform: translateY(calc(var(--c) * 2)); }
+  85% { transform: translateY(calc(var(--c) * 3)); filter: brightness(1.8); }
+  100% { transform: translateY(calc(var(--c) * 3)); opacity: 0; }
+}
+
+/* Kuis BISINDO */
+.pv--quiz { display: flex; align-items: center; justify-content: center; gap: 22px; }
+.pv-hand { color: #a855f7; animation: pvWave 1.6s ease-in-out infinite; transform-origin: 50% 90%; }
+.pv-timer { position: relative; width: 56px; height: 56px; }
+.pv-timer svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.pv-timer circle { fill: none; stroke-width: 3; }
+.pv-timer__track { stroke: var(--border); }
+.pv-timer__run {
+  stroke: #a855f7;
+  stroke-linecap: round;
+  stroke-dasharray: 119.4;
+  animation: pvTimer 2.4s linear forwards;
+}
+.pv-letter {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text);
+  animation: pvPop 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.pv-xp {
+  font-family: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #22c55e;
+  animation: pvXp 2.4s ease-out infinite;
+}
+@keyframes pvWave { 25% { transform: rotate(-12deg); } 75% { transform: rotate(10deg); } }
+@keyframes pvTimer { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 119.4; } }
+@keyframes pvPop { from { transform: scale(0.4); opacity: 0; } }
+@keyframes pvXp {
+  0%, 60% { opacity: 0; transform: translateY(6px); }
+  75% { opacity: 1; transform: none; }
+  100% { opacity: 0; transform: translateY(-8px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pv *, .pv { animation: none !important; }
+}
+@media (max-width: 640px) {
+  .pg-hero { padding: 72px 16px 40px; }
+}

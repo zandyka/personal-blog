@@ -536,10 +536,10 @@ export default function HandSpeakDemo() {
                   <Camera size={30} />
                 </div>
                 <div>
-                  <h4 style={{ margin: '0 0 6px', color: 'var(--text)', fontSize: '1.05rem', fontWeight: 800 }}>
+                  <h4 style={{ margin: '0 0 6px', color: '#f4f4f5', fontSize: '1.05rem', fontWeight: 800 }}>
                     Kamera Belum Aktif
                   </h4>
-                  <p style={{ margin: 0, fontSize: '0.84rem', color: 'var(--text-muted)', maxWidth: '280px', lineHeight: 1.5 }}>
+                  <p style={{ margin: 0, fontSize: '0.84rem', color: '#a1a1aa', maxWidth: '280px', lineHeight: 1.5 }}>
                     Tekan tombol untuk mengizinkan kamera browser dan deteksi gestur BISINDO secara real-time.
                   </p>
                 </div>
