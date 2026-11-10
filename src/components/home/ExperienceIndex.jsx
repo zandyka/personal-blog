@@ -34,7 +34,7 @@ export default function ExperienceIndex() {
   return (
     <section className="h-sec" id="experience">
       <div className="h-wrap">
-        <SectionHead index="03" label="Pengalaman" aside="BUMN, perbankan, organisasi">
+        <SectionHead index="04" label="Pengalaman" aside="BUMN, perbankan, organisasi">
           Tempat saya <em>belajar</em>.
         </SectionHead>
 

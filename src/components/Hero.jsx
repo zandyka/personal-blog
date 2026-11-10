@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from 'framer-motion';
 import { ArrowDown, ArrowDownRight, Github, Linkedin, Instagram, Mail, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useSoundContext } from './ui/SoundProvider';
@@ -77,9 +77,36 @@ const Hero = () => {
     playClick();
   };
 
+  // Gerak: judul miring 3D mengikuti mouse, dan tiap baris berpencar saat di-scroll.
+  const reduceMotion = useReducedMotion();
+  const heroRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
+  const spread = reduceMotion ? 0 : 1;
+  const line1X = useTransform(scrollYProgress, [0, 1], [0, -180 * spread]);
+  const line2X = useTransform(scrollYProgress, [0, 1], [0, 220 * spread]);
+  const line3X = useTransform(scrollYProgress, [0, 1], [0, -120 * spread]);
+  const headFade = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const tiltY = useSpring(useTransform(mx, [-0.5, 0.5], [-7, 7]), { stiffness: 120, damping: 18 });
+  const tiltX = useSpring(useTransform(my, [-0.5, 0.5], [5, -5]), { stiffness: 120, damping: 18 });
+  const onHeroMove = (e) => {
+    if (reduceMotion || e.pointerType !== 'mouse') return;
+    const r = e.currentTarget.getBoundingClientRect();
+    mx.set((e.clientX - r.left) / r.width - 0.5);
+    my.set((e.clientY - r.top) / r.height - 0.5);
+  };
+  const onHeroLeave = () => {
+    mx.set(0);
+    my.set(0);
+  };
+
   return (
     <section
       id="hero"
+      ref={heroRef}
+      onPointerMove={onHeroMove}
+      onPointerLeave={onHeroLeave}
       style={{
         position: 'relative',
         minHeight: 'clamp(480px, 80vh, 740px)',
@@ -240,13 +267,14 @@ const Hero = () => {
             }}
           >
             {/* Left Column: 3-line Heading */}
-            <div className="hero-heading-block" style={{ flex: '1 1 auto', minWidth: 0 }}>
+            <motion.div className="hero-heading-block" style={{ flex: '1 1 auto', minWidth: 0, rotateX: tiltX, rotateY: tiltY, opacity: headFade, transformPerspective: 1100, transformOrigin: '30% 50%' }}>
               {/* Line 1: Web Dev, */}
               <motion.h1
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.22, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                 className="hero-cover-heading"
+                style={{ x: line1X }}
               >
                 Web Dev,
               </motion.h1>
@@ -257,6 +285,7 @@ const Hero = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.36, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                 className="hero-cover-heading"
+                style={{ x: line2X }}
               >
                 AI Engineer &amp;
               </motion.h1>
@@ -267,10 +296,11 @@ const Hero = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                 className="hero-cover-heading"
+                style={{ x: line3X }}
               >
                 Graphic Designer
               </motion.h1>
-            </div>
+            </motion.div>
 
             {/* Right Column: 3 Social Icons on top + Tagline below */}
             <div

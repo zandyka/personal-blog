@@ -145,3 +145,17 @@ export const ARCHIVE = [
   { src: '/designs/digital/ig_himti.webp', caption: 'Feed Instagram HIMTI', kind: 'Desain', to: '/projects' },
   { src: '/gallery/foto bersama karyawan (magang di BSI).webp', caption: 'Magang di BSI', kind: 'Foto', to: '/album' },
 ];
+
+export const STATS = [
+  { value: 3.84, decimals: 2, suffix: '', label: 'IPK', note: 'Cum laude, Teknik Informatika USU' },
+  { value: 5, decimals: 0, suffix: '×', label: 'Magang', note: 'BUMN, perbankan, telekomunikasi' },
+  { value: 94.71, decimals: 2, suffix: '%', label: 'Akurasi', note: 'Model BISINDO di HandSpeak' },
+  { value: 14, decimals: 0, suffix: '', label: 'Sertifikat', note: 'Huawei, Kominfo, BNSP, Dicoding' },
+];
+
+export const TECH = [
+  'React', 'JavaScript', 'Flutter', 'Dart', 'Laravel', 'PHP', 'Python', 'TensorFlow Lite',
+  'MediaPipe', 'MySQL', 'Firebase', 'Node.js', 'Figma', 'Tailwind', 'Git', 'REST API',
+  'Java', 'C++', 'Android Studio', 'Bootstrap', 'MariaDB', 'Chart.js', 'Vite', 'Midtrans',
+  'Photoshop', 'GPON',
+];

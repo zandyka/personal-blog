@@ -1,8 +1,10 @@
 import { motion } from 'framer-motion';
 import Hero from '../components/Hero';
 import FactTicker from '../components/home/FactTicker';
-import Statement from '../components/home/Statement';
-import WorkReel from '../components/home/WorkReel';
+import FlipSides from '../components/home/FlipSides';
+import StatsBand from '../components/home/StatsBand';
+import TechSphere from '../components/home/TechSphere';
+import StackCards from '../components/home/StackCards';
 import ExperienceIndex from '../components/home/ExperienceIndex';
 import PhotoRing from '../components/home/PhotoRing';
 import '../components/home/home.css';
@@ -18,8 +20,10 @@ const HomePage = () => (
   >
     <Hero />
     <FactTicker />
-    <Statement />
-    <WorkReel />
+    <FlipSides />
+    <StatsBand />
+    <TechSphere />
+    <StackCards />
     <ExperienceIndex />
     <PhotoRing />
   </motion.div>
