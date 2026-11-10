@@ -17,6 +17,8 @@ import {
   Compass,
   ArrowUpRight,
   Clock,
+  Building2,
+  FileSpreadsheet,
 } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
 
@@ -33,6 +35,39 @@ const SOFTWARE_PROJECTS = [
     techStack: ['Flutter', 'Python', 'TensorFlow Lite', 'MediaPipe Hands', 'Computer Vision', 'Mobile AI'],
     image: '/projects/handspeak.webp',
     previewUrl: '/playground#handspeak',
+  },
+  {
+    id: 'dashboard-dsps-ptpn3',
+    title: 'Dashboard Eksekutif DSPS — PT Perkebunan Nusantara III (Persero) Holding',
+    category: 'Enterprise Executive Dashboard',
+    typeIcon: Building2,
+    accent: '#15803D',
+    description:
+      'Platform digital terpadu Divisi Strategi & Pengembangan SDM (DSPS) PTPN III (Persero) Holding untuk memusatkan monitoring operasional harian: dashboard eksekutif, task management dengan penanggung jawab & label prioritas, agenda dan kalender terpadu, progres proyek strategis, monitoring inisiatif HECTO terhubung API, basis data peserta magang, repositori Kebijakan & SOP dengan pratinjau dokumen Word, serta pengingat tugas otomatis via WhatsApp setiap hari kerja pukul 09.00 WIB.',
+    techStack: ['React 19', 'TypeScript', 'Vite', 'Tailwind CSS v4', 'Supabase', 'WhatsApp API'],
+    image: '/projects/dashboard-dsps-ptpn3.webp',
+  },
+  {
+    id: 'portal-lm-entitas',
+    title: 'Portal LM Entitas — Pelaporan & Konsolidasi Laporan Manajemen PTPN Group',
+    category: 'Enterprise Reporting Portal',
+    typeIcon: FileSpreadsheet,
+    accent: '#0F766E',
+    description:
+      'Portal tempat entitas anak perusahaan PTPN Group mengisi Laporan Manajemen (LM) bulanan yang kemudian ditinjau dan dikonsolidasikan oleh holding. Dilengkapi tabel utama konsolidasi lintas entitas, import data LM dari Excel, jadwal & kunci masa pengisian per bulan, status Done/Fix per entitas, log aktivitas, serta hak akses berbasis peran yang ditegakkan langsung di database lewat Row Level Security (RLS) Supabase.',
+    techStack: ['React 19', 'TypeScript', 'Vite', 'Tailwind CSS v4', 'Supabase RLS', 'SheetJS'],
+    image: '/projects/portal-lm-entitas-ptpn.webp',
+  },
+  {
+    id: 'rekap-magang-ptpn',
+    title: 'Dashboard Rekap Penyerapan Magang PTPN Group',
+    category: 'Data Dashboard & Google Sheets Integration',
+    typeIcon: BarChart3,
+    accent: '#CA8A04',
+    description:
+      'Dashboard terintegrasi Google Sheets untuk memonitor dan merekap penyerapan peserta magang (Magenta BUMN, Magang Kemnaker, Magang Mandiri) di 11 entitas dan 27 unit PTPN Group. Menyajikan KPI dan grafik komparasi antar-entitas, tabel master rekapitulasi berformat laporan Direksi SDM & Umum dengan ekspor CSV, editor data per entitas dengan perhitungan otomatis, serta sinkronisasi dua arah Google Sheets API v4 dengan fallback cache lokal.',
+    techStack: ['Next.js 16', 'React 19', 'Google Sheets API v4', 'Recharts', 'Tailwind CSS', 'RBAC'],
+    image: '/projects/rekap-magang-ptpn.webp',
   },
   {
     id: 'mahaasyik',
