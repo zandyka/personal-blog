@@ -1,101 +1,153 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { motion } from 'framer-motion'
+
+const DOT = 8
+const RING = 32
+const RING_HOVER = 48
+
+const isInteractive = (el) =>
+  !!el?.closest?.('a, button, [data-cursor]')
 
 export default function CustomCursor() {
   const location = useLocation()
-  const isPlayground = location.pathname === '/playground' || location.pathname.startsWith('/playground')
-  const [pos, setPos] = useState({ x: -100, y: -100 })
-  const [ringPos, setRingPos] = useState({ x: -100, y: -100 })
-  const [isHovering, setIsHovering] = useState(false)
-  const [isVisible, setIsVisible] = useState(false)
-  const ringRef = useRef({ x: -100, y: -100 })
-  const rafRef = useRef()
+  // Playground memakai TargetCursor sendiri, jadi kursor ini dimatikan di sana.
+  const isPlayground = location.pathname.startsWith('/playground')
 
-  const isTouchDevice =
-    typeof window !== 'undefined' &&
-    ('ontouchstart' in window || navigator.maxTouchPoints > 0)
+  const [finePointer, setFinePointer] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(hover: hover) and (pointer: fine)').matches
+  )
+  const dotRef = useRef(null)
+  const ringRef = useRef(null)
 
   useEffect(() => {
-    if (isTouchDevice || isPlayground) return
+    const mq = window.matchMedia('(hover: hover) and (pointer: fine)')
+    const update = () => setFinePointer(mq.matches)
+    mq.addEventListener('change', update)
+    return () => mq.removeEventListener('change', update)
+  }, [])
+
+  const enabled = finePointer && !isPlayground
+
+  // Dipasang ulang setiap kali `enabled` berubah, termasuk saat kembali dari Playground.
+  useEffect(() => {
+    if (!enabled) return undefined
+    const dot = dotRef.current
+    const ring = ringRef.current
+    if (!dot || !ring) return undefined
+
+    const target = { x: -100, y: -100 }
+    const ringPos = { x: -100, y: -100 }
+    let visible = false
+    let hovering = false
+    let seen = false
+    let raf = 0
+
+    const applyVisibility = () => {
+      dot.style.opacity = visible ? '1' : '0'
+      ring.style.opacity = visible ? (hovering ? '0.8' : '0.4') : '0'
+    }
+
+    const applyHover = () => {
+      const size = hovering ? RING_HOVER : RING
+      ring.style.width = `${size}px`
+      ring.style.height = `${size}px`
+      applyVisibility()
+    }
+
+    const tick = () => {
+      ringPos.x += (target.x - ringPos.x) * 0.18
+      ringPos.y += (target.y - ringPos.y) * 0.18
+      const half = (hovering ? RING_HOVER : RING) / 2
+      dot.style.transform = `translate3d(${target.x - DOT / 2}px, ${target.y - DOT / 2}px, 0)`
+      ring.style.transform = `translate3d(${ringPos.x - half}px, ${ringPos.y - half}px, 0)`
+      const settled = Math.abs(target.x - ringPos.x) + Math.abs(target.y - ringPos.y) < 0.1
+      raf = settled ? 0 : requestAnimationFrame(tick)
+    }
+
+    const wake = () => {
+      if (!raf) raf = requestAnimationFrame(tick)
+    }
 
     const onMove = (e) => {
-      setPos({ x: e.clientX, y: e.clientY })
-      setIsVisible(true)
-    }
-
-    const onEnter = (e) => {
-      if (
-        e.target.tagName === 'A' ||
-        e.target.tagName === 'BUTTON' ||
-        e.target.closest('a') ||
-        e.target.closest('button') ||
-        e.target.dataset.cursor
-      ) {
-        setIsHovering(true)
+      if (e.pointerType && e.pointerType !== 'mouse') return
+      target.x = e.clientX
+      target.y = e.clientY
+      if (!seen) {
+        // Gerakan pertama: langsung lompat ke posisi mouse, jangan meluncur dari posisi lama.
+        ringPos.x = target.x
+        ringPos.y = target.y
+        seen = true
       }
+      if (!visible) {
+        visible = true
+        applyVisibility()
+      }
+      const nextHover = isInteractive(e.target)
+      if (nextHover !== hovering) {
+        hovering = nextHover
+        applyHover()
+      }
+      wake()
     }
 
-    const onLeave = () => setIsHovering(false)
-
-    window.addEventListener('mousemove', onMove)
-    document.addEventListener('mouseover', onEnter)
-    document.addEventListener('mouseout', onLeave)
-
-    // Smooth ring follow with RAF
-    const animate = () => {
-      ringRef.current.x += (pos.x - ringRef.current.x) * 0.12
-      ringRef.current.y += (pos.y - ringRef.current.y) * 0.12
-      setRingPos({ x: ringRef.current.x, y: ringRef.current.y })
-      rafRef.current = requestAnimationFrame(animate)
+    const onLeave = () => {
+      visible = false
+      seen = false
+      applyVisibility()
     }
-    rafRef.current = requestAnimationFrame(animate)
+
+    applyHover()
+    window.addEventListener('pointermove', onMove, { passive: true })
+    document.documentElement.addEventListener('pointerleave', onLeave)
+    window.addEventListener('blur', onLeave)
 
     return () => {
-      window.removeEventListener('mousemove', onMove)
-      document.removeEventListener('mouseover', onEnter)
-      document.removeEventListener('mouseout', onLeave)
-      cancelAnimationFrame(rafRef.current)
+      cancelAnimationFrame(raf)
+      window.removeEventListener('pointermove', onMove)
+      document.documentElement.removeEventListener('pointerleave', onLeave)
+      window.removeEventListener('blur', onLeave)
     }
-  }, [pos.x, pos.y, isTouchDevice])
+  }, [enabled])
 
-  if (isTouchDevice || isPlayground) return null
+  if (!enabled) return null
 
   return (
     <>
-      {/* Dot */}
-      <motion.div
+      <div
+        ref={dotRef}
+        aria-hidden="true"
         style={{
           position: 'fixed',
           top: 0,
           left: 0,
-          width: 8,
-          height: 8,
+          width: DOT,
+          height: DOT,
           borderRadius: '50%',
           backgroundColor: 'var(--accent)',
           pointerEvents: 'none',
           zIndex: 9999,
-          transform: `translate(${pos.x - 4}px, ${pos.y - 4}px)`,
-          opacity: isVisible ? 1 : 0,
+          opacity: 0,
           transition: 'opacity 0.2s',
           mixBlendMode: 'difference',
+          willChange: 'transform',
         }}
       />
-      {/* Ring */}
       <div
+        ref={ringRef}
+        aria-hidden="true"
         style={{
           position: 'fixed',
           top: 0,
           left: 0,
-          width: isHovering ? 48 : 32,
-          height: isHovering ? 48 : 32,
+          width: RING,
+          height: RING,
           borderRadius: '50%',
-          border: `1.5px solid var(--accent)`,
+          border: '1.5px solid var(--accent)',
           pointerEvents: 'none',
           zIndex: 9998,
-          transform: `translate(${ringRef.current.x - (isHovering ? 24 : 16)}px, ${ringRef.current.y - (isHovering ? 24 : 16)}px)`,
-          opacity: isVisible ? (isHovering ? 0.8 : 0.4) : 0,
+          opacity: 0,
           transition: 'width 0.2s ease, height 0.2s ease, opacity 0.2s, border-color 0.2s',
+          willChange: 'transform',
         }}
       />
     </>

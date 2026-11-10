@@ -355,7 +355,7 @@ html[data-theme-transition="crossfade"]::view-transition-new(root) {
    ============================================ */
 .hero-cover-heading {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: clamp(2.8rem, 6.8vw, 7.6rem);
+  font-size: clamp(2.8rem, 6.8vw, 6.5rem); /* dibatasi: konten hero maks 1400px, jadi judul tidak boleh terus membesar */
   font-weight: 900;
   line-height: 0.94;
   letter-spacing: -0.04em;
