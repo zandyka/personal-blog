@@ -65,7 +65,7 @@ export default function FlipSides() {
   return (
     <section className="h-sec" id="about" style={{ paddingBottom: 0 }}>
       <div className="h-wrap">
-        <SectionHead index="01" label="Tentang" aside="Scroll untuk membalik kartu">
+        <SectionHead index="01" label="Tentang">
           Dua sisi <em>meja</em>.
         </SectionHead>
       </div>
@@ -79,11 +79,11 @@ export default function FlipSides() {
             </motion.div>
           </div>
           <div className="h-flip__hud h-mono">
-            <span data-on={!flipped}>A — Pembuat</span>
+            <span data-on={!flipped}>{SIDES[0].hud}</span>
             <span className="h-flip__bar">
               <motion.i style={{ scaleX: smooth }} />
             </span>
-            <span data-on={flipped}>B — Pengguna</span>
+            <span data-on={flipped}>{SIDES[1].hud}</span>
           </div>
         </div>
       </div>

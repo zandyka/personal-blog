@@ -126,7 +126,7 @@ export default function SplashScreen({ onComplete, variant = 'full' }) {
           display: 'grid',
           gridTemplateRows: 'auto 1fr auto',
           color: 'var(--text)',
-          fontFamily: "'JetBrains Mono', ui-monospace, monospace",
+          fontFamily: "'Space Grotesk', 'Plus Jakarta Sans', sans-serif",
           fontSize: 11,
           letterSpacing: '0.14em',
           textTransform: 'uppercase',
@@ -186,7 +186,6 @@ export default function SplashScreen({ onComplete, variant = 'full' }) {
             >
               {pad3(progress)}
             </span>
-            <span style={{ color: 'var(--text-muted)', textAlign: 'right' }}>Klik untuk lewati</span>
           </div>
           <div style={{ height: 2, background: 'var(--border)' }}>
             <div style={{ height: '100%', width: `${progress}%`, background: 'var(--accent)' }} />

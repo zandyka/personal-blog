@@ -40,14 +40,15 @@ export default function FactTicker({ baseVelocity = -1.6 }) {
   const items = (copy) =>
     TICKER_FACTS.map((fact, i) => (
       <span className="h-ticker__item" key={`${copy}-${i}`} aria-hidden={copy > 0 || undefined}>
-        <em>{fact.lead}</em>
-        {fact.rest}
+        <span>
+          {fact.text} <em>{fact.em}</em>
+        </span>
         <span className="h-ticker__sep" />
       </span>
     ));
 
   return (
-    <div className="h-ticker" role="region" aria-label="Fakta singkat">
+    <div className="h-ticker" role="region" aria-label="Bidang yang dikerjakan">
       <motion.div className="h-ticker__track" style={{ x }}>
         {items(0)}
         {items(1)}

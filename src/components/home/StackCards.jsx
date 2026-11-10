@@ -62,7 +62,7 @@ export default function StackCards() {
     <section className="h-sec" id="work">
       <div className="h-wrap">
         <SectionHead index="03" label="Karya pilihan" aside={`${WORK.length} proyek — web, mobile, AI`}>
-          Yang sudah <em>dikirim</em>.
+          Yang sudah <em>dikerjakan</em>.
         </SectionHead>
 
         <div ref={ref} className="h-stack">

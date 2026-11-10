@@ -8,7 +8,7 @@
   --h-gutter: clamp(20px, 4vw, 64px);
   --h-max: 1440px;
   --font-display: 'Plus Jakarta Sans', -apple-system, 'Segoe UI', sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', monospace;
+  --font-mono: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -486,22 +486,7 @@
   -webkit-user-select: none;
 }
 .h-tech__sphere:active { cursor: grabbing; }
-.h-tech__item {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  white-space: nowrap;
-  font-weight: 700;
-  font-size: clamp(0.95rem, 1.5vw, 1.35rem);
-  letter-spacing: -0.02em;
-  color: var(--text);
-  padding: 6px 14px;
-  border: 1px solid var(--border-light);
-  border-radius: 999px;
-  background: var(--surface);
-  will-change: transform, opacity;
-}
-.h-tech__item:nth-child(3n) { background: var(--accent-solid); color: var(--on-accent); border-color: transparent; }
+.h-tech__sphere canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 
 /* ---------- Kartu bertumpuk ---------- */
 .h-stack { position: relative; }

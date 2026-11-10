@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Bebas+Neue&family=Caveat:wght@600;700&family=Cinzel:wght@600;700;900&family=DM+Serif+Display:ital@0;1&family=Great+Vibes&family=JetBrains+Mono:wght@400;500;600;700&family=Permanent+Marker&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Silkscreen:wght@400;700&family=Space+Grotesk:wght@400;600;700;800&family=Syne:wght@700;800&family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Bebas+Neue&family=Caveat:wght@600;700&family=Cinzel:wght@600;700;900&family=DM+Serif+Display:ital@0;1&family=Great+Vibes&family=Permanent+Marker&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Silkscreen:wght@400;700&family=Space+Grotesk:wght@400;600;700;800&family=Syne:wght@700;800&family=VT323&display=swap');
 
 /* ==========================================================================
    COLOR SYSTEM — "Iris & Aqua"
@@ -117,7 +117,8 @@ body {
 }
 
 .font-mono {
-  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+  font-family: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif;
+  font-variant-numeric: tabular-nums;
 }
 
 /* Custom Scrollbar */
@@ -410,3 +411,56 @@ html.light .hero-cover-heading {
   -webkit-text-fill-color: transparent;
 }
 
+
+/* ============================================
+   TEXT COVER — efek "Graphic Designer" tanpa bingkai
+   ============================================ */
+.text-cover {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  cursor: default;
+}
+.text-cover__text {
+  display: inline-block;
+  position: relative;
+  z-index: 2;
+  white-space: nowrap;
+  /* ruang untuk ekor huruf (p, g) agar ikut terwarnai gradien */
+  padding-bottom: 0.16em;
+  margin-bottom: -0.16em;
+  background: linear-gradient(135deg, var(--text) 20%, var(--accent) 70%, var(--heading-gradient-end) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: text-shadow 0.25s ease;
+}
+.text-cover[data-hovered='true'] .text-cover__text {
+  background: none;
+  color: var(--text);
+  -webkit-text-fill-color: var(--text);
+  text-shadow: 0 2px 22px var(--accent-glow);
+}
+.text-cover__beam {
+  position: absolute;
+  left: -4%;
+  width: 108%;
+  height: 2px;
+  z-index: 3;
+  pointer-events: none;
+  overflow: visible;
+}
+.text-cover__sparkles {
+  position: absolute;
+  inset: -6% -2%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+.text-cover__sparkles-inner {
+  display: flex;
+  width: 200%;
+  height: 100%;
+}
+
+.hero-cover-heading:has(.text-cover) { background: none; }

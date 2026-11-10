@@ -13,51 +13,55 @@ export const SPLASH_FRAMES = [
   { src: HERO_PORTRAIT, caption: 'Sidang TA, USU' },
 ];
 
+// Ticker di bawah hero: bidang yang dikerjakan. em = kata yang dicetak miring & berwarna.
 export const TICKER_FACTS = [
-  { lead: 'IPK 3.84', rest: 'cum laude, Teknik Informatika USU' },
-  { lead: '5×', rest: 'magang — PTPN III, BPJS TK, Bank Sumut, BSI, Telkom Akses' },
-  { lead: '94.71%', rest: 'akurasi model HandSpeak' },
-  { lead: 'Juara 1', rest: 'IT Network Configuration' },
-  { lead: 'Juara 3', rest: 'lomba foto produk Coca-Cola' },
-  { lead: 'Kadiv', rest: 'Media Kreatif HIMTI USU' },
-  { lead: 'HCIA', rest: 'Datacom — Huawei ICT Academy' },
+  { text: 'Web', em: 'Development' },
+  { text: 'Mobile', em: 'Apps' },
+  { text: 'AI', em: 'on-device' },
+  { text: 'UI/UX', em: 'Design' },
+  { text: 'Graphic', em: 'Design' },
+  { text: 'Dashboard &', em: 'Data' },
+  { text: 'Event', em: 'Branding' },
+  { text: 'Product', em: 'Photography' },
 ];
 
-// Section "Dua sisi meja": sisi pembuat vs sisi pengguna.
+// Section "Dua sisi meja": sisi kode (depan kartu) dan sisi visual (belakang kartu).
 export const SIDES = [
   {
     id: 'make',
-    tag: 'Sisi A — pembuat',
-    verb: 'membangun',
-    lede: 'Aplikasi web, mobile, dan model AI yang berjalan langsung di ponsel — ditambah desain untuk acara kampus.',
+    tag: 'Sisi A — kode',
+    hud: 'A — Kode',
+    verb: 'menulis kode',
+    lede: 'Dari aplikasi web dan mobile sampai model AI yang berjalan langsung di ponsel, tanpa server.',
     items: [
-      ['Web', 'React, Laravel, MySQL'],
-      ['Mobile', 'Flutter, Android'],
-      ['AI on-device', 'TensorFlow Lite, MediaPipe'],
-      ['Desain', 'Poster, ID card, identitas acara'],
+      ['Web', 'React & Laravel — Mahaasyik Resto, SIGMA'],
+      ['Mobile', 'Flutter — aplikasi HandSpeak'],
+      ['AI', 'TensorFlow Lite & MediaPipe, on-device'],
+      ['Data', 'Dasbor operasional & L&D korporat'],
     ],
-    image: '/gallery/expo vokasi usu 2024 4_3.webp',
-    imageAlt: 'Memamerkan produk di Expo Vokasi USU 2024',
+    image: '/projects/handspeak.webp',
+    imageAlt: 'Rancangan sistem aplikasi HandSpeak',
   },
   {
     id: 'run',
-    tag: 'Sisi B — pengguna',
-    verb: 'menjalankan',
-    lede: 'Back office bank, operasional, IT support, dan data korporat — tempat aplikasi benar-benar dipakai setiap hari.',
+    tag: 'Sisi B — visual',
+    hud: 'B — Visual',
+    verb: 'merancang visual',
+    lede: 'Identitas acara, materi cetak, dan konten media sosial untuk organisasi dan kepanitiaan kampus.',
     items: [
-      ['Back office', 'Bank Syariah Indonesia'],
-      ['Operasional', 'Bank Sumut'],
-      ['IT & admin', 'BPJS Ketenagakerjaan'],
-      ['Data L&D', 'PTPN III Holding'],
+      ['Identitas', 'Lanyard & ID card HIMTI dan PKKMB'],
+      ['Cetak', 'Banner, spanduk, X-banner, poster'],
+      ['Digital', 'Feed Instagram HIMTI & PKKMB'],
+      ['Foto', 'Juara 3 lomba foto produk Coca-Cola'],
     ],
-    image: '/journey/aboutptpn.png',
-    imageAlt: 'Di kantor PT Perkebunan Nusantara',
+    image: '/designs/physical/id_card_panitia_pkkmb.webp',
+    imageAlt: 'Desain ID card panitia PKKMB Vokasi USU 2025',
   },
 ];
 
-// *teks* = penekanan (serif miring)
+// *teks* = penekanan (miring & berwarna)
 export const SIDES_OUTRO =
-  'Karena pernah duduk di kedua sisi, yang saya buat bukan sekadar jalan — tapi *masuk akal* bagi orang yang memakainya setiap hari.';
+  'Dua sisi itu bertemu di setiap proyek: kode yang *bekerja dengan baik*, dibungkus visual yang *enak dilihat*.';
 
 export const FACTS = [
   { label: 'Pendidikan', value: 'Teknik Informatika, Universitas Sumatera Utara', note: 'IPK 3.84 — cum laude' },
@@ -147,10 +151,10 @@ export const ARCHIVE = [
 ];
 
 export const STATS = [
-  { value: 3.84, decimals: 2, suffix: '', label: 'IPK', note: 'Cum laude, Teknik Informatika USU' },
-  { value: 5, decimals: 0, suffix: '×', label: 'Magang', note: 'BUMN, perbankan, telekomunikasi' },
-  { value: 94.71, decimals: 2, suffix: '%', label: 'Akurasi', note: 'Model BISINDO di HandSpeak' },
-  { value: 14, decimals: 0, suffix: '', label: 'Sertifikat', note: 'Huawei, Kominfo, BNSP, Dicoding' },
+  { value: 4, decimals: 0, suffix: '', label: 'Aplikasi dirilis', note: 'Mobile AI, web full-stack, dan dua dasbor' },
+  { value: 198, decimals: 0, suffix: '', label: 'Peserta dipantau', note: 'Lewat SIGMA di BPJS Ketenagakerjaan' },
+  { value: 26, decimals: 0, suffix: '', label: 'Huruf BISINDO', note: 'Dikenali HandSpeak langsung di ponsel' },
+  { value: 14, decimals: 0, suffix: '', label: 'Karya desain', note: 'Lanyard, ID card, banner, feed Instagram' },
 ];
 
 export const TECH = [

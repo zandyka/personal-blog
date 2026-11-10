@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { useSoundContext } from './ui/SoundProvider';
 import { useTheme } from '../hooks/useTheme';
 import BlinkingSquares from './ui/BlinkingSquares';
+import TextCover from './ui/TextCover';
 
 const GREETING_FONTS = [
   // 1. Handwriting & Calligraphy
@@ -298,7 +299,7 @@ const Hero = () => {
                 className="hero-cover-heading"
                 style={{ x: line3X }}
               >
-                Graphic Designer
+                <TextCover>Graphic Designer</TextCover>
               </motion.h1>
             </motion.div>
 

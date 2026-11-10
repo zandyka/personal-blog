@@ -684,7 +684,7 @@ export default function HandSpeakDemo() {
                       ? '1.65rem'
                       : '2.5rem',
                     fontWeight: 900,
-                    fontFamily: "'JetBrains Mono', monospace",
+                    fontFamily: "'Space Grotesk', sans-serif",
                     color: confidence >= 0.75 ? '#34d399' : 'var(--accent)',
                     lineHeight: 1.05,
                     textAlign: 'right',
@@ -719,7 +719,7 @@ export default function HandSpeakDemo() {
                     style={{
                       fontSize: '0.68rem',
                       fontWeight: 700,
-                      fontFamily: "'JetBrains Mono', monospace",
+                      fontFamily: "'Space Grotesk', sans-serif",
                       color: confidence >= 0.75 ? '#34d399' : 'var(--text-muted)',
                       lineHeight: 1,
                     }}
@@ -981,7 +981,7 @@ export default function HandSpeakDemo() {
                   fontWeight: 700,
                   color: 'var(--text)',
                   letterSpacing: '1px',
-                  fontFamily: "'JetBrains Mono', monospace",
+                  fontFamily: "'Space Grotesk', sans-serif",
                   wordBreak: 'break-word',
                   flex: 1,
                 }}
