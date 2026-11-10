@@ -14,6 +14,7 @@ import FloatingPet from './components/ui/FloatingPet';
 import ScrollToTop from './components/ui/ScrollToTop';
 import { Analytics } from '@vercel/analytics/react';
 import ErrorBoundary from './components/ErrorBoundary';
+import { setSplashActive } from './lib/splashStore';
 
 // Setiap halaman dimuat terpisah (code splitting) agar kunjungan pertama tidak
 // ikut mengunduh Three.js, MediaPipe, OGL, dll. milik halaman lain.
@@ -33,15 +34,22 @@ function AppInner() {
   useTheme();
   const location = useLocation();
   const [showSplash, setShowSplash] = useState(true);
+  // Kunjungan pertama: splash lengkap. Kembali ke Home: versi singkat.
+  const [splashVariant, setSplashVariant] = useState('full');
   const prevPathRef = useRef(null);
 
   useEffect(() => {
     // Trigger splash animation on first visit or whenever returning/navigating to homepage ('/')
     if (location.pathname === '/' && prevPathRef.current !== null && prevPathRef.current !== '/') {
+      setSplashVariant('short');
       setShowSplash(true);
     }
     prevPathRef.current = location.pathname;
   }, [location.pathname]);
+
+  useEffect(() => {
+    setSplashActive(showSplash);
+  }, [showSplash]);
 
   return (
     <>
@@ -49,6 +57,7 @@ function AppInner() {
         {showSplash && (
           <SplashScreen
             key="splash-screen"
+            variant={splashVariant}
             onComplete={() => setShowSplash(false)}
           />
         )}

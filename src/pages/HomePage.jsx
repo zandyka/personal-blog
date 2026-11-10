@@ -1,37 +1,28 @@
 import { motion } from 'framer-motion';
-import Hero from '../components/Hero';
-import SkillsTypography from '../components/SkillsTypography';
-import HomeShowcase from '../components/HomeShowcase';
-import InfiniteMarquee from '../components/ui/InfiniteMarquee';
+import HomeHero from '../components/home/HomeHero';
+import FactTicker from '../components/home/FactTicker';
+import Statement from '../components/home/Statement';
+import WorkReel from '../components/home/WorkReel';
+import ExperienceIndex from '../components/home/ExperienceIndex';
+import PhotoRing from '../components/home/PhotoRing';
+import '../components/home/home.css';
 
-const TECH_ITEMS = [
-  'React', 'JavaScript', 'Flutter', 'Node.js', 'Python',
-  'Firebase', 'PHP', 'Laravel', 'MySQL', 'Figma',
-  'Java', 'C++', 'Git', 'REST API', 'Mobile Dev',
-];
-
-const HomePage = () => {
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
-      className="page-container"
-      style={{ paddingTop: 0 }}
-    >
-      <Hero />
-
-      {/* Tech marquee - only one */}
-      <InfiniteMarquee items={TECH_ITEMS} speed={30} />
-
-      {/* Skills typography section */}
-      <SkillsTypography />
-
-      {/* Split Section: Visual Gallery & Featured Projects */}
-      <HomeShowcase />
-    </motion.div>
-  );
-};
+const HomePage = () => (
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    transition={{ duration: 0.3 }}
+    className="page-container h-page"
+    style={{ paddingTop: 0 }}
+  >
+    <HomeHero />
+    <FactTicker />
+    <Statement />
+    <WorkReel />
+    <ExperienceIndex />
+    <PhotoRing />
+  </motion.div>
+);
 
 export default HomePage;

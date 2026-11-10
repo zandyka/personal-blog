@@ -19,6 +19,7 @@ const BackToTop = () => {
   };
 
   return (
+    <>
     <AnimatePresence>
       {visible && (
         <motion.button
@@ -50,6 +51,7 @@ const BackToTop = () => {
           <ArrowUp size={16} />
         </motion.button>
       )}
+    </AnimatePresence>
       <style>{`
         .back-to-top-btn {
           bottom: 28px;
@@ -62,7 +64,7 @@ const BackToTop = () => {
           }
         }
       `}</style>
-    </AnimatePresence>
+    </>
   );
 };
 
