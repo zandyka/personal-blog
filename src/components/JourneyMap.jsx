@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useRef, useState } from 'react';
+import { motion, AnimatePresence, useReducedMotion, useScroll, useSpring } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import {
   MapPin,
@@ -10,6 +10,7 @@ import {
   Image,
 } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
+import { Parallax, ScrollReveal } from './ui/ScrollMotion';
 
 const LOCATIONS = [
   {
@@ -144,6 +145,10 @@ export default function JourneyMap() {
   const { playHover, playClick } = useSoundContext();
   const { ref, inView } = useInView({ threshold: 0.15, triggerOnce: true });
   const [selectedLocation, setSelectedLocation] = useState(LOCATIONS[0]);
+  const reduceMotion = useReducedMotion();
+  const trackRef = useRef(null);
+  const { scrollYProgress: trackProgress } = useScroll({ target: trackRef, offset: ['start 85%', 'end 60%'] });
+  const trackFill = useSpring(trackProgress, { stiffness: 120, damping: 26, mass: 0.4 });
 
   return (
     <section
@@ -159,45 +164,47 @@ export default function JourneyMap() {
     >
       <div style={{ maxWidth: '1140px', margin: '0 auto' }}>
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
-          style={{ textAlign: 'center', marginBottom: '36px' }}
-        >
-          <div
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '6px 16px',
-              borderRadius: '999px',
-              background: 'rgba(2, 132, 199, 0.1)',
-              border: '1px solid rgba(2, 132, 199, 0.25)',
-              color: '#38bdf8',
-              fontSize: '0.78rem',
-              fontWeight: 700,
-              textTransform: 'uppercase',
-              letterSpacing: '1.5px',
-              marginBottom: '14px',
-            }}
+        <ScrollReveal from={60} scale={0.9}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5 }}
+            style={{ textAlign: 'center', marginBottom: '36px' }}
           >
-            <Navigation size={14} />
-            <span>Milestones</span>
-          </div>
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '6px 16px',
+                borderRadius: '999px',
+                background: 'rgba(2, 132, 199, 0.1)',
+                border: '1px solid rgba(2, 132, 199, 0.25)',
+                color: '#38bdf8',
+                fontSize: '0.78rem',
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '1.5px',
+                marginBottom: '14px',
+              }}
+            >
+              <Navigation size={14} />
+              <span>Milestones</span>
+            </div>
 
-          <h2
-            style={{
-              fontSize: 'clamp(1.6rem, 4.5vw, 2.8rem)',
-              fontWeight: 800,
-              color: 'var(--text)',
-              letterSpacing: '-0.03em',
-              margin: '0',
-            }}
-          >
-            My Journey Map
-          </h2>
-        </motion.div>
+            <h2
+              style={{
+                fontSize: 'clamp(1.6rem, 4.5vw, 2.8rem)',
+                fontWeight: 800,
+                color: 'var(--text)',
+                letterSpacing: '-0.03em',
+                margin: '0',
+              }}
+            >
+              My Journey Map
+            </h2>
+          </motion.div>
+        </ScrollReveal>
 
         {/* MOBILE ONLY: Horizontal Quick-Select Rail */}
         <div className="journey-mobile-rail">
@@ -271,7 +278,7 @@ export default function JourneyMap() {
             }}
           >
             {/* Stepper Timeline List */}
-            <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div ref={trackRef} style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {/* Connected Track Vertical Line */}
               <div
                 style={{
@@ -284,12 +291,31 @@ export default function JourneyMap() {
                   zIndex: 1,
                 }}
               />
+              {/* Garis yang terisi mengikuti scroll */}
+              <motion.div
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  left: '20px',
+                  top: '18px',
+                  bottom: '18px',
+                  width: '2px',
+                  background: 'linear-gradient(to bottom, var(--accent), #38bdf8)',
+                  transformOrigin: 'top',
+                  scaleY: reduceMotion ? 1 : trackFill,
+                  zIndex: 1,
+                }}
+              />
 
-              {LOCATIONS.map((loc) => {
+              {LOCATIONS.map((loc, idx) => {
                 const isSelected = selectedLocation.id === loc.id;
 
                 return (
-                  <div
+                  <motion.div
+                    initial={reduceMotion ? false : { opacity: 0, x: -28 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, amount: 0.6 }}
+                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: idx * 0.05 }}
                     key={loc.id}
                     onClick={() => {
                       playClick();
@@ -308,7 +334,7 @@ export default function JourneyMap() {
                       background: isSelected ? 'var(--surface-2)' : 'transparent',
                       border: isSelected ? `1.5px solid ${loc.accent}` : '1px solid transparent',
                       boxShadow: isSelected ? `0 4px 14px ${loc.accent}20` : 'none',
-                      transition: 'all 0.2s cubic-bezier(0.22, 1, 0.36, 1)',
+                      transition: 'background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease',
                     }}
                   >
                     {/* Station Real Brand Logo */}
@@ -395,7 +421,7 @@ export default function JourneyMap() {
                     >
                       <ChevronRight size={18} />
                     </div>
-                  </div>
+                  </motion.div>
                 );
               })}
             </div>
@@ -407,189 +433,191 @@ export default function JourneyMap() {
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.55, delay: 0.15 }}
           >
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={selectedLocation.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                className="journey-card-inner"
-                style={{
-                  background: 'var(--surface)',
-                  border: '1px solid var(--border)',
-                  borderRadius: '24px',
-                  padding: 'clamp(20px, 3vw, 26px)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '16px',
-                  boxShadow: '0 8px 24px var(--shadow-color)',
-                  position: 'relative',
-                  overflow: 'hidden',
-                }}
-              >
-                {/* Header with Real Brand Logo, Period & Role */}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                    <div
-                      style={{
-                        width: '52px',
-                        height: '52px',
-                        borderRadius: '14px',
-                        background: '#ffffff',
-                        border: `1.5px solid ${selectedLocation.accent}40`,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        padding: '6px',
-                        boxShadow: `0 4px 16px ${selectedLocation.accent}20`,
-                        flexShrink: 0,
-                        overflow: 'hidden',
-                      }}
-                    >
-                      <img
-                        src={selectedLocation.logo}
-                        alt={selectedLocation.name}
-                        style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                      />
-                    </div>
-                    <div>
-                      <h3
-                        className="journey-card-title"
-                        style={{ margin: '0 0 3px', fontSize: '1.25rem', fontWeight: 800, color: 'var(--text)', letterSpacing: '-0.01em' }}
-                      >
-                        {selectedLocation.name}
-                      </h3>
-                      <span style={{ fontSize: '0.88rem', color: selectedLocation.accent, fontWeight: 700 }}>
-                        {selectedLocation.role}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                      fontSize: '12px',
-                      color: 'var(--text-dim)',
-                      fontWeight: 600,
-                    }}
-                  >
-                    <Calendar size={14} />
-                    <span>{selectedLocation.period}</span>
-                  </div>
-                </div>
-
-                {/* Milestone Photo / Documentation Display */}
-                <div
+            <Parallax speed={-0.06}>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={selectedLocation.id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                  className="journey-card-inner"
                   style={{
-                    width: '100%',
-                    height: 'clamp(210px, 26vw, 260px)',
-                    borderRadius: '16px',
-                    background: 'var(--surface-2)',
-                    border: selectedLocation.photo ? '1px solid var(--border)' : '1.5px dashed var(--border)',
-                    boxShadow: selectedLocation.photo ? '0 6px 20px rgba(0, 0, 0, 0.2)' : 'none',
+                    background: 'var(--surface)',
+                    border: '1px solid var(--border)',
+                    borderRadius: '24px',
+                    padding: 'clamp(20px, 3vw, 26px)',
                     display: 'flex',
                     flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '8px',
-                    color: 'var(--text-dim)',
+                    gap: '16px',
+                    boxShadow: '0 8px 24px var(--shadow-color)',
                     position: 'relative',
                     overflow: 'hidden',
                   }}
                 >
-                  {selectedLocation.photo ? (
-                    <img
-                      src={selectedLocation.photo}
-                      alt={selectedLocation.name}
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                        objectPosition: selectedLocation.photoPosition || 'center center',
-                        display: 'block',
-                      }}
-                    />
-                  ) : (
-                    <>
+                  {/* Header with Real Brand Logo, Period & Role */}
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
                       <div
                         style={{
-                          width: '42px',
-                          height: '42px',
-                          borderRadius: '12px',
-                          background: 'var(--surface)',
-                          border: '1px solid var(--border)',
+                          width: '52px',
+                          height: '52px',
+                          borderRadius: '14px',
+                          background: '#ffffff',
+                          border: `1.5px solid ${selectedLocation.accent}40`,
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          color: selectedLocation.accent,
+                          padding: '6px',
+                          boxShadow: `0 4px 16px ${selectedLocation.accent}20`,
+                          flexShrink: 0,
+                          overflow: 'hidden',
                         }}
                       >
-                        <Image size={20} />
+                        <img
+                          src={selectedLocation.logo}
+                          alt={selectedLocation.name}
+                          style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                        />
                       </div>
-                      <span style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-muted)' }}>
-                        Dokumentasi Kegiatan • {selectedLocation.shortName}
-                      </span>
-                    </>
-                  )}
-                </div>
+                      <div>
+                        <h3
+                          className="journey-card-title"
+                          style={{ margin: '0 0 3px', fontSize: '1.25rem', fontWeight: 800, color: 'var(--text)', letterSpacing: '-0.01em' }}
+                        >
+                          {selectedLocation.name}
+                        </h3>
+                        <span style={{ fontSize: '0.88rem', color: selectedLocation.accent, fontWeight: 700 }}>
+                          {selectedLocation.role}
+                        </span>
+                      </div>
+                    </div>
 
-                {/* Clean Address Line */}
-                <div
-                  className="journey-address-box"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '10px',
-                    padding: '10px 14px',
-                    borderRadius: '12px',
-                    background: 'var(--surface-2)',
-                    border: '1px solid var(--border)',
-                  }}
-                >
-                  <MapPin size={16} style={{ color: selectedLocation.accent, flexShrink: 0 }} />
-                  <span style={{ fontSize: '0.86rem', color: 'var(--text)', fontWeight: 500, wordBreak: 'break-word', minWidth: 0 }}>
-                    {selectedLocation.address}
-                  </span>
-                </div>
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        fontSize: '12px',
+                        color: 'var(--text-dim)',
+                        fontWeight: 600,
+                      }}
+                    >
+                      <Calendar size={14} />
+                      <span>{selectedLocation.period}</span>
+                    </div>
+                  </div>
 
-                {/* Key Deliverables & Highlights */}
-                <div>
-                  <span
+                  {/* Milestone Photo / Documentation Display */}
+                  <div
                     style={{
-                      display: 'block',
-                      fontSize: '0.74rem',
-                      fontWeight: 700,
-                      textTransform: 'uppercase',
-                      letterSpacing: '1px',
+                      width: '100%',
+                      height: 'clamp(210px, 26vw, 260px)',
+                      borderRadius: '16px',
+                      background: 'var(--surface-2)',
+                      border: selectedLocation.photo ? '1px solid var(--border)' : '1.5px dashed var(--border)',
+                      boxShadow: selectedLocation.photo ? '0 6px 20px rgba(0, 0, 0, 0.2)' : 'none',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
                       color: 'var(--text-dim)',
-                      marginBottom: '10px',
+                      position: 'relative',
+                      overflow: 'hidden',
                     }}
                   >
-                    Capaian &amp; Kontribusi:
-                  </span>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    {selectedLocation.highlights.map((h, idx) => (
-                      <div
-                        key={idx}
+                    {selectedLocation.photo ? (
+                      <img
+                        src={selectedLocation.photo}
+                        alt={selectedLocation.name}
                         style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '10px',
-                          fontSize: '0.85rem',
-                          color: 'var(--text)',
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                          objectPosition: selectedLocation.photoPosition || 'center center',
+                          display: 'block',
                         }}
-                      >
-                        <CheckCircle2 size={15} style={{ color: selectedLocation.accent, flexShrink: 0 }} />
-                        <span>{h}</span>
-                      </div>
-                    ))}
+                      />
+                    ) : (
+                      <>
+                        <div
+                          style={{
+                            width: '42px',
+                            height: '42px',
+                            borderRadius: '12px',
+                            background: 'var(--surface)',
+                            border: '1px solid var(--border)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: selectedLocation.accent,
+                          }}
+                        >
+                          <Image size={20} />
+                        </div>
+                        <span style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-muted)' }}>
+                          Dokumentasi Kegiatan • {selectedLocation.shortName}
+                        </span>
+                      </>
+                    )}
                   </div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
+
+                  {/* Clean Address Line */}
+                  <div
+                    className="journey-address-box"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                      padding: '10px 14px',
+                      borderRadius: '12px',
+                      background: 'var(--surface-2)',
+                      border: '1px solid var(--border)',
+                    }}
+                  >
+                    <MapPin size={16} style={{ color: selectedLocation.accent, flexShrink: 0 }} />
+                    <span style={{ fontSize: '0.86rem', color: 'var(--text)', fontWeight: 500, wordBreak: 'break-word', minWidth: 0 }}>
+                      {selectedLocation.address}
+                    </span>
+                  </div>
+
+                  {/* Key Deliverables & Highlights */}
+                  <div>
+                    <span
+                      style={{
+                        display: 'block',
+                        fontSize: '0.74rem',
+                        fontWeight: 700,
+                        textTransform: 'uppercase',
+                        letterSpacing: '1px',
+                        color: 'var(--text-dim)',
+                        marginBottom: '10px',
+                      }}
+                    >
+                      Capaian &amp; Kontribusi:
+                    </span>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      {selectedLocation.highlights.map((h, idx) => (
+                        <div
+                          key={idx}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '10px',
+                            fontSize: '0.85rem',
+                            color: 'var(--text)',
+                          }}
+                        >
+                          <CheckCircle2 size={15} style={{ color: selectedLocation.accent, flexShrink: 0 }} />
+                          <span>{h}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </Parallax>
           </motion.div>
         </div>
       </div>

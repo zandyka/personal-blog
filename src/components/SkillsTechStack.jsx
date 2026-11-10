@@ -1,5 +1,13 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+  useVelocity,
+} from 'framer-motion';
+import { ScrollReveal } from './ui/ScrollMotion';
 import { useInView } from 'react-intersection-observer';
 import { useSoundContext } from './ui/SoundProvider';
 import {
@@ -36,6 +44,16 @@ import {
   Linux,
   GitHubDark,
 } from 'developer-icons';
+
+// Baris marquee yang ikut bergeser saat halaman di-scroll (arah sesuai barisnya)
+// dan sedikit miring mengikuti kecepatan scroll. Animasi CSS bawaannya tetap jalan di dalam.
+function ScrollRow({ progress, skew, direction, children }) {
+  const reduce = useReducedMotion();
+  const sign = direction === 'left' ? -1 : 1;
+  const x = useTransform(progress, [0, 1], [sign * -140, sign * 140]);
+  if (reduce) return children;
+  return <motion.div style={{ x, skewX: skew }}>{children}</motion.div>;
+}
 
 // 3 Dynamic Marquee Rows with Official Vector Logos from developer-icons (xandemon)
 const ROW_1 = [
@@ -81,6 +99,13 @@ const ROW_3 = [
 
 export default function SkillsTechStack() {
   const { playClick, playHover } = useSoundContext();
+  const cloudRef = useRef(null);
+  const { scrollY } = useScroll();
+  const { scrollYProgress: cloudProgress } = useScroll({ target: cloudRef, offset: ['start end', 'end start'] });
+  const smoothProgress = useSpring(cloudProgress, { stiffness: 90, damping: 26, mass: 0.5 });
+  const velocity = useSpring(useVelocity(scrollY), { stiffness: 300, damping: 50 });
+  const skew = useTransform(velocity, [-2500, 0, 2500], [7, 0, -7], { clamp: true });
+
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -180,62 +205,65 @@ export default function SkillsTechStack() {
           padding: '0 20px',
         }}
       >
-        <motion.div
-          initial="hidden"
-          animate={inView ? 'visible' : 'hidden'}
-          variants={fadeUp}
-        >
-          <span
-            style={{
-              color: 'var(--accent)',
-              fontSize: '0.82rem',
-              fontWeight: 700,
-              letterSpacing: '2.5px',
-              textTransform: 'uppercase',
-              display: 'block',
-              marginBottom: '10px',
-            }}
+        <ScrollReveal from={60} scale={0.9}>
+          <motion.div
+            initial="hidden"
+            animate={inView ? 'visible' : 'hidden'}
+            variants={fadeUp}
           >
-            TECH STACK
-          </span>
-          <h2
-            style={{
-              fontSize: 'clamp(2rem, 4vw, 2.9rem)',
-              fontWeight: 700,
-              color: 'var(--text)',
-              margin: '0 auto 14px',
-              letterSpacing: '-0.02em',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-            }}
-          >
-            <span>Skills &amp; Technology Stack</span>
             <span
               style={{
-                display: 'inline-block',
-                width: '7px',
-                height: '7px',
-                borderRadius: '50%',
+                color: 'var(--accent)',
+                fontSize: '0.82rem',
+                fontWeight: 700,
+                letterSpacing: '2.5px',
+                textTransform: 'uppercase',
+                display: 'block',
+                marginBottom: '10px',
+              }}
+            >
+              TECH STACK
+            </span>
+            <h2
+              style={{
+                fontSize: 'clamp(2rem, 4vw, 2.9rem)',
+                fontWeight: 700,
+                color: 'var(--text)',
+                margin: '0 auto 14px',
+                letterSpacing: '-0.02em',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+              }}
+            >
+              <span>Skills &amp; Technology Stack</span>
+              <span
+                style={{
+                  display: 'inline-block',
+                  width: '7px',
+                  height: '7px',
+                  borderRadius: '50%',
+                  background: 'var(--accent)',
+                  boxShadow: '0 0 10px var(--accent)',
+                }}
+              />
+            </h2>
+            <div
+              style={{
+                width: '50px',
+                height: '3px',
                 background: 'var(--accent)',
-                boxShadow: '0 0 10px var(--accent)',
+                margin: '0 auto',
+                borderRadius: '2px',
               }}
             />
-          </h2>
-          <div
-            style={{
-              width: '50px',
-              height: '3px',
-              background: 'var(--accent)',
-              margin: '0 auto',
-              borderRadius: '2px',
-            }}
-          />
-        </motion.div>
+          </motion.div>
+        </ScrollReveal>
       </div>
 
       {/* Animated Marquee Cloud (3 Rows) */}
       <div
+        ref={cloudRef}
         className="skills-cloud-wrapper"
         style={{
           position: 'relative',
@@ -272,9 +300,15 @@ export default function SkillsTechStack() {
           }}
         />
 
-        {renderMarqueeRow(ROW_1, 'left', 40)}
-        {renderMarqueeRow(ROW_2, 'right', 46)}
-        {renderMarqueeRow(ROW_3, 'left', 38)}
+        <ScrollRow progress={smoothProgress} skew={skew} direction="left">
+          {renderMarqueeRow(ROW_1, 'left', 40)}
+        </ScrollRow>
+        <ScrollRow progress={smoothProgress} skew={skew} direction="right">
+          {renderMarqueeRow(ROW_2, 'right', 46)}
+        </ScrollRow>
+        <ScrollRow progress={smoothProgress} skew={skew} direction="left">
+          {renderMarqueeRow(ROW_3, 'left', 38)}
+        </ScrollRow>
       </div>
 
       {/* Infinite Marquee CSS Keyframes & Hover Physics */}

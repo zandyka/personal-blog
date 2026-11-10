@@ -5,6 +5,7 @@ import { GraduationCap, Briefcase, FolderGit2, Users2, Globe, Award, CheckCircle
 import { useSoundContext } from './ui/SoundProvider';
 import InteractiveLanyard from './InteractiveLanyard';
 import GithubGraph from './GithubGraph';
+import { Parallax, ScrollReveal, ScrollExit } from './ui/ScrollMotion';
 
 const CountUp = ({ end, duration = 1.5, decimals = 0, suffix = '', inView }) => {
   const [count, setCount] = useState(0);
@@ -126,46 +127,48 @@ const About = () => {
         }}
       >
         {/* Section Header */}
-        <motion.div
-          initial="hidden"
-          animate={inView ? 'visible' : 'hidden'}
-          variants={fadeUp}
-          style={{ textAlign: 'center', marginBottom: '28px' }}
-        >
-          <span
-            style={{
-              color: 'var(--accent)',
-              fontSize: '0.8rem',
-              fontWeight: 600,
-              letterSpacing: '2px',
-              textTransform: 'uppercase',
-              display: 'block',
-              marginBottom: '8px',
-            }}
+        <ScrollExit>
+          <motion.div
+            initial="hidden"
+            animate={inView ? 'visible' : 'hidden'}
+            variants={fadeUp}
+            style={{ textAlign: 'center', marginBottom: '28px' }}
           >
-            Overview
-          </span>
-          <h2
-            style={{
-              fontSize: 'clamp(1.9rem, 3.5vw, 2.6rem)',
-              fontWeight: 600,
-              color: 'var(--text)',
-              margin: '0 auto 12px',
-              letterSpacing: '-0.02em',
-            }}
-          >
-            About Me
-          </h2>
-          <div
-            style={{
-              width: '50px',
-              height: '3px',
-              background: 'var(--accent)',
-              margin: '0 auto',
-              borderRadius: '2px',
-            }}
-          />
-        </motion.div>
+            <span
+              style={{
+                color: 'var(--accent)',
+                fontSize: '0.8rem',
+                fontWeight: 600,
+                letterSpacing: '2px',
+                textTransform: 'uppercase',
+                display: 'block',
+                marginBottom: '8px',
+              }}
+            >
+              Overview
+            </span>
+            <h2
+              style={{
+                fontSize: 'clamp(1.9rem, 3.5vw, 2.6rem)',
+                fontWeight: 600,
+                color: 'var(--text)',
+                margin: '0 auto 12px',
+                letterSpacing: '-0.02em',
+              }}
+            >
+              About Me
+            </h2>
+            <div
+              style={{
+                width: '50px',
+                height: '3px',
+                background: 'var(--accent)',
+                margin: '0 auto',
+                borderRadius: '2px',
+              }}
+            />
+          </motion.div>
+        </ScrollExit>
 
         {/* 2-Column Responsive Grid */}
         <div
@@ -188,7 +191,9 @@ const About = () => {
               width: '100%',
             }}
           >
-            <InteractiveLanyard />
+            <Parallax speed={0.12} style={{ width: '100%' }}>
+              <InteractiveLanyard />
+            </Parallax>
           </motion.div>
 
           {/* Right: Content & Stats */}
@@ -236,86 +241,87 @@ const About = () => {
                 gap: '12px',
               }}
             >
-              {STATS.map((stat) => {
+              {STATS.map((stat, i) => {
                 const Icon = stat.icon;
                 return (
-                  <motion.div
-                    key={stat.label}
-                    variants={fadeUp}
-                    onMouseEnter={playHover}
-                    whileHover={{ y: -3 }}
-                    className="about-stat-card"
-                    style={{
-                      background: 'var(--surface)',
-                      border: '1px solid var(--border)',
-                      borderRadius: '14px',
-                      padding: '16px',
-                      boxShadow: '0 4px 14px rgba(0, 0, 0, 0.03)',
-                      transition: 'border-color 0.2s, box-shadow 0.2s',
-                    }}
-                  >
-                    <div
+                  <Parallax key={stat.label} speed={i % 2 ? -0.07 : 0.05}>
+                    <motion.div
+                      variants={fadeUp}
+                      onMouseEnter={playHover}
+                      whileHover={{ y: -3 }}
+                      className="about-stat-card"
                       style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        marginBottom: '8px',
+                        background: 'var(--surface)',
+                        border: '1px solid var(--border)',
+                        borderRadius: '14px',
+                        padding: '16px',
+                        boxShadow: '0 4px 14px rgba(0, 0, 0, 0.03)',
+                        transition: 'border-color 0.2s, box-shadow 0.2s',
                       }}
                     >
-                      <span
-                        className="about-stat-label"
-                        style={{
-                          fontSize: '0.78rem',
-                          color: 'var(--text-muted)',
-                          fontWeight: 600,
-                        }}
-                      >
-                        {stat.label}
-                      </span>
                       <div
-                        className="about-stat-icon"
                         style={{
-                          width: '30px',
-                          height: '30px',
-                          borderRadius: '8px',
-                          background: 'var(--surface-2)',
                           display: 'flex',
                           alignItems: 'center',
-                          justifyContent: 'center',
-                          color: stat.accent,
-                          flexShrink: 0,
+                          justifyContent: 'space-between',
+                          marginBottom: '8px',
                         }}
                       >
-                        <Icon size={15} />
+                        <span
+                          className="about-stat-label"
+                          style={{
+                            fontSize: '0.78rem',
+                            color: 'var(--text-muted)',
+                            fontWeight: 600,
+                          }}
+                        >
+                          {stat.label}
+                        </span>
+                        <div
+                          className="about-stat-icon"
+                          style={{
+                            width: '30px',
+                            height: '30px',
+                            borderRadius: '8px',
+                            background: 'var(--surface-2)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: stat.accent,
+                            flexShrink: 0,
+                          }}
+                        >
+                          <Icon size={15} />
+                        </div>
                       </div>
-                    </div>
-                    <div
-                      className="about-stat-value"
-                      style={{
-                        fontSize: '1.5rem',
-                        fontWeight: 700,
-                        color: 'var(--text)',
-                        letterSpacing: '-0.5px',
-                        marginBottom: '2px',
-                      }}
-                    >
-                      <CountUp
-                        end={stat.value}
-                        decimals={stat.decimals}
-                        suffix={stat.suffix}
-                        inView={inView}
-                      />
-                    </div>
-                    <div
-                      className="about-stat-sub"
-                      style={{
-                        fontSize: '0.74rem',
-                        color: 'var(--text-muted)',
-                      }}
-                    >
-                      {stat.sub}
-                    </div>
-                  </motion.div>
+                      <div
+                        className="about-stat-value"
+                        style={{
+                          fontSize: '1.5rem',
+                          fontWeight: 700,
+                          color: 'var(--text)',
+                          letterSpacing: '-0.5px',
+                          marginBottom: '2px',
+                        }}
+                      >
+                        <CountUp
+                          end={stat.value}
+                          decimals={stat.decimals}
+                          suffix={stat.suffix}
+                          inView={inView}
+                        />
+                      </div>
+                      <div
+                        className="about-stat-sub"
+                        style={{
+                          fontSize: '0.74rem',
+                          color: 'var(--text-muted)',
+                        }}
+                      >
+                        {stat.sub}
+                      </div>
+                    </motion.div>
+                  </Parallax>
                 );
               })}
             </motion.div>
@@ -378,11 +384,13 @@ const About = () => {
             width: '100%',
           }}
         >
-          <GithubGraph
-            githubUsername="zandyka"
-            title="GitHub Contributions"
-            subtitle="52 Minggu Terakhir"
-          />
+          <ScrollReveal from={80} scale={0.92} tilt={14}>
+            <GithubGraph
+              githubUsername="zandyka"
+              title="GitHub Contributions"
+              subtitle="52 Minggu Terakhir"
+            />
+          </ScrollReveal>
         </motion.div>
       </div>
 
