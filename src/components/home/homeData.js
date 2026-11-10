@@ -23,9 +23,41 @@ export const TICKER_FACTS = [
   { lead: 'HCIA', rest: 'Datacom — Huawei ICT Academy' },
 ];
 
+// Section "Dua sisi meja": sisi pembuat vs sisi pengguna.
+export const SIDES = [
+  {
+    id: 'make',
+    tag: 'Sisi A — pembuat',
+    verb: 'membangun',
+    lede: 'Aplikasi web, mobile, dan model AI yang berjalan langsung di ponsel — ditambah desain untuk acara kampus.',
+    items: [
+      ['Web', 'React, Laravel, MySQL'],
+      ['Mobile', 'Flutter, Android'],
+      ['AI on-device', 'TensorFlow Lite, MediaPipe'],
+      ['Desain', 'Poster, ID card, identitas acara'],
+    ],
+    image: '/gallery/expo vokasi usu 2024 4_3.webp',
+    imageAlt: 'Memamerkan produk di Expo Vokasi USU 2024',
+  },
+  {
+    id: 'run',
+    tag: 'Sisi B — pengguna',
+    verb: 'menjalankan',
+    lede: 'Back office bank, operasional, IT support, dan data korporat — tempat aplikasi benar-benar dipakai setiap hari.',
+    items: [
+      ['Back office', 'Bank Syariah Indonesia'],
+      ['Operasional', 'Bank Sumut'],
+      ['IT & admin', 'BPJS Ketenagakerjaan'],
+      ['Data L&D', 'PTPN III Holding'],
+    ],
+    image: '/journey/aboutptpn.png',
+    imageAlt: 'Di kantor PT Perkebunan Nusantara',
+  },
+];
+
 // *teks* = penekanan (serif miring)
-export const STATEMENT =
-  'Saya membangun perangkat lunak — *web, mobile, dan AI* yang berjalan langsung di ponsel. Saya juga pernah berada di sisi yang memakainya: back office bank, operasional BPJS, dan kini data pelatihan seluruh grup PTPN. Karena itu yang saya buat bukan sekadar jalan, tapi *masuk akal* bagi orang yang memakainya setiap hari. Di sela-selanya, saya *mendesain* poster dan identitas acara, dan memotret.';
+export const SIDES_OUTRO =
+  'Karena pernah duduk di kedua sisi, yang saya buat bukan sekadar jalan — tapi *masuk akal* bagi orang yang memakainya setiap hari.';
 
 export const FACTS = [
   { label: 'Pendidikan', value: 'Teknik Informatika, Universitas Sumatera Utara', note: 'IPK 3.84 — cum laude' },

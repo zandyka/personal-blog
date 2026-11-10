@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import HomeHero from '../components/home/HomeHero';
+import Hero from '../components/Hero';
 import FactTicker from '../components/home/FactTicker';
 import Statement from '../components/home/Statement';
 import WorkReel from '../components/home/WorkReel';
@@ -16,7 +16,7 @@ const HomePage = () => (
     className="page-container h-page"
     style={{ paddingTop: 0 }}
   >
-    <HomeHero />
+    <Hero />
     <FactTicker />
     <Statement />
     <WorkReel />

@@ -1,56 +1,94 @@
-import { useMemo, useRef } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { useSoundContext } from '../ui/SoundProvider';
 import SectionHead from './SectionHead';
-import { FACTS, STATEMENT } from './homeData';
+import { FACTS, SIDES, SIDES_OUTRO } from './homeData';
 
-// "*kata*" -> penekanan. Hasil: daftar kata { text, em }.
-const toWords = (source) =>
-  source.split('*').flatMap((chunk, i) =>
-    chunk
-      .split(/\s+/)
-      .filter(Boolean)
-      .map((text) => ({ text, em: i % 2 === 1 }))
-  );
+const EASE = [0.16, 1, 0.3, 1];
 
-function Word({ word, progress, range }) {
-  const opacity = useTransform(progress, range, [0.13, 1]);
-  const Tag = word.em ? motion.em : motion.span;
+// "*kata*" -> <em>kata</em>
+const withEmphasis = (text) =>
+  text.split('*').map((chunk, i) => (i % 2 === 1 ? <em key={i}>{chunk}</em> : chunk));
+
+function Side({ side, index, active, onEnter }) {
+  const state = active === null ? 'rest' : active === side.id ? 'on' : 'off';
   return (
-    <>
-      <Tag className="h-word" style={{ opacity }}>
-        {word.text}
-      </Tag>{' '}
-    </>
+    <motion.article
+      className={`h-side h-side--${side.id}`}
+      data-state={state}
+      onMouseEnter={() => onEnter(side.id)}
+      initial={{ opacity: 0, x: index === 0 ? -40 : 40 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 1, ease: EASE, delay: index * 0.12 }}
+    >
+      <div className="h-side__media">
+        <img className="h-side__bg" src={side.image} alt={side.imageAlt} loading="lazy" decoding="async" />
+      </div>
+      {index === 1 && (
+        <span className="h-side__seam" aria-hidden="true">
+          &amp;
+        </span>
+      )}
+      <div className="h-side__body">
+        <span className="h-mono h-side__tag">{side.tag}</span>
+        <h3 className="h-side__title">
+          Saya <em>{side.verb}</em>.
+        </h3>
+        <p className="h-side__lede">{side.lede}</p>
+        <ul className="h-side__list">
+          {side.items.map(([label, value]) => (
+            <li key={label}>
+              <span className="h-mono">{label}</span>
+              <span>{value}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </motion.article>
   );
 }
 
 export default function Statement() {
-  const ref = useRef(null);
-  const reduce = useReducedMotion();
   const { playHover, playClick } = useSoundContext();
-  const words = useMemo(() => toWords(STATEMENT), []);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start 0.82', 'end 0.42'] });
+  const [active, setActive] = useState(null);
 
   return (
     <section className="h-sec" id="about">
       <div className="h-wrap">
-        <SectionHead index="01" label="Tentang">
+        <SectionHead index="01" label="Tentang" aside="Arahkan ke salah satu sisi">
           Dua sisi <em>meja</em>.
         </SectionHead>
 
-        <div className="h-grid">
-          <span />
+        <div className="h-sides" onMouseLeave={() => setActive(null)}>
+          {SIDES.map((side, i) => (
+            <Side
+              key={side.id}
+              side={side}
+              index={i}
+              active={active}
+              onEnter={(id) => {
+                if (id !== active) playHover();
+                setActive(id);
+              }}
+            />
+          ))}
+        </div>
+
+        <div className="h-grid h-sides__after">
+          <span className="h-mono">Hasilnya</span>
           <div>
-            <p ref={ref} className="h-statement__text">
-              {reduce
-                ? words.map((w, i) => (w.em ? <em key={i}>{w.text} </em> : <span key={i}>{w.text} </span>))
-                : words.map((w, i) => (
-                    <Word key={i} word={w} progress={scrollYProgress} range={[i / words.length, (i + 1) / words.length]} />
-                  ))}
-            </p>
+            <motion.p
+              className="h-sides__outro"
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.6 }}
+              transition={{ duration: 1, ease: EASE }}
+            >
+              {withEmphasis(SIDES_OUTRO)}
+            </motion.p>
 
             <dl className="h-facts">
               {FACTS.map((f) => (

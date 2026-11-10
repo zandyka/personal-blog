@@ -353,3 +353,60 @@ html[data-theme-transition="crossfade"]::view-transition-new(root) {
   transition: none !important;
 }
 
+
+/* ============================================
+   HERO HEADING
+   ============================================ */
+.hero-cover-heading {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(2.8rem, 6.8vw, 6.5rem); /* dibatasi: konten hero maks 1400px, jadi judul tidak boleh terus membesar */
+  font-weight: 900;
+  line-height: 0.94;
+  letter-spacing: -0.04em;
+  margin-top: 0;
+  /* padding bawah agar ekor huruf (g, y) ikut terwarnai gradien; margin negatif menjaga jarak baris */
+  padding: 0.04em 0 0.16em;
+  margin-bottom: -0.12em;
+  position: relative;
+  z-index: 20;
+  background: linear-gradient(135deg, var(--text) 20%, var(--accent) 70%, var(--heading-gradient-end) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@media (max-width: 1400px) and (min-width: 1100px) {
+  .hero-cover-heading {
+    font-size: clamp(2.6rem, 6.2vw, 5.8rem);
+  }
+}
+
+@media (max-width: 1099px) and (min-width: 860px) {
+  .hero-cover-heading {
+    font-size: clamp(2.3rem, 5.2vw, 4.4rem);
+  }
+}
+
+@media (max-width: 859px) {
+  .hero-cover-heading {
+    font-size: clamp(2.4rem, 10vw, 4.4rem);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-cover-heading {
+    font-size: clamp(2rem, 9.8vw, 3.2rem);
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+  }
+}
+
+html.light .hero-cover-heading {
+  background: linear-gradient(135deg, var(--text) 20%, var(--accent) 70%, var(--heading-gradient-end) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
