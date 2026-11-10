@@ -503,7 +503,7 @@ export default function ContactFAQ() {
           max-width: 86%;
           padding: 15px 22px;
           border-radius: 20px 20px 4px 20px;
-          background: var(--accent);
+          background: var(--accent-solid);
           color: #ffffff;
           box-shadow: 0 8px 24px var(--accent-glow);
           box-sizing: border-box;

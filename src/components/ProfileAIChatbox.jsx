@@ -697,7 +697,7 @@ export default function ProfileAIChatbox() {
           color: var(--accent);
         }
         .chat-avatar.user-avatar {
-          background: var(--accent);
+          background: var(--accent-solid);
           color: #ffffff;
         }
 
@@ -716,7 +716,7 @@ export default function ProfileAIChatbox() {
           border-bottom-left-radius: 4px;
         }
         .chat-bubble.user-bubble {
-          background: var(--accent);
+          background: var(--accent-solid);
           color: #ffffff;
           border: 1px solid var(--accent);
           border-bottom-right-radius: 4px;
@@ -902,7 +902,7 @@ export default function ProfileAIChatbox() {
         .chatbox-submit-btn {
           padding: 10px 16px;
           border-radius: 12px;
-          background: var(--accent);
+          background: var(--accent-solid);
           color: #ffffff;
           border: none;
           font-weight: 700;

@@ -63,8 +63,8 @@ export default function InteractiveLanyard() {
 
     // 2. Lights (Key, Fill, Rim & Back Atmosphere)
     const compStyle = getComputedStyle(document.documentElement);
-    const themeAccent = compStyle.getPropertyValue('--accent').trim() || '#7F6DFF';
-    const themeAccent2 = compStyle.getPropertyValue('--accent-2').trim() || '#3DE0C4';
+    const themeAccent = compStyle.getPropertyValue('--accent').trim() || '#D65A6E';
+    const themeAccent2 = compStyle.getPropertyValue('--accent-2').trim() || '#D8A657';
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 1.35);
     scene.add(ambientLight);
@@ -552,39 +552,6 @@ export default function InteractiveLanyard() {
           overflow: 'visible',
         }}
       >
-        {/* Bright atmospheric background light directly behind the lanyard */}
-        {/* Layer 1: Wide warm ambient glow */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '48%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '340px',
-            height: '340px',
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, var(--accent-glow) 0%, var(--accent-2-dim) 45%, transparent 72%)',
-            filter: 'blur(42px)',
-            pointerEvents: 'none',
-            zIndex: 0,
-          }}
-        />
-        {/* Layer 2: Radiant bright amber core halo */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '48%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '210px',
-            height: '210px',
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, var(--accent-border) 0%, var(--accent-dim) 52%, transparent 78%)',
-            filter: 'blur(22px)',
-            pointerEvents: 'none',
-            zIndex: 0,
-          }}
-        />
 
         {/* Top subtle horizontal spotlight line where lanyard hangs from */}
         <div

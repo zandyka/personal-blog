@@ -97,24 +97,6 @@ export default function SplashScreen({ onComplete }) {
         }}
       />
 
-      {/* Subtle Ambient Radial Glow */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: 'clamp(280px, 45vw, 550px)',
-          height: 'clamp(280px, 45vw, 550px)',
-          borderRadius: '50%',
-          background: isLight
-            ? 'radial-gradient(circle, rgba(91, 69, 242, 0.16) 0%, rgba(10, 155, 134, 0.07) 50%, transparent 70%)'
-            : 'radial-gradient(circle, rgba(127, 109, 255, 0.18) 0%, rgba(61, 224, 196, 0.06) 50%, transparent 70%)',
-          filter: 'blur(70px)',
-          pointerEvents: 'none',
-        }}
-      />
 
       {/* Centered Typography Container: ONLY "Hello I'm.." */}
       <div
@@ -142,7 +124,7 @@ export default function SplashScreen({ onComplete }) {
         >
           <StrokeText
             text="Hello I'm..."
-            strokeColor={isLight ? '#5B45F2' : '#7F6DFF'}
+            strokeColor={isLight ? '#5B45F2' : '#D65A6E'}
             fillColor={isLight ? '#0C0E16' : '#FFFFFF'}
             strokeWidth={1.6}
             drawDuration={1.15}
@@ -181,9 +163,9 @@ export default function SplashScreen({ onComplete }) {
             style={{
               height: '100%',
               width: `${progress}%`,
-              background: isLight ? 'linear-gradient(90deg, #5B45F2, #0A9B86)' : 'linear-gradient(90deg, #7F6DFF, #3DE0C4)',
+              background: isLight ? 'linear-gradient(90deg, #5B45F2, #0A9B86)' : '#D65A6E',
               borderRadius: '2px',
-              boxShadow: isLight ? '0 0 10px rgba(91, 69, 242, 0.5)' : '0 0 10px #7F6DFF',
+              boxShadow: isLight ? '0 0 10px rgba(91, 69, 242, 0.5)' : 'none',
               transition: 'width 0.05s linear',
             }}
           />

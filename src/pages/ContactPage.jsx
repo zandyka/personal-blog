@@ -119,21 +119,6 @@ export default function ContactPage() {
                 boxSizing: 'border-box',
               }}
             >
-              {/* Background ambient radial lights */}
-              <div
-                style={{
-                  position: 'absolute',
-                  top: '20%',
-                  right: '15%',
-                  width: '280px',
-                  height: '280px',
-                  borderRadius: '50%',
-                  background: 'radial-gradient(circle, var(--accent-dim) 0%, transparent 70%)',
-                  filter: 'blur(50px)',
-                  pointerEvents: 'none',
-                  zIndex: 0,
-                }}
-              />
 
               {/* Moving Social Cards Track (Clean: No extra text banners) */}
               <div

@@ -205,26 +205,6 @@ export default function Hero8({ onExploreClick }) {
 
   return (
     <section className="hero8-section">
-      {/* Ambient background glow accents */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          top: '25%',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: 'min(900px, 90vw)',
-          height: '420px',
-          borderRadius: '50%',
-          background:
-            'radial-gradient(ellipse at center, var(--accent-glow) 0%, transparent 68%)',
-          opacity: 0.65,
-          filter: 'blur(60px)',
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}
-      />
-
       <div ref={containerRef} className="hero8-content-wrapper">
         <div className="hero8-stack">
           {/* Typography with Expandable Media Tiles */}

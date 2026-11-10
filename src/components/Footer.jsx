@@ -2,8 +2,6 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, Github, Linkedin, Instagram, Mail } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
-import { useTheme } from '../hooks/useTheme';
-import GradientWaves from './ui/GradientWaves';
 
 const NAV_LINKS = [
   { label: 'Home', path: '/' },
@@ -24,15 +22,11 @@ const SOCIAL_LINKS = [
 
 const Footer = () => {
   const { playClick, playHover } = useSoundContext();
-  const { theme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
   const year = new Date().getFullYear();
 
-  const isDark = theme === 'dark';
   const isHomePage = location.pathname === '/';
-  const isAboutPage = location.pathname === '/about';
-  const isAboutDark = isAboutPage && isDark;
 
   const handleHireMeClick = (e) => {
     e.preventDefault();
@@ -46,42 +40,9 @@ const Footer = () => {
         position: 'relative',
         overflow: 'hidden',
         background: 'var(--bg)',
-        minHeight: isAboutPage ? 'clamp(540px, 72vh, 660px)' : 'auto',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: isAboutPage ? 'flex-end' : 'flex-start',
+        borderTop: '1px solid var(--border)',
       }}
     >
-      {/* Background Gradient Waves */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 0,
-          pointerEvents: 'none',
-          opacity: isAboutPage ? 1 : 0.75,
-        }}
-      >
-        <GradientWaves
-          horizonColor={isDark ? '#0C1030' : '#9D94E8'}
-          waveColor={isDark ? '#3A3384' : '#D3D0F5'}
-          crestColor={isDark ? '#C9F7EE' : '#ffffff'}
-          backgroundColor="transparent"
-          speed={0.2}
-          amplitude={isAboutPage ? 2.6 : 2.0}
-          relief={isAboutPage ? 1.0 : 0.8}
-          lightAngle={130}
-          mouseInteraction={true}
-          swellOnClick={false}
-          waveScale={isAboutPage ? 0.38 : 0.45}
-          swell={28}
-          turbulence={14}
-          lightMode={false}
-          brightness={isDark ? 1.0 : 1.15}
-          grain={0.22}
-        />
-      </div>
-
       <div style={{ position: 'relative', zIndex: 1, width: '100%' }}>
         {/* CTA Section — Homepage only */}
         {isHomePage && (
@@ -139,7 +100,7 @@ const Footer = () => {
                   gap: '8px',
                   padding: '12px 28px',
                   borderRadius: '999px',
-                  background: 'var(--accent)',
+                  background: 'var(--accent-solid)',
                   color: '#ffffff',
                   fontSize: '13px',
                   fontWeight: 700,
@@ -180,7 +141,7 @@ const Footer = () => {
         )}
 
         {/* Footer Content */}
-        <div className={`footer-main-container ${isAboutPage ? 'footer-about-container' : ''}`}>
+        <div className="footer-main-container">
           {/* Brand Icon */}
           <div className="footer-brand-col">
             <div
@@ -210,10 +171,9 @@ const Footer = () => {
               />
             </div>
             <p
-              className={isAboutDark ? 'footer-dark-badge-text' : ''}
               style={{
                 fontSize: '0.82rem',
-                color: isAboutDark ? '#a1a1aa' : 'var(--text-muted)',
+                color: 'var(--text-muted)',
                 lineHeight: 1.5,
                 margin: 0,
                 maxWidth: '280px',
@@ -228,29 +188,28 @@ const Footer = () => {
             {/* Links */}
             <div className="footer-links-col">
               <h4
-                className={`font-mono ${isAboutDark ? 'footer-dark-badge-header' : ''}`}
+                className="font-mono"
                 style={{
                   fontSize: '11px',
                   fontWeight: 700,
-                  color: isAboutDark ? '#a1a1aa' : 'var(--text-muted)',
+                  color: 'var(--text-muted)',
                   letterSpacing: '0.2em',
                   textTransform: 'uppercase',
-                  marginBottom: isAboutDark ? '12px' : '16px',
+                  marginBottom: '16px',
                 }}
               >
                 LINKS
               </h4>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: isAboutDark ? '8px' : '10px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {NAV_LINKS.map(({ label, path }) => (
                   <Link
                     key={path}
                     to={path}
                     onClick={playClick}
                     onMouseEnter={playHover}
-                    className={isAboutDark ? 'footer-dark-badge-link' : ''}
                     style={{
                       fontSize: '0.88rem',
-                      color: isAboutDark ? '#a1a1aa' : 'var(--text-muted)',
+                      color: 'var(--text-muted)',
                       textDecoration: 'none',
                       transition: 'color 0.2s',
                     }}
@@ -264,19 +223,19 @@ const Footer = () => {
             {/* Socials */}
             <div className="footer-socials-col">
               <h4
-                className={`font-mono ${isAboutDark ? 'footer-dark-badge-header' : ''}`}
+                className="font-mono"
                 style={{
                   fontSize: '11px',
                   fontWeight: 700,
-                  color: isAboutDark ? '#a1a1aa' : 'var(--text-muted)',
+                  color: 'var(--text-muted)',
                   letterSpacing: '0.2em',
                   textTransform: 'uppercase',
-                  marginBottom: isAboutDark ? '12px' : '16px',
+                  marginBottom: '16px',
                 }}
               >
                 SOCIALS
               </h4>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: isAboutDark ? '8px' : '10px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {SOCIAL_LINKS.map(({ icon: Icon, href, label }) => (
                   <a
                     key={label}
@@ -285,13 +244,12 @@ const Footer = () => {
                     rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
                     onClick={playClick}
                     onMouseEnter={playHover}
-                    className={isAboutDark ? 'footer-dark-badge-link' : ''}
                     style={{
                       display: 'flex',
                       alignItems: 'center',
                       gap: '10px',
                       fontSize: '0.88rem',
-                      color: isAboutDark ? '#a1a1aa' : 'var(--text-muted)',
+                      color: 'var(--text-muted)',
                       textDecoration: 'none',
                     }}
                   >
@@ -305,25 +263,25 @@ const Footer = () => {
           {/* Local time */}
           <div className="footer-time-col">
             <h4
-              className={`font-mono ${isAboutDark ? 'footer-dark-badge-header' : ''}`}
+              className="font-mono"
               style={{
                 fontSize: '11px',
                 fontWeight: 700,
-                color: isAboutDark ? '#a1a1aa' : 'var(--text-muted)',
+                color: 'var(--text-muted)',
                 letterSpacing: '0.2em',
                 textTransform: 'uppercase',
-                marginBottom: isAboutDark ? '10px' : '14px',
+                marginBottom: '14px',
               }}
             >
               LOCAL TIME
             </h4>
-            <div style={{ marginBottom: isAboutDark ? '6px' : '4px' }}>
+            <div style={{ marginBottom: '4px' }}>
               <p
-                className={`font-mono ${isAboutDark ? 'footer-dark-badge-time' : ''}`}
+                className="font-mono"
                 style={{
                   fontSize: '1rem',
                   fontWeight: 600,
-                  color: isAboutDark ? '#ffffff' : 'var(--text)',
+                  color: 'var(--text)',
                   margin: 0,
                 }}
               >
@@ -337,10 +295,9 @@ const Footer = () => {
             </div>
             <div>
               <p
-                className={isAboutDark ? 'footer-dark-badge-sub' : ''}
                 style={{
                   fontSize: '0.8rem',
-                  color: isAboutDark ? '#a1a1aa' : 'var(--text-dim)',
+                  color: 'var(--text-dim)',
                   margin: 0,
                 }}
               >
@@ -377,10 +334,6 @@ const Footer = () => {
           gap: 40px;
           align-items: flex-start;
         }
-        .footer-about-container {
-          padding-top: clamp(160px, 24vh, 280px) !important;
-          padding-bottom: 48px !important;
-        }
         .footer-nav-socials-wrapper {
           display: grid;
           grid-template-columns: 1fr 1fr;
@@ -394,60 +347,12 @@ const Footer = () => {
           padding-left: 8px;
         }
 
-        /* Dark Mode Badge Styling (specifically for About Page in Dark Mode) */
-        .footer-dark-badge-text {
-          background: #222222 !important;
-          border-radius: 4px !important;
-          padding: 4px 8px !important;
-          display: inline-block !important;
-          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35) !important;
-        }
-        .footer-dark-badge-header {
-          background: #222222 !important;
-          border-radius: 4px !important;
-          padding: 3px 8px !important;
-          display: inline-block !important;
-          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35) !important;
-        }
-        .footer-dark-badge-link {
-          background: #222222 !important;
-          border-radius: 4px !important;
-          padding: 3px 8px !important;
-          display: inline-flex !important;
-          align-items: center !important;
-          gap: 8px !important;
-          width: fit-content !important;
-          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35) !important;
-          transition: all 0.2s ease !important;
-        }
-        .footer-dark-badge-link:hover {
-          background: #2e2e34 !important;
-          color: #ffffff !important;
-        }
-        .footer-dark-badge-time {
-          background: #222222 !important;
-          border-radius: 4px !important;
-          padding: 4px 10px !important;
-          display: inline-block !important;
-          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35) !important;
-        }
-        .footer-dark-badge-sub {
-          background: #222222 !important;
-          border-radius: 4px !important;
-          padding: 3px 8px !important;
-          display: inline-block !important;
-          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35) !important;
-        }
-
         @media (max-width: 768px) {
           .footer-main-container {
             display: flex !important;
             flex-direction: column !important;
             gap: 28px !important;
             padding: 32px 20px !important;
-          }
-          .footer-about-container {
-            padding-top: clamp(120px, 18vh, 180px) !important;
           }
           .footer-nav-socials-wrapper {
             display: grid !important;

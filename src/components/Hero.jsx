@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowDown, ArrowDownRight, Github, Linkedin, Instagram, Mail, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useSoundContext } from './ui/SoundProvider';
-import SpotlightOverlay from './ui/SpotlightOverlay';
 import { Cover } from './ui/cover';
 import { useTheme } from '../hooks/useTheme';
 import BlinkingSquares from './ui/BlinkingSquares';
@@ -114,9 +113,6 @@ const Hero = () => {
         twinkleStrength={0.94}
         style={{ zIndex: 1 }}
       />
-
-      {/* Spotlight beams */}
-      <SpotlightOverlay />
 
       {/* Main content */}
       <main style={{

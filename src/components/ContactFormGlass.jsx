@@ -84,35 +84,6 @@ export default function ContactFormGlass() {
         boxSizing: 'border-box',
       }}
     >
-      {/* Background ambient radial lights */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '20%',
-          left: '15%',
-          width: '300px',
-          height: '300px',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, var(--accent-dim) 0%, transparent 70%)',
-          filter: 'blur(50px)',
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}
-      />
-      <div
-        style={{
-          position: 'absolute',
-          bottom: '15%',
-          right: '15%',
-          width: '320px',
-          height: '320px',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, var(--accent-2-dim) 0%, transparent 70%)',
-          filter: 'blur(54px)',
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}
-      />
 
       {/* Main Glassmorphic Card Container */}
       <div
