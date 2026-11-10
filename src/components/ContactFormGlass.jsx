@@ -14,6 +14,8 @@ import {
 } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
 
+const TOPICS = ['Peluang kerja', 'Proyek freelance', 'Kolaborasi', 'Sekadar menyapa'];
+
 export default function ContactFormGlass() {
   const { playClick, playHover, playSuccess } = useSoundContext();
   const [form, setForm] = useState({
@@ -295,6 +297,27 @@ export default function ContactFormGlass() {
                 transition: 'all 0.25s ease',
               }}
             />
+            {/* Topik cepat: sekali klik mengisi subjek */}
+            <div className="glass-topics" role="group" aria-label="Pilih topik cepat">
+              {TOPICS.map((topic) => {
+                const active = form.subject === topic;
+                return (
+                  <button
+                    key={topic}
+                    type="button"
+                    aria-pressed={active}
+                    className={`glass-topic${active ? ' is-active' : ''}`}
+                    onMouseEnter={playHover}
+                    onClick={() => {
+                      playClick();
+                      setForm((p) => ({ ...p, subject: active ? '' : topic }));
+                    }}
+                  >
+                    {topic}
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           {/* Message Textarea */}
@@ -471,6 +494,22 @@ export default function ContactFormGlass() {
           from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }
         }
+
+        .glass-topics { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+        .glass-topic {
+          padding: 5px 12px;
+          border-radius: 999px;
+          border: 1px solid var(--border);
+          background: transparent;
+          color: var(--text-muted);
+          font: inherit;
+          font-size: 11.5px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: color 0.2s, border-color 0.2s, background 0.2s, transform 0.2s;
+        }
+        .glass-topic:hover { color: var(--text); border-color: var(--accent-border); transform: translateY(-1px); }
+        .glass-topic.is-active { color: #fff; background: var(--accent-solid, var(--accent)); border-color: transparent; }
 
         /* Mobile specific responsiveness - sleek, compact, elegant */
         @media (max-width: 640px) {

@@ -844,6 +844,9 @@ export default function ProfileAIChatbox() {
           overflow-x: auto;
           white-space: nowrap;
           scrollbar-width: none;
+          /* pudar di tepi kanan: tanda bahwa saran bisa digeser */
+          -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent);
+          mask-image: linear-gradient(90deg, #000 85%, transparent);
         }
         .chatbox-suggestions-bar::-webkit-scrollbar {
           display: none;

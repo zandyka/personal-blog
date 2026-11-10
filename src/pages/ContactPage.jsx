@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import SocialMarquee from '../components/ui/SocialMarquee';
+import ContactChannels from '../components/contact/ContactChannels';
+import '../components/contact/contact.css';
 import ContactFormGlass from '../components/ContactFormGlass';
 import ContactFAQ from '../components/ContactFAQ';
 import ProfileAIChatbox from '../components/ProfileAIChatbox';
@@ -94,45 +95,9 @@ export default function ContactPage() {
             <ContactFormGlass />
           </div>
 
-          {/* Right Column: Moving Social Contacts Panel */}
+          {/* Right Column: saluran kontak langsung (status, email, sosial, CV) */}
           <div className="contact-grid-col-right">
-            <div
-              className="glassmorphic-card contact-social-card"
-              style={{
-                position: 'relative',
-                zIndex: 1,
-                borderRadius: '26px',
-                background: 'var(--glass-bg)',
-                backdropFilter: 'blur(28px)',
-                WebkitBackdropFilter: 'blur(28px)',
-                border: '1px solid var(--glass-border)',
-                boxShadow: '0 20px 60px var(--shadow-color)',
-                overflow: 'hidden',
-                padding: 'clamp(20px, 3vw, 32px) 0',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                height: '100%',
-                minHeight: '440px',
-                width: '100%',
-                maxWidth: '100%',
-                boxSizing: 'border-box',
-              }}
-            >
-
-              {/* Moving Social Cards Track (Clean: No extra text banners) */}
-              <div
-                style={{
-                  position: 'relative',
-                  zIndex: 1,
-                  width: '100%',
-                  maxWidth: '100%',
-                  overflow: 'hidden',
-                }}
-              >
-                <SocialMarquee compact={true} />
-              </div>
-            </div>
+            <ContactChannels />
           </div>
         </div>
 
