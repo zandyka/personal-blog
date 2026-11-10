@@ -51,6 +51,48 @@ export const WORK = [
     to: '/playground',
   },
   {
+    id: 'dsps-ptpn3',
+    title: 'Dashboard Eksekutif',
+    subtitle: 'DSPS PTPN III',
+    kind: 'Dasbor enterprise',
+    summary:
+      'Pusat kendali Divisi Strategi & Pengembangan SDM PTPN III Holding: tugas dan penanggung jawabnya, agenda dan kalender terpadu, progres proyek strategis, inisiatif HECTO, data magang, serta repositori SOP.',
+    tech: ['React 19', 'TypeScript', 'Supabase', 'Tailwind v4'],
+    figure: '09.00',
+    figureLabel: 'pengingat tugas otomatis via WhatsApp tiap hari kerja',
+    image: '/projects/dashboard-dsps-ptpn3.webp',
+    imagePos: 'left center', // kartu desktop memotong cover lebar; jaga logo & judul tetap terlihat
+    to: '/projects',
+  },
+  {
+    id: 'lm-entitas',
+    title: 'Portal LM Entitas',
+    subtitle: 'PTPN Group',
+    kind: 'Portal pelaporan',
+    summary:
+      'Anak perusahaan mengisi Laporan Manajemen bulanan, holding meninjau dan mengonsolidasikannya. Masa pengisian dijadwalkan dan dikunci per bulan, hak aksesnya ditegakkan langsung di database.',
+    tech: ['React 19', 'TypeScript', 'Supabase RLS', 'SheetJS'],
+    figure: 'Bulanan',
+    figureLabel: 'siklus isi, tinjau, lalu kunci per entitas',
+    image: '/projects/portal-lm-entitas-ptpn.webp',
+    imagePos: 'left center', // kartu desktop memotong cover lebar; jaga logo & judul tetap terlihat
+    to: '/projects',
+  },
+  {
+    id: 'rekap-magang',
+    title: 'Rekap Magang',
+    subtitle: 'PTPN Group',
+    kind: 'Dasbor data',
+    summary:
+      'Rekap penyerapan peserta Magenta BUMN, Magang Kemnaker, dan Magang Mandiri. Tiap entitas mengedit datanya sendiri, dan semuanya tersinkron dua arah dengan Google Sheets.',
+    tech: ['Next.js 16', 'Google Sheets API', 'Recharts'],
+    figure: '27',
+    figureLabel: 'unit kerja di 11 entitas dalam satu rekap',
+    image: '/projects/rekap-magang-ptpn.webp',
+    imagePos: 'left center', // kartu desktop memotong cover lebar; jaga logo & judul tetap terlihat
+    to: '/projects',
+  },
+  {
     id: 'sigma',
     title: 'SIGMA BPJSTK',
     subtitle: 'monitoring MBKM',

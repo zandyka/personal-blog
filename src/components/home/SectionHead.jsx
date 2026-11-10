@@ -5,10 +5,11 @@ const EASE = [0.16, 1, 0.3, 1];
 // Kepala section bergaya katalog: (nomor) — label di kiri, judul serif di kanan.
 // whileInView dipasang di <h2> (bukan di teks yang digeser), karena teks yang
 // dimulai di luar area overflow:hidden tidak pernah dianggap "terlihat".
-export default function SectionHead({ index, label, children, aside }) {
+// wide: judul panjang memakai lebar penuh grid dan tidak boleh patah baris.
+export default function SectionHead({ index, label, children, aside, wide = false }) {
   return (
     <motion.div
-      className="h-grid h-head"
+      className={`h-grid h-head${wide ? ' h-head--wide' : ''}`}
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, amount: 0.5 }}

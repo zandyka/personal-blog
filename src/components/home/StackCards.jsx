@@ -21,7 +21,13 @@ function Card({ project, index, total, progress }) {
       <motion.div style={{ scale }} className="h-stack__scale">
         <Link to={project.to} className="h-card" onMouseEnter={playHover} onClick={playClick}>
           <div className="h-card__img">
-            <img src={project.image} alt={`${project.title} — ${project.subtitle}`} loading="lazy" decoding="async" />
+            <img
+              src={project.image}
+              alt={`${project.title} — ${project.subtitle}`}
+              loading="lazy"
+              decoding="async"
+              style={project.imagePos ? { objectPosition: project.imagePos } : undefined}
+            />
           </div>
           <div className="h-card__info">
             <div className="h-card__top">
@@ -61,7 +67,7 @@ export default function StackCards() {
   return (
     <section className="h-sec" id="work">
       <div className="h-wrap">
-        <SectionHead index="03" label="Karya pilihan" aside={`${WORK.length} proyek — web, mobile, AI`}>
+        <SectionHead wide index="03" label="Karya pilihan" aside={`${WORK.length} proyek — web, mobile, AI`}>
           Yang sudah <em>dikerjakan</em>.
         </SectionHead>
 

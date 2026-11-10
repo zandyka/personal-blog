@@ -78,6 +78,13 @@
 }
 .h-head__title em { font-style: italic; color: var(--accent); }
 .h-head__aside { text-align: right; padding-bottom: 0.9em; }
+/* Judul panjang: satu baris selebar grid. Lebarnya ≈ 10.3× ukuran font,
+   jadi batas 8.4vw menjaga teks tetap muat di layar sempit. */
+.h-head--wide .h-head__row { grid-column: 1 / -1; }
+.h-head--wide .h-head__title {
+  white-space: nowrap;
+  font-size: min(clamp(2.7rem, 7vw, 6.4rem), 8.4vw);
+}
 
 /* ---------- Ticker ---------- */
 .h-ticker {
