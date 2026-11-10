@@ -1,5 +1,13 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  animate,
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import {
   Building2,
@@ -14,6 +22,8 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
+import { Parallax, ScrollReveal } from './ui/ScrollMotion';
+import { useTilt } from '../hooks/useTilt';
 
 // 1. Work Experiences in chronological timeline order (starting from Telkom Akses)
 const WORK_EXPERIENCES = [
@@ -23,7 +33,8 @@ const WORK_EXPERIENCES = [
     role: 'Fiber Technician Intern',
     period: 'Februari 2022 - April 2022',
     type: 'Internship',
-    logo: '/logos/logo telkom.png',
+    logo: '/logos/trim/telkom.webp',
+    logoWide: true,
     icon: Network,
     description:
       'Melakukan penyambungan kabel fiber optik (fusion splicing), pengujian redaman OPM/OTDR, serta pemeliharaan infrastruktur jaringan GPON di lapangan.',
@@ -35,7 +46,8 @@ const WORK_EXPERIENCES = [
     role: 'Back Office Intern',
     period: 'Maret 2025 - Juni 2025',
     type: 'Internship',
-    logo: '/logos/logo bsi.png',
+    logo: '/logos/trim/bsi.webp',
+    logoWide: true,
     icon: Landmark,
     description:
       'Bertanggung jawab atas verifikasi data operasional perbankan, tata kelola kearsipan dokumen nasabah, dan kepatuhan administrasi dengan standar kerahasiaan tinggi.',
@@ -47,7 +59,8 @@ const WORK_EXPERIENCES = [
     role: 'Operational Division Intern',
     period: 'Juni 2025 - Juli 2025',
     type: 'Internship',
-    logo: '/logos/logo bank sumut.png',
+    logo: '/logos/trim/bank-sumut.webp',
+    logoWide: true,
     logoBg: '#224192',
     icon: Building2,
     description:
@@ -60,7 +73,8 @@ const WORK_EXPERIENCES = [
     role: 'IT Team Coordinator & Admin Support Intern',
     period: 'Agustus 2025 - Desember 2025',
     type: 'Internship',
-    logo: '/logos/logo bpjs.png',
+    logo: '/logos/trim/bpjs.webp',
+    logoWide: true,
     icon: Server,
     description:
       'Mengembangkan dashboard analitik performa magang, melakukan troubleshooting aplikasi JMO (Jamsostek Mobile), dan mengelola dataset kepesertaan.',
@@ -73,6 +87,7 @@ const WORK_EXPERIENCES = [
     period: 'September 2026 - Sekarang',
     type: 'Internship',
     logo: '/logos/logo ptpn.png',
+    logoWide: true,
     logoBg: '#ffffff',
     icon: Building2,
     description:
@@ -132,7 +147,8 @@ const ACTIVITY_EXPERIENCES = [
     role: 'Volunteer Pengajar Komputer & Microsoft Office',
     period: '2024',
     type: 'Volunteer',
-    logo: '/logos/logo pkbm.png',
+    logo: '/logos/trim/pkbm.webp',
+    logoWide: true,
     icon: BookOpen,
     description:
       'Aksi sosial pengabdian masyarakat dengan memberikan pengajaran dan pendampingan literasi komputer dasar serta aplikasi perkantoran Microsoft Office (Word, Excel, PowerPoint) kepada peserta didik program kesetaraan Paket A (setara SD), Paket B (setara SMP), dan Paket C (setara SMA).',
@@ -144,7 +160,8 @@ const ACTIVITY_EXPERIENCES = [
     role: 'Tim Publikasi, Dokumentasi & Desain Kreatif',
     period: '2025',
     type: 'Kepanitiaan',
-    logo: '/logos/logo pkkmb.png',
+    logo: '/logos/trim/pkkmb.webp',
+    logoWide: true,
     icon: Camera,
     description:
       'Bertanggung jawab penuh atas liputan fotografi, videografi, dan publikasi konten visual selama masa orientasi mahasiswa baru Fakultas Vokasi USU 2025. Sekaligus menjadi perancang utama untuk seluruh kebutuhan desain fisik dan digital acara, mencakup backdrop panggung utama, kartu tanda pengenal (ID card), badge nama peserta & panitia, serta desain feed Instagram resmi.',
@@ -156,7 +173,8 @@ const ACTIVITY_EXPERIENCES = [
     role: 'Divisi Ticketing & Logistik',
     period: '2024',
     type: 'Event Organizer',
-    logo: '/logos/logo rindu tenang.png',
+    logo: '/logos/trim/rindu-tenang.webp',
+    logoWide: true,
     icon: Sparkles,
     description:
       'Bertanggung jawab atas manajemen sistem ticketing (penjualan, pendataan, dan validasi tiket pengunjung) serta pengelolaan logistik perlengkapan acara dan operasional panggung guna menyukseskan gelaran acara seni musik Rindu Tenang.',
@@ -205,22 +223,78 @@ const getBadgeStyle = (type) => {
   }
 };
 
-const TimelineCard = ({ item, index }) => {
+const yearOf = (period) => (period.match(/\d{4}/) || [''])[0];
+
+// Garis timeline yang terisi mengikuti scroll, dengan "komet" bercahaya di ujungnya.
+// Ujung isian berada di 70% tinggi layar — titik kartu menyala saat melewati garis yang sama.
+const TimelineTrack = ({ gradient, children }) => {
+  const ref = useRef(null);
+  const reduce = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start 70%', 'end 70%'] });
+  const fill = useSpring(scrollYProgress, { stiffness: 110, damping: 26, mass: 0.4 });
+  const headTop = useTransform(fill, (v) => `${v * 100}%`);
+  const lineBase = {
+    position: 'absolute',
+    left: '50%',
+    top: '20px',
+    bottom: '40px',
+    width: '2px',
+    transform: 'translateX(-50%)',
+    zIndex: 1,
+  };
+
+  return (
+    <div ref={ref} style={{ position: 'relative', width: '100%' }}>
+      <div className="timeline-vertical-line" style={{ ...lineBase, background: 'var(--border)' }} />
+      <div className="timeline-vertical-line" style={lineBase}>
+        <motion.div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: gradient,
+            transformOrigin: 'top',
+            scaleY: reduce ? 1 : fill,
+            borderRadius: '2px',
+          }}
+        />
+        {!reduce && <motion.span className="timeline-comet" style={{ top: headTop }} aria-hidden="true" />}
+      </div>
+      {children}
+    </div>
+  );
+};
+
+const TimelineCard = ({ item, index, showYear = true }) => {
   const { playHover } = useSoundContext();
   const [imgError, setImgError] = useState(false);
-  const { ref, inView } = useInView({
-    triggerOnce: true,
-    threshold: 0.15,
-  });
+  const reduce = useReducedMotion();
+  const rowRef = useRef(null);
+  // Menyala selama titiknya sudah melewati garis 70% layar (sinkron dengan isian garis).
+  const { ref: nodeRef, inView: lit } = useInView({ rootMargin: '0px 0px -30% 0px' });
 
   const isEven = index % 2 === 0;
+  const side = isEven ? -1 : 1;
   const Icon = item.icon;
   const badgeStyle = getBadgeStyle(item.type);
   const hasLogo = item.logo && !imgError;
+  const isCurrent = /sekarang/i.test(item.period);
+
+  // Masuk 3D: kartu berputar dari sisinya sendiri sambil bergeser ke tempatnya, mengikuti scroll.
+  const { scrollYProgress } = useScroll({ target: rowRef, offset: ['start 100%', 'start 58%'] });
+  const enter = useSpring(scrollYProgress, { stiffness: 120, damping: 24, mass: 0.4 });
+  const x = useTransform(enter, [0, 1], [side * 70, 0]);
+  const opacity = useTransform(enter, [0, 0.5, 1], [0, 0.85, 1]);
+  const entryRotateY = useTransform(enter, [0, 1], [side * -32, 0]);
+  const tilt = useTilt({ max: 6 });
+  const rotateY = useTransform([entryRotateY, tilt.rotateY], ([a, b]) => a + b);
+
+  const motionStyle = reduce
+    ? {}
+    : { x, opacity, rotateY, rotateX: tilt.rotateX, transformPerspective: 1100 };
 
   return (
     <div
-      ref={ref}
+      ref={rowRef}
       style={{
         position: 'relative',
         marginBottom: '40px',
@@ -230,8 +304,39 @@ const TimelineCard = ({ item, index }) => {
       }}
       className={`timeline-row ${isEven ? 'timeline-left' : 'timeline-right'}`}
     >
+      {/* Tahun besar di sisi kosong seberang kartu, bergerak lebih lambat (parallax).
+          Hanya muncul saat tahunnya berganti, supaya tidak berulang. */}
+      {showYear && (
+        <div
+          className="timeline-year"
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            top: '-8px',
+            [isEven ? 'left' : 'right']: 'calc(50% + 44px)',
+            textAlign: isEven ? 'left' : 'right',
+            pointerEvents: 'none',
+          }}
+        >
+          <Parallax speed={0.12}>
+            <span
+              className="timeline-year-num"
+              style={{ WebkitTextStroke: `1.5px ${lit ? badgeStyle.color : 'var(--border)'}` }}
+            >
+              {yearOf(item.period)}
+            </span>
+            {isCurrent && (
+              <span className="timeline-year-now" style={{ color: badgeStyle.color }}>
+                <i style={{ background: badgeStyle.color }} /> Sedang berjalan
+              </span>
+            )}
+          </Parallax>
+        </div>
+      )}
+
       {/* Center Node / Dot on Timeline */}
       <div
+        ref={nodeRef}
         className="timeline-center-node"
         style={{
           position: 'absolute',
@@ -241,21 +346,21 @@ const TimelineCard = ({ item, index }) => {
           width: '18px',
           height: '18px',
           borderRadius: '50%',
-          background: inView ? badgeStyle.color : 'var(--border)',
+          background: lit ? badgeStyle.color : 'var(--border)',
           border: '3px solid var(--bg)',
-          boxShadow: inView ? `0 0 14px ${badgeStyle.color}` : 'none',
+          boxShadow: lit ? `0 0 14px ${badgeStyle.color}` : 'none',
           zIndex: 3,
           transition: 'all 0.4s ease-out',
         }}
-      />
+      >
+        {isCurrent && <span className="timeline-node-pulse" style={{ borderColor: badgeStyle.color }} />}
+      </div>
 
       {/* Card Body */}
       <motion.div
-        initial={{ opacity: 0, x: isEven ? -40 : 40, y: 20 }}
-        animate={inView ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x: isEven ? -40 : 40, y: 20 }}
-        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
+        {...tilt.handlers}
         onMouseEnter={playHover}
-        whileHover={{ y: -4, borderColor: badgeStyle.border }}
+        whileHover={{ borderColor: badgeStyle.border }}
         className="timeline-card"
         style={{
           width: 'calc(50% - 36px)',
@@ -264,10 +369,12 @@ const TimelineCard = ({ item, index }) => {
           borderRadius: '16px',
           padding: '22px',
           position: 'relative',
-          boxShadow: inView ? '0 10px 30px rgba(0, 0, 0, 0.25)' : 'none',
-          transition: 'border-color 0.2s, transform 0.2s, box-shadow 0.2s',
+          boxShadow: '0 10px 30px rgba(0, 0, 0, 0.25)',
+          transition: 'border-color 0.2s, box-shadow 0.2s',
+          ...motionStyle,
         }}
       >
+        <motion.span style={tilt.glareStyle} aria-hidden="true" />
         {/* Card Header: Top row with Logo + Type Badge on left, and Period on right */}
         <div style={{ marginBottom: '14px' }}>
           <div
@@ -284,7 +391,7 @@ const TimelineCard = ({ item, index }) => {
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               <div
                 style={{
-                  width: '40px',
+                  width: hasLogo && item.logoWide ? '88px' : '40px',
                   height: '40px',
                   borderRadius: '12px',
                   background: hasLogo ? (item.logoBg || '#ffffff') : badgeStyle.bg,
@@ -292,7 +399,7 @@ const TimelineCard = ({ item, index }) => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  padding: hasLogo ? '6px' : 0,
+                  padding: hasLogo ? (item.logoWide ? '6px 10px' : '6px') : 0,
                   color: badgeStyle.color,
                   flexShrink: 0,
                   overflow: 'hidden',
@@ -426,6 +533,48 @@ const TimelineCard = ({ item, index }) => {
   );
 };
 
+// Angka yang naik dari 0 saat pertama kali terlihat.
+const CountUp = ({ to }) => {
+  const reduce = useReducedMotion();
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.6 });
+  const value = useMotionValue(reduce ? to : 0);
+  const rounded = useTransform(value, (v) => Math.round(v));
+  useEffect(() => {
+    if (!inView || reduce) return undefined;
+    const controls = animate(value, to, { duration: 1.4, ease: [0.16, 1, 0.3, 1] });
+    return () => controls.stop();
+  }, [inView, reduce, to, value]);
+  return <motion.span ref={ref}>{rounded}</motion.span>;
+};
+
+const START_YEAR = 2022;
+const SUMMARY = [
+  { value: WORK_EXPERIENCES.length, label: 'tempat magang profesional' },
+  { value: TRAINING_EXPERIENCES.length, label: 'pelatihan berstandar SKKNI' },
+  { value: ACTIVITY_EXPERIENCES.length, label: 'organisasi & kegiatan' },
+  { value: new Date().getFullYear() - START_YEAR, label: `tahun rekam jejak, sejak ${START_YEAR}` },
+];
+
+const ExperienceSummary = () => (
+  <div className="exp-summary">
+    {SUMMARY.map((s, i) => (
+      <motion.div
+        key={s.label}
+        className="exp-summary-item"
+        initial={{ opacity: 0, y: 24, rotateX: -40 }}
+        whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+        viewport={{ once: true, amount: 0.6 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: i * 0.08 }}
+      >
+        <strong>
+          <CountUp to={s.value} />
+        </strong>
+        <span>{s.label}</span>
+      </motion.div>
+    ))}
+  </div>
+);
+
 const Experience = () => {
   const { ref, inView } = useInView({
     triggerOnce: true,
@@ -459,232 +608,304 @@ const Experience = () => {
         }}
       >
         {/* Section 1: Professional Work Experience */}
-        <motion.div
-          initial="hidden"
-          animate={inView ? 'visible' : 'hidden'}
-          variants={fadeUp}
-          style={{ textAlign: 'center', marginBottom: '32px' }}
-        >
-          <span
-            style={{
-              color: 'var(--accent)',
-              fontSize: '0.85rem',
-              fontWeight: 600,
-              letterSpacing: '2px',
-              textTransform: 'uppercase',
-              display: 'block',
-              marginBottom: '8px',
-            }}
+        <ScrollReveal from={60} scale={0.92}>
+          <motion.div
+            initial="hidden"
+            animate={inView ? 'visible' : 'hidden'}
+            variants={fadeUp}
+            style={{ textAlign: 'center', marginBottom: '32px' }}
           >
-            Career Timeline
-          </span>
-          <h2
-            style={{
-              fontSize: 'clamp(2rem, 3.5vw, 2.8rem)',
-              fontWeight: 600,
-              color: 'var(--text)',
-              margin: '0 auto 12px',
-              letterSpacing: '-0.02em',
-            }}
-          >
-            Professional Experience
-          </h2>
-          <div
-            style={{
-              width: '60px',
-              height: '3px',
-              background: 'var(--accent)',
-              margin: '0 auto 16px',
-              borderRadius: '2px',
-            }}
-          />
-          <p
-            style={{
-              color: 'var(--text-muted)',
-              fontSize: '0.98rem',
-              maxWidth: '620px',
-              margin: '0 auto',
-              fontWeight: 300,
-            }}
-          >
-            Rekam jejak pengalaman magang dan kerja profesional yang diurutkan secara kronologis mulai dari telekomunikasi, perbankan, IT operasional hingga BUMN holding perkebunan.
-          </p>
-        </motion.div>
+            <span
+              style={{
+                color: 'var(--accent)',
+                fontSize: '0.85rem',
+                fontWeight: 600,
+                letterSpacing: '2px',
+                textTransform: 'uppercase',
+                display: 'block',
+                marginBottom: '8px',
+              }}
+            >
+              Career Timeline
+            </span>
+            <h2
+              style={{
+                fontSize: 'clamp(2rem, 3.5vw, 2.8rem)',
+                fontWeight: 600,
+                color: 'var(--text)',
+                margin: '0 auto 12px',
+                letterSpacing: '-0.02em',
+              }}
+            >
+              Professional Experience
+            </h2>
+            <div
+              style={{
+                width: '60px',
+                height: '3px',
+                background: 'var(--accent)',
+                margin: '0 auto 16px',
+                borderRadius: '2px',
+              }}
+            />
+            <p
+              style={{
+                color: 'var(--text-muted)',
+                fontSize: '0.98rem',
+                maxWidth: '620px',
+                margin: '0 auto',
+                fontWeight: 300,
+              }}
+            >
+              Rekam jejak pengalaman magang dan kerja profesional yang diurutkan secara kronologis mulai dari telekomunikasi, perbankan, IT operasional hingga BUMN holding perkebunan.
+            </p>
+          </motion.div>
+        </ScrollReveal>
+
+        <ExperienceSummary />
 
         {/* Work Timeline Container */}
-        <div style={{ position: 'relative', width: '100%' }}>
-          <div
-            className="timeline-vertical-line"
-            style={{
-              position: 'absolute',
-              left: '50%',
-              top: '20px',
-              bottom: '40px',
-              width: '2px',
-              background: 'linear-gradient(180deg, var(--accent) 0%, var(--accent-2-border) 90%, transparent 100%)',
-              transform: 'translateX(-50%)',
-              zIndex: 1,
-            }}
-          />
-
-          {WORK_EXPERIENCES.map((item, idx) => (
-            <TimelineCard key={item.id} item={item} index={idx} />
+        <TimelineTrack gradient="linear-gradient(180deg, var(--accent) 0%, var(--accent-2-border) 90%, transparent 100%)">
+          {WORK_EXPERIENCES.map((item, idx, arr) => (
+            <TimelineCard
+              key={item.id}
+              item={item}
+              index={idx}
+              showYear={idx === 0 || yearOf(arr[idx - 1].period) !== yearOf(item.period)}
+            />
           ))}
-        </div>
+        </TimelineTrack>
 
         {/* Section 2: Pelatihan Profesional (VSGA DTS Kominfo) */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-          variants={fadeUp}
-          style={{ textAlign: 'center', marginTop: '54px', marginBottom: '32px' }}
-        >
-          <span
-            style={{
-              color: 'var(--accent)',
-              fontSize: '0.85rem',
-              fontWeight: 600,
-              letterSpacing: '2px',
-              textTransform: 'uppercase',
-              display: 'block',
-              marginBottom: '8px',
-            }}
+        <ScrollReveal from={60} scale={0.92}>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            variants={fadeUp}
+            style={{ textAlign: 'center', marginTop: '54px', marginBottom: '32px' }}
           >
-            Pelatihan &amp; Kompetensi
-          </span>
-          <h2
-            style={{
-              fontSize: 'clamp(2rem, 3.5vw, 2.8rem)',
-              fontWeight: 600,
-              color: 'var(--text)',
-              margin: '0 auto 12px',
-              letterSpacing: '-0.02em',
-            }}
-          >
-            Pelatihan Profesional
-          </h2>
-          <div
-            style={{
-              width: '60px',
-              height: '3px',
-              background: 'var(--accent)',
-              margin: '0 auto 16px',
-              borderRadius: '2px',
-            }}
-          />
-          <p
-            style={{
-              color: 'var(--text-muted)',
-              fontSize: '0.98rem',
-              maxWidth: '620px',
-              margin: '0 auto',
-              fontWeight: 300,
-            }}
-          >
-            Program pelatihan peningkatan kompetensi digital nasional berstandar SKKNI yang diselenggarakan oleh Kementerian Kominfo RI.
-          </p>
-        </motion.div>
+            <span
+              style={{
+                color: 'var(--accent)',
+                fontSize: '0.85rem',
+                fontWeight: 600,
+                letterSpacing: '2px',
+                textTransform: 'uppercase',
+                display: 'block',
+                marginBottom: '8px',
+              }}
+            >
+              Pelatihan &amp; Kompetensi
+            </span>
+            <h2
+              style={{
+                fontSize: 'clamp(2rem, 3.5vw, 2.8rem)',
+                fontWeight: 600,
+                color: 'var(--text)',
+                margin: '0 auto 12px',
+                letterSpacing: '-0.02em',
+              }}
+            >
+              Pelatihan Profesional
+            </h2>
+            <div
+              style={{
+                width: '60px',
+                height: '3px',
+                background: 'var(--accent)',
+                margin: '0 auto 16px',
+                borderRadius: '2px',
+              }}
+            />
+            <p
+              style={{
+                color: 'var(--text-muted)',
+                fontSize: '0.98rem',
+                maxWidth: '620px',
+                margin: '0 auto',
+                fontWeight: 300,
+              }}
+            >
+              Program pelatihan peningkatan kompetensi digital nasional berstandar SKKNI yang diselenggarakan oleh Kementerian Kominfo RI.
+            </p>
+          </motion.div>
+        </ScrollReveal>
 
         {/* Training Timeline Container */}
-        <div style={{ position: 'relative', width: '100%' }}>
-          <div
-            className="timeline-vertical-line"
-            style={{
-              position: 'absolute',
-              left: '50%',
-              top: '20px',
-              bottom: '40px',
-              width: '2px',
-              background: 'linear-gradient(180deg, var(--accent) 0%, var(--accent-2) 90%, transparent 100%)',
-              transform: 'translateX(-50%)',
-              zIndex: 1,
-            }}
-          />
-
-          {TRAINING_EXPERIENCES.map((item, idx) => (
-            <TimelineCard key={item.id} item={item} index={idx} />
+        <TimelineTrack gradient="linear-gradient(180deg, var(--accent) 0%, var(--accent-2) 90%, transparent 100%)">
+          {TRAINING_EXPERIENCES.map((item, idx, arr) => (
+            <TimelineCard
+              key={item.id}
+              item={item}
+              index={idx}
+              showYear={idx === 0 || yearOf(arr[idx - 1].period) !== yearOf(item.period)}
+            />
           ))}
-        </div>
+        </TimelineTrack>
 
         {/* Section 3: Keaktifan Kegiatan, Organisasi & Volunteer */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-          variants={fadeUp}
-          style={{ textAlign: 'center', marginTop: '54px', marginBottom: '32px' }}
-        >
-          <span
-            style={{
-              color: 'var(--accent-2)',
-              fontSize: '0.85rem',
-              fontWeight: 600,
-              letterSpacing: '2px',
-              textTransform: 'uppercase',
-              display: 'block',
-              marginBottom: '8px',
-            }}
+        <ScrollReveal from={60} scale={0.92}>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            variants={fadeUp}
+            style={{ textAlign: 'center', marginTop: '54px', marginBottom: '32px' }}
           >
-            Activities &amp; Community
-          </span>
-          <h2
-            style={{
-              fontSize: 'clamp(2rem, 3.5vw, 2.8rem)',
-              fontWeight: 600,
-              color: 'var(--text)',
-              margin: '0 auto 12px',
-              letterSpacing: '-0.02em',
-            }}
-          >
-            Keaktifan Kegiatan, Organisasi &amp; Volunteer
-          </h2>
-          <div
-            style={{
-              width: '60px',
-              height: '3px',
-              background: 'var(--accent-2)',
-              margin: '0 auto 16px',
-              borderRadius: '2px',
-            }}
-          />
-          <p
-            style={{
-              color: 'var(--text-muted)',
-              fontSize: '0.98rem',
-              maxWidth: '640px',
-              margin: '0 auto',
-              fontWeight: 300,
-            }}
-          >
-            Rekam jejak kontribusi kepengurusan organisasi mahasiswa, aksi sosial volunteer pengabdian masyarakat, kepanitiaan orientasi kampus, dan manajemen event.
-          </p>
-        </motion.div>
+            <span
+              style={{
+                color: 'var(--accent-2)',
+                fontSize: '0.85rem',
+                fontWeight: 600,
+                letterSpacing: '2px',
+                textTransform: 'uppercase',
+                display: 'block',
+                marginBottom: '8px',
+              }}
+            >
+              Activities &amp; Community
+            </span>
+            <h2
+              style={{
+                fontSize: 'clamp(2rem, 3.5vw, 2.8rem)',
+                fontWeight: 600,
+                color: 'var(--text)',
+                margin: '0 auto 12px',
+                letterSpacing: '-0.02em',
+              }}
+            >
+              Keaktifan Kegiatan, Organisasi &amp; Volunteer
+            </h2>
+            <div
+              style={{
+                width: '60px',
+                height: '3px',
+                background: 'var(--accent-2)',
+                margin: '0 auto 16px',
+                borderRadius: '2px',
+              }}
+            />
+            <p
+              style={{
+                color: 'var(--text-muted)',
+                fontSize: '0.98rem',
+                maxWidth: '640px',
+                margin: '0 auto',
+                fontWeight: 300,
+              }}
+            >
+              Rekam jejak kontribusi kepengurusan organisasi mahasiswa, aksi sosial volunteer pengabdian masyarakat, kepanitiaan orientasi kampus, dan manajemen event.
+            </p>
+          </motion.div>
+        </ScrollReveal>
 
         {/* Activity Timeline Container */}
-        <div style={{ position: 'relative', width: '100%' }}>
-          <div
-            className="timeline-vertical-line"
-            style={{
-              position: 'absolute',
-              left: '50%',
-              top: '20px',
-              bottom: '40px',
-              width: '2px',
-              background: 'linear-gradient(180deg, var(--accent-2) 0%, var(--accent-dim) 90%, transparent 100%)',
-              transform: 'translateX(-50%)',
-              zIndex: 1,
-            }}
-          />
-
-          {ACTIVITY_EXPERIENCES.map((item, idx) => (
-            <TimelineCard key={item.id} item={item} index={idx} />
+        <TimelineTrack gradient="linear-gradient(180deg, var(--accent-2) 0%, var(--accent-dim) 90%, transparent 100%)">
+          {ACTIVITY_EXPERIENCES.map((item, idx, arr) => (
+            <TimelineCard
+              key={item.id}
+              item={item}
+              index={idx}
+              showYear={idx === 0 || yearOf(arr[idx - 1].period) !== yearOf(item.period)}
+            />
           ))}
-        </div>
+        </TimelineTrack>
       </div>
 
       <style>{`
+        /* Ringkasan angka di bawah judul pertama */
+        .exp-summary {
+          display: grid;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: 12px;
+          max-width: 860px;
+          margin: 0 auto 48px;
+          perspective: 800px;
+        }
+        .exp-summary-item {
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: 16px;
+          padding: 16px 18px;
+          text-align: left;
+          transform-origin: center top;
+        }
+        .exp-summary-item strong {
+          display: block;
+          font-size: clamp(1.8rem, 3vw, 2.4rem);
+          font-weight: 800;
+          letter-spacing: -0.04em;
+          line-height: 1;
+          color: var(--text);
+          margin-bottom: 6px;
+        }
+        .exp-summary-item > span { font-size: 0.8rem; color: var(--text-muted); line-height: 1.35; display: block; }
+
+        /* Ujung garis yang bercahaya, bergerak turun mengikuti scroll */
+        .timeline-comet {
+          position: absolute;
+          left: 50%;
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background: #fff;
+          transform: translate(-50%, -50%);
+          box-shadow: 0 0 0 4px var(--accent-dim, rgba(255, 255, 255, 0.12)), 0 0 18px 4px var(--accent);
+          z-index: 2;
+        }
+
+        /* Tahun besar bergaris di sisi kosong */
+        .timeline-year-num {
+          display: block;
+          font-size: clamp(3.4rem, 7.5vw, 6.6rem);
+          font-weight: 800;
+          letter-spacing: -0.05em;
+          line-height: 0.9;
+          color: transparent;
+          transition: -webkit-text-stroke-color 0.5s ease;
+          user-select: none;
+        }
+        .timeline-year-now {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          margin-top: 10px;
+          font-size: 0.72rem;
+          font-weight: 700;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+        }
+        .timeline-year-now i {
+          width: 7px;
+          height: 7px;
+          border-radius: 50%;
+          animation: timelineBlink 1.6s ease-in-out infinite;
+        }
+
+        /* Cincin berdenyut pada pengalaman yang masih berjalan */
+        .timeline-node-pulse {
+          position: absolute;
+          inset: -7px;
+          border-radius: 50%;
+          border: 2px solid;
+          animation: timelinePulse 1.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+        }
+        @keyframes timelinePulse {
+          0% { transform: scale(0.6); opacity: 0.9; }
+          100% { transform: scale(1.9); opacity: 0; }
+        }
+        @keyframes timelineBlink {
+          50% { opacity: 0.25; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .timeline-node-pulse, .timeline-year-now i { animation: none; }
+        }
+
         @media (max-width: 850px) {
+          .exp-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-bottom: 32px; }
+          .exp-summary-item { padding: 12px 14px; }
+          .timeline-year { display: none; }
           .timeline-vertical-line {
             left: 16px !important;
             transform: none !important;

@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { ZoomIn, X } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
+import { Parallax, ScrollReveal } from './ui/ScrollMotion';
+import { useTilt } from '../hooks/useTilt';
 
 // ratio = lebar / tinggi gambar asli, agar sertifikat tampil utuh (tidak terpotong).
 const CERTIFICATIONS = [
@@ -163,9 +165,11 @@ const toColumns = (items, count) => {
 function CertCard({ cert, index, onOpen }) {
   const { playHover } = useSoundContext();
   const [hovered, setHovered] = useState(false);
+  const tilt = useTilt({ max: 9, glare: 0.22 });
 
   return (
     <motion.div
+      {...tilt.handlers}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.1 }}
@@ -194,10 +198,12 @@ function CertCard({ cert, index, onOpen }) {
         cursor: 'pointer',
         border: '1px solid var(--border)',
         background: 'var(--surface-2)',
-        boxShadow: '0 4px 16px rgba(0, 0, 0, 0.14)',
-        transform: 'translateZ(0)',
+        boxShadow: hovered ? '0 18px 40px rgba(0, 0, 0, 0.3)' : '0 4px 16px rgba(0, 0, 0, 0.14)',
+        transition: 'box-shadow 0.3s ease',
+        ...tilt.style,
       }}
     >
+      <motion.span style={tilt.glareStyle} aria-hidden="true" />
       <img
         src={cert.image}
         alt={cert.title}
@@ -313,59 +319,62 @@ const Certifications = () => {
     >
       <div style={{ maxWidth: '1200px', margin: '0 auto', width: '100%' }}>
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
-          style={{ textAlign: 'center', marginBottom: '32px' }}
-        >
-          <span
-            style={{
-              color: 'var(--accent)',
-              fontSize: '0.82rem',
-              fontWeight: 600,
-              letterSpacing: '2px',
-              textTransform: 'uppercase',
-              display: 'block',
-              marginBottom: '8px',
-            }}
+        <ScrollReveal from={60} scale={0.92}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
+            style={{ textAlign: 'center', marginBottom: '32px' }}
           >
-            Credentials &amp; Accreditations
-          </span>
-          <h2
-            style={{
-              fontSize: 'clamp(1.8rem, 3.2vw, 2.6rem)',
-              fontWeight: 600,
-              color: 'var(--text)',
-              margin: '0 auto 12px',
-              letterSpacing: '-0.02em',
-            }}
-          >
-            Sertifikasi &amp; Penghargaan Resmi
-          </h2>
-          <div
-            style={{
-              width: '50px',
-              height: '3px',
-              background: 'var(--accent)',
-              margin: '0 auto',
-              borderRadius: '2px',
-            }}
-          />
-        </motion.div>
+            <span
+              style={{
+                color: 'var(--accent)',
+                fontSize: '0.82rem',
+                fontWeight: 600,
+                letterSpacing: '2px',
+                textTransform: 'uppercase',
+                display: 'block',
+                marginBottom: '8px',
+              }}
+            >
+              Credentials &amp; Accreditations
+            </span>
+            <h2
+              style={{
+                fontSize: 'clamp(1.8rem, 3.2vw, 2.6rem)',
+                fontWeight: 600,
+                color: 'var(--text)',
+                margin: '0 auto 12px',
+                letterSpacing: '-0.02em',
+              }}
+            >
+              Sertifikasi &amp; Penghargaan Resmi
+            </h2>
+            <div
+              style={{
+                width: '50px',
+                height: '3px',
+                background: 'var(--accent)',
+                margin: '0 auto',
+                borderRadius: '2px',
+              }}
+            />
+          </motion.div>
+        </ScrollReveal>
 
         {/* Masonry grid: foto saja, seperti galeri */}
         <div className="cert-masonry" style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
           {columns.map((items, colIndex) => (
-            <div
+            <Parallax
               key={colIndex}
+              speed={columnCount === 3 ? (colIndex === 1 ? -0.12 : 0.06) : 0}
               className="cert-masonry-col"
               style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '14px', minWidth: 0 }}
             >
               {items.map((cert, i) => (
                 <CertCard key={cert.id} cert={cert} index={colIndex + i * columnCount} onOpen={open} />
               ))}
-            </div>
+            </Parallax>
           ))}
         </div>
 
@@ -393,12 +402,13 @@ const Certifications = () => {
               }}
             >
               <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.9, opacity: 0 }}
+                initial={{ scale: 0.86, opacity: 0, rotateY: -28, y: 30 }}
+                animate={{ scale: 1, opacity: 1, rotateY: 0, y: 0 }}
+                exit={{ scale: 0.9, opacity: 0, rotateY: 18, y: 20 }}
                 transition={{ type: 'spring', damping: 25, stiffness: 300 }}
                 onClick={(e) => e.stopPropagation()}
                 style={{
+                  transformPerspective: 1400,
                   background: 'var(--surface)',
                   border: '1px solid var(--border)',
                   borderRadius: '16px',
