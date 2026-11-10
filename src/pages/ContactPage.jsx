@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
-import ContactChannels from '../components/contact/ContactChannels';
-import '../components/contact/contact.css';
+import SocialMarquee from '../components/ui/SocialMarquee';
 import ContactFormGlass from '../components/ContactFormGlass';
 import ContactFAQ from '../components/ContactFAQ';
 import ProfileAIChatbox from '../components/ProfileAIChatbox';
@@ -95,9 +94,37 @@ export default function ContactPage() {
             <ContactFormGlass />
           </div>
 
-          {/* Right Column: saluran kontak langsung (status, email, sosial, CV) */}
+          {/* Right Column: kartu kontak berjalan (sabuk 3D, ikut scroll, bisa diseret) */}
           <div className="contact-grid-col-right">
-            <ContactChannels />
+            <div
+              className="glassmorphic-card contact-social-card"
+              style={{
+                position: 'relative',
+                zIndex: 1,
+                borderRadius: '26px',
+                background: 'var(--glass-bg)',
+                backdropFilter: 'blur(28px)',
+                WebkitBackdropFilter: 'blur(28px)',
+                border: '1px solid var(--glass-border)',
+                boxShadow: '0 20px 60px var(--shadow-color)',
+                overflow: 'hidden',
+                padding: 'clamp(20px, 3vw, 32px) 0',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                height: '100%',
+                minHeight: '440px',
+                width: '100%',
+                maxWidth: '100%',
+                boxSizing: 'border-box',
+              }}
+            >
+              <SocialMarquee />
+              <p className="contact-social-hint">
+                <span className="hint-mouse">Seret untuk menggeser · arahkan kursor untuk berhenti</span>
+                <span className="hint-touch">Geser untuk melihat semua kontak</span>
+              </p>
+            </div>
           </div>
         </div>
 
@@ -124,6 +151,19 @@ export default function ContactPage() {
           padding: 0 24px;
           align-items: stretch;
           overflow: hidden;
+        }
+
+        .contact-social-hint {
+          margin: 10px 0 0;
+          text-align: center;
+          font-size: 0.74rem;
+          letter-spacing: 0.04em;
+          color: var(--text-dim);
+        }
+        .contact-social-hint .hint-touch { display: none; }
+        @media (hover: none) {
+          .contact-social-hint .hint-mouse { display: none; }
+          .contact-social-hint .hint-touch { display: inline; }
         }
 
         .contact-grid-col-left,
