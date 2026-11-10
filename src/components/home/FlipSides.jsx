@@ -4,9 +4,13 @@ import SectionHead from './SectionHead';
 import { SIDES } from './homeData';
 
 // Kartu sederhana ala kartu galeri: foto penuh + label & judul di bawah.
-function Face({ side, back }) {
+function Face({ side, back, hidden = false }) {
   return (
-    <div className={`h-flip__face h-flip__face--${side.id} ${back ? 'h-flip__face--back' : ''}`}>
+    <div
+      className={`h-flip__face h-flip__face--${side.id} ${back ? 'h-flip__face--back' : ''}`}
+      data-hidden={hidden}
+      aria-hidden={hidden || undefined}
+    >
       <img className="h-flip__img" src={side.image} alt={side.imageAlt} loading="lazy" decoding="async" />
       <div className="h-flip__caption">
         <span className="h-mono">{side.tag}</span>
@@ -64,8 +68,9 @@ export default function FlipSides() {
         <div className="h-flip__sticky">
           <div className="h-flip__stage">
             <motion.div className="h-flip__card" style={{ rotateY, rotateX, scale }}>
-              <Face side={SIDES[0]} />
-              <Face side={SIDES[1]} back />
+              {/* sisi yang membelakangi disembunyikan (lihat .h-flip__face[data-hidden]) */}
+              <Face side={SIDES[0]} hidden={flipped} />
+              <Face side={SIDES[1]} back hidden={!flipped} />
             </motion.div>
           </div>
           <div className="h-flip__hud h-mono">

@@ -290,6 +290,10 @@
   box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.6);
 }
 .h-flip__face--back { transform: rotateY(180deg); }
+/* Safari/WebKit tidak andal menyembunyikan sisi belakang untuk anak yang punya lapisan
+   sendiri (keterangan, overlay) — teks sisi lain tembus terbalik. Jadi sisi yang sedang
+   membelakangi disembunyikan lewat data-hidden, ditukar tepat saat kartu tegak lurus (90°). */
+.h-flip__face[data-hidden='true'] { visibility: hidden; }
 
 .h-flip__hud { display: flex; align-items: center; gap: 16px; }
 .h-flip__hud span[data-on='true'] { color: var(--text); }
