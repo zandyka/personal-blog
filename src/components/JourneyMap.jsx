@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { MapPin, Calendar, CheckCircle2, ChevronRight, Image, ArrowUpRight } from 'lucide-react';
+import {
+  MapPin,
+  Calendar,
+  CheckCircle2,
+  Navigation,
+  ChevronRight,
+  Image,
+} from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
-import SectionHead from './home/SectionHead';
 
 const LOCATIONS = [
   {
@@ -12,19 +17,17 @@ const LOCATIONS = [
     order: '01',
     name: 'PT Perkebunan Nusantara III Holding (Persero)',
     shortName: 'PTPN III Holding',
-    role: 'Officer Data Support Intern · Strategi & Pengembangan SDM',
+    role: 'ODS Strategi & Pengembangan SDM',
     period: 'September 2026 - Sekarang',
-    logo: '/journey/logos/ptpn.webp',
+    logo: '/logos/logo ptpn.png',
     photo: '/journey/aboutptpn.png',
     photoPosition: 'center center',
     accent: '#059669',
     address: 'Gedung Agro Plaza, Jl. H. R. Rasuna Said Kav. X-2 No. 1, Kuningan, Jakarta Selatan',
-    // { text, to } = capaian yang punya halaman proyek sendiri
     highlights: [
-      { text: 'Dashboard Eksekutif DSPS — tugas, agenda & proyek strategis', to: '/projects' },
-      { text: 'Portal LM Entitas — pelaporan Laporan Manajemen PTPN Group', to: '/projects' },
-      { text: 'Rekap penyerapan magang PTPN Group, tersinkron Google Sheets', to: '/projects' },
-      'Konsolidasi anggaran pelatihan (RKAP) untuk pelaporan korporat',
+      'Dashboard L&D terpusat Holding & Subholding PTPN Group',
+      'Konsolidasi anggaran RKAP untuk pelaporan korporat',
+      'Automasi alur pemrosesan data pelaporan manual',
     ],
   },
   {
@@ -34,7 +37,7 @@ const LOCATIONS = [
     shortName: 'BPJSTK Medan Kota',
     role: 'IT Team Coordinator & Admin Support Intern',
     period: 'Agustus 2025 - Desember 2025',
-    logo: '/journey/logos/bpjs.webp',
+    logo: '/logos/logo bpjs.png',
     photo: '/journey/aboutbpjs.png',
     photoPosition: 'center center',
     accent: '#10b981',
@@ -52,7 +55,7 @@ const LOCATIONS = [
     shortName: 'Bank Sumut',
     role: 'Operational Division Intern',
     period: 'Juni 2025 - Juli 2025',
-    logo: '/journey/logos/bank-sumut.webp',
+    logo: '/logos/logo bank sumut.png',
     photo: '/journey/aboutbanksumut.png',
     photoPosition: 'center center',
     accent: '#0284c7',
@@ -70,7 +73,7 @@ const LOCATIONS = [
     shortName: 'Bank BSI',
     role: 'Back Office Intern (MBKM)',
     period: 'Maret 2025 - Mei 2025',
-    logo: '/journey/logos/bsi.webp',
+    logo: '/logos/logo bsi.png',
     photo: '/journey/aboutsbi.png',
     photoPosition: 'center center',
     accent: '#00a39d',
@@ -86,15 +89,15 @@ const LOCATIONS = [
     order: '05',
     name: 'Universitas Sumatera Utara (USU)',
     shortName: 'Kampus USU',
-    role: 'D3 Teknik Informatika · Kadiv Media Kreatif HIMTI',
+    role: 'Teknik Informatika & Kadiv Media HIMTI',
     period: '2023 - 2026',
-    logo: '/journey/logos/usu.webp',
+    logo: '/logos/logo usu.png',
     photo: '/journey/aboutusu.png',
     photoPosition: 'center center',
     accent: '#818cf8',
     address: 'Jl. Dr. T. Mansur No. 9, Padang Bulan, Medan',
     highlights: [
-      'Lulus dengan predikat cum laude',
+      'Lulus Predikat Cum Laude (IPK 3.84 / 4.00)',
       'Kepala Divisi Media Kreatif HIMTI USU',
       'Riset Inovasi AI HandSpeak BISINDO Translator',
     ],
@@ -106,7 +109,7 @@ const LOCATIONS = [
     shortName: 'Telkom Akses',
     role: 'Fiber Technician Intern',
     period: 'Februari 2022 - April 2022',
-    logo: '/journey/logos/telkom.webp',
+    logo: '/logos/logo telkom.png',
     photo: '/journey/abouttelom.png',
     photoPosition: 'center center',
     accent: '#ef4444',
@@ -143,11 +146,58 @@ export default function JourneyMap() {
   const [selectedLocation, setSelectedLocation] = useState(LOCATIONS[0]);
 
   return (
-    <section ref={ref} className="ab-sec ab-sec--last journey-section" style={{ position: 'relative' }}>
-      <div className="h-wrap">
-        <SectionHead wide index="03" label="Perjalanan" aside="2020 — sekarang">
-          Jejak <em>perjalanan</em>.
-        </SectionHead>
+    <section
+      ref={ref}
+      className="journey-section"
+      style={{
+        padding: '76px 20px',
+        background: 'var(--bg)',
+        borderTop: '1px solid var(--border)',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+    >
+      <div style={{ maxWidth: '1140px', margin: '0 auto' }}>
+        {/* Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5 }}
+          style={{ textAlign: 'center', marginBottom: '36px' }}
+        >
+          <div
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '6px 16px',
+              borderRadius: '999px',
+              background: 'rgba(2, 132, 199, 0.1)',
+              border: '1px solid rgba(2, 132, 199, 0.25)',
+              color: '#38bdf8',
+              fontSize: '0.78rem',
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              letterSpacing: '1.5px',
+              marginBottom: '14px',
+            }}
+          >
+            <Navigation size={14} />
+            <span>Milestones</span>
+          </div>
+
+          <h2
+            style={{
+              fontSize: 'clamp(1.6rem, 4.5vw, 2.8rem)',
+              fontWeight: 800,
+              color: 'var(--text)',
+              letterSpacing: '-0.03em',
+              margin: '0',
+            }}
+          >
+            My Journey Map
+          </h2>
+        </motion.div>
 
         {/* MOBILE ONLY: Horizontal Quick-Select Rail */}
         <div className="journey-mobile-rail">
@@ -169,7 +219,7 @@ export default function JourneyMap() {
               >
                 <div
                   style={{
-                    width: '40px',
+                    width: '24px',
                     height: '24px',
                     borderRadius: '6px',
                     background: '#ffffff',
@@ -177,7 +227,7 @@ export default function JourneyMap() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    padding: '3px 5px',
+                    padding: '2px',
                     flexShrink: 0,
                     overflow: 'hidden',
                   }}
@@ -226,7 +276,7 @@ export default function JourneyMap() {
               <div
                 style={{
                   position: 'absolute',
-                  left: '43px',
+                  left: '20px',
                   top: '18px',
                   bottom: '18px',
                   width: '2px',
@@ -264,7 +314,7 @@ export default function JourneyMap() {
                     {/* Station Real Brand Logo */}
                     <div
                       style={{
-                        width: '64px',
+                        width: '40px',
                         height: '40px',
                         borderRadius: '12px',
                         background: '#ffffff',
@@ -275,7 +325,7 @@ export default function JourneyMap() {
                         boxShadow: isSelected ? `0 0 14px ${loc.accent}40` : 'none',
                         flexShrink: 0,
                         overflow: 'hidden',
-                        padding: '6px 8px',
+                        padding: '4px',
                         transition: 'all 0.2s ease',
                       }}
                     >
@@ -383,7 +433,7 @@ export default function JourneyMap() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
                     <div
                       style={{
-                        width: '88px',
+                        width: '52px',
                         height: '52px',
                         borderRadius: '14px',
                         background: '#ffffff',
@@ -391,7 +441,7 @@ export default function JourneyMap() {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        padding: '8px 12px',
+                        padding: '6px',
                         boxShadow: `0 4px 16px ${selectedLocation.accent}20`,
                         flexShrink: 0,
                         overflow: 'hidden',
@@ -518,36 +568,24 @@ export default function JourneyMap() {
                       marginBottom: '10px',
                     }}
                   >
-                    Capaian &amp; kontribusi
+                    Capaian &amp; Kontribusi:
                   </span>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    {selectedLocation.highlights.map((h) => {
-                      const text = typeof h === 'string' ? h : h.text;
-                      const rowStyle = {
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '10px',
-                        fontSize: '0.85rem',
-                        color: 'var(--text)',
-                        textDecoration: 'none',
-                      };
-                      const content = (
-                        <>
-                          <CheckCircle2 size={15} style={{ color: selectedLocation.accent, flexShrink: 0 }} />
-                          <span>{text}</span>
-                          {h.to && <ArrowUpRight size={14} style={{ color: selectedLocation.accent, flexShrink: 0 }} />}
-                        </>
-                      );
-                      return h.to ? (
-                        <Link key={text} to={h.to} onClick={playClick} onMouseEnter={playHover} className="journey-hl-link" style={rowStyle}>
-                          {content}
-                        </Link>
-                      ) : (
-                        <div key={text} style={rowStyle}>
-                          {content}
-                        </div>
-                      );
-                    })}
+                    {selectedLocation.highlights.map((h, idx) => (
+                      <div
+                        key={idx}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '10px',
+                          fontSize: '0.85rem',
+                          color: 'var(--text)',
+                        }}
+                      >
+                        <CheckCircle2 size={15} style={{ color: selectedLocation.accent, flexShrink: 0 }} />
+                        <span>{h}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </motion.div>
@@ -565,9 +603,10 @@ export default function JourneyMap() {
             display: block !important;
           }
         }
-        .journey-hl-link span { background: linear-gradient(currentColor, currentColor) 0 100% / 0% 1px no-repeat; transition: background-size 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-        .journey-hl-link:hover span { background-size: 100% 1px; }
         @media (max-width: 879px) {
+          .journey-section {
+            padding: 40px 16px !important;
+          }
           .journey-mobile-rail {
             display: flex !important;
             align-items: center;
