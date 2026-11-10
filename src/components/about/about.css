@@ -1,0 +1,102 @@
+/* ==========================================================================
+   Halaman About — memakai bahasa visual homepage (home.css: .h-wrap, .h-mono,
+   SectionHead) dengan jarak section yang lebih rapat.
+   ========================================================================== */
+
+.ab-sec { padding: clamp(48px, 7vh, 80px) 0; }
+.ab-sec--first { padding-top: clamp(28px, 5vh, 56px); }
+.ab-sec--last { padding-bottom: clamp(40px, 6vh, 64px); }
+
+/* ---------- 01 Tentang ---------- */
+.ab-intro {
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) minmax(0, 3fr);
+  gap: clamp(20px, 4vw, 64px);
+  align-items: start;
+}
+.ab-intro__badge { --lanyard-h: 460px; position: sticky; top: 88px; }
+.ab-intro__body { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: clamp(28px, 4vw, 56px); }
+
+.ab-lead {
+  font-family: var(--font-display);
+  font-size: clamp(1.45rem, 2.4vw, 2.15rem);
+  font-weight: 700;
+  line-height: 1.22;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin: 0 0 22px;
+}
+.ab-lead em { font-style: italic; color: var(--accent); }
+.ab-copy p { color: var(--text-muted); font-size: 1rem; line-height: 1.75; margin: 0 0 14px; max-width: 62ch; }
+.ab-copy strong { color: var(--text); font-weight: 600; }
+
+.ab-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 26px; margin-top: 26px; }
+.ab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: 999px;
+  background: var(--accent-solid, var(--accent));
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
+}
+.ab-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 24px var(--accent-glow, rgba(0, 0, 0, 0.2)); }
+
+/* Angka: daftar bergaris seperti indeks, bukan kartu */
+.ab-facts { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--border); }
+.ab-fact { display: grid; grid-template-columns: auto 1fr; align-items: baseline; gap: 4px 16px; padding: 16px 0; border-bottom: 1px solid var(--border); }
+.ab-fact strong {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.2vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--text);
+  min-width: 2.2em; /* lebar "3.84": semua keterangan mulai di garis yang sama */
+}
+.ab-fact span { color: var(--text-muted); font-size: 0.92rem; line-height: 1.4; }
+.ab-langs { margin-top: 18px; }
+
+.ab-github { margin-top: clamp(40px, 6vh, 64px); }
+
+/* ---------- 02 Perkakas ---------- */
+.ab-tools { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(20px, 3vw, 40px); }
+.ab-tools__group { border-top: 1px solid var(--border); padding-top: 18px; }
+.ab-tools__group h3 { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text); margin: 8px 0 4px; }
+.ab-tools__group p { color: var(--text-muted); font-size: 0.88rem; line-height: 1.5; margin: 0 0 16px; }
+.ab-tools__list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.ab-tool { display: flex; align-items: center; gap: 12px; padding: 6px 0; color: var(--text); font-size: 0.95rem; font-weight: 500; }
+/* Ikon resmi butuh latar terang supaya logo gelap (Express, GitHub, MySQL) tetap terbaca di tema gelap */
+.ab-tool__icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: #f5f5f4;
+  border: 1px solid var(--border);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  transition: transform 0.4s var(--ease-out);
+}
+.ab-tool:hover .ab-tool__icon { transform: rotate(-6deg) scale(1.08); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1099px) {
+  .ab-intro__body { grid-template-columns: minmax(0, 1fr); }
+  .ab-tools { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 899px) {
+  .ab-intro { grid-template-columns: minmax(0, 1fr); }
+  .ab-intro__badge { --lanyard-h: 380px; position: static; }
+}
+@media (max-width: 559px) {
+  .ab-intro__badge { --lanyard-h: 340px; }
+  .ab-tools { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .ab-tools__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 12px; }
+  .ab-tool { font-size: 0.9rem; gap: 10px; }
+  .ab-copy p { font-size: 0.95rem; }
+}

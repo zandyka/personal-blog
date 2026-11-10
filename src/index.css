@@ -257,7 +257,8 @@ img { display: block; max-width: 100%; }
   * { cursor: auto !important; }
   .container { padding: 0 16px; }
   .hide-mobile { display: none !important; }
-  .page-container { padding-top: 52px; padding-bottom: 72px; }
+  /* ruang untuk navigasi bawah sudah disediakan body; jangan ditambah lagi di sini */
+  .page-container { padding-top: 52px; }
   body { padding-bottom: 64px; }
 }
 

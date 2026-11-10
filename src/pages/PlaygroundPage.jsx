@@ -56,7 +56,7 @@ export default function PlaygroundPage() {
   }, []);
 
   return (
-    <div className="page-container" style={{ paddingBottom: '90px' }}>
+    <div className="page-container">
       <TargetCursor spinDuration={2} hideDefaultCursor parallaxOn />
       <motion.div
         initial={{ opacity: 0 }}

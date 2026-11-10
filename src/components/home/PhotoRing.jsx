@@ -160,7 +160,7 @@ export default function PhotoRing() {
   const current = ARCHIVE[front];
 
   return (
-    <section className="h-sec" id="archive" style={{ paddingBottom: 'clamp(64px, 10vh, 120px)' }}>
+    <section className="h-sec" id="archive" style={{ paddingBottom: 'clamp(40px, 6vh, 72px)' }}>
       <div className="h-wrap">
         <SectionHead index="05" label="Arsip visual">
           Desain &amp; <em>foto</em>.

@@ -6,7 +6,7 @@ import ProfileAIChatbox from '../components/ProfileAIChatbox';
 
 export default function ContactPage() {
   return (
-    <div className="page-container" style={{ paddingBottom: '80px' }}>
+    <div className="page-container" style={{ paddingBottom: '48px' }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

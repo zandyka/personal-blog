@@ -545,7 +545,7 @@ export default function InteractiveLanyard() {
         style={{
           position: 'relative',
           width: '100%',
-          height: '520px',
+          height: 'var(--lanyard-h, 520px)', // halaman bisa mengecilkannya, mis. di layar HP
           background: 'transparent',
           border: 'none',
           boxShadow: 'none',

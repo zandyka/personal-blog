@@ -46,10 +46,8 @@ const Footer = () => {
         position: 'relative',
         overflow: 'hidden',
         background: 'var(--bg)',
-        minHeight: isAboutPage ? 'clamp(540px, 72vh, 660px)' : 'auto',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: isAboutPage ? 'flex-end' : 'flex-start',
       }}
     >
       {/* Background Gradient Waves */}
@@ -180,7 +178,7 @@ const Footer = () => {
         )}
 
         {/* Footer Content */}
-        <div className={`footer-main-container ${isAboutPage ? 'footer-about-container' : ''}`}>
+        <div className="footer-main-container">
           {/* Brand Icon */}
           <div className="footer-brand-col">
             <div
@@ -377,10 +375,6 @@ const Footer = () => {
           gap: 40px;
           align-items: flex-start;
         }
-        .footer-about-container {
-          padding-top: clamp(160px, 24vh, 280px) !important;
-          padding-bottom: 48px !important;
-        }
         .footer-nav-socials-wrapper {
           display: grid;
           grid-template-columns: 1fr 1fr;
@@ -445,9 +439,6 @@ const Footer = () => {
             flex-direction: column !important;
             gap: 28px !important;
             padding: 32px 20px !important;
-          }
-          .footer-about-container {
-            padding-top: clamp(120px, 18vh, 180px) !important;
           }
           .footer-nav-socials-wrapper {
             display: grid !important;
