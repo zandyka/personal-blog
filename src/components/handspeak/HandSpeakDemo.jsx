@@ -70,7 +70,7 @@ export default function HandSpeakDemo() {
   };
 
   return (
-    <div
+    <div data-swarm-build="box"
       className="handspeak-card-container"
       style={{
         width: '100%',
@@ -105,7 +105,7 @@ export default function HandSpeakDemo() {
             gap: '12px',
           }}
         >
-          <h2
+          <h2 data-swarm-build="type"
             style={{
               fontSize: 'clamp(1.35rem, 3.2vw, 1.85rem)',
               fontWeight: 800,
@@ -118,7 +118,7 @@ export default function HandSpeakDemo() {
           </h2>
 
           {/* Controls: Mode Switcher & Kamus / Kosakata Toggle */}
-          <div
+          <div data-swarm-build="box"
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -255,7 +255,7 @@ export default function HandSpeakDemo() {
       </div>
 
       {/* Catatan Khusus Penggunaan Smartphone (Patah-patah / Shuttering) */}
-      <div
+      <div data-swarm-build="box"
         style={{
           display: 'flex',
           alignItems: 'center',
@@ -447,7 +447,7 @@ export default function HandSpeakDemo() {
       >
         {/* Left Column: Camera Viewport */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          <div
+          <div data-swarm-build="box"
             className="handspeak-camera-viewport"
             style={{
               position: 'relative',
@@ -732,7 +732,7 @@ export default function HandSpeakDemo() {
           </div>
 
           {/* Camera Controls & Status Bar */}
-          <div
+          <div data-swarm-build="box"
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -866,7 +866,7 @@ export default function HandSpeakDemo() {
         {/* Right Column: Spelled Words & Actions */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           {/* Accumulated Spelled Words Output */}
-          <div
+          <div data-swarm-build="box"
             style={{
               background: 'var(--surface-2)',
               border: '1px solid var(--border)',
@@ -1018,7 +1018,7 @@ export default function HandSpeakDemo() {
           </div>
 
           {/* Helpful Mini Guide Note */}
-          <div
+          <div data-swarm-build="box"
             style={{
               padding: '12px 16px',
               borderRadius: '14px',

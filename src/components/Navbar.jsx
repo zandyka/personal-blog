@@ -16,10 +16,13 @@ import {
   Image,
   Gamepad2,
   Layers,
+  MousePointer2,
+  MousePointerClick,
 } from 'lucide-react';
 import { useSoundContext } from './ui/SoundProvider';
 import ThemeToggle from './ui/ThemeToggle';
 import { usePet } from '../hooks/usePet';
+import { toggleSwarm, useSwarmEnabled } from '../lib/swarmStore';
 
 const ABOUT_DROPDOWN = [
   { label: 'About Me', path: '/about', icon: User },
@@ -118,6 +121,11 @@ export default function Navbar() {
   const isHome = location.pathname === '/';
   const isContact = location.pathname === '/contact';
   const isPlayground = location.pathname.startsWith('/playground');
+  const swarmOn = useSwarmEnabled();
+  // swarm cursor hanya berjalan dengan mouse; di layar sentuh tombolnya tidak ditampilkan
+  const [finePointer] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(hover: hover) and (pointer: fine)').matches
+  );
   const isAboutActive = ['/about', '/experience', '/projects', '/album'].some((p) =>
     location.pathname.startsWith(p)
   );
@@ -429,6 +437,36 @@ export default function Navbar() {
             gap: '8px',
           }}
         >
+          {/* Swarm cursor (hanya di Playground, dan hanya untuk perangkat ber-mouse) */}
+          {isPlayground && finePointer && (
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => {
+                playClick();
+                toggleSwarm();
+              }}
+              title={swarmOn ? 'Matikan efek swarm cursor' : 'Nyalakan efek swarm cursor'}
+              aria-label="Toggle swarm cursor"
+              aria-pressed={swarmOn}
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: '50%',
+                border: swarmOn ? '1px solid var(--accent-border)' : '1px solid var(--border)',
+                background: swarmOn ? 'var(--accent-dim)' : 'transparent',
+                color: swarmOn ? 'var(--accent)' : 'var(--text-dim)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                transition: 'border-color 0.2s, background 0.2s, color 0.2s',
+              }}
+            >
+              {swarmOn ? <MousePointer2 size={16} /> : <MousePointerClick size={16} style={{ opacity: 0.6 }} />}
+            </motion.button>
+          )}
+
           {/* Pet Visibility Toggle (Cat Head) */}
           <motion.button
             whileHover={{ scale: 1.1 }}

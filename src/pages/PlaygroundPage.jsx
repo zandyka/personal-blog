@@ -5,6 +5,7 @@ import HandSpeakDemo from '../components/handspeak/HandSpeakDemo';
 import { useSoundContext } from '../components/ui/SoundProvider';
 import TargetCursor from '../components/ui/TargetCursor';
 import SwarmCursor from '../components/ui/SwarmCursor';
+import { useSwarmEnabled } from '../lib/swarmStore';
 import { ScrollReveal } from '../components/ui/ScrollMotion';
 import ArcadePreview from '../components/playground/ArcadePreview';
 import { useTilt } from '../hooks/useTilt';
@@ -49,15 +50,6 @@ const ARCADE_EXPERIMENTS = [
   },
 ];
 
-const SWARM_KEY = 'playground-swarm';
-const readSwarmPref = () => {
-  try {
-    return localStorage.getItem(SWARM_KEY) !== 'off';
-  } catch {
-    return true;
-  }
-};
-
 function ArcadeCard({ item, index }) {
   const { playHover } = useSoundContext();
   const tilt = useTilt({ max: 7, glare: 0.18 });
@@ -74,6 +66,7 @@ function ArcadeCard({ item, index }) {
       <motion.div
         {...tilt.handlers}
         className="cursor-target pg-arcade-card"
+        data-swarm-build="box"
         data-cursor-label={item.badge}
         onMouseEnter={playHover}
         style={{
@@ -92,7 +85,9 @@ function ArcadeCard({ item, index }) {
       >
         <motion.span style={tilt.glareStyle} aria-hidden="true" />
         <div>
-          <ArcadePreview kind={item.preview} />
+          <div data-swarm-build="box">
+            <ArcadePreview kind={item.preview} />
+          </div>
 
           {/* Top Header & Tag */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
@@ -130,7 +125,12 @@ function ArcadeCard({ item, index }) {
           <span style={{ fontSize: '0.74rem', fontWeight: 700, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '1px' }}>
             {item.category}
           </span>
-          <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text)', margin: '4px 0 10px' }}>{item.title}</h3>
+          <h3
+            data-swarm-build="type"
+            style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text)', margin: '4px 0 10px', width: 'fit-content' }}
+          >
+            {item.title}
+          </h3>
           <p style={{ fontSize: '0.84rem', color: 'var(--text-muted)', lineHeight: 1.55, margin: 0 }}>{item.description}</p>
         </div>
 
@@ -159,7 +159,8 @@ export default function PlaygroundPage() {
   const { playClick, playHover } = useSoundContext();
   const reduce = useReducedMotion();
   const heroRef = useRef(null);
-  const [swarmOn, setSwarmOn] = useState(readSwarmPref);
+  // nyala/mati diatur dari tombol di navbar (pojok kanan atas)
+  const swarmOn = useSwarmEnabled();
   const [replayKey, setReplayKey] = useState(0);
 
   useEffect(() => {
@@ -182,23 +183,10 @@ export default function PlaygroundPage() {
     el.style.setProperty('--my', `${e.clientY - r.top}px`);
   };
 
-  const toggleSwarm = () => {
-    playClick();
-    setSwarmOn((on) => {
-      const next = !on;
-      try {
-        localStorage.setItem(SWARM_KEY, next ? 'on' : 'off');
-      } catch {
-        /* penyimpanan tidak tersedia — pilihan hanya berlaku sesi ini */
-      }
-      return next;
-    });
-  };
-
   return (
-    <div className="page-container">
+    <div className="page-container pg-page">
       <TargetCursor spinDuration={2} hideDefaultCursor parallaxOn />
-      <SwarmCursor enabled={swarmOn} replayKey={replayKey} root=".pg-hero" />
+      <SwarmCursor enabled={swarmOn} replayKey={replayKey} root=".pg-page" />
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
         {/* Section 1: Hero Header */}
         <section ref={heroRef} className="pg-hero" onPointerMove={onHeroMove}>
@@ -241,7 +229,8 @@ export default function PlaygroundPage() {
                 color: 'var(--text)',
                 letterSpacing: '-0.03em',
                 lineHeight: 1.05,
-                margin: '0 0 16px',
+                margin: '0 auto 16px',
+                width: 'fit-content', // caret mengetik sepanjang teks saja
               }}
             >
               {/* Judul muncul per huruf */}
@@ -286,25 +275,15 @@ export default function PlaygroundPage() {
 
             <motion.div
               className="pg-hint"
+              data-swarm-build="box"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.9 }}
             >
               <span>
-                Kawanan kursor membangun halaman ini, lalu mengikuti <kbd>mouse</kbd>. Arahkan ke tombol, <kbd>klik</kbd> untuk
-                menyebarkan.
+                Kawanan kursor membangun halaman ini saat Anda menggulir, lalu mengikuti <kbd>mouse</kbd>. Klik untuk
+                menyebarkan; matikan lewat ikon kursor di pojok kanan atas.
               </span>
-              <button
-                type="button"
-                className="pg-toggle cursor-target"
-                data-cursor-label={swarmOn ? 'Matikan swarm' : 'Nyalakan swarm'}
-                aria-pressed={swarmOn}
-                onClick={toggleSwarm}
-                onMouseEnter={playHover}
-              >
-                <span className="pg-toggle__switch" aria-hidden="true" />
-                Swarm {swarmOn ? 'aktif' : 'mati'}
-              </button>
               {swarmOn && (
                 <button
                   type="button"
@@ -312,6 +291,8 @@ export default function PlaygroundPage() {
                   data-cursor-label="Putar ulang"
                   onClick={() => {
                     playClick();
+                    // membangun ulang seluruh halaman dari atas
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                     setReplayKey((k) => k + 1);
                   }}
                   onMouseEnter={playHover}
@@ -333,6 +314,7 @@ export default function PlaygroundPage() {
           <div style={{ maxWidth: '1040px', margin: '0 auto' }}>
             <ScrollReveal from={60} scale={0.92} style={{ textAlign: 'center', marginBottom: '36px' }}>
               <div
+                data-swarm-build="box"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -349,17 +331,19 @@ export default function PlaygroundPage() {
                 <span>Next Releases</span>
               </div>
               <h2
+                data-swarm-build="type"
                 style={{
                   fontSize: 'clamp(1.8rem, 4vw, 2.6rem)',
                   fontWeight: 800,
                   color: 'var(--text)',
                   letterSpacing: '-0.02em',
-                  margin: '0 0 8px',
+                  margin: '0 auto 8px',
+                  width: 'fit-content',
                 }}
               >
                 Arcade &amp; Mini-Games
               </h2>
-              <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', margin: 0 }}>
+              <p data-swarm-build="box" style={{ fontSize: '0.9rem', color: 'var(--text-muted)', margin: 0 }}>
                 Eksperimen game klasik dan interaktif yang sedang dirancang untuk meramaikan Playground ini.
               </p>
             </ScrollReveal>

@@ -5,13 +5,16 @@ import { useSplashActive } from '../../lib/splashStore';
  * SwarmCursor — kawanan kursor "kolaborator" (ala kursor multiplayer di alat desain).
  *
  * Alur:
- *  1. Intro   — kursor masuk dari tepi layar lalu mengorbit di tengah hero.
- *  2. Bangun  — elemen bertanda [data-swarm-build] dibangun berurutan dari atas ke bawah:
+ *  1. Intro   — kursor masuk dari tepi layar lalu mengorbit di tengah layar.
+ *  2. Bangun  — seluruh elemen bertanda [data-swarm-build] di halaman dibangun ulang:
  *               "box"  → kursor menarik kotak seleksi; isi elemen muncul tepat di dalam kotak.
  *               "type" → kursor "mengetik" dari kiri ke kanan; teks muncul di belakang caret.
- *               Kursor yang menganggur berkerumun menonton; garis panduan muncul saat menggambar.
- *  3. Kawanan — flocking (pemisahan, keselarasan, kohesi) di sekitar mouse sambil menjaga jarak.
- *               Arahkan ke tombol/kartu → beberapa kursor menunjuk sudut-sudutnya. Klik → menyebar.
+ *               Tugas terbuka saat elemennya masuk layar (kawanan mengejar scroll), anak menunggu
+ *               induknya, dan makin banyak yang menunggu makin banyak kursor bekerja bersamaan.
+ *               Kursor yang menganggur menonton; garis panduan muncul saat menggambar.
+ *  3. Kawanan — saat semua yang terlihat sudah jadi: flocking (pemisahan, keselarasan, kohesi)
+ *               di sekitar mouse sambil menjaga jarak. Arahkan ke tombol/kartu → beberapa kursor
+ *               menunjuk sudut-sudutnya. Klik → menyebar.
  *
  * Elemen disembunyikan lewat clip-path (bukan opacity) supaya tidak bentrok dengan animasi
  * framer-motion pada elemen yang sama. Semua dipulihkan saat efek dimatikan / halaman ditinggal.
@@ -21,6 +24,8 @@ import { useSplashActive } from '../../lib/splashStore';
 const TARGETS = '.cursor-target, button, a, [data-cursor-label]';
 const NAMES = ['React', 'Figma', 'Flutter', 'Laravel', 'Python', 'Supabase', 'Next.js', 'Tailwind', 'TFLite', 'MySQL', 'Vite', 'Git', 'Node.js', 'Dart'];
 const COLORS = ['#38BDF8', '#A259FF', '#22C55E', '#F43F5E', '#FACC15', '#10B981', '#E5E7EB', '#06B6D4', '#FB923C', '#3B82F6', '#C084FC', '#F97316', '#84CC16', '#2DD4BF'];
+
+const INTRO_MS = 1000;
 
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const rand = (a, b) => a + Math.random() * (b - a);
@@ -127,7 +132,13 @@ export default function SwarmCursor({ enabled = true, replayKey = 0, root = null
       el.style.clipPath = el.dataset.swarmBuild === 'type' ? 'inset(-30% 100% -30% 0)' : 'inset(0 100% 100% 0)';
     };
     builds.forEach(hide);
-    const tasks = builds.map((el) => ({ el, kind: el.dataset.swarmBuild, phase: 'wait', agent: null, t0: 0, dur: 0, p: 0 }));
+    const tasks = builds.map((el) => ({ el, kind: el.dataset.swarmBuild, phase: 'wait', agent: null, t0: 0, dur: 0, p: 0, parent: null }));
+    // anak menunggu induknya selesai digambar (mis. isi kartu menunggu kartunya)
+    const byEl = new Map(tasks.map((task) => [task.el, task]));
+    for (const task of tasks) {
+      const up = task.el.parentElement?.closest('[data-swarm-build]');
+      task.parent = up ? byEl.get(up) || null : null;
+    }
 
     // ---------- agen ----------
     const agents = NAMES.map((name, i) => {
@@ -140,6 +151,7 @@ export default function SwarmCursor({ enabled = true, replayKey = 0, root = null
         vx: 0,
         vy: 0,
         busy: false,
+        drawing: false,
         orbitR: rand(60, 150),
         orbitA: (i / NAMES.length) * Math.PI * 2,
       };
@@ -153,10 +165,7 @@ export default function SwarmCursor({ enabled = true, replayKey = 0, root = null
     const afterglows = []; // kotak seleksi yang memudar setelah selesai
     const guides = []; // garis panduan
 
-    const heroCenter = () => {
-      const r = (tasks[1] || tasks[0])?.el.getBoundingClientRect();
-      return r ? { x: r.left + r.width / 2, y: r.top + r.height / 2 } : { x: W / 2, y: H / 3 };
-    };
+    const viewCenter = () => ({ x: W / 2, y: H * 0.42 });
 
     const onMove = (e) => {
       pointer.x = e.clientX;
@@ -169,9 +178,10 @@ export default function SwarmCursor({ enabled = true, replayKey = 0, root = null
       hoverTarget = null;
     };
     const onDown = (e) => {
-      if (phase !== 'flock') return;
+      if (phase === 'intro') return;
       burstUntil = performance.now() + 650;
       for (const a of agents) {
+        if (a.busy) continue; // yang sedang membangun tidak ikut terlempar
         const dx = a.x - e.clientX;
         const dy = a.y - e.clientY;
         const d = Math.hypot(dx, dy) || 1;
@@ -213,6 +223,75 @@ export default function SwarmCursor({ enabled = true, replayKey = 0, root = null
 
     const startPoint = (t, r) => (t.kind === 'type' ? [r.left - 4, r.top + r.height * 0.55] : [r.left, r.top]);
     const endPoint = (t, r) => (t.kind === 'type' ? [r.right + 4, r.top + r.height * 0.55] : [r.right, r.bottom]);
+    const onScreen = (r) => r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < H * 0.92;
+
+    // kawanan (flocking) untuk kursor yang sedang menganggur
+    const flock = (list, goal) => {
+      let corners = [];
+      let pointers = [];
+      if (hoverTarget && pointer.inside && hoverTarget.isConnected) {
+        const r = hoverTarget.getBoundingClientRect();
+        if (r.width < W * 0.7 && r.height < H * 0.7) {
+          corners = [[r.left - 2, r.top - 2], [r.right + 2, r.top - 2], [r.right + 2, r.bottom + 2], [r.left - 2, r.bottom + 2]];
+          pointers = [...list]
+            .sort((p, q) => Math.hypot(p.x - goal.x, p.y - goal.y) - Math.hypot(q.x - goal.x, q.y - goal.y))
+            .slice(0, 4);
+        }
+      }
+      for (const a of list) {
+        const ci = pointers.indexOf(a);
+        if (ci >= 0) {
+          seek(a, corners[ci][0], corners[ci][1], 12, 1.3);
+          continue;
+        }
+        let sepX = 0;
+        let sepY = 0;
+        let aliX = 0;
+        let aliY = 0;
+        let cohX = 0;
+        let cohY = 0;
+        let n = 0;
+        for (const o of list) {
+          if (o === a) continue;
+          const dx = a.x - o.x;
+          const dy = a.y - o.y;
+          const d = Math.hypot(dx, dy);
+          if (d < 90) {
+            n++;
+            aliX += o.vx;
+            aliY += o.vy;
+            cohX += o.x;
+            cohY += o.y;
+            if (d < 38 && d > 0) {
+              sepX += (dx / d) * (38 - d);
+              sepY += (dy / d) * (38 - d);
+            }
+          }
+        }
+        if (n) {
+          a.vx += (aliX / n - a.vx) * 0.04 + (cohX / n - a.x) * 0.0015;
+          a.vy += (aliY / n - a.vy) * 0.04 + (cohY / n - a.y) * 0.0015;
+        }
+        a.vx += sepX * 0.05;
+        a.vy += sepY * 0.05;
+
+        // tetap dekat mouse, tapi tidak menempel (menghindar bila terlalu dekat)
+        const dx = goal.x - a.x;
+        const dy = goal.y - a.y;
+        const d = Math.hypot(dx, dy) || 1;
+        const ring = a.orbitR * 0.75 + 30;
+        if (d > ring) {
+          a.vx += (dx / d) * 0.35;
+          a.vy += (dy / d) * 0.35;
+        } else if (d < ring * 0.6) {
+          a.vx -= (dx / d) * 0.6;
+          a.vy -= (dy / d) * 0.6;
+        }
+        // sedikit berputar mengelilingi mouse supaya tetap hidup saat mouse diam
+        a.vx += (-dy / d) * 0.06;
+        a.vy += (dx / d) * 0.06;
+      }
+    };
 
     let raf = 0;
     let last = performance.now();
@@ -227,43 +306,56 @@ export default function SwarmCursor({ enabled = true, replayKey = 0, root = null
         return;
       }
       const t = (now - start) / 1000;
+      if (phase === 'intro' && now - start > INTRO_MS) phase = 'live';
 
-      // ---------- fase ----------
-      if (phase === 'intro' && now - start > 1500) phase = tasks.length ? 'build' : 'flock';
-
-      if (phase === 'build') {
-        let watchX = W / 2;
-        let watchY = H / 3;
-        tasks.forEach((task, i) => {
-          const prev = tasks[i - 1];
-          // tugas dibuka dari atas ke bawah: mulai saat tugas sebelumnya sudah separuh jalan
-          if (task.phase === 'wait' && (!prev || prev.phase === 'done' || (prev.phase === 'draw' && prev.p > 0.45))) {
-            const r = task.el.getBoundingClientRect();
-            const [sx, sy] = startPoint(task, r);
-            task.agent = freeAgentNear(sx, sy);
-            if (task.agent) {
-              task.agent.busy = true;
-              task.phase = 'travel';
-            }
+      // ---------- membangun ----------
+      let watch = null;
+      if (phase === 'live') {
+        const rects = new Map();
+        const rectOf = (task) => {
+          let r = rects.get(task);
+          if (!r) {
+            r = task.el.getBoundingClientRect();
+            rects.set(task, r);
           }
-          if (task.phase === 'wait' || task.phase === 'done') return;
-          const r = task.el.getBoundingClientRect();
+          return r;
+        };
+        // tugas siap = induk sudah jadi + elemennya sedang terlihat di layar (ikut arah scroll)
+        const ready = tasks.filter(
+          (task) => task.phase === 'wait' && (!task.parent || task.parent.phase === 'done') && onScreen(rectOf(task))
+        );
+        const active = tasks.filter((task) => task.phase === 'travel' || task.phase === 'draw').length;
+        // makin banyak yang menunggu (mis. scroll cepat), makin banyak kursor turun tangan
+        let slots = clamp(2 + Math.floor(ready.length / 2), 2, agents.length - 3) - active;
+        for (const task of ready) {
+          if (slots <= 0) break;
+          const [sx, sy] = startPoint(task, rectOf(task));
+          const a = freeAgentNear(sx, sy);
+          if (!a) break;
+          a.busy = true;
+          task.agent = a;
+          task.phase = 'travel';
+          slots--;
+        }
+
+        for (const task of tasks) {
+          if (task.phase !== 'travel' && task.phase !== 'draw') continue;
+          const r = rectOf(task);
           const [sx, sy] = startPoint(task, r);
           const [ex, ey] = endPoint(task, r);
           const a = task.agent;
           if (task.phase === 'travel') {
-            const d = seek(a, sx, sy, 11, 1.2);
-            if (d < 5) {
+            const d = seek(a, sx, sy, 17, 1.8);
+            if (d < 6) {
               task.phase = 'draw';
               task.t0 = now;
+              a.drawing = true;
               const chars = (task.el.textContent || '').length;
               task.dur =
-                task.kind === 'type' ? clamp(chars * 70, 900, 1600) : clamp(450 + (r.width * r.height) / 900, 650, 1300);
-              guides.push({ y: r.top, x: r.left, born: now, color: a.color, el: task.el });
+                task.kind === 'type' ? clamp(chars * 38, 420, 900) : clamp(260 + (r.width * r.height) / 2600, 340, 800);
+              guides.push({ born: now, color: a.color, el: task.el });
             }
-            watchX = a.x;
-            watchY = a.y;
-          } else if (task.phase === 'draw') {
+          } else {
             task.p = clamp((now - task.t0) / task.dur, 0, 1);
             const e = task.kind === 'type' ? task.p : easeInOut(task.p);
             a.x = sx + (ex - sx) * e;
@@ -273,127 +365,49 @@ export default function SwarmCursor({ enabled = true, replayKey = 0, root = null
             const right = (1 - e) * 100;
             task.el.style.clipPath =
               task.kind === 'type' ? `inset(-30% ${right}% -30% 0)` : `inset(0 ${right}% ${(1 - e) * 100}% 0)`;
-            watchX = a.x;
-            watchY = a.y;
             if (task.p >= 1) {
               task.phase = 'done';
               task.el.style.clipPath = '';
               a.busy = false;
+              a.drawing = false;
               if (task.kind === 'box') afterglows.push({ el: task.el, color: a.color, born: now });
             }
           }
-        });
-
-        // kursor yang menganggur berkerumun di sekitar pekerjaan yang sedang berlangsung
-        agents.forEach((a, i) => {
-          if (a.busy) return;
-          const ang = a.orbitA + t * 0.9 * (i % 2 ? 1 : -1);
-          seek(a, watchX + Math.cos(ang) * (a.orbitR * 0.9), watchY + Math.sin(ang) * (a.orbitR * 0.55) + 40, 7, 0.5);
-        });
-
-        if (tasks.every((task) => task.phase === 'done')) {
-          phase = 'flock';
+          watch = { x: a.x, y: a.y };
         }
       }
 
+      // ---------- kursor yang menganggur ----------
+      const idle = agents.filter((a) => !a.busy);
       if (phase === 'intro') {
-        const c = heroCenter();
-        agents.forEach((a, i) => {
-          const ang = a.orbitA + t * 1.7;
-          seek(a, c.x + Math.cos(ang) * (90 + (i % 3) * 30), c.y + Math.sin(ang) * (45 + (i % 3) * 14), 12, 1.1);
+        const c = viewCenter();
+        idle.forEach((a, i) => {
+          const ang = a.orbitA + t * 1.9;
+          seek(a, c.x + Math.cos(ang) * (90 + (i % 3) * 30), c.y + Math.sin(ang) * (45 + (i % 3) * 14), 14, 1.3);
         });
-      }
-
-      if (phase === 'flock') {
-        const goal = pointer.inside ? pointer : heroCenter();
-        // kursor terdekat menunjuk sudut elemen yang sedang dibidik
-        let corners = [];
-        let pointers = new Set();
-        if (hoverTarget && pointer.inside && hoverTarget.isConnected) {
-          const r = hoverTarget.getBoundingClientRect();
-          if (r.width < W * 0.7 && r.height < H * 0.7) {
-            corners = [[r.left - 2, r.top - 2], [r.right + 2, r.top - 2], [r.right + 2, r.bottom + 2], [r.left - 2, r.bottom + 2]];
-            const sorted = [...agents].sort(
-              (p, q) => Math.hypot(p.x - goal.x, p.y - goal.y) - Math.hypot(q.x - goal.x, q.y - goal.y)
-            );
-            pointers = new Set(sorted.slice(0, 4));
-          }
-        }
-        const ptrList = [...pointers];
-
-        for (const a of agents) {
-          const ci = ptrList.indexOf(a);
-          if (ci >= 0) {
-            seek(a, corners[ci][0], corners[ci][1], 12, 1.3);
-            continue;
-          }
-          let sepX = 0;
-          let sepY = 0;
-          let aliX = 0;
-          let aliY = 0;
-          let cohX = 0;
-          let cohY = 0;
-          let n = 0;
-          for (const o of agents) {
-            if (o === a) continue;
-            const dx = a.x - o.x;
-            const dy = a.y - o.y;
-            const d = Math.hypot(dx, dy);
-            if (d < 90) {
-              n++;
-              aliX += o.vx;
-              aliY += o.vy;
-              cohX += o.x;
-              cohY += o.y;
-              if (d < 38 && d > 0) {
-                sepX += (dx / d) * (38 - d);
-                sepY += (dy / d) * (38 - d);
-              }
-            }
-          }
-          if (n) {
-            a.vx += (aliX / n - a.vx) * 0.04 + (cohX / n - a.x) * 0.0015;
-            a.vy += (aliY / n - a.vy) * 0.04 + (cohY / n - a.y) * 0.0015;
-          }
-          a.vx += sepX * 0.05;
-          a.vy += sepY * 0.05;
-
-          // tetap dekat mouse, tapi tidak menempel (menghindar bila terlalu dekat)
-          const dx = goal.x - a.x;
-          const dy = goal.y - a.y;
-          const d = Math.hypot(dx, dy) || 1;
-          const ring = a.orbitR * 0.75 + 30;
-          if (d > ring) {
-            a.vx += (dx / d) * 0.35;
-            a.vy += (dy / d) * 0.35;
-          } else if (d < ring * 0.6) {
-            a.vx -= (dx / d) * 0.6;
-            a.vy -= (dy / d) * 0.6;
-          }
-          // sedikit berputar mengelilingi mouse supaya tetap hidup saat mouse diam
-          a.vx += (-dy / d) * 0.06;
-          a.vy += (dx / d) * 0.06;
-        }
+      } else if (watch) {
+        // menonton pekerjaan yang sedang berlangsung
+        idle.forEach((a, i) => {
+          const ang = a.orbitA + t * 1.1 * (i % 2 ? 1 : -1);
+          seek(a, watch.x + Math.cos(ang) * (a.orbitR * 0.9), watch.y + Math.sin(ang) * (a.orbitR * 0.55) + 40, 9, 0.6);
+        });
+      } else {
+        // semua yang terlihat sudah jadi → berkawan di sekitar mouse
+        flock(idle, pointer.inside ? pointer : viewCenter());
       }
 
       // ---------- integrasi ----------
+      const bursting = now < burstUntil;
+      const calm = phase === 'live' && !watch;
       for (const a of agents) {
-        if (phase === 'build' && a.busy) {
-          // yang sedang bekerja dikendalikan langsung (travel tetap pakai kecepatan)
-          if (!tasks.some((tk) => tk.agent === a && tk.phase === 'draw')) {
-            a.x += a.vx * dt;
-            a.y += a.vy * dt;
-          }
-          continue;
-        }
+        if (a.drawing) continue; // posisinya diatur langsung oleh tugas
         const sp = Math.hypot(a.vx, a.vy);
-        const bursting = now < burstUntil;
-        const max = bursting ? 24 : phase === 'flock' ? 7.5 : 12;
+        const max = bursting && !a.busy ? 24 : a.busy ? 17 : calm ? 7.5 : 13;
         if (sp > max) {
           a.vx = (a.vx / sp) * max;
           a.vy = (a.vy / sp) * max;
         }
-        const drag = bursting ? 0.96 : phase === 'flock' ? 0.94 : 0.9;
+        const drag = bursting ? 0.96 : calm ? 0.94 : 0.9;
         a.vx *= Math.pow(drag, dt);
         a.vy *= Math.pow(drag, dt);
         a.x += a.vx * dt;
