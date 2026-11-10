@@ -102,7 +102,7 @@ export const WORK = [
     tech: ['React', 'Laravel 11', 'MySQL', 'Geolocation API'],
     figure: '198',
     figureLabel: 'peserta magang dipantau dalam satu dasbor',
-    image: '/projects/sigma-bpjstk.png',
+    image: '/projects/sigma-bpjstk.webp',
     to: '/projects',
   },
   {
@@ -128,7 +128,7 @@ export const WORK = [
     tech: ['Web Dashboard', 'Chart.js', 'Data Analytics'],
     figure: 'Harian',
     figureLabel: 'rekap transaksi & kliring per cabang',
-    image: '/projects/visualisasi-bank-sumut.png',
+    image: '/projects/visualisasi-bank-sumut.webp',
     to: '/projects',
   },
 ];

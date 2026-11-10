@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'framer-motion';
+import { useMeasureOnMount } from '../../hooks/useMeasureOnMount';
 
 // Efek gerak yang terikat posisi scroll (bukan sekali jalan saat terlihat).
 // Semuanya mati otomatis bila pengguna memilih "kurangi gerakan" di sistemnya.
@@ -14,6 +15,7 @@ export function Parallax({ speed = 0.15, children, style, className }) {
   const ref = useRef(null);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
+  useMeasureOnMount();
   const raw = useTransform(scrollYProgress, [0, 1], [speed * -220, speed * 220]);
   const y = useSpring(raw, SPRING);
 
@@ -32,6 +34,7 @@ export function ScrollReveal({ children, style, className, from = 70, scale = 0.
   const ref = useRef(null);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start 100%', 'start 62%'] });
+  useMeasureOnMount();
   const p = useSpring(scrollYProgress, SPRING);
   const y = useTransform(p, [0, 1], [from, 0]);
   const s = useTransform(p, [0, 1], [scale, 1]);
@@ -63,6 +66,7 @@ export function ScrollExit({ children, style, className, distance = -90 }) {
   const ref = useRef(null);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
+  useMeasureOnMount();
   const y = useTransform(scrollYProgress, [0, 1], [0, distance]);
   const o = useTransform(scrollYProgress, [0, 0.9], [1, 0]);
   const s = useTransform(scrollYProgress, [0, 1], [1, 0.94]);
