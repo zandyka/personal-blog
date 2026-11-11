@@ -1,4 +1,4 @@
-import Projects from '../components/Projects';
+import Projects from '../components/Projects.jsx';
 import { motion } from 'framer-motion';
 
 export default function ProjectsPage() {
