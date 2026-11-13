@@ -1,16 +1,28 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useReducedMotion } from 'framer-motion';
-import { Ghost, Hand } from 'lucide-react';
-import { spriteUrl } from '../games/swarm-survivor/sprites';
+import { Hand } from 'lucide-react';
+import { spriteUrl } from '../games/shared/pixelSprites';
 
 // Pratinjau animasi mini untuk kartu "Coming Soon" — murni CSS kecuali huruf kuis.
 
-function Pacman() {
+// Lorong labirin: kucing pixel memunguti remah ikan, dikejar robot penyedot debu.
+function Maze() {
+  const reduce = useReducedMotion();
+  const art = useMemo(() => ({ cat: [spriteUrl('akmal', 0, 1), spriteUrl('akmal', 1, 1)], bot: [spriteUrl('robotRed', 0, 1), spriteUrl('robotBlue', 1, 1)] }), []);
+  const [f, setF] = useState(0);
+  useEffect(() => {
+    if (reduce) return undefined;
+    const id = setInterval(() => setF((n) => 1 - n), 180);
+    return () => clearInterval(id);
+  }, [reduce]);
   return (
-    <div className="pv pv--pacman" aria-hidden="true">
+    <div className="pv pv--stage pv--maze" aria-hidden="true">
       <span className="pv-dots" />
-      <span className="pv-pac" />
-      <Ghost className="pv-ghost" size={26} />
+      <span className="pvm-run">
+        <img src={art.bot[1]} alt="" />
+        <img src={art.bot[0]} alt="" />
+        <img src={art.cat[f]} alt="" className="pvm-cat" />
+      </span>
     </div>
   );
 }
@@ -24,7 +36,7 @@ const PIECE = [[3, 0], [4, 0], [5, 0], [4, 1]];
 
 function Tetris() {
   return (
-    <div className="pv pv--tetris" aria-hidden="true">
+    <div className="pv pv--stage pv--tetris" aria-hidden="true">
       <div className="pv-board">
         {STACK.map(([x, y, c]) => (
           <span key={`${x}-${y}`} className="pv-cell" style={{ '--x': x, '--y': y, background: c }} />
@@ -51,7 +63,7 @@ function Quiz() {
   }, [reduce]);
 
   return (
-    <div className="pv pv--quiz" aria-hidden="true">
+    <div className="pv pv--stage pv--quiz" aria-hidden="true">
       <Hand className="pv-hand" size={30} />
       <div className="pv-timer">
         <svg viewBox="0 0 44 44">
@@ -118,7 +130,7 @@ function Survivor() {
 }
 
 export default function ArcadePreview({ kind }) {
-  if (kind === 'pacman') return <Pacman />;
+  if (kind === 'maze') return <Maze />;
   if (kind === 'tetris') return <Tetris />;
   if (kind === 'drift') return <Drift />;
   if (kind === 'survivor') return <Survivor />;

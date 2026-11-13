@@ -7,6 +7,9 @@ import './games.css';
 const GAMES = {
   'neon-drift': lazy(() => import('./neon-drift/NeonDrift')),
   'swarm-survivor': lazy(() => import('./swarm-survivor/SwarmSurvivor')),
+  'meong-maze': lazy(() => import('./meong-maze/MeongMaze')),
+  polyblok: lazy(() => import('./polyblok/Polyblok')),
+  'bisindo-quiz': lazy(() => import('./bisindo-quiz/BisindoQuiz')),
 };
 
 export const isGameId = (id) => Object.prototype.hasOwnProperty.call(GAMES, id || '');

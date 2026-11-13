@@ -1,7 +1,7 @@
 // Swarm Survivor — arena shooter top-down bergaya pixel (Canvas 2D beresolusi rendah).
 // Tiga kucing situs ini berburu serangga di taman malam: bertahan dari gelombang musuh,
 // kumpulkan XP, pilih upgrade tiap naik level.
-import { getSprites, drawNumber } from './sprites';
+import { getSprites, drawNumber } from '../shared/pixelSprites';
 
 const TAU = Math.PI * 2;
 const ARENA = { w: 2800, h: 2000 };
@@ -371,8 +371,9 @@ export function createSwarmSurvivor(canvas, cb = {}) {
     else sfx('hit', 60, () => audio.noise({ dur: 0.04, vol: 0.05, from: 2400, q: 1.5 }));
   };
 
+  let god = false; // hanya dipakai simulasi saat pengembangan
   const hurtPlayer = (dmg, fx, fy) => {
-    if (P.inv > 0 || G.phase !== 'play') return;
+    if (P.inv > 0 || G.phase !== 'play' || god) return;
     const scaled = dmg * (1 + (wave.n - 1) * 0.05);
     P.hp -= scaled;
     P.inv = 0.7;
@@ -1491,7 +1492,7 @@ export function createSwarmSurvivor(canvas, cb = {}) {
   resize();
   raf = requestAnimationFrame(frame);
 
-  return {
+  const api = {
     start: () => {
       reset(false);
       G.phase = 'play';
@@ -1556,4 +1557,18 @@ export function createSwarmSurvivor(canvas, cb = {}) {
       canvas.style.height = '';
     },
   };
+  if (import.meta.env.DEV) {
+    api.debug = {
+      god: (v) => (god = v),
+      wave: (n) => {
+        enemies = [];
+        spawns = [];
+        wave.n = n - 1;
+        wave.live = false;
+        wave.rest = 0.1;
+      },
+      state: () => ({ phase: G.phase, wave: wave.n, enemies: enemies.length, bullets: bullets.length, parts: parts.length, gems: gems.length, level: P.level }),
+    };
+  }
+  return api;
 }

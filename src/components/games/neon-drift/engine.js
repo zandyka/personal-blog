@@ -1177,7 +1177,7 @@ export function createNeonDrift(host, cb = {}) {
         c.passed = true;
         if (dx < 2.8) nearMiss(dx < 2.3);
       }
-      if (S.invuln <= 0 && dx < 1.76 && Math.abs(c.z) < reach - 0.3) hitCar(c);
+      if (S.invuln <= 0 && !god && dx < 1.76 && Math.abs(c.z) < reach - 0.3) hitCar(c);
     }
   };
 
@@ -1213,10 +1213,34 @@ export function createNeonDrift(host, cb = {}) {
     }
   };
 
+  // Pengemudi otomatis dan mode kebal: hanya untuk simulasi saat pengembangan.
+  let auto = false;
+  let god = false;
+  const autopilot = () => {
+    let bestLane = 0;
+    let bestGap = -1;
+    for (let l = 0; l < 4; l++) {
+      let gap = 200;
+      for (const c of traffic) {
+        if (!c.active || c.flung) continue;
+        if (Math.abs(c.x - LANES[l]) < 2.2 && c.z < 8 && c.z > -160) gap = Math.min(gap, -c.z + 8);
+      }
+      gap -= Math.abs(LANES[l] - S.x) * 2.5;
+      if (gap > bestGap) {
+        bestGap = gap;
+        bestLane = l;
+      }
+    }
+    const d = LANES[bestLane] - S.x;
+    input.left = d < -0.35;
+    input.right = d > 0.35;
+  };
+
   const update = (dt, realDt) => {
     S.t += dt;
     uTime.value = S.t;
     const running = S.mode === 'run';
+    if (auto && running) autopilot();
     const mods = active.info.mods;
 
     /* kecepatan */
@@ -1606,7 +1630,7 @@ export function createNeonDrift(host, cb = {}) {
     cb.onState?.('menu');
   };
 
-  return {
+  const api = {
     startRun,
     toMenu,
     press: (key, down) => {
@@ -1652,4 +1676,12 @@ export function createNeonDrift(host, cb = {}) {
       canvas.remove();
     },
   };
+  if (import.meta.env.DEV) {
+    api.debug = {
+      auto: (v) => (auto = v),
+      god: (v) => (god = v),
+      state: () => ({ mode: S.mode, dist: Math.round(S.runDist), speed: Math.round(S.speed * 3.6), zone: S.zone, quality, calls: renderer.info.render.calls, tris: renderer.info.render.triangles }),
+    };
+  }
+  return api;
 }

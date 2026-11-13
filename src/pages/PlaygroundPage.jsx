@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Gamepad2, Sparkles, Blocks, Ghost, ArrowRight, Terminal, RotateCcw, Play, CarFront, Crosshair, Keyboard, Smartphone } from 'lucide-react';
+import { Gamepad2, Sparkles, Blocks, Cat, Joystick, RotateCcw, Play, CarFront, Crosshair, Keyboard, Smartphone } from 'lucide-react';
 import HandSpeakDemo from '../components/handspeak/HandSpeakDemo';
 import { useSoundContext } from '../components/ui/SoundProvider';
 import TargetCursor from '../components/ui/TargetCursor';
@@ -10,7 +10,6 @@ import { useSwarmEnabled } from '../lib/swarmStore';
 import { ScrollReveal } from '../components/ui/ScrollMotion';
 import ArcadePreview from '../components/playground/ArcadePreview';
 import GameModal, { isGameId } from '../components/games/GameModal';
-import { useTilt } from '../hooks/useTilt';
 import '../components/playground/playground.css';
 
 // Game yang sudah bisa dimainkan; dibuka di modal layar penuh (lihat GameModal).
@@ -41,42 +40,44 @@ const PLAYABLE_GAMES = [
   },
 ];
 
-const ARCADE_EXPERIMENTS = [
+// Arcade bergaya retro: tampilan pixel, layar tabung, dan suara chiptune.
+const RETRO_GAMES = [
   {
-    id: 'pacman',
-    title: 'Pacman Retro Classic',
-    category: 'Arcade Game',
-    icon: Ghost,
-    accent: '#facc15',
-    status: 'Sedang Dikembangkan',
+    id: 'meong-maze',
+    title: 'Meong Maze',
+    category: 'Retro Maze Chase',
+    icon: Cat,
+    accent: '#ffd15c',
+    accent2: '#ff8fc0',
+    preview: 'maze',
     description:
-      'Petualangan labirin klasik dengan navigasi keyboard dan virtual D-pad. Menggunakan physics engine ringan 60 FPS dan audio synthesizer chiptune retro.',
-    badge: 'Coming Soon',
-    preview: 'pacman',
+      'Kejar-kejaran labirin: kucing situs ini memunguti remah ikan sambil dikejar robot penyedot debu. Catnip membuat robot korslet dan bisa diterkam.',
+    tags: ['Pixel art', '4 robot', 'Terkaman kilat'],
   },
   {
-    id: 'tetris',
-    title: 'Tetris Matrix Arcade',
-    category: 'Puzzle Game',
+    id: 'polyblok',
+    title: 'Polyblok Matrix',
+    category: 'Retro Block Puzzle',
     icon: Blocks,
-    accent: '#38bdf8',
-    status: 'Sedang Dikembangkan',
-    description:
-      'Tantangan susun balok tetromino geometris dengan peningkatan kecepatan bertahap, sistem scoring garis ganda, dan particle burst saat clear line.',
-    badge: 'Coming Soon',
+    accent: '#7dffb2',
+    accent2: '#4de1ff',
     preview: 'tetris',
+    description:
+      'Susun balok berisi satu sampai lima petak hingga barisnya penuh. Tiap baris mengisi meter Surge untuk menghapus tiga baris terbawah sekaligus.',
+    tags: ['10 bentuk balok', 'Meter Surge', 'Makin cepat'],
   },
   {
-    id: 'gesture-game',
+    id: 'bisindo-quiz',
     title: 'BISINDO Speed Quiz',
     category: 'AI Interactive Game',
     icon: Sparkles,
-    accent: '#a855f7',
-    status: 'Konsep Prototipe',
-    description:
-      'Permainan interaktif menebak dan memperagakan postur gestur alfabet BISINDO langsung di depan kamera webcam dengan sistem timer dan XP leaderboard.',
-    badge: 'Planned',
+    accent: '#c69bff',
+    accent2: '#ffd15c',
     preview: 'quiz',
+    description:
+      'Kumpulkan XP dalam 60 detik: tebak huruf dari gambar isyaratnya, atau peragakan hurufnya di depan webcam dan biarkan AI HandSpeak yang menilai.',
+    tags: ['2 mode', 'Webcam + AI', 'Pengali beruntun'],
+    inputs: 'camera',
   },
 ];
 
@@ -127,7 +128,7 @@ function PlayableCard({ game, index, onPlay }) {
         <div className="pg-play__foot">
           <span className="pg-play__input">
             <Keyboard size={14} /> Keyboard
-            <Smartphone size={14} /> Sentuh
+            <Smartphone size={14} /> {game.inputs === 'camera' ? 'Sentuh · Kamera' : 'Sentuh'}
           </span>
           <button type="button" className="pg-play__cta cursor-target" data-cursor-label="Mainkan" onClick={play}>
             <Play size={15} /> Mainkan
@@ -135,111 +136,6 @@ function PlayableCard({ game, index, onPlay }) {
         </div>
       </div>
     </motion.article>
-  );
-}
-
-function ArcadeCard({ item, index }) {
-  const { playHover } = useSoundContext();
-  const tilt = useTilt({ max: 7, glare: 0.18 });
-  const Icon = item.icon;
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 50, rotateX: -14 }}
-      whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: index * 0.08 }}
-      style={{ transformPerspective: 1000 }}
-    >
-      <motion.div
-        {...tilt.handlers}
-        className="cursor-target pg-arcade-card"
-        data-swarm-build="box"
-        data-cursor-label={item.badge}
-        onMouseEnter={playHover}
-        style={{
-          background: 'var(--surface)',
-          border: '1px solid var(--border)',
-          borderRadius: '20px',
-          padding: '24px',
-          boxShadow: '0 4px 20px var(--shadow-color)',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          height: '100%',
-          overflow: 'hidden',
-          ...tilt.style,
-        }}
-      >
-        <motion.span style={tilt.glareStyle} aria-hidden="true" />
-        <div>
-          <div data-swarm-build="box">
-            <ArcadePreview kind={item.preview} />
-          </div>
-
-          {/* Top Header & Tag */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-            <div
-              style={{
-                width: '42px',
-                height: '42px',
-                borderRadius: '12px',
-                background: `${item.accent}15`,
-                border: `1px solid ${item.accent}30`,
-                color: item.accent,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <Icon size={20} />
-            </div>
-            <span
-              style={{
-                fontSize: '11px',
-                fontWeight: 700,
-                padding: '3px 10px',
-                borderRadius: '999px',
-                background: 'var(--surface-2)',
-                color: item.accent,
-                border: '1px solid var(--border)',
-                letterSpacing: '0.5px',
-              }}
-            >
-              {item.badge}
-            </span>
-          </div>
-
-          <span style={{ fontSize: '0.74rem', fontWeight: 700, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '1px' }}>
-            {item.category}
-          </span>
-          <h3
-            data-swarm-build="type"
-            style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text)', margin: '4px 0 10px', width: 'fit-content' }}
-          >
-            {item.title}
-          </h3>
-          <p style={{ fontSize: '0.84rem', color: 'var(--text-muted)', lineHeight: 1.55, margin: 0 }}>{item.description}</p>
-        </div>
-
-        <div
-          style={{
-            marginTop: '20px',
-            paddingTop: '14px',
-            borderTop: '1px solid var(--border)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            fontSize: '0.78rem',
-            color: 'var(--text-dim)',
-            fontWeight: 600,
-          }}
-        >
-          <span>Status: {item.status}</span>
-          <ArrowRight size={14} style={{ color: item.accent }} />
-        </div>
-      </motion.div>
-    </motion.div>
   );
 }
 
@@ -467,7 +363,7 @@ export default function PlaygroundPage() {
           </div>
         </section>
 
-        {/* Section 4: Arcade Mini-Games Preview (Coming Soon) */}
+        {/* Section 4: Arcade retro */}
         <section style={{ padding: '64px 20px', borderTop: '1px solid var(--border)', background: 'var(--bg)' }}>
           <div style={{ maxWidth: '1040px', margin: '0 auto' }}>
             <ScrollReveal from={60} scale={0.92} style={{ textAlign: 'center', marginBottom: '36px' }}>
@@ -481,12 +377,12 @@ export default function PlaygroundPage() {
                   fontWeight: 700,
                   textTransform: 'uppercase',
                   letterSpacing: '1.2px',
-                  color: 'var(--text-dim)',
+                  color: 'var(--accent)',
                   marginBottom: '8px',
                 }}
               >
-                <Terminal size={14} />
-                <span>Next Releases</span>
+                <Joystick size={14} />
+                <span>Retro Arcade</span>
               </div>
               <h2
                 data-swarm-build="type"
@@ -502,13 +398,13 @@ export default function PlaygroundPage() {
                 Arcade &amp; Mini-Games
               </h2>
               <p data-swarm-build="box" style={{ fontSize: '0.9rem', color: 'var(--text-muted)', margin: 0 }}>
-                Eksperimen game klasik dan interaktif yang sedang dirancang untuk meramaikan Playground ini.
+                Tiga game bergaya retro: pixel art, layar tabung, dan suara chiptune.
               </p>
             </ScrollReveal>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
-              {ARCADE_EXPERIMENTS.map((item, i) => (
-                <ArcadeCard key={item.id} item={item} index={i} />
+            <div className="pg-play-grid pg-play-grid--three">
+              {RETRO_GAMES.map((game, i) => (
+                <PlayableCard key={game.id} game={game} index={i} onPlay={openGame} />
               ))}
             </div>
           </div>

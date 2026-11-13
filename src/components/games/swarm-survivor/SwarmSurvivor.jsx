@@ -23,7 +23,7 @@ import {
   Zap,
 } from 'lucide-react';
 import { createSwarmSurvivor, HEROES } from './engine';
-import { spriteUrl } from './sprites';
+import { spriteUrl } from '../shared/pixelSprites';
 import { HoldButton, TopBar, formatInt, useGameAudio, usePopups } from '../shared/GameChrome';
 import { loadBest, saveBest } from '../shared/audio';
 
@@ -201,6 +201,7 @@ export default function SwarmSurvivor({ onExit }) {
       },
     });
     engineRef.current = engine;
+    if (import.meta.env.DEV) window.__pg = { game: 'swarm-survivor', engine };
     setReady(true);
     return () => {
       engineRef.current = null;

@@ -341,6 +341,61 @@ export const SPRITE_DEFS = {
   shroom: { pal: { r: '#e04a5a', w: '#f6efe4', s: '#c9bfae' }, frames: [['.rrr.', 'rwrrr', 'rrrwr', '.sws.', '.sws.']] },
 };
 
+/* ------------------------------------------------- Meong Maze (labirin) */
+
+// Robot penyedot debu dilihat dari atas; warna tiap robot lewat palet.
+const ROBOT_ROWS = [
+  [
+    '....oooooo....',
+    '..oorryyrroo..',
+    '.orrhhrrrrrro.',
+    '.orhrrrrrrrro.',
+    'orrrrrrrrrrrro',
+    'orrwwrrrrwwrro',
+    'orrwkrrrrwkrro',
+    'orkkkkkkkkkkro',
+    'orddrrrrrrddro',
+    '.orddddddddro.',
+    '.oodddddddddo.',
+    '..okkooookko..',
+    '....oo..oo....',
+  ],
+  [
+    '....oooooo....',
+    '..oorryyrroo..',
+    '.orrhhrrrrrro.',
+    '.orhrrrrrrrro.',
+    'orrrrrrrrrrrro',
+    'orrwwrrrrwwrro',
+    'orrkwrrrrkwrro',
+    'orkkkkkkkkkkro',
+    'orddrrrrrrddro',
+    '.orddddddddro.',
+    '.odddddddddoo.',
+    '..ookkookkoo..',
+    '...oo....oo...',
+  ],
+];
+const robot = (r, d, h, w = '#ffffff', k = '#12121c') => ({ pal: { o: '#12121c', r, d, h, w, k, y: '#ffe45c' }, frames: ROBOT_ROWS });
+
+Object.assign(SPRITE_DEFS, {
+  robotRed: robot('#ef4a5c', '#a82238', '#ffa3ae'),
+  robotBlue: robot('#4aa8ef', '#2268a8', '#a8dcff'),
+  robotGreen: robot('#56d07a', '#2a8a4c', '#b4f5c8'),
+  robotOrange: robot('#f29a3a', '#b0621a', '#ffd29a'),
+  // korslet kena catnip: pucat dan bermata X
+  robotScared: robot('#9aa6d8', '#5a66a8', '#dfe6ff', '#12121c', '#ffffff'),
+  robotBlink: robot('#f6f4ee', '#b8b6c8', '#ffffff', '#ef4a5c', '#ffffff'),
+  // sedang kembali ke dok: tinggal mata dan lampu
+  robotEyes: {
+    pal: { w: '#ffffff', k: '#4aa8ef', y: '#ffd15c' },
+    frames: [['..............', '..............', '..............', '......yy......', '..............', '...ww....ww...', '...wk....wk...'], ['..............', '..............', '..............', '..............', '......yy......', '...ww....ww...', '...kw....kw...']],
+  },
+  catnip: { pal: { g: '#7dffb2', d: '#2f9c63', s: '#1f6a43' }, frames: [['...g....', '..gg..g.', '.ggd.gg.', '.gdd.gd.', '..ds.d..', '...ss...', '...s....'], ['....g...', '.g..gg..', '.gg.dgg.', '.dg.ddg.', '..d.sd..', '...ss...', '...s....']] },
+  goldfish: { pal: { b: '#ffd15c', h: '#fff4c8', e: '#3a2a08', d: '#c88a14' }, frames: [['b...bbb..', 'bb.bbhbb.', 'bbbbbbebb', 'bd.bbbbd.', 'd...ddd..']] },
+  heartSmall: { pal: { r: '#ff5d8f', h: '#ffc2d6' }, frames: [['.r.r.', 'rhrrr', 'rrrrr', '.rrr.', '..r..']] },
+});
+
 /* ------------------------------------------------------------ pembangun */
 
 function drawGrid(rows, pal, scale) {

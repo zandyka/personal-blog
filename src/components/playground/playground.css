@@ -115,45 +115,37 @@
   border: 1px solid var(--border);
 }
 
-/* Pacman */
+/* Meong Maze */
+.pv--maze {
+  background:
+    linear-gradient(#8a5340, #8a5340) 0 0 / 100% 22% no-repeat,
+    linear-gradient(#8a5340, #8a5340) 0 100% / 100% 22% no-repeat,
+    repeating-conic-gradient(#1b1722 0% 25%, #201b29 0% 50%) 50% 50% / 32px 32px;
+  box-shadow: inset 0 0 0 3px #4f2c24;
+}
+.pv--maze img { image-rendering: pixelated; image-rendering: crisp-edges; }
 .pv-dots {
   position: absolute;
   left: 0;
   right: 0;
   top: calc(50% - 4px);
   height: 8px;
-  background: radial-gradient(circle, rgba(250, 204, 21, 0.75) 3px, transparent 3.5px) 0 0 / 28px 8px repeat-x;
-  animation: pvDots 0.6s linear infinite;
-  -webkit-mask-image: linear-gradient(90deg, transparent 0 31%, #000 33%);
-  mask-image: linear-gradient(90deg, transparent 0 31%, #000 33%);
+  background: radial-gradient(circle, #ffd9a0 3px, transparent 3.5px) 0 0 / 28px 8px repeat-x;
+  animation: pvDots 0.5s linear infinite;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0 56%, #000 58%);
+  mask-image: linear-gradient(90deg, transparent 0 56%, #000 58%);
 }
-.pv-pac {
-  position: absolute;
-  left: 22%;
-  top: calc(50% - 17px);
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: #facc15;
-  box-shadow: 0 0 18px rgba(250, 204, 21, 0.45);
-  animation: pvChomp 0.3s ease-in-out infinite alternate;
-}
-.pv-ghost {
-  position: absolute;
-  left: 6%;
-  top: calc(50% - 13px);
-  color: #38bdf8;
-  animation: pvBob 1.2s ease-in-out infinite;
-}
+.pvm-run { position: absolute; left: 14%; top: 50%; display: flex; align-items: center; gap: 12px; transform: translateY(-50%); }
+.pvm-run img { width: 42px; height: auto; animation: pvBob 0.5s steps(2) infinite; }
+.pvm-run img:nth-child(2) { animation-delay: 0.25s; }
+.pvm-run .pvm-cat { width: 66px; margin-left: 26px; animation: none; }
 @keyframes pvDots { to { background-position: -28px 0; } }
-@keyframes pvChomp {
-  from { clip-path: polygon(100% 18%, 48% 50%, 100% 82%, 100% 100%, 0 100%, 0 0, 100% 0); }
-  to { clip-path: polygon(100% 49%, 48% 50%, 100% 51%, 100% 100%, 0 100%, 0 0, 100% 0); }
-}
-@keyframes pvBob { 50% { transform: translateY(-5px); } }
+@keyframes pvBob { 50% { transform: translateY(-3px); } }
 
 /* Tetris */
-.pv--tetris { display: grid; place-items: center; }
+.pv--tetris { display: grid; place-items: center; background: #070b0c; }
+.pv--tetris .pv-board { --c: 22px; }
+.pv--quiz { background: #14122a; }
 .pv-board { --c: 13px; position: relative; width: calc(var(--c) * 9); height: calc(var(--c) * 5); }
 .pv-cell {
   position: absolute;
@@ -222,6 +214,8 @@
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
   gap: 22px;
 }
+.pg-play-grid--three { grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr)); }
+.pg-play-grid--three .pg-play__stage { height: clamp(150px, 18vw, 190px); }
 .pg-play {
   position: relative;
   display: flex;
