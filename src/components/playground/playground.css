@@ -216,6 +216,305 @@
   100% { opacity: 0; transform: translateY(-8px); }
 }
 
+/* ---------- Kartu game yang bisa dimainkan ---------- */
+.pg-play-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+  gap: 22px;
+}
+.pg-play {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 20px var(--shadow-color);
+  overflow: hidden;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.5s ease;
+}
+.pg-play:hover {
+  transform: translateY(-6px);
+  border-color: color-mix(in srgb, var(--pa) 55%, var(--border));
+  box-shadow: 0 24px 60px -18px color-mix(in srgb, var(--pa) 45%, transparent), 0 4px 20px var(--shadow-color);
+}
+.pg-play__stage {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: clamp(190px, 26vw, 250px);
+  padding: 0;
+  border: 0;
+  background: #05050c;
+  cursor: pointer;
+  overflow: hidden;
+  container-type: size;
+}
+.pg-play__stage .pv { transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+.pg-play:hover .pg-play__stage .pv { transform: scale(1.05); }
+.pg-play__go {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  color: #05050c;
+  background: linear-gradient(120deg, var(--pa), var(--pb));
+  box-shadow: 0 10px 40px color-mix(in srgb, var(--pa) 60%, transparent);
+  transform: translate(-50%, -50%) scale(0.6);
+  opacity: 0;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+}
+.pg-play__go svg { margin-left: 3px; }
+.pg-play:hover .pg-play__go,
+.pg-play__stage:focus-visible .pg-play__go { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+.pg-play__live {
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  font-family: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #fff;
+  background: rgba(8, 8, 18, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+.pg-play__live i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 10px #34d399;
+  animation: pgLive 1.6s ease-in-out infinite;
+}
+@keyframes pgLive { 50% { opacity: 0.35; } }
+.pg-play__body { display: flex; flex-direction: column; flex: 1; padding: 22px 24px; }
+.pg-play__head { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+.pg-play__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  color: var(--pa);
+  background: color-mix(in srgb, var(--pa) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--pa) 32%, transparent);
+}
+html.light .pg-play__icon { color: color-mix(in srgb, var(--pa) 55%, #000); }
+.pg-play__cat {
+  font-family: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.pg-play__head h3 { margin: 2px 0 0; width: fit-content; font-size: 1.45rem; font-weight: 800; letter-spacing: -0.02em; color: var(--text); }
+.pg-play__body p { margin: 0; font-size: 0.86rem; line-height: 1.6; color: var(--text-muted); }
+.pg-play__tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 0; padding: 0; list-style: none; }
+.pg-play__tags li {
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+.pg-play__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 18px;
+}
+.pg-play__input { display: inline-flex; align-items: center; gap: 6px; font-size: 0.74rem; font-weight: 600; color: var(--text-dim); }
+.pg-play__input svg:not(:first-child) { margin-left: 8px; }
+.pg-play__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: 0;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #05050c;
+  background: linear-gradient(120deg, var(--pa), var(--pb));
+  box-shadow: 0 8px 26px color-mix(in srgb, var(--pa) 35%, transparent);
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+.pg-play__cta:hover { transform: translateY(-2px); box-shadow: 0 12px 34px color-mix(in srgb, var(--pb) 50%, transparent); }
+.pg-play__cta:active { transform: scale(0.96); }
+
+/* Pratinjau ukuran panggung (mengisi area atas kartu) */
+.pv--stage { position: absolute; inset: 0; height: auto; margin: 0; border: 0; border-radius: 0; }
+
+/* Neon Drift */
+.pv--drift { background: linear-gradient(180deg, #04030c 0%, #1a0b3d 38%, #7a2a78 52%, #ff4f93 57%, #0b0618 57.2%, #06040f 100%); }
+.pvd-sun {
+  position: absolute;
+  left: 50%;
+  top: 57%;
+  width: 34cqh;
+  height: 34cqh;
+  border-radius: 50%;
+  transform: translate(-50%, -78%);
+  background: linear-gradient(180deg, #ffd98a 10%, #ff3b7f 78%);
+  -webkit-mask-image: linear-gradient(180deg, #000 0 46%, transparent 46% 50%, #000 50% 58%, transparent 58% 64%, #000 64% 70%, transparent 70% 78%, #000 78%);
+  mask-image: linear-gradient(180deg, #000 0 46%, transparent 46% 50%, #000 50% 58%, transparent 58% 64%, #000 64% 70%, transparent 70% 78%, #000 78%);
+  clip-path: inset(0 0 22% 0);
+}
+.pvd-grid {
+  position: absolute;
+  left: -60%;
+  right: -60%;
+  top: 57%;
+  bottom: -40%;
+  background-image:
+    linear-gradient(rgba(111, 82, 255, 0.75) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(111, 82, 255, 0.75) 1px, transparent 1px);
+  background-size: 34px 34px;
+  transform: perspective(160px) rotateX(64deg);
+  transform-origin: 50% 0;
+  animation: pvdGrid 0.5s linear infinite;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 45%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 45%);
+}
+/* Jalan dan garis putus-putus berada di bidang perspektif yang sama dengan kisi */
+.pvd-grid::before,
+.pvd-grid::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  transform: translateX(-50%);
+}
+.pvd-grid::before {
+  width: 13%;
+  background: #07060f;
+  border-left: 3px solid #22e6ff;
+  border-right: 3px solid #ff3fa4;
+  box-shadow: -8px 0 18px -6px #22e6ff, 8px 0 18px -6px #ff3fa4;
+}
+.pvd-grid::after {
+  width: 4px;
+  background: repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0 22px, transparent 22px 56px);
+  animation: pvdDash 0.4s linear infinite;
+}
+.pvd-car {
+  position: absolute;
+  left: 50%;
+  bottom: 9%;
+  width: clamp(58px, 15cqw, 84px);
+  aspect-ratio: 1.65;
+  transform: translateX(-50%);
+  border-radius: 24% 24% 14% 14% / 50% 50% 22% 22%;
+  background: linear-gradient(180deg, #10121b 0 40%, #8d97ad 40% 100%);
+  box-shadow: 0 14px 26px -4px rgba(34, 230, 255, 0.75);
+  animation: pvdSway 3.4s ease-in-out infinite;
+}
+.pvd-car i {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 22%;
+  height: 12%;
+  border-radius: 4px;
+  background: #ff3fa4;
+  box-shadow: 0 0 14px #ff3fa4, 0 0 30px #ff3fa4;
+}
+@keyframes pvdGrid { to { background-position: 0 34px; } }
+@keyframes pvdDash { to { background-position: 0 56px; } }
+@keyframes pvdSway {
+  0%, 100% { transform: translateX(-50%) rotate(0); }
+  25% { transform: translateX(-130%) rotate(-5deg); }
+  70% { transform: translateX(30%) rotate(5deg); }
+}
+/* Swarm Survivor */
+.pv--survivor { background: radial-gradient(circle at 50% 50%, #151033 0%, #06060f 72%); }
+.pvs-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(140, 120, 255, 0.16) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(140, 120, 255, 0.16) 1px, transparent 1px);
+  background-size: 28px 28px;
+  background-position: center;
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 10%, transparent 78%);
+  mask-image: radial-gradient(circle at 50% 50%, #000 10%, transparent 78%);
+}
+.pvs-player,
+.pvs-pulse,
+.pvs-orbit,
+.pvs-foe { position: absolute; left: 50%; top: 50%; }
+.pvs-player {
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  border-radius: 50%;
+  background: #eaffff;
+  box-shadow: 0 0 14px #5ef2ff, 0 0 40px #5ef2ff;
+}
+.pvs-pulse {
+  width: 30px;
+  height: 30px;
+  margin: -15px 0 0 -15px;
+  border-radius: 50%;
+  border: 2px solid #5ef2ff;
+  animation: pvsPulse 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+.pvs-orbit { width: 0; height: 0; animation: pvsSpin 2.2s linear infinite; }
+.pvs-orbit i {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  margin: -4.5px;
+  border-radius: 50%;
+  background: #b47bff;
+  box-shadow: 0 0 12px #b47bff;
+  transform: rotate(calc(var(--i, 0) * 120deg)) translateX(38px);
+}
+.pvs-orbit i:nth-child(2) { --i: 1; }
+.pvs-orbit i:nth-child(3) { --i: 2; }
+.pvs-foe {
+  width: 12px;
+  height: 12px;
+  margin: -6px;
+  background: #ff5d7d;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  animation: pvsFoe 3s linear infinite backwards;
+}
+@keyframes pvsPulse {
+  0% { transform: scale(0.6); opacity: 0.9; }
+  100% { transform: scale(6.5); opacity: 0; }
+}
+@keyframes pvsSpin { to { transform: rotate(360deg); } }
+@keyframes pvsFoe {
+  0% { transform: translate(var(--fx), var(--fy)) rotate(0); opacity: 0; }
+  15% { opacity: 1; }
+  78% { transform: translate(calc(var(--fx) * 0.24), calc(var(--fy) * 0.24)) rotate(180deg); opacity: 1; filter: none; }
+  86% { transform: translate(calc(var(--fx) * 0.2), calc(var(--fy) * 0.2)) scale(2.2); opacity: 0; filter: brightness(3); }
+  100% { opacity: 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .pv *, .pv { animation: none !important; }
 }

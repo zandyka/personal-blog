@@ -66,8 +66,46 @@ function Quiz() {
   );
 }
 
+// Jalan neon dengan matahari, kisi perspektif, dan mobil yang berayun.
+function Drift() {
+  return (
+    <div className="pv pv--stage pv--drift" aria-hidden="true">
+      <span className="pvd-sun" />
+      <span className="pvd-grid" />
+      <span className="pvd-car">
+        <i />
+      </span>
+    </div>
+  );
+}
+
+// Arena: pemain di tengah, bilah orbit, musuh mendekat dari segala arah.
+const FOES = [
+  [-46, -38, 0], [44, -30, 0.5], [-40, 34, 1.0], [48, 36, 1.5], [0, -46, 2.0], [-50, 2, 2.5], [50, -4, 0.9], [6, 46, 1.8],
+];
+
+function Survivor() {
+  return (
+    <div className="pv pv--stage pv--survivor" aria-hidden="true">
+      <span className="pvs-grid" />
+      {FOES.map(([x, y, d], i) => (
+        <span key={i} className="pvs-foe" style={{ '--fx': `${x}cqw`, '--fy': `${y}cqh`, animationDelay: `${d}s` }} />
+      ))}
+      <span className="pvs-pulse" />
+      <span className="pvs-orbit">
+        <i />
+        <i />
+        <i />
+      </span>
+      <span className="pvs-player" />
+    </div>
+  );
+}
+
 export default function ArcadePreview({ kind }) {
   if (kind === 'pacman') return <Pacman />;
   if (kind === 'tetris') return <Tetris />;
+  if (kind === 'drift') return <Drift />;
+  if (kind === 'survivor') return <Survivor />;
   return <Quiz />;
 }

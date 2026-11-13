@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Gamepad2, Sparkles, Blocks, Ghost, ArrowRight, Terminal, RotateCcw } from 'lucide-react';
+import { Gamepad2, Sparkles, Blocks, Ghost, ArrowRight, Terminal, RotateCcw, Play, CarFront, Crosshair, Keyboard, Smartphone } from 'lucide-react';
 import HandSpeakDemo from '../components/handspeak/HandSpeakDemo';
 import { useSoundContext } from '../components/ui/SoundProvider';
 import TargetCursor from '../components/ui/TargetCursor';
@@ -8,8 +9,25 @@ import SwarmCursor from '../components/ui/SwarmCursor';
 import { useSwarmEnabled } from '../lib/swarmStore';
 import { ScrollReveal } from '../components/ui/ScrollMotion';
 import ArcadePreview from '../components/playground/ArcadePreview';
+import GameModal, { isGameId } from '../components/games/GameModal';
 import { useTilt } from '../hooks/useTilt';
 import '../components/playground/playground.css';
+
+// Game yang sudah bisa dimainkan; dibuka di modal layar penuh (lihat GameModal).
+const PLAYABLE_GAMES = [
+  {
+    id: 'neon-drift',
+    title: 'Neon Drift',
+    category: 'Endless Racing · 3D',
+    icon: CarFront,
+    accent: '#22e6ff',
+    accent2: '#ff3fa4',
+    preview: 'drift',
+    description:
+      'Balapan tanpa akhir di jalan raya neon. Selip di antara lalu lintas, kumpulkan near miss untuk mengisi nitro, dan bertahan selama mungkin saat kecepatan terus naik.',
+    tags: ['Three.js', 'Nitro & kombo', '4 zona'],
+  },
+];
 
 const ARCADE_EXPERIMENTS = [
   {
@@ -49,6 +67,64 @@ const ARCADE_EXPERIMENTS = [
     preview: 'quiz',
   },
 ];
+
+function PlayableCard({ game, index, onPlay }) {
+  const { playHover, playClick } = useSoundContext();
+  const Icon = game.icon;
+  const play = () => {
+    playClick();
+    onPlay(game.id);
+  };
+
+  return (
+    <motion.article
+      className="pg-play"
+      data-swarm-build="box"
+      style={{ '--pa': game.accent, '--pb': game.accent2 }}
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.25 }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: index * 0.1 }}
+      onMouseEnter={playHover}
+    >
+      <button type="button" className="pg-play__stage cursor-target" data-cursor-label="Mainkan" onClick={play} aria-label={`Mainkan ${game.title}`}>
+        <ArcadePreview kind={game.preview} />
+        <span className="pg-play__go" aria-hidden="true">
+          <Play size={22} />
+        </span>
+        <span className="pg-play__live">
+          <i /> Siap dimainkan
+        </span>
+      </button>
+      <div className="pg-play__body">
+        <div className="pg-play__head">
+          <span className="pg-play__icon">
+            <Icon size={20} />
+          </span>
+          <div>
+            <span className="pg-play__cat">{game.category}</span>
+            <h3 data-swarm-build="type">{game.title}</h3>
+          </div>
+        </div>
+        <p>{game.description}</p>
+        <ul className="pg-play__tags">
+          {game.tags.map((t) => (
+            <li key={t}>{t}</li>
+          ))}
+        </ul>
+        <div className="pg-play__foot">
+          <span className="pg-play__input">
+            <Keyboard size={14} /> Keyboard
+            <Smartphone size={14} /> Sentuh
+          </span>
+          <button type="button" className="pg-play__cta cursor-target" data-cursor-label="Mainkan" onClick={play}>
+            <Play size={15} /> Mainkan
+          </button>
+        </div>
+      </div>
+    </motion.article>
+  );
+}
 
 function ArcadeCard({ item, index }) {
   const { playHover } = useSoundContext();
@@ -163,6 +239,28 @@ export default function PlaygroundPage() {
   const swarmOn = useSwarmEnabled();
   const [replayKey, setReplayKey] = useState(0);
 
+  // Game aktif disimpan di URL (?game=...) supaya bisa dibagikan dan tombol Back menutupnya.
+  const [params, setParams] = useSearchParams();
+  const navigate = useNavigate();
+  const openedHere = useRef(false);
+  const requested = params.get('game');
+  const gameId = isGameId(requested) ? requested : null;
+  const openGame = useCallback(
+    (id) => {
+      openedHere.current = true;
+      setParams({ game: id });
+    },
+    [setParams],
+  );
+  const closeGame = useCallback(() => {
+    if (openedHere.current) {
+      openedHere.current = false;
+      navigate(-1);
+    } else {
+      setParams({}, { replace: true });
+    }
+  }, [navigate, setParams]);
+
   useEffect(() => {
     if (window.location.hash === '#handspeak') {
       const el = document.getElementById('handspeak');
@@ -186,7 +284,8 @@ export default function PlaygroundPage() {
   return (
     <div className="page-container pg-page">
       <TargetCursor spinDuration={2} hideDefaultCursor parallaxOn />
-      <SwarmCursor enabled={swarmOn} replayKey={replayKey} root=".pg-page" />
+      <SwarmCursor enabled={swarmOn && !gameId} replayKey={replayKey} root=".pg-page" />
+      <GameModal gameId={gameId} onClose={closeGame} />
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
         {/* Section 1: Hero Header */}
         <section ref={heroRef} className="pg-hero" onPointerMove={onHeroMove}>
@@ -309,7 +408,54 @@ export default function PlaygroundPage() {
           <HandSpeakDemo />
         </section>
 
-        {/* Section 3: Arcade Mini-Games Preview (Coming Soon) */}
+        {/* Section 3: Game yang sudah bisa dimainkan */}
+        <section id="games" style={{ padding: '64px 20px', borderTop: '1px solid var(--border)' }}>
+          <div style={{ maxWidth: '1040px', margin: '0 auto' }}>
+            <ScrollReveal from={60} scale={0.92} style={{ textAlign: 'center', marginBottom: '36px' }}>
+              <div
+                data-swarm-build="box"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  fontSize: '0.78rem',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '1.2px',
+                  color: 'var(--accent)',
+                  marginBottom: '8px',
+                }}
+              >
+                <Gamepad2 size={14} />
+                <span>Playable Now</span>
+              </div>
+              <h2
+                data-swarm-build="type"
+                style={{
+                  fontSize: 'clamp(1.8rem, 4vw, 2.6rem)',
+                  fontWeight: 800,
+                  color: 'var(--text)',
+                  letterSpacing: '-0.02em',
+                  margin: '0 auto 8px',
+                  width: 'fit-content',
+                }}
+              >
+                Game Siap Main
+              </h2>
+              <p data-swarm-build="box" style={{ fontSize: '0.9rem', color: 'var(--text-muted)', margin: 0 }}>
+                Dibuat dari nol untuk Playground ini. Langsung main di browser, tanpa unduhan.
+              </p>
+            </ScrollReveal>
+
+            <div className="pg-play-grid">
+              {PLAYABLE_GAMES.map((game, i) => (
+                <PlayableCard key={game.id} game={game} index={i} onPlay={openGame} />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Section 4: Arcade Mini-Games Preview (Coming Soon) */}
         <section style={{ padding: '64px 20px', borderTop: '1px solid var(--border)', background: 'var(--bg)' }}>
           <div style={{ maxWidth: '1040px', margin: '0 auto' }}>
             <ScrollReveal from={60} scale={0.92} style={{ textAlign: 'center', marginBottom: '36px' }}>
