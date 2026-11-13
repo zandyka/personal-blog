@@ -27,6 +27,18 @@ const PLAYABLE_GAMES = [
       'Balapan tanpa akhir di jalan raya neon. Selip di antara lalu lintas, kumpulkan near miss untuk mengisi nitro, dan bertahan selama mungkin saat kecepatan terus naik.',
     tags: ['Three.js', 'Nitro & kombo', '4 zona'],
   },
+  {
+    id: 'swarm-survivor',
+    title: 'Swarm Survivor',
+    category: 'Arena Shooter · Roguelite',
+    icon: Crosshair,
+    accent: '#5ef2ff',
+    accent2: '#b47bff',
+    preview: 'survivor',
+    description:
+      'Bertahan dari gelombang musuh yang terus membesar. Kumpulkan XP, rakit build dari 14 upgrade, dan hadapi bos setiap lima gelombang.',
+    tags: ['Canvas 2D', '14 upgrade', 'Boss fight'],
+  },
 ];
 
 const ARCADE_EXPERIMENTS = [

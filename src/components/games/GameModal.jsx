@@ -6,6 +6,7 @@ import './games.css';
 // Tiap game dimuat terpisah, jadi three.js dan mesin game baru diunduh saat dimainkan.
 const GAMES = {
   'neon-drift': lazy(() => import('./neon-drift/NeonDrift')),
+  'swarm-survivor': lazy(() => import('./swarm-survivor/SwarmSurvivor')),
 };
 
 export const isGameId = (id) => Object.prototype.hasOwnProperty.call(GAMES, id || '');

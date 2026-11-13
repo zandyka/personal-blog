@@ -174,7 +174,7 @@ export default function NeonDrift({ onExit }) {
         else if (e.code === 'Escape') onExit();
         return;
       }
-      if ((e.code === 'Enter' || e.code === 'Space') && (ph === 'menu' || ph === 'over')) {
+      if ((e.code === 'Enter' && (ph === 'menu' || ph === 'over')) || (e.code === 'Space' && ph === 'menu')) {
         e.preventDefault();
         start();
         return;
