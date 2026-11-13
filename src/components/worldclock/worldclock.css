@@ -1,0 +1,198 @@
+/* ==========================================================================
+   World clock — peta dunia bertitik dengan lengkung waktu dari Jakarta
+   ========================================================================== */
+
+.wc-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 84px 16px 24px;
+  background: rgba(0, 0, 0, 0.62);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  overflow-y: auto;
+}
+.wc-panel {
+  position: relative;
+  width: min(1120px, 100%);
+  border-radius: 26px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.55);
+  padding: clamp(18px, 2.6vw, 30px);
+  color: var(--text);
+}
+
+/* kepala */
+.wc-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 8px; }
+.wc-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.wc-home { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 14px; margin-top: 6px; }
+.wc-home strong {
+  font-family: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(1.9rem, 4vw, 2.8rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.wc-home span { font-size: 0.9rem; color: var(--text-muted); }
+.wc-visitor { margin: 6px 0 0; font-size: 0.8rem; color: var(--text-dim); }
+.wc-close {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.wc-close:hover { transform: rotate(90deg); }
+
+/* peta */
+.wc-map { position: relative; margin: 6px -6px 0; }
+.wc-map > svg { display: block; width: 100%; height: auto; overflow: visible; }
+.wc-dots circle { fill: var(--text-muted); }
+
+.wc-arc {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 0.32;
+  stroke-linecap: round;
+  opacity: 0.55;
+  transition: opacity 0.3s ease, stroke-width 0.3s ease;
+}
+.wc-arc.is-active { opacity: 1; stroke-width: 0.5; }
+/* kilau yang mengalir sepanjang lengkung aktif */
+.wc-arc-flow {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 0.55;
+  stroke-linecap: round;
+  stroke-dasharray: 2 60;
+  animation: wcFlow 1.6s linear infinite;
+  filter: drop-shadow(0 0 1px var(--accent));
+}
+@keyframes wcFlow { from { stroke-dashoffset: 62; } to { stroke-dashoffset: 0; } }
+
+.wc-pin { cursor: pointer; }
+.wc-pin.is-home { cursor: default; }
+.wc-pin__hit { fill: transparent; }
+.wc-pin__ring { fill: var(--accent); opacity: 0.28; transform-box: fill-box; transform-origin: center; }
+.wc-pin.is-home .wc-pin__ring,
+.wc-pin.is-active .wc-pin__ring { animation: wcPulse 1.8s cubic-bezier(0.16, 1, 0.3, 1) infinite; }
+.wc-pin__dot { fill: var(--accent); stroke: #fff; stroke-width: 0.3; }
+.wc-pin.is-home .wc-pin__dot { fill: #fff; stroke: var(--accent); stroke-width: 0.45; }
+@keyframes wcPulse { from { transform: scale(0.6); opacity: 0.55; } to { transform: scale(2.2); opacity: 0; } }
+
+/* kartu perbandingan */
+.wc-card {
+  position: absolute;
+  z-index: 2;
+  translate: -50% calc(-100% - 14px);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 190px;
+  padding: 10px 14px 12px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  border: 1px solid var(--accent-border, var(--border));
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  pointer-events: none;
+  white-space: nowrap;
+}
+.wc-card::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  width: 10px;
+  height: 10px;
+  translate: -50% 0;
+  rotate: 45deg;
+  background: inherit;
+  border-right: 1px solid var(--accent-border, var(--border));
+  border-bottom: 1px solid var(--accent-border, var(--border));
+}
+.wc-card__place { display: inline-flex; align-items: center; gap: 6px; font-size: 0.74rem; font-weight: 600; color: var(--text-muted); }
+.wc-card strong {
+  font-family: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.7rem;
+  font-weight: 700;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.wc-card__day { font-size: 0.78rem; color: var(--text-muted); }
+.wc-card__diff { font-size: 0.78rem; font-weight: 600; color: var(--accent); }
+
+/* daftar kota */
+.wc-list {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+.wc-chip {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: 'name diff' 'time time';
+  align-items: center;
+  gap: 2px 8px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+}
+.wc-chip:hover { transform: translateY(-2px); }
+.wc-chip.is-active { border-color: var(--accent); background: var(--accent-dim); }
+.wc-chip__name { grid-area: name; display: inline-flex; align-items: center; gap: 6px; font-size: 0.78rem; font-weight: 600; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wc-chip strong { grid-area: time; font-family: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif; font-size: 1.2rem; font-variant-numeric: tabular-nums; }
+.wc-chip__diff { grid-area: diff; font-family: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif; font-size: 0.72rem; color: var(--text-dim); }
+
+@media (max-width: 760px) {
+  .wc-backdrop { padding: 64px 10px 90px; }
+  .wc-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* peta kecil: kartu tidak melayang di atas kota (menutupi kepala panel), tapi di bawah peta */
+  .wc-card {
+    position: static;
+    translate: none;
+    margin: 10px 6px 0;
+    min-width: 0;
+    padding: 10px 12px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 10px;
+  }
+  .wc-card::after { display: none; }
+  .wc-card__place { width: 100%; }
+  .wc-card strong { font-size: 1.3rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wc-arc-flow, .wc-pin__ring { animation: none !important; }
+}

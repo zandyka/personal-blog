@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import {
@@ -23,6 +23,9 @@ import { useSoundContext } from './ui/SoundProvider';
 import ThemeToggle from './ui/ThemeToggle';
 import { usePet } from '../hooks/usePet';
 import { toggleSwarm, useSwarmEnabled } from '../lib/swarmStore';
+
+// Peta waktu dunia dimuat hanya saat jam diklik (data peta ~60 KB).
+const WorldClock = lazy(() => import('./worldclock/WorldClock'));
 
 const ABOUT_DROPDOWN = [
   { label: 'About Me', path: '/about', icon: User },
@@ -88,8 +91,13 @@ export default function Navbar() {
   const { currentPet, isPetVisible, cyclePet, togglePetVisibility } = usePet();
   const location = useLocation();
 
-  // Real-time Digital Clock (HH:mm:ss)
+  // Real-time Digital Clock (HH:mm:ss) — diklik membuka peta waktu dunia
   const [timeString, setTimeString] = useState('');
+  const [worldOpen, setWorldOpen] = useState(false);
+  const openWorld = () => {
+    playClick();
+    setWorldOpen(true);
+  };
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
@@ -235,7 +243,13 @@ export default function Navbar() {
             alignItems: 'center',
           }}
         >
-          <span
+          <button
+            type="button"
+            className="clock-trigger"
+            onClick={openWorld}
+            onMouseEnter={playHover}
+            title="Lihat waktu di kota lain"
+            aria-label={`Jam ${timeString}. Buka peta waktu dunia`}
             style={{
               fontFamily: "'Space Grotesk', sans-serif",
               fontSize: 'clamp(1rem, 1.3vw, 1.25rem)',
@@ -246,7 +260,7 @@ export default function Navbar() {
             }}
           >
             {timeString || '18:08:30'}
-          </span>
+          </button>
         </div>
 
         {/* Center: Floating Pill Navbar (Home | About ⌵ | Contact) */}
@@ -562,7 +576,11 @@ export default function Navbar() {
         </Link>
 
         {/* Live Clock on Mobile Top */}
-        <span
+        <button
+          type="button"
+          className="clock-trigger"
+          onClick={openWorld}
+          aria-label={`Jam ${timeString}. Buka peta waktu dunia`}
           style={{
             fontFamily: "'Space Grotesk', sans-serif",
             fontSize: '12px',
@@ -572,7 +590,7 @@ export default function Navbar() {
           }}
         >
           {timeString}
-        </span>
+        </button>
 
         {/* Right Mobile Actions: Pet Toggle, Pet Switcher, Sound Toggle */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -845,7 +863,25 @@ export default function Navbar() {
       </div>
 
       {/* Responsive Visibility Controls */}
+      {worldOpen && (
+        <Suspense fallback={null}>
+          <WorldClock open={worldOpen} onClose={() => setWorldOpen(false)} />
+        </Suspense>
+      )}
+
       <style>{`
+        /* jam di navbar = tombol peta waktu dunia */
+        .clock-trigger {
+          border: 0;
+          background: transparent;
+          padding: 4px 8px;
+          margin: -4px -8px;
+          border-radius: 10px;
+          cursor: pointer;
+          transition: background 0.2s ease;
+        }
+        .clock-trigger:hover { background: var(--surface-2); }
+
         @media (min-width: 860px) {
           .desktop-top-header { display: flex !important; }
           .mobile-top-bar { display: none !important; }
