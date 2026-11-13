@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useReducedMotion } from 'framer-motion';
 import { Ghost, Hand } from 'lucide-react';
+import { spriteUrl } from '../games/swarm-survivor/sprites';
 
 // Pratinjau animasi mini untuk kartu "Coming Soon" — murni CSS kecuali huruf kuis.
 
@@ -79,25 +80,39 @@ function Drift() {
   );
 }
 
-// Arena: pemain di tengah, bilah orbit, musuh mendekat dari segala arah.
+// Taman malam bergaya pixel: tiga kucing situs dikerubungi serangga.
 const FOES = [
-  [-46, -38, 0], [44, -30, 0.5], [-40, 34, 1.0], [48, 36, 1.5], [0, -46, 2.0], [-50, 2, 2.5], [50, -4, 0.9], [6, 46, 1.8],
+  [-46, -34, 0], [44, -30, 0.5], [-42, 32, 1.0], [46, 34, 1.5], [0, -44, 2.0], [-50, 2, 2.5], [50, -4, 0.9], [8, 44, 1.8],
 ];
 
 function Survivor() {
+  const reduce = useReducedMotion();
+  const art = useMemo(
+    () => ({
+      cats: ['maxwell', 'akmal', 'usu'].map((id) => [spriteUrl(id, 0, 1), spriteUrl(id, 1, 1)]),
+      bug: spriteUrl('drone', 0, 1),
+      slime: spriteUrl('splitter', 0, 1),
+    }),
+    [],
+  );
+  const [f, setF] = useState(0);
+  useEffect(() => {
+    if (reduce) return undefined;
+    const id = setInterval(() => setF((n) => 1 - n), 190);
+    return () => clearInterval(id);
+  }, [reduce]);
+
   return (
     <div className="pv pv--stage pv--survivor" aria-hidden="true">
-      <span className="pvs-grid" />
       {FOES.map(([x, y, d], i) => (
-        <span key={i} className="pvs-foe" style={{ '--fx': `${x}cqw`, '--fy': `${y}cqh`, animationDelay: `${d}s` }} />
+        <img key={i} src={i % 3 === 2 ? art.slime : art.bug} alt="" className="pvs-foe" style={{ '--fx': `${x}cqw`, '--fy': `${y}cqh`, animationDelay: `${d}s` }} />
       ))}
       <span className="pvs-pulse" />
-      <span className="pvs-orbit">
-        <i />
-        <i />
-        <i />
+      <span className="pvs-cats">
+        {art.cats.map((frames, i) => (
+          <img key={i} src={frames[(f + i) % 2]} alt="" />
+        ))}
       </span>
-      <span className="pvs-player" />
     </div>
   );
 }

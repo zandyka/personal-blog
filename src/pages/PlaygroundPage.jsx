@@ -30,14 +30,14 @@ const PLAYABLE_GAMES = [
   {
     id: 'swarm-survivor',
     title: 'Swarm Survivor',
-    category: 'Arena Shooter · Roguelite',
+    category: 'Pixel Arena · Roguelite',
     icon: Crosshair,
     accent: '#5ef2ff',
     accent2: '#b47bff',
     preview: 'survivor',
     description:
-      'Bertahan dari gelombang musuh yang terus membesar. Kumpulkan XP, rakit build dari 14 upgrade, dan hadapi bos setiap lima gelombang.',
-    tags: ['Canvas 2D', '14 upgrade', 'Boss fight'],
+      'Pilih salah satu dari tiga kucing situs ini, lalu berburu serangga di taman malam. Kumpulkan XP, rakit build dari 14 upgrade, dan hadapi bos setiap lima gelombang.',
+    tags: ['Pixel art', '3 kucing', '14 upgrade'],
   },
 ];
 

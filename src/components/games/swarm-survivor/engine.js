@@ -1,5 +1,7 @@
-// Swarm Survivor — arena shooter top-down (Canvas 2D).
-// Bertahan dari gelombang musuh, kumpulkan XP, pilih upgrade tiap naik level.
+// Swarm Survivor — arena shooter top-down bergaya pixel (Canvas 2D beresolusi rendah).
+// Tiga kucing situs ini berburu serangga di taman malam: bertahan dari gelombang musuh,
+// kumpulkan XP, pilih upgrade tiap naik level.
+import { getSprites, drawNumber } from './sprites';
 
 const TAU = Math.PI * 2;
 const ARENA = { w: 2800, h: 2000 };
@@ -33,59 +35,28 @@ const ENEMY = {
 };
 
 export const UPGRADES = [
-  { id: 'damage', name: 'Inti Plasma', desc: 'Damage semua senjata +25%', max: 6 },
-  { id: 'rate', name: 'Pemicu Cepat', desc: 'Kecepatan tembak +18%', max: 6 },
-  { id: 'multi', name: 'Laras Ganda', desc: '+1 peluru di setiap tembakan', max: 4 },
-  { id: 'pierce', name: 'Peluru Tembus', desc: 'Peluru menembus +1 musuh', max: 4 },
-  { id: 'orbit', name: 'Bilah Orbit', desc: '+1 bilah energi yang mengitarimu', max: 5 },
-  { id: 'nova', name: 'Gelombang Nova', desc: 'Ledakan kejut berkala yang mementalkan musuh', max: 5 },
-  { id: 'missile', name: 'Rudal Pelacak', desc: 'Rudal otomatis yang meledak di kerumunan', max: 5 },
-  { id: 'chain', name: 'Petir Berantai', desc: 'Sambaran petir yang melompat antar musuh', max: 5 },
-  { id: 'speed', name: 'Pendorong', desc: 'Kecepatan gerak +12%', max: 4 },
-  { id: 'hp', name: 'Lapis Baja', desc: 'HP maksimum +25 dan pulih 30 HP', max: 5 },
-  { id: 'regen', name: 'Nanobot', desc: 'Pulih 0,8 HP setiap detik', max: 4 },
-  { id: 'magnet', name: 'Medan Magnet', desc: 'Jangkauan ambil XP +45%', max: 4 },
-  { id: 'crit', name: 'Bidikan Tajam', desc: 'Peluang serangan kritikal +12%', max: 5 },
-  { id: 'dash', name: 'Dash Kilat', desc: 'Cooldown dash 18% lebih singkat', max: 4 },
+  { id: 'damage', name: 'Cakar Tajam', desc: 'Damage semua serangan +25%', max: 6 },
+  { id: 'rate', name: 'Refleks Kucing', desc: 'Kecepatan serang +18%', max: 6 },
+  { id: 'multi', name: 'Cakar Ganda', desc: '+1 cakaran di setiap serangan', max: 4 },
+  { id: 'pierce', name: 'Cakar Tembus', desc: 'Cakaran menembus +1 musuh', max: 4 },
+  { id: 'orbit', name: 'Ikan Pengawal', desc: '+1 ikan yang berputar melindungimu', max: 5 },
+  { id: 'nova', name: 'Raungan Meong', desc: 'Raungan berkala yang mementalkan musuh', max: 5 },
+  { id: 'missile', name: 'Roket Tuna', desc: 'Roket pelacak yang meledak di kerumunan', max: 5 },
+  { id: 'chain', name: 'Listrik Statis', desc: 'Setrum bulu yang melompat antar musuh', max: 5 },
+  { id: 'speed', name: 'Zoomies', desc: 'Kecepatan lari +12%', max: 4 },
+  { id: 'hp', name: 'Sembilan Nyawa', desc: 'HP maksimum +25 dan pulih 30 HP', max: 5 },
+  { id: 'regen', name: 'Tidur Siang', desc: 'Pulih 0,8 HP setiap detik', max: 4 },
+  { id: 'magnet', name: 'Hidung Tajam', desc: 'Jangkauan ambil XP +45%', max: 4 },
+  { id: 'crit', name: 'Insting Pemburu', desc: 'Peluang serangan kritikal +12%', max: 5 },
+  { id: 'dash', name: 'Lompatan Kilat', desc: 'Cooldown dash 18% lebih singkat', max: 4 },
 ];
 
-/* ---- sprite cahaya (di-cache per warna) ---- */
-const glowCache = new Map();
-function glowSprite(color) {
-  let c = glowCache.get(color);
-  if (c) return c;
-  c = document.createElement('canvas');
-  c.width = 64;
-  c.height = 64;
-  const g = c.getContext('2d');
-  const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32);
-  gr.addColorStop(0, `${color}ff`);
-  gr.addColorStop(0.22, `${color}88`);
-  gr.addColorStop(0.55, `${color}22`);
-  gr.addColorStop(1, `${color}00`);
-  g.fillStyle = gr;
-  g.fillRect(0, 0, 64, 64);
-  glowCache.set(color, c);
-  return c;
-}
-
-// Awan warna digambar sekali ke kanvas kecil, lalu direntangkan: satu blit per frame.
-let nebulaCanvas = null;
-function nebulaLayer() {
-  if (nebulaCanvas) return nebulaCanvas;
-  const k = 0.125;
-  const c = document.createElement('canvas');
-  c.width = ARENA.w * k;
-  c.height = ARENA.h * k;
-  const g = c.getContext('2d');
-  g.globalCompositeOperation = 'lighter';
-  for (const n of NEBULA) {
-    g.globalAlpha = n.a;
-    g.drawImage(glowSprite(n.color), (n.x - n.size / 2) * k, (n.y - n.size / 2) * k, n.size * k, n.size * k);
-  }
-  nebulaCanvas = c;
-  return c;
-}
+// Tiga kucing peliharaan situs; masing-masing punya kelebihan sendiri.
+export const HEROES = [
+  { id: 'maxwell', name: 'Maxwell', tag: 'Loaf Cat', perk: 'HP +40, tapi larinya sedikit lebih lambat', photo: '/pet/maxwell.png', mods: { hp: 40, speed: 0.94, dash: 1, xp: 1, magnet: 1 } },
+  { id: 'akmal', name: 'Akmal', tag: 'Munchkin', perk: 'Lari +12% dan dash lebih cepat pulih', photo: '/pet/akmal.png', mods: { hp: 0, speed: 1.12, dash: 0.8, xp: 1, magnet: 1 } },
+  { id: 'usu', name: 'Kucing USU', tag: 'Anak USU', perk: 'XP +25% dan jangkauan ambil lebih jauh', photo: '/pet/kucing-usu.png', mods: { hp: 0, speed: 1, dash: 1, xp: 1.25, magnet: 1.3 } },
+];
 
 function compact(arr, dead) {
   let n = 0;
@@ -95,25 +66,70 @@ function compact(arr, dead) {
   arr.length = n;
 }
 
-// Awan warna dan debu yang diam di dunia: memberi kedalaman dan rasa bergerak.
-const NEBULA = [];
-const NEBULA_COLORS = ['#4b2bd6', '#1f6bff', '#b02cc9', '#0fa6a0', '#6a3df0'];
-for (let i = 0; i < 16; i++) {
-  NEBULA.push({ x: ((i * 733) % 2800) + 60, y: ((i * 1291) % 2000) + 40, size: 620 + ((i * 197) % 520), color: NEBULA_COLORS[i % NEBULA_COLORS.length], a: 0.1 + ((i * 37) % 9) / 100 });
+// Pengacak deterministik: lantai dan dekorasi selalu sama di setiap sesi.
+function seeded(seed) {
+  let a = seed;
+  return () => {
+    a = (a * 1664525 + 1013904223) % 4294967296;
+    return a / 4294967296;
+  };
 }
-const DUST = [];
-for (let i = 0; i < 150; i++) {
-  DUST.push({ x: (i * 977.3) % 2800, y: (i * 613.7) % 2000, s: 1 + (i % 3) * 0.7, p: 0.5 + ((i * 31) % 40) / 100, ph: i * 1.7 });
+
+// Ubin rumput malam 64×64 piksel yang diulang sebagai pola lantai.
+function makeFloorTile() {
+  const c = document.createElement('canvas');
+  c.width = 64;
+  c.height = 64;
+  const g = c.getContext('2d');
+  const rnd = seeded(7);
+  for (let ty = 0; ty < 4; ty++) {
+    for (let tx = 0; tx < 4; tx++) {
+      g.fillStyle = (tx + ty) % 2 ? '#1d3427' : '#1a3024';
+      g.fillRect(tx * 16, ty * 16, 16, 16);
+    }
+  }
+  for (let i = 0; i < 150; i++) {
+    g.fillStyle = ['#24402f', '#162a20', '#213a2c', '#2a4735'][Math.floor(rnd() * 4)];
+    g.fillRect(Math.floor(rnd() * 64), Math.floor(rnd() * 64), rnd() < 0.3 ? 2 : 1, 1);
+  }
+  return c;
+}
+
+const DECOR = [];
+{
+  const rnd = seeded(42);
+  const kinds = ['tuft', 'tuft', 'tuft', 'tuft', 'tuft', 'pebble', 'pebble', 'flowerW', 'flowerP', 'flowerW', 'shroom'];
+  for (let i = 0; i < 520; i++) DECOR.push({ x: 20 + rnd() * (ARENA.w - 40), y: 20 + rnd() * (ARENA.h - 40), kind: kinds[Math.floor(rnd() * kinds.length)] });
+}
+
+let lightCanvas = null;
+function lightSprite() {
+  if (lightCanvas) return lightCanvas;
+  lightCanvas = document.createElement('canvas');
+  lightCanvas.width = 64;
+  lightCanvas.height = 64;
+  const g = lightCanvas.getContext('2d');
+  const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+  gr.addColorStop(0, 'rgba(255,244,214,1)');
+  gr.addColorStop(0.5, 'rgba(255,244,214,0.35)');
+  gr.addColorStop(1, 'rgba(255,244,214,0)');
+  g.fillStyle = gr;
+  g.fillRect(0, 0, 64, 64);
+  return lightCanvas;
 }
 
 export function createSwarmSurvivor(canvas, cb = {}) {
   const ctx = canvas.getContext('2d', { alpha: false });
-  const coarse = window.matchMedia('(pointer: coarse)').matches;
   const audio = cb.audio;
+  const SPR = getSprites();
+  const floor = ctx.createPattern(makeFloorTile(), 'repeat');
   let W = 1;
   let H = 1;
-  let dpr = 1;
-  let zoom = 1;
+  let PX = 3; // ukuran satu piksel game di layar
+  let VW = 1; // resolusi kanvas internal
+  let VH = 1;
+  const K = 0.52; // satuan dunia → piksel game
+  let hero = HEROES[0];
 
   const G = { phase: 'menu', paused: false, t: 0, time: 0, timeScale: 1, slow: 0, score: 0, kills: 0, shake: 0, hurt: 0, pending: 0, deadT: 0, gemStreak: 0, gemT: 0 };
   const L = {};
@@ -152,12 +168,12 @@ export function createSwarmSurvivor(canvas, cb = {}) {
     S.rate = 3.2 * (1 + 0.18 * L.rate);
     S.multi = 1 + L.multi;
     S.pierce = L.pierce;
-    S.speed = 238 * (1 + 0.12 * L.speed);
-    S.maxHp = 100 + 25 * L.hp;
+    S.speed = 238 * (1 + 0.12 * L.speed) * hero.mods.speed;
+    S.maxHp = 100 + hero.mods.hp + 25 * L.hp;
     S.regen = 0.8 * L.regen;
-    S.magnet = 95 * (1 + 0.45 * L.magnet);
+    S.magnet = 95 * (1 + 0.45 * L.magnet) * hero.mods.magnet;
     S.crit = 0.05 + 0.12 * L.crit;
-    S.dashCd = 2.2 * 0.82 ** L.dash;
+    S.dashCd = 2.2 * 0.82 ** L.dash * hero.mods.dash;
   };
   const xpFor = (lvl) => Math.floor(4 + lvl * 3 + lvl * lvl * 0.5);
 
@@ -279,6 +295,7 @@ export function createSwarmSurvivor(canvas, cb = {}) {
       ly: 0,
       mark: 0,
       safe: 0,
+      face: 1,
     };
     enemies.push(e);
     return e;
@@ -600,7 +617,7 @@ export function createSwarmSurvivor(canvas, cb = {}) {
   /* ---- pembaruan musuh ---- */
   const enemyBullet = (x, y, a, speed, dmg, color) => {
     if (ebullets.length > 240) return;
-    ebullets.push({ x, y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, r: 6, dmg, life: 6, color });
+    ebullets.push({ x, y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, r: 6, dmg, life: 6, color, boss: color === C.hostile });
   };
 
   const updateBoss = (e, dt, dx, dy, dist) => {
@@ -698,16 +715,16 @@ export function createSwarmSurvivor(canvas, cb = {}) {
           sx += (-dy / dist) * spd * w;
           sy += (dx / dist) * spd * w;
         } else if (e.type === 'spitter') {
-          if (dist < 250) {
+          if (dist < 150) {
             sx = -sx;
             sy = -sy;
-          } else if (dist < 340) {
+          } else if (dist < 215) {
             const side = e.id % 2 ? 1 : -1;
             sx = (-dy / dist) * spd * side;
             sy = (dx / dist) * spd * side;
           }
           e.cd -= dt;
-          if (e.cd <= 0 && dist < 560 && G.phase === 'play') {
+          if (e.cd <= 0 && dist < 330 && G.phase === 'play') {
             e.cd = rand(2, 2.8);
             enemyBullet(e.x, e.y, Math.atan2(dy, dx), 215, 9, e.d.color);
             e.flash = 0.12;
@@ -743,8 +760,17 @@ export function createSwarmSurvivor(canvas, cb = {}) {
       e.ky *= kd;
       e.x = clamp(e.x + (e.vx + e.kx) * dt, e.r, ARENA.w - e.r);
       e.y = clamp(e.y + (e.vy + e.ky) * dt, e.r, ARENA.h - e.r);
-      e.rot += dt * (e.type === 'boss' ? 0.7 : 1.6);
-      if (dist < e.r + P.r - 2) hurtPlayer(e.d.dmg, dx, dy);
+      if (Math.abs(dx) > 6) e.face = dx > 0 ? 1 : -1;
+      // musuh mengerubungi, tapi tidak menimpa kucingnya sampai tak terlihat
+      const ox = e.x - P.x;
+      const oy = e.y - P.y;
+      const od = Math.hypot(ox, oy) || 1;
+      const keep = e.r + P.r - 1;
+      if (od < keep && e.type !== 'boss' && G.phase !== 'dead' && G.phase !== 'over') {
+        e.x = P.x + (ox / od) * keep;
+        e.y = P.y + (oy / od) * keep;
+      }
+      if (od < e.r + P.r + 1.5) hurtPlayer(e.d.dmg, -ox, -oy);
     }
   };
 
@@ -817,7 +843,7 @@ export function createSwarmSurvivor(canvas, cb = {}) {
       P.vy *= Math.exp(-dt * 4);
     } else if (P.dashT > 0) {
       P.dashT -= dt;
-      if (Math.random() < 0.9) parts.push({ x: P.x, y: P.y, vx: 0, vy: 0, life: 0.22, max: 0.22, size: 15, color: C.player, ghost: P.aim });
+      if (Math.random() < 0.9) parts.push({ x: P.x, y: P.y, vx: 0, vy: 0, life: 0.22, max: 0.22, size: 15, color: C.player, ghost: Math.cos(P.aim) < 0 });
     } else {
       const k = damp(dt, 11);
       P.vx += (mx * S.speed - P.vx) * k;
@@ -828,8 +854,9 @@ export function createSwarmSurvivor(canvas, cb = {}) {
     P.inv = Math.max(0, P.inv - dt);
     P.dashCd = Math.max(0, P.dashCd - dt);
     if (playing && S.regen > 0) P.hp = Math.min(S.maxHp, P.hp + S.regen * dt);
-    if ((playing || attract) && ml > 0.2 && Math.random() < 0.5) {
-      parts.push({ x: P.x - Math.cos(P.aim) * 10, y: P.y - Math.sin(P.aim) * 10, vx: -P.vx * 0.3 + rand(-20, 20), vy: -P.vy * 0.3 + rand(-20, 20), life: 0.3, max: 0.3, size: 3, color: C.player });
+    P.moving = ml > 0.2;
+    if ((playing || attract) && ml > 0.2 && Math.random() < 0.3) {
+      parts.push({ x: P.x + rand(-6, 6), y: P.y + 12, vx: -P.vx * 0.2 + rand(-14, 14), vy: rand(-16, -4), life: 0.32, max: 0.32, size: 3, color: '#3d5a48' });
     }
 
     /* bidikan */
@@ -837,8 +864,8 @@ export function createSwarmSurvivor(canvas, cb = {}) {
     if (playing || attract) {
       let target;
       if (input.mouse && playing) {
-        const wx = cam.x + (input.mx - W / 2) / zoom;
-        const wy = cam.y + (input.my - H / 2) / zoom;
+        const wx = cam.x + (input.mx / PX - VW / 2) / K;
+        const wy = cam.y + (input.my / PX - VH / 2) / K;
         P.aim = Math.atan2(wy - P.y, wx - P.x);
         target = enemies.length ? enemies[0] : null;
       } else {
@@ -973,7 +1000,7 @@ export function createSwarmSurvivor(canvas, cb = {}) {
       if (d < P.r + 10 && (playing || attract)) {
         g.v = -g.v; // tandai terambil
         if (playing) {
-          addXp(-g.v);
+          addXp(-g.v * hero.mods.xp);
           G.gemStreak = Math.min(14, G.gemStreak + 1);
           G.gemT = 0.6;
           const st = G.gemStreak;
@@ -1043,7 +1070,7 @@ export function createSwarmSurvivor(canvas, cb = {}) {
     /* kamera */
     const look = input.mouse && playing ? 46 : 0;
     // di menu, kapal digeser ke kanan supaya tidak tertutup panel
-    const menuShift = attract && W > 960 && W > H * 1.25 ? (W * 0.17) / zoom : 0;
+    const menuShift = attract && W > 960 && W > H * 1.25 ? (VW * 0.2) / K : 0;
     cam.x += (P.x - menuShift + Math.cos(P.aim) * look - cam.x) * damp(realDt, 6);
     cam.y += (P.y + Math.sin(P.aim) * look - cam.y) * damp(realDt, 6);
     G.shake = Math.max(0, G.shake - realDt * 2.2);
@@ -1061,381 +1088,282 @@ export function createSwarmSurvivor(canvas, cb = {}) {
     if (playing && G.pending > 0) offerLevelUp();
   };
 
-  /* ---- render ---- */
-  const poly = (x, y, r, sides, rot) => {
-    ctx.beginPath();
-    for (let i = 0; i < sides; i++) {
-      const a = rot + (i / sides) * TAU;
-      const px = x + Math.cos(a) * r;
-      const py = y + Math.sin(a) * r;
-      if (i) ctx.lineTo(px, py);
-      else ctx.moveTo(px, py);
-    }
-    ctx.closePath();
-  };
-  const shape = (x, y, a, pts) => {
-    const c = Math.cos(a);
-    const s = Math.sin(a);
-    ctx.beginPath();
-    for (let i = 0; i < pts.length; i += 2) {
-      const px = x + pts[i] * c - pts[i + 1] * s;
-      const py = y + pts[i] * s + pts[i + 1] * c;
-      if (i) ctx.lineTo(px, py);
-      else ctx.moveTo(px, py);
-    }
-    ctx.closePath();
-  };
-  const glow = (color, x, y, size, alpha = 1) => {
+  /* ---- render (semua koordinat dalam piksel game, dibulatkan agar tetap tajam) ---- */
+  const pxRing = (cx, cy, r, color, alpha, thick = 1) => {
+    if (r < 1) return;
     ctx.globalAlpha = alpha;
-    ctx.drawImage(glowSprite(color), x - size / 2, y - size / 2, size, size);
+    ctx.fillStyle = color;
+    const n = Math.max(10, Math.ceil(TAU * r * 0.85));
+    for (let i = 0; i < n; i++) {
+      const a = (i / n) * TAU;
+      ctx.fillRect(Math.round(cx + Math.cos(a) * r), Math.round(cy + Math.sin(a) * r), thick, thick);
+    }
   };
-  const SHIP = [17, 0, -11, 10.5, -5.5, 0, -11, -10.5];
-  const DART = [13, 0, -9, 7, -4, 0, -9, -7];
+  const shadow = (sx, sy, w) => {
+    ctx.globalAlpha = 0.32;
+    ctx.fillStyle = '#000000';
+    ctx.fillRect(Math.round(sx - w / 2), sy, Math.round(w), 2);
+    ctx.fillRect(Math.round(sx - w / 2) + 1, sy + 2, Math.max(1, Math.round(w) - 2), 1);
+    ctx.globalAlpha = 1;
+  };
+  const gemSprite = (v) => (v >= 5 ? SPR.gem3 : v >= 2 ? SPR.gem2 : SPR.gem1);
 
   const render = () => {
-    const tr = G.shake * G.shake * 15;
-    const ox = (Math.random() - 0.5) * tr;
-    const oy = (Math.random() - 0.5) * tr;
-    const cx = cam.x + ox;
-    const cy = cam.y + oy;
-    const vw = W / zoom;
-    const vh = H / zoom;
-    const L0 = cx - vw / 2;
-    const T0 = cy - vh / 2;
-    const R0 = L0 + vw;
-    const B0 = T0 + vh;
-    const seen = (x, y, m) => x > L0 - m && x < R0 + m && y > T0 - m && y < B0 + m;
+    const tr = G.shake * G.shake * 6;
+    const camX = Math.round(cam.x * K + (Math.random() - 0.5) * tr);
+    const camY = Math.round(cam.y * K + (Math.random() - 0.5) * tr);
+    const hw = VW >> 1;
+    const hh = VH >> 1;
+    const X = (x) => Math.round(x * K) - camX + hw;
+    const Y = (y) => Math.round(y * K) - camY + hh;
+    const vis = (sx, sy, m) => sx > -m && sx < VW + m && sy > -m && sy < VH + m;
 
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.globalAlpha = 1;
     ctx.globalCompositeOperation = 'source-over';
-    ctx.fillStyle = '#03030a';
-    ctx.fillRect(0, 0, W, H);
-    ctx.setTransform(zoom * dpr, 0, 0, zoom * dpr, (W / 2 - cx * zoom) * dpr, (H / 2 - cy * zoom) * dpr);
+    ctx.imageSmoothingEnabled = false;
+    ctx.fillStyle = '#080f0c';
+    ctx.fillRect(0, 0, VW, VH);
 
-    // lantai arena
-    const ax0 = Math.max(0, L0);
-    const ay0 = Math.max(0, T0);
-    const ax1 = Math.min(ARENA.w, R0);
-    const ay1 = Math.min(ARENA.h, B0);
+    // lantai taman
+    const fx0 = X(0);
+    const fy0 = Y(0);
+    const fx1 = X(ARENA.w);
+    const fy1 = Y(ARENA.h);
+    const ax0 = Math.max(0, fx0);
+    const ay0 = Math.max(0, fy0);
+    const ax1 = Math.min(VW, fx1);
+    const ay1 = Math.min(VH, fy1);
     if (ax1 > ax0 && ay1 > ay0) {
-      ctx.fillStyle = '#080914';
-      ctx.fillRect(ax0, ay0, ax1 - ax0, ay1 - ay0);
-      ctx.globalCompositeOperation = 'lighter';
-      ctx.globalAlpha = 1;
-      ctx.drawImage(nebulaLayer(), 0, 0, ARENA.w, ARENA.h);
-      ctx.fillStyle = '#b9c4ff';
-      for (const d of DUST) {
-        // paralaks: debu bergerak lebih lambat dari lantai
-        const dx = d.x + (cx - ARENA.w / 2) * (1 - d.p);
-        const dy = d.y + (cy - ARENA.h / 2) * (1 - d.p);
-        if (dx < ax0 || dx > ax1 || dy < ay0 || dy > ay1) continue;
-        ctx.globalAlpha = 0.16 + 0.2 * Math.abs(Math.sin(G.t * 0.8 + d.ph));
-        ctx.fillRect(dx, dy, d.s, d.s);
-      }
-      ctx.globalAlpha = 1;
-      ctx.globalCompositeOperation = 'source-over';
-      const step = 80;
-      ctx.lineWidth = 1 / zoom;
-      ctx.strokeStyle = 'rgba(140, 125, 255, 0.13)';
+      ctx.save();
       ctx.beginPath();
-      for (let x = Math.ceil(ax0 / step) * step; x <= ax1; x += step) {
-        ctx.moveTo(x, ay0);
-        ctx.lineTo(x, ay1);
+      ctx.rect(ax0, ay0, ax1 - ax0, ay1 - ay0);
+      ctx.clip();
+      const ox = ((((hw - camX) % 64) + 64) % 64) - 64;
+      const oy = ((((hh - camY) % 64) + 64) % 64) - 64;
+      ctx.translate(ox, oy);
+      ctx.fillStyle = floor;
+      ctx.fillRect(0, 0, VW + 64, VH + 64);
+      ctx.restore();
+      for (const d of DECOR) {
+        const sx = X(d.x);
+        const sy = Y(d.y);
+        if (vis(sx, sy, 6)) ctx.drawImage(SPR[d.kind].frames[0], sx, sy);
       }
-      for (let y = Math.ceil(ay0 / step) * step; y <= ay1; y += step) {
-        ctx.moveTo(ax0, y);
-        ctx.lineTo(ax1, y);
-      }
-      ctx.stroke();
-      ctx.strokeStyle = 'rgba(150, 135, 255, 0.26)';
-      ctx.beginPath();
-      for (let x = Math.ceil(ax0 / 400) * 400; x <= ax1; x += 400) {
-        ctx.moveTo(x, ay0);
-        ctx.lineTo(x, ay1);
-      }
-      for (let y = Math.ceil(ay0 / 400) * 400; y <= ay1; y += 400) {
-        ctx.moveTo(ax0, y);
-        ctx.lineTo(ax1, y);
-      }
-      ctx.stroke();
     }
+    // pagar arena
+    ctx.fillStyle = '#5c4a36';
+    ctx.fillRect(fx0 - 3, fy0 - 3, fx1 - fx0 + 6, 3);
+    ctx.fillRect(fx0 - 3, fy1, fx1 - fx0 + 6, 3);
+    ctx.fillRect(fx0 - 3, fy0 - 3, 3, fy1 - fy0 + 6);
+    ctx.fillRect(fx1, fy0 - 3, 3, fy1 - fy0 + 6);
+    ctx.fillStyle = '#8f7758';
+    ctx.fillRect(fx0 - 3, fy0 - 3, fx1 - fx0 + 6, 1);
+    ctx.fillRect(fx0 - 3, fy1, fx1 - fx0 + 6, 1);
 
+    // cahaya hangat di sekitar pemain
+    const px = X(P.x);
+    const py = Y(P.y);
     ctx.globalCompositeOperation = 'lighter';
-    // cahaya ambient di bawah pemain
-    glow('#3a2a8c', P.x, P.y, 900, 0.55);
-    glow(C.player, P.x, P.y, 320, 0.16);
-
-    // batas arena
-    ctx.globalAlpha = 0.35;
-    ctx.strokeStyle = C.orbit;
-    ctx.lineWidth = 10;
-    ctx.strokeRect(0, 0, ARENA.w, ARENA.h);
+    ctx.imageSmoothingEnabled = true;
+    ctx.globalAlpha = 0.2;
+    ctx.drawImage(lightSprite(), px - 120, py - 120, 240, 240);
+    ctx.imageSmoothingEnabled = false;
+    ctx.globalCompositeOperation = 'source-over';
     ctx.globalAlpha = 1;
-    ctx.strokeStyle = '#d9c8ff';
-    ctx.lineWidth = 2;
-    ctx.strokeRect(0, 0, ARENA.w, ARENA.h);
 
-    // cincin
+    // cincin efek di lantai
     for (const r of rings) {
-      if (!seen(r.x, r.y, r.r + 10)) continue;
-      const k = r.life / r.max;
-      ctx.globalAlpha = k * 0.9;
-      ctx.strokeStyle = r.color;
-      ctx.lineWidth = r.w * (0.4 + k);
-      ctx.beginPath();
-      ctx.arc(r.x, r.y, r.r, 0, TAU);
-      ctx.stroke();
+      const sx = X(r.x);
+      const sy = Y(r.y);
+      const rr = r.r * K;
+      if (!vis(sx, sy, rr + 4)) continue;
+      pxRing(sx, sy, rr, r.color, Math.min(1, (r.life / r.max) * 1.4), r.w > 4 ? 2 : 1);
     }
+    ctx.globalAlpha = 1;
 
-    // permata
-    for (const g of gems) {
-      if (!seen(g.x, g.y, 20)) continue;
-      const col = g.v >= 5 ? '#ffd15c' : g.v >= 2 ? '#7fa8ff' : '#6dffcf';
-      const s = 4.5 + Math.min(4, g.v * 0.6);
-      glow(col, g.x, g.y, s * 5.5, 0.55);
-      ctx.globalAlpha = 1;
-      ctx.fillStyle = col;
-      poly(g.x, g.y + Math.sin(g.t * 4) * 1.5, s, 4, 0);
-      ctx.fill();
-    }
-
-    // pickup
-    for (const p of pickups) {
-      if (!seen(p.x, p.y, 40)) continue;
-      const col = p.kind === 'heart' ? C.heart : p.kind === 'magnet' ? C.player : '#ffffff';
-      const pulse = 1 + Math.sin(p.t * 5) * 0.12;
-      const fade = p.t > 18 ? 0.4 + 0.6 * Math.abs(Math.sin(p.t * 8)) : 1;
-      glow(col, p.x, p.y, 74 * pulse, 0.7 * fade);
-      ctx.globalAlpha = fade;
-      ctx.strokeStyle = col;
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, 13 * pulse, 0, TAU);
-      ctx.stroke();
-      ctx.fillStyle = col;
-      ctx.font = '700 14px "Space Grotesk", sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(p.kind === 'heart' ? '+' : p.kind === 'magnet' ? 'U' : '!', p.x, p.y + 1);
-    }
-
-    // penanda kemunculan
+    // penanda kemunculan musuh
     for (const s of spawns) {
-      if (!seen(s.x, s.y, 80)) continue;
+      const sx = X(s.x);
+      const sy = Y(s.y);
+      if (!vis(sx, sy, 40)) continue;
       const k = s.t / s.max;
-      ctx.globalAlpha = 0.25 + (1 - k) * 0.6;
-      ctx.strokeStyle = s.color;
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r + k * 46, 0, TAU);
-      ctx.stroke();
-      glow(s.color, s.x, s.y, s.r * 3 * (1 - k) + 10, 0.5);
+      pxRing(sx, sy, (s.r + k * 40) * K, s.color, 0.35 + (1 - k) * 0.6);
+      ctx.fillRect(sx - 1, sy - 1, 2, 2);
+    }
+    ctx.globalAlpha = 1;
+
+    // permata XP & pickup
+    for (const g of gems) {
+      const sx = X(g.x);
+      const sy = Y(g.y);
+      if (!vis(sx, sy, 6)) continue;
+      const s = gemSprite(g.v);
+      ctx.drawImage(s.frames[0], sx - 2, sy - 2 + (Math.sin(g.t * 4) > 0.3 ? -1 : 0));
+    }
+    for (const p of pickups) {
+      const sx = X(p.x);
+      const sy = Y(p.y);
+      if (!vis(sx, sy, 12)) continue;
+      if (p.t > 18 && Math.floor(p.t * 8) % 2) continue;
+      const s = SPR[p.kind];
+      shadow(sx, sy + 5, 7);
+      ctx.drawImage(s.frames[0], sx - (s.w >> 1), sy - (s.h >> 1) + (Math.sin(p.t * 4) > 0 ? -1 : 0));
+      pxRing(sx, sy, 8 + Math.sin(p.t * 5), p.kind === 'heart' ? C.heart : '#ffffff', 0.35);
+      ctx.globalAlpha = 1;
     }
 
-    // musuh
+    // musuh dan pemain, diurutkan dari atas ke bawah supaya yang di depan menutupi
+    enemies.sort((a, b) => a.y - b.y);
+    const alive = G.phase !== 'dead' && G.phase !== 'over';
+    const heroSpr = SPR[hero.id];
+    const heroFlip = Math.cos(P.aim) < 0;
+    let heroDrawn = !alive;
+    const drawHero = () => {
+      heroDrawn = true;
+      shadow(px, py + 6, 14);
+      if (P.inv > 0 && P.dashT <= 0 && Math.floor(G.t * 18) % 2) return;
+      const f = P.moving ? Math.floor(G.t * 9) % 2 : 0;
+      const bob = P.moving ? f : Math.sin(G.t * 3) > 0.7 ? 1 : 0;
+      ctx.drawImage((heroFlip ? heroSpr.flip : heroSpr.frames)[f], px - (heroSpr.w >> 1), py - (heroSpr.h >> 1) - 1 + bob);
+    };
     for (const e of enemies) {
-      if (!seen(e.x, e.y, e.r + 30)) continue;
-      const col = e.d.color;
-      glow(col, e.x, e.y, e.r * 4.6, 0.42);
-      ctx.globalAlpha = 1;
+      if (!heroDrawn && e.y > P.y) drawHero();
+      const sx = X(e.x);
+      const sy = Y(e.y);
+      const s = SPR[e.type];
+      if (!vis(sx, sy, s.w)) continue;
       if (e.type === 'boss' && e.mode === 2) {
         // garis ancang-ancang terjangan
-        ctx.globalAlpha = 0.25 + 0.5 * (1 - e.modeT / 0.9);
-        ctx.strokeStyle = C.hostile;
-        ctx.lineWidth = 3;
-        ctx.setLineDash([14, 10]);
-        ctx.beginPath();
-        ctx.moveTo(e.x, e.y);
-        ctx.lineTo(e.x + e.lx * 460, e.y + e.ly * 460);
-        ctx.stroke();
-        ctx.setLineDash([]);
+        ctx.globalAlpha = 0.35 + 0.6 * (1 - e.modeT / 0.9);
+        ctx.fillStyle = C.hostile;
+        for (let i = 2; i < 34; i += 2) ctx.fillRect(sx + Math.round(e.lx * i * 7), sy + Math.round(e.ly * i * 7), 2, 2);
         ctx.globalAlpha = 1;
       }
-      if (e.type === 'dart') shape(e.x, e.y, Math.atan2(e.vy, e.vx), DART);
-      else if (e.type === 'drone') poly(e.x, e.y, e.r * 1.15, 3, Math.atan2(P.y - e.y, P.x - e.x));
-      else poly(e.x, e.y, e.r, e.d.sides, e.rot);
-      ctx.globalCompositeOperation = 'source-over';
-      ctx.fillStyle = e.flash > 0 ? '#ffffff' : '#0b0a16';
-      ctx.fill();
-      ctx.globalCompositeOperation = 'lighter';
-      ctx.strokeStyle = col;
-      ctx.lineWidth = e.type === 'boss' ? 4 : 2.2;
-      ctx.stroke();
-      if (e.type === 'boss' || e.type === 'brute' || e.type === 'splitter') {
-        ctx.globalAlpha = 0.7;
-        poly(e.x, e.y, e.r * 0.5, e.d.sides, -e.rot * 1.4);
-        ctx.lineWidth = 1.6;
-        ctx.stroke();
-        if (e.type === 'boss') {
-          ctx.fillStyle = col;
-          ctx.beginPath();
-          ctx.arc(e.x, e.y, 9 + Math.sin(e.t * 6) * 3, 0, TAU);
-          ctx.fill();
-        }
-      }
+      const fly = e.type === 'dart' ? 4 : 0;
+      const f = Math.floor(e.t * (e.type === 'dart' ? 16 : e.type === 'boss' ? 3 : 6)) % s.frames.length;
+      const flip = e.face < 0;
+      shadow(sx, sy + (s.h >> 1) - 1, s.w * 0.7);
+      const img = e.flash > 0 ? (flip ? s.flipWhite : s.white)[f] : (flip ? s.flip : s.frames)[f];
+      ctx.drawImage(img, sx - (s.w >> 1), sy - (s.h >> 1) - fly);
       if (e.type !== 'boss' && e.maxHp > 40 && e.hp < e.maxHp) {
-        ctx.globalAlpha = 0.9;
-        ctx.fillStyle = 'rgba(255,255,255,0.18)';
-        ctx.fillRect(e.x - e.r, e.y - e.r - 9, e.r * 2, 3);
-        ctx.fillStyle = col;
-        ctx.fillRect(e.x - e.r, e.y - e.r - 9, e.r * 2 * clamp(e.hp / e.maxHp, 0, 1), 3);
+        const bw = s.w - 2;
+        ctx.fillStyle = '#0a0a12';
+        ctx.fillRect(sx - (bw >> 1), sy - (s.h >> 1) - 4 - fly, bw, 2);
+        ctx.fillStyle = e.d.color;
+        ctx.fillRect(sx - (bw >> 1), sy - (s.h >> 1) - 4 - fly, Math.max(1, Math.round(bw * clamp(e.hp / e.maxHp, 0, 1))), 2);
+      }
+    }
+    if (!heroDrawn) drawHero();
+
+    // ikan pengawal
+    if (alive && L.orbit > 0) {
+      for (let i = 0; i < L.orbit; i++) {
+        const a = P.orbA + (i / L.orbit) * TAU;
+        const fx = X(P.x + Math.cos(a) * 80);
+        const fy = Y(P.y + Math.sin(a) * 80);
+        const s = SPR.fish;
+        ctx.drawImage((Math.sin(a) > 0 ? s.flip : s.frames)[0], fx - (s.w >> 1), fy - (s.h >> 1));
       }
     }
 
-    // peluru musuh
+    // ludah musuh
     for (const b of ebullets) {
-      if (!seen(b.x, b.y, 20)) continue;
-      glow(b.color, b.x, b.y, 34, 0.9);
-      ctx.globalAlpha = 1;
-      ctx.fillStyle = '#ffffff';
-      ctx.beginPath();
-      ctx.arc(b.x, b.y, 3.2, 0, TAU);
-      ctx.fill();
+      const sx = X(b.x);
+      const sy = Y(b.y);
+      if (vis(sx, sy, 6)) ctx.drawImage((b.boss ? SPR.spitBoss : SPR.spit).frames[0], sx - 2, sy - 2);
     }
 
-    // peluru pemain
-    ctx.lineCap = 'round';
+    // cakaran pemain
     for (const b of bullets) {
-      if (!seen(b.x, b.y, 30)) continue;
-      const col = b.crit ? C.crit : C.bullet;
-      glow(col, b.x, b.y, b.crit ? 44 : 32, 0.85);
-      ctx.globalAlpha = 0.95;
-      ctx.strokeStyle = col;
-      ctx.lineWidth = b.crit ? 4 : 3;
-      ctx.beginPath();
-      ctx.moveTo(b.x - b.vx * 0.034, b.y - b.vy * 0.034);
-      ctx.lineTo(b.x, b.y);
-      ctx.stroke();
+      const sx = X(b.x);
+      const sy = Y(b.y);
+      if (!vis(sx, sy, 8)) continue;
+      const sp = Math.hypot(b.vx, b.vy) || 1;
+      const ux = b.vx / sp;
+      const uy = b.vy / sp;
+      ctx.fillStyle = b.crit ? '#c88a14' : '#3fb6d8';
+      ctx.fillRect(Math.round(sx - ux * 5) - 1, Math.round(sy - uy * 5) - 1, 2, 2);
+      ctx.fillStyle = b.crit ? '#ffd15c' : '#8fe9ff';
+      ctx.fillRect(Math.round(sx - ux * 2.5) - 1, Math.round(sy - uy * 2.5) - 1, 2, 2);
+      ctx.fillStyle = '#ffffff';
+      const z = b.crit ? 4 : 3;
+      ctx.fillRect(sx - (z >> 1), sy - (z >> 1), z, z);
     }
 
-    // rudal
+    // roket tuna
     for (const m of missiles) {
-      glow(C.missile, m.x, m.y, 40, 0.9);
-      ctx.globalAlpha = 1;
-      ctx.fillStyle = '#fff2dd';
-      shape(m.x, m.y, Math.atan2(m.vy, m.vx), [9, 0, -6, 4.5, -6, -4.5]);
-      ctx.fill();
+      const sx = X(m.x);
+      const sy = Y(m.y);
+      const s = SPR.rocket;
+      const f = Math.floor(G.t * 14) % 2;
+      ctx.drawImage((m.vx < 0 ? s.flip : s.frames)[f], sx - (s.w >> 1), sy - (s.h >> 1));
     }
 
     // partikel
     for (const p of parts) {
-      if (!seen(p.x, p.y, 30)) continue;
+      const sx = X(p.x);
+      const sy = Y(p.y);
+      if (!vis(sx, sy, 12)) continue;
       const k = p.life / p.max;
       if (p.ghost !== undefined) {
-        ctx.globalAlpha = k * 0.5;
-        ctx.strokeStyle = p.color;
-        ctx.lineWidth = 2;
-        shape(p.x, p.y, p.ghost, SHIP);
-        ctx.stroke();
+        ctx.globalAlpha = k * 0.55;
+        ctx.drawImage((p.ghost ? heroSpr.flipWhite : heroSpr.white)[0], sx - (heroSpr.w >> 1), sy - (heroSpr.h >> 1));
+        ctx.globalAlpha = 1;
         continue;
       }
-      ctx.globalAlpha = k;
+      const z = k > 0.5 && p.size > 3.2 ? 2 : 1;
+      ctx.globalAlpha = Math.min(1, k * 1.6);
       ctx.fillStyle = p.color;
-      const s = p.size * (0.4 + k * 0.6);
-      ctx.fillRect(p.x - s / 2, p.y - s / 2, s, s);
-    }
-
-    // pemain
-    const alive = G.phase !== 'dead' && G.phase !== 'over';
-    if (alive) {
-      if (L.orbit > 0) {
-        ctx.globalAlpha = 0.14;
-        ctx.strokeStyle = C.orbit;
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
-        ctx.arc(P.x, P.y, 80, 0, TAU);
-        ctx.stroke();
-        for (let i = 0; i < L.orbit; i++) {
-          const a = P.orbA + (i / L.orbit) * TAU;
-          const bx = P.x + Math.cos(a) * 80;
-          const by = P.y + Math.sin(a) * 80;
-          ctx.globalAlpha = 0.5;
-          ctx.strokeStyle = C.orbit;
-          ctx.lineWidth = 5;
-          ctx.beginPath();
-          ctx.arc(P.x, P.y, 80, a - 0.5, a);
-          ctx.stroke();
-          glow(C.orbit, bx, by, 46, 0.95);
-          ctx.globalAlpha = 1;
-          ctx.fillStyle = '#f1e6ff';
-          poly(bx, by, 7.5, 4, a);
-          ctx.fill();
-        }
-      }
-      const blink = P.inv > 0 && P.dashT <= 0 ? 0.45 + 0.55 * Math.abs(Math.sin(G.t * 30)) : 1;
-      glow(C.player, P.x, P.y, 92, 0.7 * blink);
-      shape(P.x, P.y, P.aim, SHIP);
-      ctx.globalCompositeOperation = 'source-over';
-      ctx.globalAlpha = blink;
-      ctx.fillStyle = '#eaffff';
-      ctx.fill();
-      ctx.globalCompositeOperation = 'lighter';
-      ctx.strokeStyle = C.player;
-      ctx.lineWidth = 2;
-      ctx.stroke();
-      if (P.inv > 0) {
-        ctx.globalAlpha = 0.5;
-        ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
-        ctx.arc(P.x, P.y, 22, 0, TAU);
-        ctx.stroke();
-      }
-    }
-
-    // petir
-    for (const b of bolts) {
-      const k = b.life / b.max;
-      ctx.globalAlpha = k;
-      ctx.strokeStyle = C.chain;
-      ctx.lineWidth = 2.5;
-      ctx.beginPath();
-      for (let i = 0; i < b.pts.length - 1; i++) {
-        const [x0, y0] = b.pts[i];
-        const [x1, y1] = b.pts[i + 1];
-        ctx.moveTo(x0, y0);
-        const segs = 5;
-        for (let s = 1; s < segs; s++) {
-          const t = s / segs;
-          ctx.lineTo(x0 + (x1 - x0) * t + rand(-11, 11), y0 + (y1 - y0) * t + rand(-11, 11));
-        }
-        ctx.lineTo(x1, y1);
-        glow(C.nova, x1, y1, 60, k * 0.8);
-        ctx.globalAlpha = k;
-      }
-      ctx.stroke();
-    }
-
-    // angka melayang
-    ctx.globalCompositeOperation = 'source-over';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    for (const t of texts) {
-      if (!seen(t.x, t.y, 40)) continue;
-      ctx.globalAlpha = Math.min(1, (t.life / t.max) * 1.6);
-      ctx.font = `700 ${t.size}px "Space Grotesk", sans-serif`;
-      ctx.fillStyle = t.color;
-      ctx.fillText(t.text, t.x, t.y);
-    }
-
-    // joystick sentuh
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    if (input.joy) {
-      const j = input.joy;
-      ctx.globalAlpha = 0.35;
-      ctx.strokeStyle = '#ffffff';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.arc(j.ox, j.oy, 52, 0, TAU);
-      ctx.stroke();
-      ctx.globalAlpha = 0.55;
-      ctx.fillStyle = C.player;
-      ctx.beginPath();
-      ctx.arc(j.ox + input.jx * 52, j.oy + input.jy * 52, 22, 0, TAU);
-      ctx.fill();
+      ctx.fillRect(sx, sy, z, z);
     }
     ctx.globalAlpha = 1;
+
+    // setrum
+    for (const b of bolts) {
+      ctx.globalAlpha = Math.min(1, (b.life / b.max) * 1.5);
+      for (let i = 0; i < b.pts.length - 1; i++) {
+        const x0 = X(b.pts[i][0]);
+        const y0 = Y(b.pts[i][1]);
+        const x1 = X(b.pts[i + 1][0]);
+        const y1 = Y(b.pts[i + 1][1]);
+        const steps = Math.max(2, Math.ceil(Math.hypot(x1 - x0, y1 - y0) / 2));
+        for (let k = 0; k <= steps; k++) {
+          const t = k / steps;
+          const jx = k % 3 === 0 ? 0 : Math.round(rand(-2, 2));
+          const jy = k % 3 === 0 ? 0 : Math.round(rand(-2, 2));
+          const bx = Math.round(x0 + (x1 - x0) * t) + jx;
+          const by = Math.round(y0 + (y1 - y0) * t) + jy;
+          ctx.fillStyle = '#7fb8ff';
+          ctx.fillRect(bx - 1, by, 3, 1);
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(bx, by, 1, 1);
+        }
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // angka melayang
+    for (const t of texts) {
+      const sx = X(t.x);
+      const sy = Y(t.y);
+      if (!vis(sx, sy, 20)) continue;
+      ctx.globalAlpha = Math.min(1, (t.life / t.max) * 1.8);
+      drawNumber(ctx, t.text, sx, sy - 4, t.color);
+    }
+    ctx.globalAlpha = 1;
+
+    // joystick sentuh
+    if (input.joy) {
+      const jx = input.joy.ox / PX;
+      const jy = input.joy.oy / PX;
+      const jr = 52 / PX;
+      pxRing(jx, jy, jr, '#ffffff', 0.5);
+      ctx.globalAlpha = 0.8;
+      ctx.fillStyle = C.player;
+      ctx.fillRect(Math.round(jx + input.jx * jr) - 2, Math.round(jy + input.jy * jr) - 2, 5, 5);
+      ctx.globalAlpha = 1;
+    }
   };
 
   const pushHud = () => {
@@ -1477,17 +1405,21 @@ export function createSwarmSurvivor(canvas, cb = {}) {
     pushHud();
   };
 
+  const stage = canvas.parentElement;
   const resize = () => {
-    W = Math.max(1, canvas.clientWidth);
-    H = Math.max(1, canvas.clientHeight);
-    dpr = Math.min(window.devicePixelRatio || 1, coarse ? 1.5 : 2);
-    canvas.width = Math.round(W * dpr);
-    canvas.height = Math.round(H * dpr);
-    zoom = clamp(Math.min(W, H) / (coarse ? 470 : 640), 0.5, 1.6);
+    W = Math.max(1, stage.clientWidth);
+    H = Math.max(1, stage.clientHeight);
+    PX = Math.max(2, Math.round(Math.min(W, H) / 200));
+    VW = Math.ceil(W / PX);
+    VH = Math.ceil(H / PX);
+    canvas.width = VW;
+    canvas.height = VH;
+    canvas.style.width = `${VW * PX}px`;
+    canvas.style.height = `${VH * PX}px`;
     render();
   };
   const ro = new ResizeObserver(resize);
-  ro.observe(canvas);
+  ro.observe(stage);
 
   /* ---- input pointer (bidik mouse, joystick sentuh) ---- */
   const local = (e) => {
@@ -1592,6 +1524,13 @@ export function createSwarmSurvivor(canvas, cb = {}) {
         cb.onState?.('play');
       }
     },
+    setHero: (id) => {
+      const next = HEROES.find((h) => h.id === id);
+      if (!next || next === hero) return;
+      hero = next;
+      if (G.phase === 'menu') reset(true);
+      else recalc();
+    },
     setKey: (code, down) => {
       if (down) input.keys.add(code);
       else input.keys.delete(code);
@@ -1613,6 +1552,8 @@ export function createSwarmSurvivor(canvas, cb = {}) {
       canvas.removeEventListener('pointerup', onUp);
       canvas.removeEventListener('pointercancel', onUp);
       canvas.removeEventListener('contextmenu', noMenu);
+      canvas.style.width = '';
+      canvas.style.height = '';
     },
   };
 }

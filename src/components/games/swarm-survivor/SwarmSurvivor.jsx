@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   ChevronsRight,
@@ -22,7 +22,8 @@ import {
   Wind,
   Zap,
 } from 'lucide-react';
-import { createSwarmSurvivor } from './engine';
+import { createSwarmSurvivor, HEROES } from './engine';
+import { spriteUrl } from './sprites';
 import { HoldButton, TopBar, formatInt, useGameAudio, usePopups } from '../shared/GameChrome';
 import { loadBest, saveBest } from '../shared/audio';
 
@@ -48,6 +49,29 @@ const DASH_KEYS = new Set(['Space', 'ShiftLeft', 'ShiftRight']);
 
 const clock = (s) => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
 
+// Kucing awal: pilihan terakhir di game ini, atau peliharaan yang sedang aktif di situs.
+const loadHero = () => {
+  try {
+    const saved = localStorage.getItem('pg-survivor-hero');
+    if (HEROES.some((h) => h.id === saved)) return saved;
+    const pet = parseInt(localStorage.getItem('activePetIndex') || '0', 10);
+    return HEROES[pet % HEROES.length].id;
+  } catch {
+    return HEROES[0].id;
+  }
+};
+
+function PixelCat({ id, walking }) {
+  const urls = useMemo(() => [spriteUrl(id, 0, 4), spriteUrl(id, 1, 4)], [id]);
+  const [tick, setTick] = useState(0);
+  useEffect(() => {
+    if (!walking) return undefined;
+    const t = setInterval(() => setTick((n) => n + 1), 170);
+    return () => clearInterval(t);
+  }, [walking]);
+  return <img src={urls[walking ? tick % 2 : 0]} alt="" className="gm-hero__sprite" draggable={false} />;
+}
+
 const panelMotion = {
   initial: { opacity: 0, y: 26, scale: 0.97 },
   animate: { opacity: 1, y: 0, scale: 1 },
@@ -65,6 +89,8 @@ export default function SwarmSurvivor({ onExit }) {
   const [result, setResult] = useState(null);
   const [best, setBest] = useState(() => loadBest('swarm-survivor'));
   const [popRef, pushPop] = usePopups();
+  const [heroId, setHeroId] = useState(loadHero);
+  const [ready, setReady] = useState(false);
 
   const scoreRef = useRef(null);
   const waveRef = useRef(null);
@@ -175,11 +201,24 @@ export default function SwarmSurvivor({ onExit }) {
       },
     });
     engineRef.current = engine;
+    setReady(true);
     return () => {
       engineRef.current = null;
+      setReady(false);
       engine.destroy();
     };
   }, [audio, pushPop]);
+
+  useEffect(() => {
+    if (!ready) return;
+    engineRef.current?.setHero(heroId);
+    try {
+      localStorage.setItem('pg-survivor-hero', heroId);
+    } catch {
+      /* hanya berlaku di sesi ini */
+    }
+  }, [heroId, ready]);
+  const hero = HEROES.find((h) => h.id === heroId) || HEROES[0];
 
   const applyPause = useCallback(
     (p) => {
@@ -275,12 +314,12 @@ export default function SwarmSurvivor({ onExit }) {
   const playing = phase === 'play' || phase === 'dead';
 
   return (
-    <div className="gm-game gm-game--survivor">
-      <canvas ref={canvasRef} className="gm-canvas" />
+    <div className="gm-game gm-game--survivor gm-game--pixel">
+      <canvas ref={canvasRef} className="gm-canvas gm-canvas--pixel" />
       <div className="gm-vignette" aria-hidden="true" />
       <div className="gm-hurt" ref={hurtRef} aria-hidden="true" />
 
-      <TopBar title="Swarm Survivor" tag="Arena Shooter" paused={paused} canPause={phase === 'play' && !choices} onPause={() => applyPause(!paused)} onExit={onExit} />
+      <TopBar title="Swarm Survivor" tag="Pixel Arena" paused={paused} canPause={phase === 'play' && !choices} onPause={() => applyPause(!paused)} onExit={onExit} />
 
       <div className={`gm-hud ${playing ? 'is-on' : ''}`} aria-hidden={!playing}>
         <div className="gm-hud__tl">
@@ -365,11 +404,24 @@ export default function SwarmSurvivor({ onExit }) {
         {phase === 'menu' && (
           <motion.div key="menu" className="gm-overlay gm-overlay--clear gm-overlay--side" {...panelMotion}>
             <div className="gm-panel gm-panel--hero">
-              <span className="gm-kicker">Arena Shooter · Roguelite</span>
+              <span className="gm-kicker">Pixel Arena · Roguelite</span>
               <h2 className="gm-title">
                 Swarm <em>Survivor</em>
               </h2>
-              <p className="gm-sub">Bertahan dari gelombang musuh yang terus membesar. Kumpulkan XP, pilih upgrade, dan kalahkan bos tiap lima gelombang.</p>
+              <p className="gm-sub">Kucing situs ini berburu serangga di taman malam. Kumpulkan XP, pilih upgrade, dan kalahkan bos tiap lima gelombang.</p>
+              <div className="gm-heroes" role="radiogroup" aria-label="Pilih kucing">
+                {HEROES.map((h) => (
+                  <button key={h.id} type="button" role="radio" aria-checked={h.id === heroId} className={`gm-hero ${h.id === heroId ? 'is-on' : ''}`} onClick={() => setHeroId(h.id)} data-cursor-label={h.name}>
+                    <img src={h.photo} alt="" className="gm-hero__photo" loading="lazy" draggable={false} />
+                    <PixelCat id={h.id} walking={h.id === heroId} />
+                    <strong>{h.name}</strong>
+                    <span>{h.tag}</span>
+                  </button>
+                ))}
+              </div>
+              <p className="gm-hero__perk">
+                <b>{hero.name}:</b> {hero.perk}
+              </p>
               <ul className="gm-keys gm-keys--touch">
                 <li>
                   <kbd>Geser</kbd>
@@ -474,7 +526,7 @@ export default function SwarmSurvivor({ onExit }) {
         {phase === 'over' && result && (
           <motion.div key="over" className="gm-overlay" {...panelMotion}>
             <div className="gm-panel">
-              <span className="gm-kicker">{result.isBest ? 'Rekor baru!' : 'Kamu tumbang'}</span>
+              <span className="gm-kicker">{result.isBest ? 'Rekor baru!' : `${hero.name} tumbang`}</span>
               <h2 className="gm-title gm-title--score">{formatInt(result.score)}</h2>
               <div className="gm-results">
                 <div>
