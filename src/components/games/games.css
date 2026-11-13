@@ -766,6 +766,69 @@
 }
 .gm-results span { font-size: 0.68rem; color: rgba(255, 255, 255, 0.55); }
 
+/* ---------- Garasi (Neon Drift) ---------- */
+.gm-garage {
+  margin-top: 18px;
+  padding: 14px 16px 16px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+}
+.gm-garage__pick { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.gm-garage__pick .gm-icon { flex: none; width: 36px; height: 36px; }
+.gm-garage__name { flex: 1; min-width: 0; text-align: center; }
+.gm-garage__name span {
+  display: block;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gm-a);
+}
+.gm-garage__name strong {
+  display: block;
+  font-family: 'Syne', 'Space Grotesk', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+.gm-garage__blurb { margin: 6px 0 12px; font-size: 0.78rem; text-align: center; color: rgba(255, 255, 255, 0.6); }
+.gm-garage__stats { display: grid; gap: 7px; margin: 0; }
+.gm-garage__stats > div { display: grid; grid-template-columns: 78px 1fr; align-items: center; gap: 10px; }
+.gm-garage__stats dt {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: left;
+  color: rgba(255, 255, 255, 0.55);
+}
+.gm-garage__stats dd { margin: 0; height: 5px; border-radius: 5px; background: rgba(255, 255, 255, 0.12); overflow: hidden; }
+.gm-garage__stats dd i {
+  display: block;
+  height: 100%;
+  border-radius: 5px;
+  background: linear-gradient(90deg, var(--gm-a), var(--gm-b));
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.gm-swatches { display: flex; flex-wrap: wrap; justify-content: center; gap: 9px; margin-top: 14px; }
+.gm-swatches button {
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.22);
+  background: radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.55), transparent 42%), var(--sw);
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.gm-swatches button:hover { transform: scale(1.14); }
+.gm-swatches button.is-on { border-color: #fff; box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.16), 0 0 18px var(--sw); transform: scale(1.12); }
+
 /* Menu di sisi kiri pada layar lebar, supaya adegan 3D tetap terlihat */
 @media (min-width: 960px) and (min-aspect-ratio: 5/4) {
   .gm-overlay--side { justify-items: start; padding-left: clamp(28px, 6vw, 110px); }

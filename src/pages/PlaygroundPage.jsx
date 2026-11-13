@@ -24,8 +24,8 @@ const PLAYABLE_GAMES = [
     accent2: '#ff3fa4',
     preview: 'drift',
     description:
-      'Balapan tanpa akhir di jalan raya neon. Selip di antara lalu lintas, kumpulkan near miss untuk mengisi nitro, dan bertahan selama mungkin saat kecepatan terus naik.',
-    tags: ['Three.js', 'Nitro & kombo', '4 zona'],
+      'Balapan tanpa akhir di jalan raya malam. Pilih supercar atau hypercar dan warna catnya, selip di antara lalu lintas, dan kumpulkan near miss untuk mengisi nitro.',
+    tags: ['Three.js', '4 mobil · 8 warna', '4 suasana kota'],
   },
   {
     id: 'swarm-survivor',

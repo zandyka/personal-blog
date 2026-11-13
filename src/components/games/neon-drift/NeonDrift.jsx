@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Flame, Gauge, Play, RotateCcw, Shield, Trophy, Zap } from 'lucide-react';
 import { createNeonDrift } from './engine';
+import { PLAYER_CARS, PAINTS } from './cars';
 import { HoldButton, TopBar, formatInt, useGameAudio, usePopups } from '../shared/GameChrome';
 import { loadBest, saveBest } from '../shared/audio';
 
@@ -18,6 +19,23 @@ const KEYS = {
   ArrowDown: 'brake',
   KeyS: 'brake',
 };
+
+const loadPick = (key, list) => {
+  try {
+    const v = localStorage.getItem(key);
+    return list.some((x) => x.id === v) ? v : list[0].id;
+  } catch {
+    return list[0].id;
+  }
+};
+const savePick = (key, v) => {
+  try {
+    localStorage.setItem(key, v);
+  } catch {
+    /* hanya berlaku di sesi ini */
+  }
+};
+const hex = (n) => `#${n.toString(16).padStart(6, '0')}`;
 
 const panelMotion = {
   initial: { opacity: 0, y: 26, scale: 0.97 },
@@ -36,6 +54,9 @@ export default function NeonDrift({ onExit }) {
   const [best, setBest] = useState(() => loadBest('neon-drift'));
   const [failed, setFailed] = useState(false);
   const [popRef, pushPop] = usePopups();
+  const [carId, setCarId] = useState(() => loadPick('pg-drift-car', PLAYER_CARS));
+  const [paintId, setPaintId] = useState(() => loadPick('pg-drift-paint', PAINTS));
+  const [ready, setReady] = useState(false);
 
   const scoreRef = useRef(null);
   const speedRef = useRef(null);
@@ -124,11 +145,34 @@ export default function NeonDrift({ onExit }) {
       return undefined;
     }
     engineRef.current = engine;
+    setReady(true);
     return () => {
       engineRef.current = null;
+      setReady(false);
       engine.destroy();
     };
   }, [audio, pushPop]);
+
+  // Pilihan garasi diterapkan ke mesin dan diingat untuk kunjungan berikutnya.
+  useEffect(() => {
+    if (!ready) return;
+    engineRef.current?.setCar(carId);
+    savePick('pg-drift-car', carId);
+  }, [carId, ready]);
+  useEffect(() => {
+    if (!ready) return;
+    engineRef.current?.setPaint(paintId);
+    savePick('pg-drift-paint', paintId);
+  }, [paintId, ready]);
+
+  const car = PLAYER_CARS.find((c) => c.id === carId) || PLAYER_CARS[0];
+  const stepCar = useCallback(
+    (d) => {
+      const i = PLAYER_CARS.findIndex((c) => c.id === carId);
+      setCarId(PLAYER_CARS[(i + d + PLAYER_CARS.length) % PLAYER_CARS.length].id);
+    },
+    [carId],
+  );
 
   const start = useCallback(() => {
     audio.unlock();
@@ -184,6 +228,11 @@ export default function NeonDrift({ onExit }) {
         applyPause(false);
         return;
       }
+      if (ph === 'menu' && (e.code === 'ArrowLeft' || e.code === 'ArrowRight')) {
+        e.preventDefault();
+        stepCar(e.code === 'ArrowLeft' ? -1 : 1);
+        return;
+      }
       const k = KEYS[e.code];
       if (k) {
         e.preventDefault();
@@ -208,7 +257,7 @@ export default function NeonDrift({ onExit }) {
       document.removeEventListener('visibilitychange', autoPause);
       window.removeEventListener('blur', blur);
     };
-  }, [applyPause, onExit, start]);
+  }, [applyPause, onExit, start, stepCar]);
 
   const hold = (key) => (down) => engineRef.current?.press(key, down);
   const playing = phase === 'run' || phase === 'countdown' || phase === 'crash';
@@ -316,7 +365,52 @@ export default function NeonDrift({ onExit }) {
               <h2 className="gm-title">
                 Neon <em>Drift</em>
               </h2>
-              <p className="gm-sub">Melaju di jalan raya neon, selip di antara lalu lintas, dan kumpulkan near miss untuk mengisi nitro.</p>
+              <p className="gm-sub">Melaju di jalan raya malam, selip di antara lalu lintas, dan kumpulkan near miss untuk mengisi nitro.</p>
+
+              <div className="gm-garage">
+                <div className="gm-garage__pick">
+                  <button type="button" className="gm-icon" onClick={() => stepCar(-1)} aria-label="Mobil sebelumnya" data-cursor-label="Ganti">
+                    <ChevronLeft size={18} />
+                  </button>
+                  <div className="gm-garage__name" aria-live="polite">
+                    <span>{car.cls}</span>
+                    <strong>{car.name}</strong>
+                  </div>
+                  <button type="button" className="gm-icon" onClick={() => stepCar(1)} aria-label="Mobil berikutnya" data-cursor-label="Ganti">
+                    <ChevronRight size={18} />
+                  </button>
+                </div>
+                <p className="gm-garage__blurb">{car.blurb}</p>
+                <dl className="gm-garage__stats">
+                  {[
+                    ['Kecepatan', car.stats.speed],
+                    ['Kendali', car.stats.handling],
+                    ['Nitro', car.stats.nitro],
+                  ].map(([label, v]) => (
+                    <div key={label}>
+                      <dt>{label}</dt>
+                      <dd>
+                        <i style={{ transform: `scaleX(${v})` }} />
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+                <div className="gm-swatches" role="radiogroup" aria-label="Warna cat">
+                  {PAINTS.map((p) => (
+                    <button
+                      key={p.id}
+                      type="button"
+                      role="radio"
+                      aria-checked={p.id === paintId}
+                      aria-label={p.name}
+                      title={p.name}
+                      className={p.id === paintId ? 'is-on' : ''}
+                      style={{ '--sw': hex(p.color) }}
+                      onClick={() => setPaintId(p.id)}
+                    />
+                  ))}
+                </div>
+              </div>
               <ul className="gm-keys gm-keys--touch">
                 <li>
                   <kbd>◀</kbd>
