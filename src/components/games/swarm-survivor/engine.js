@@ -1392,16 +1392,25 @@ export function createSwarmSurvivor(canvas, cb = {}) {
   /* ---- loop ---- */
   let raf = 0;
   let last = 0;
+  let frozen = false;
   const frame = (now) => {
     raf = requestAnimationFrame(frame);
     const raw = last ? (now - last) / 1000 : 1 / 60;
     last = now;
     if (G.paused) return;
-    const realDt = Math.min(0.05, raw);
-    if (G.phase !== 'levelup') {
-      const scale = G.phase === 'dead' ? 0.3 : G.slow > 0 ? 0.35 : 1;
-      update(realDt * scale, realDt);
+    // Saat memilih upgrade, adegannya diam: cukup digambar sekali, tidak tiap frame.
+    if (G.phase === 'levelup') {
+      if (!frozen) {
+        frozen = true;
+        render();
+        pushHud();
+      }
+      return;
     }
+    frozen = false;
+    const realDt = Math.min(0.05, raw);
+    const scale = G.phase === 'dead' ? 0.3 : G.slow > 0 ? 0.35 : 1;
+    update(realDt * scale, realDt);
     render();
     pushHud();
   };
@@ -1557,7 +1566,7 @@ export function createSwarmSurvivor(canvas, cb = {}) {
       canvas.style.height = '';
     },
   };
-  if (import.meta.env.DEV) {
+  if (import.meta.env.DEV || import.meta.env.VITE_PG_DEBUG) {
     api.debug = {
       god: (v) => (god = v),
       wave: (n) => {

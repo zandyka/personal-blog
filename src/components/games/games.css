@@ -503,6 +503,9 @@
   backdrop-filter: none;
 }
 .gm-game--pixel .gm-panel::before { display: none; }
+/* Tanpa blur latar: murah di ponsel dan lebih cocok dengan gaya pixel */
+.gm-game--pixel .gm-overlay { background: rgba(5, 8, 7, 0.8); -webkit-backdrop-filter: none; backdrop-filter: none; }
+.gm-game--pixel .gm-overlay--clear { background: none; }
 .gm-game--pixel .gm-title {
   font-family: 'Silkscreen', 'Space Grotesk', sans-serif;
   font-size: clamp(1.9rem, 6.4vw, 3.2rem);
@@ -1257,6 +1260,21 @@
   .gm-hud__tl { left: calc(16px + env(safe-area-inset-left)); }
   .gm-hud__tr { right: calc(16px + env(safe-area-inset-right)); gap: 14px; }
   .gm-top__brand span:not(.gm-top__dot) { display: none; }
+}
+/* Di layar sentuh, blur latar pada elemen kecil di atas kanvas yang terus bergerak
+   memaksa GPU mengaburkan ulang tiap frame; ganti dengan latar yang lebih pekat. */
+@media (pointer: coarse) {
+  .gm-top__brand,
+  .gm-icon,
+  .gm-touch,
+  .gm-pop,
+  .gm-overlay { -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .gm-top__brand,
+  .gm-icon,
+  .gm-touch { background: rgba(10, 10, 20, 0.72); }
+  .gm-overlay { background: rgba(3, 3, 10, 0.72); }
+  .gm-overlay--clear { background: none; }
+  .gm-panel { -webkit-backdrop-filter: none; backdrop-filter: none; background: linear-gradient(160deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02) 42%), rgba(9, 9, 20, 0.9); }
 }
 @media (prefers-reduced-motion: reduce) {
   .gm-pop, .gm-zone.is-on { animation-duration: 0.01s; }

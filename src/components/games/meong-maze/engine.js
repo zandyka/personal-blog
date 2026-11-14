@@ -665,7 +665,7 @@ export function createMeongMaze(canvas, cb = {}) {
     },
     destroy: () => cancelAnimationFrame(raf),
   };
-  if (import.meta.env.DEV) {
+  if (import.meta.env.DEV || import.meta.env.VITE_PG_DEBUG) {
     api.debug = {
       auto: (v) => (auto = v),
       god: (v) => (god = v),

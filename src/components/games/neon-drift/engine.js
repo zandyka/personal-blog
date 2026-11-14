@@ -6,6 +6,7 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+import { FXAAShader } from 'three/addons/shaders/FXAAShader.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { buildCar, mergeWheels, PLAYER_CARS, PAINTS } from './cars';
 
@@ -450,7 +451,7 @@ export function createNeonDrift(host, cb = {}) {
       if (instant) palNum[k].value = ZONES[i][k];
     });
     // pantulan di cat mobil mengikuti langit yang sedang berubah
-    envDue = instant ? [] : [0.6, 1.6, 3.2];
+    envDue = instant ? [] : [1.2, 3.4];
   };
 
   scene.fog = new THREE.Fog(pal.fog.getHex(), FOG_NEAR, FOG_FAR);
@@ -526,7 +527,7 @@ export function createNeonDrift(host, cb = {}) {
   let envRT = null;
   const refreshEnv = () => {
     envLampMat.color.copy(palTarget.lamp).multiplyScalar(3);
-    const next = pmrem.fromScene(envScene, 0.015, 0.5, 1200);
+    const next = pmrem.fromScene(envScene, 0.015, 0.5, 1200, { size: 128 });
     scene.environment = next.texture;
     envRT?.dispose();
     envRT = next;
@@ -1495,12 +1496,16 @@ export function createNeonDrift(host, cb = {}) {
     }
     if (quality === 0) return;
     const size = renderer.getDrawingBufferSize(new THREE.Vector2());
-    const rt = new THREE.WebGLRenderTarget(size.x, size.y, { type: THREE.HalfFloatType, samples: quality === 2 ? 4 : 0 });
+    // Tanpa MSAA: di target HDR biayanya ~6 ms per frame pada GPU laptop. Tepi dihaluskan dengan FXAA.
+    const rt = new THREE.WebGLRenderTarget(size.x, size.y, { type: THREE.HalfFloatType });
     composer = new EffectComposer(renderer, rt);
     composer.addPass(new RenderPass(scene, camera));
     bloom = new UnrealBloomPass(new THREE.Vector2(width, height), 0.34, 0.6, 1.0);
     composer.addPass(bloom);
     composer.addPass(new OutputPass());
+    const fxaa = new ShaderPass(FXAAShader);
+    fxaa.material.uniforms.resolution.value.set(1 / size.x, 1 / size.y);
+    composer.addPass(fxaa);
     finalPass = new ShaderPass(FINAL_SHADER);
     composer.addPass(finalPass);
   };
@@ -1548,7 +1553,7 @@ export function createNeonDrift(host, cb = {}) {
         const avg = perfAcc / perfN;
         perfAcc = 0;
         perfN = 0;
-        if (avg > 1 / 43 && quality > 0) {
+        if (avg > 1 / 52 && quality > 0) {
           quality -= 1;
           resize();
         }
@@ -1676,11 +1681,28 @@ export function createNeonDrift(host, cb = {}) {
       canvas.remove();
     },
   };
-  if (import.meta.env.DEV) {
+  if (import.meta.env.DEV || import.meta.env.VITE_PG_DEBUG) {
     api.debug = {
       auto: (v) => (auto = v),
       god: (v) => (god = v),
-      state: () => ({ mode: S.mode, dist: Math.round(S.runDist), speed: Math.round(S.speed * 3.6), zone: S.zone, quality, calls: renderer.info.render.calls, tris: renderer.info.render.triangles }),
+      // untuk mengukur biaya tiap bagian saat audit performa
+      quality: (n) => {
+        quality = n;
+        resize();
+      },
+      show: (name, v) => {
+        const o = { sky, ground, road, buildings, poles, lampHeads, gantry }[name];
+        if (o) o.visible = v;
+      },
+      drawCalls: () => {
+        renderer.info.autoReset = false;
+        renderer.info.reset();
+        renderer.render(scene, camera);
+        const out = { calls: renderer.info.render.calls, triangles: renderer.info.render.triangles };
+        renderer.info.autoReset = true;
+        return out;
+      },
+      state: () => ({ mode: S.mode, dist: Math.round(S.runDist), speed: Math.round(S.speed * 3.6), zone: S.zone, quality }),
     };
   }
   return api;

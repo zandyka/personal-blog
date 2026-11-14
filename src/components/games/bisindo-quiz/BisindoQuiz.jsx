@@ -250,7 +250,7 @@ export default function BisindoQuiz({ onExit }) {
   }, [answer, miss, onExit, toMenu]);
 
   useEffect(() => {
-    if (import.meta.env.DEV) window.__pg = { game: 'bisindo-quiz', answer: () => roundRef.current.answer };
+    if (import.meta.env.DEV || import.meta.env.VITE_PG_DEBUG) window.__pg = { game: 'bisindo-quiz', answer: () => roundRef.current.answer };
   }, []);
 
   const mult = useMemo(() => (1 + Math.min(10, Math.max(0, streak - 1)) * 0.1).toFixed(1), [streak]);

@@ -78,7 +78,7 @@ export default function Polyblok({ onExit }) {
       },
     });
     engineRef.current = engine;
-    if (import.meta.env.DEV) window.__pg = { game: 'polyblok', engine };
+    if (import.meta.env.DEV || import.meta.env.VITE_PG_DEBUG) window.__pg = { game: 'polyblok', engine };
 
     const fit = () => {
       const box = screenRef.current;

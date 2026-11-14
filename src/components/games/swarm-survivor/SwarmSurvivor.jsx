@@ -201,7 +201,7 @@ export default function SwarmSurvivor({ onExit }) {
       },
     });
     engineRef.current = engine;
-    if (import.meta.env.DEV) window.__pg = { game: 'swarm-survivor', engine };
+    if (import.meta.env.DEV || import.meta.env.VITE_PG_DEBUG) window.__pg = { game: 'swarm-survivor', engine };
     setReady(true);
     return () => {
       engineRef.current = null;

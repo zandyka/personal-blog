@@ -145,7 +145,7 @@ export default function NeonDrift({ onExit }) {
       return undefined;
     }
     engineRef.current = engine;
-    if (import.meta.env.DEV) window.__pg = { game: 'neon-drift', engine };
+    if (import.meta.env.DEV || import.meta.env.VITE_PG_DEBUG) window.__pg = { game: 'neon-drift', engine };
     setReady(true);
     return () => {
       engineRef.current = null;

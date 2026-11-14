@@ -485,7 +485,7 @@ export function createPolyblok(canvas, nextCanvas, cb = {}) {
     },
     destroy: () => cancelAnimationFrame(raf),
   };
-  if (import.meta.env.DEV) {
+  if (import.meta.env.DEV || import.meta.env.VITE_PG_DEBUG) {
     api.debug = {
       auto: (v) => (auto = v),
       state: () => ({ phase: G.phase, score: G.score, lines: G.lines, level: G.level, pieces: G.pieces }),
