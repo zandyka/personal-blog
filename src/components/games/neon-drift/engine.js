@@ -1515,9 +1515,13 @@ export function createNeonDrift(host, cb = {}) {
     bloom = new UnrealBloomPass(new THREE.Vector2(width, height), 0.34, 0.6, 1.0);
     composer.addPass(bloom);
     composer.addPass(new OutputPass());
-    const fxaa = new ShaderPass(FXAAShader);
-    fxaa.material.uniforms.resolution.value.set(1 / size.x, 1 / size.y);
-    composer.addPass(fxaa);
+    // FXAA hanya di kualitas tertinggi: di ponsel tiap pass tambahan membebani CPU,
+    // dan kerapatan pikselnya sudah menyamarkan tepi bergerigi.
+    if (quality === 2) {
+      const fxaa = new ShaderPass(FXAAShader);
+      fxaa.material.uniforms.resolution.value.set(1 / size.x, 1 / size.y);
+      composer.addPass(fxaa);
+    }
     finalPass = new ShaderPass(FINAL_SHADER);
     composer.addPass(finalPass);
   };
