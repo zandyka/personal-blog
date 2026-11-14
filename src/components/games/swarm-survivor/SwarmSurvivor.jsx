@@ -163,12 +163,20 @@ export default function SwarmSurvivor({ onExit }) {
             hpRef.current.parentElement.classList.toggle('is-low', h.hp / h.maxHp < 0.3);
           }
         }
-        if (xpRef.current) xpRef.current.style.transform = `scaleX(${h.xp.toFixed(3)})`;
+        const xp = Math.round(h.xp * 200);
+        if (s.xp !== xp) {
+          s.xp = xp;
+          if (xpRef.current) xpRef.current.style.transform = `scaleX(${xp / 200})`;
+        }
         if (s.level !== h.level) {
           s.level = h.level;
           if (levelRef.current) levelRef.current.textContent = h.level;
         }
-        if (dashRef.current) dashRef.current.style.transform = `scaleX(${Math.min(1, h.dash).toFixed(3)})`;
+        const dash = Math.round(Math.min(1, h.dash) * 50);
+        if (s.dash !== dash) {
+          s.dash = dash;
+          if (dashRef.current) dashRef.current.style.transform = `scaleX(${dash / 50})`;
+        }
         const ready = h.dash >= 1;
         if (s.ready !== ready) {
           s.ready = ready;
@@ -179,8 +187,16 @@ export default function SwarmSurvivor({ onExit }) {
           s.hasBoss = hasBoss;
           bossWrapRef.current?.classList.toggle('is-on', hasBoss);
         }
-        if (hasBoss && bossRef.current) bossRef.current.style.transform = `scaleX(${h.boss.toFixed(3)})`;
-        if (hurtRef.current) hurtRef.current.style.opacity = (h.hurt * 0.85).toFixed(2);
+        const boss = Math.round(h.boss * 200);
+        if (hasBoss && s.boss !== boss) {
+          s.boss = boss;
+          if (bossRef.current) bossRef.current.style.transform = `scaleX(${boss / 200})`;
+        }
+        const hurt = Math.round(h.hurt * 20);
+        if (s.hurt !== hurt) {
+          s.hurt = hurt;
+          if (hurtRef.current) hurtRef.current.style.opacity = String((hurt / 20) * 0.85);
+        }
       },
       onState: (state, payload) => {
         phaseRef.current = state;

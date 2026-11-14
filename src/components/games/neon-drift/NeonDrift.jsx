@@ -101,7 +101,11 @@ export default function NeonDrift({ onExit }) {
             s.speed = h.speed;
             if (speedRef.current) speedRef.current.textContent = h.speed;
           }
-          if (nitroRef.current) nitroRef.current.style.transform = `scaleX(${h.nitro.toFixed(3)})`;
+          const nitro = Math.round(h.nitro * 200);
+          if (s.nitro !== nitro) {
+            s.nitro = nitro;
+            if (nitroRef.current) nitroRef.current.style.transform = `scaleX(${nitro / 200})`;
+          }
           if (s.boosting !== h.boosting) {
             s.boosting = h.boosting;
             nitroWrapRef.current?.classList.toggle('is-boost', h.boosting);
@@ -113,7 +117,11 @@ export default function NeonDrift({ onExit }) {
               multRef.current.parentElement.classList.toggle('is-on', h.mult > 1);
             }
           }
-          if (comboRef.current) comboRef.current.style.transform = `scaleX(${h.comboT.toFixed(3)})`;
+          const combo = Math.round(h.comboT * 100);
+          if (s.combo !== combo) {
+            s.combo = combo;
+            if (comboRef.current) comboRef.current.style.transform = `scaleX(${combo / 100})`;
+          }
           if (s.shield !== h.shield) {
             s.shield = h.shield;
             shieldRef.current?.classList.toggle('is-on', h.shield);

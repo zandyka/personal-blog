@@ -66,8 +66,16 @@ export default function MeongMaze({ onExit }) {
           s.lives = h.lives;
           if (livesRef.current) livesRef.current.textContent = '♥'.repeat(Math.max(0, h.lives));
         }
-        if (pounceRef.current) pounceRef.current.style.transform = `scaleX(${Math.max(0, Math.min(1, h.pounce)).toFixed(3)})`;
-        if (frightRef.current) frightRef.current.style.transform = `scaleX(${h.fright.toFixed(3)})`;
+        const pounce = Math.round(Math.max(0, Math.min(1, h.pounce)) * 100);
+        if (s.pounce !== pounce) {
+          s.pounce = pounce;
+          if (pounceRef.current) pounceRef.current.style.transform = `scaleX(${pounce / 100})`;
+        }
+        const fright = Math.round(h.fright * 100);
+        if (s.fright !== fright) {
+          s.fright = fright;
+          if (frightRef.current) frightRef.current.style.transform = `scaleX(${fright / 100})`;
+        }
       },
       onState: (state, payload) => {
         phaseRef.current = state;

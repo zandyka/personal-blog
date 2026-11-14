@@ -942,6 +942,7 @@ export function createNeonDrift(host, cb = {}) {
     viewShift: 0,
     wheelA: 0,
     brakeGlow: 0,
+    audioT: 0,
   };
   const hud = { score: 0, speed: 0, nitro: 0, boosting: false, mult: 1, comboT: 0, shield: false, dist: 0 };
 
@@ -1094,13 +1095,16 @@ export function createNeonDrift(host, cb = {}) {
     gantry.position.z = -620 + wrap(S.dist + 240, 720);
   };
 
+  let pIdle = false;
   const updateParticles = (dt) => {
+    let alive = 0;
     for (let i = 0; i < P_MAX; i++) {
       const p = pData[i];
       if (p.life <= 0) {
         pSize[i] = 0;
         continue;
       }
+      alive += 1;
       p.life -= dt;
       const k = Math.max(0, p.life / p.max);
       if (p.drag) {
@@ -1117,6 +1121,10 @@ export function createNeonDrift(host, cb = {}) {
       pCol[i * 3 + 2] = p.b * k;
       pSize[i] = p.size * (0.4 + 0.6 * k);
     }
+    // satu unggahan terakhir setelah semua partikel padam, lalu berhenti sampai ada yang baru
+    if (!alive && pIdle) return;
+    pIdle = !alive;
+    points.visible = alive > 0;
     pGeo.attributes.position.needsUpdate = true;
     pGeo.attributes.aColor.needsUpdate = true;
     pGeo.attributes.aSize.needsUpdate = true;
@@ -1465,7 +1473,11 @@ export function createNeonDrift(host, cb = {}) {
       }
     }
 
-    audio?.setEngine(clamp(S.speed / 100, 0, 1), S.boost);
+    S.audioT -= realDt;
+    if (S.audioT <= 0) {
+      S.audioT = 0.08;
+      audio?.setEngine(clamp(S.speed / 100, 0, 1), S.boost);
+    }
 
     hud.score = Math.floor(S.score);
     hud.speed = Math.round(S.speed * 3.6);
@@ -1539,6 +1551,9 @@ export function createNeonDrift(host, cb = {}) {
   let last = 0;
   let perfAcc = 0;
   let perfN = 0;
+  let perfHold = 3; // detik yang dilewati setelah mulai/ganti kualitas (masa pemanasan)
+  let lastDrop = null; // rata-rata frame sebelum penurunan terakhir
+  let adaptDone = false;
   let destroyed = false;
 
   const frame = (now) => {
@@ -1546,16 +1561,31 @@ export function createNeonDrift(host, cb = {}) {
     const raw = last ? (now - last) / 1000 : 1 / 60;
     last = now;
     if (S.paused) return;
-    if (raw < 0.2) {
-      perfAcc += raw;
-      perfN += 1;
-      if (perfN >= 150) {
-        const avg = perfAcc / perfN;
-        perfAcc = 0;
-        perfN = 0;
-        if (avg > 1 / 52 && quality > 0) {
-          quality -= 1;
-          resize();
+    // Kualitas adaptif: hanya dinilai saat balapan berjalan, setelah masa pemanasan, dan
+    // sendatan sesaat (kompilasi shader, pindah tab) tidak ikut dihitung.
+    if (!adaptDone && S.mode === 'run' && raw < 0.1) {
+      if (perfHold > 0) {
+        perfHold -= raw;
+      } else {
+        perfAcc += raw;
+        perfN += 1;
+        if (perfN >= 180) {
+          const avg = perfAcc / perfN;
+          perfAcc = 0;
+          perfN = 0;
+          if (lastDrop && avg > lastDrop.avg * 0.88) {
+            // penurunan tadi tidak membantu (perangkat terbatas di CPU, bukan GPU): kembalikan
+            quality = lastDrop.from;
+            adaptDone = true;
+            resize();
+          } else if (avg > 1 / 52 && quality > 0) {
+            lastDrop = { avg, from: quality };
+            quality -= 1;
+            perfHold = 2;
+            resize();
+          } else {
+            lastDrop = null;
+          }
         }
       }
     }
@@ -1572,6 +1602,9 @@ export function createNeonDrift(host, cb = {}) {
   refreshEnv();
   updateDecor();
   resize();
+  // Semua shader (termasuk lalu lintas dan pickup yang belum terlihat) dikompilasi saat
+  // menu tampil, supaya tidak tersendat ketika balapan dimulai.
+  renderer.compile(scene, camera);
   raf = requestAnimationFrame(frame);
 
   /* ---- API ---- */
@@ -1688,6 +1721,7 @@ export function createNeonDrift(host, cb = {}) {
       // untuk mengukur biaya tiap bagian saat audit performa
       quality: (n) => {
         quality = n;
+        adaptDone = true;
         resize();
       },
       show: (name, v) => {
